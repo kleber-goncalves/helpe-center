@@ -17,7 +17,7 @@ export function Tutorial() {
         );
     const category = categories.find((item) => item.id === tutorial.category);
     const related = tutorials.filter((item) => item.category === tutorial.category && item.id !== tutorial.id).slice(0, 2);
-    const steps = createSteps(tutorial);
+    const steps = tutorial.steps ?? createSteps(tutorial);
     return (
         <main className="mx-auto max-w-4xl px-5 py-10 lg:px-8">
             <nav className="flex flex-wrap gap-2 text-sm text-muted-ink">
