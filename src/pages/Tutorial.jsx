@@ -58,6 +58,11 @@ export function Tutorial() {
                                     <p className="mt-3 text-sm font-semibold text-[#527282]">Área para screenshot</p>
                                     <p className="mt-1 text-xs text-muted-ink">{step.title}</p>
                                 </div>
+                                <div>
+                                    <img src={step.image} alt={step.imgAlt} className="block h-auto w-full object-contain" />
+
+                                    
+                                </div>
                             </div>
                             {index < steps.length - 1 && <Separator className="mt-9" />}
                         </section>

@@ -23,10 +23,7 @@ export function About() {
             <section className="mt-14 border-t border-line pt-10">
                 <h2 className="text-xl font-bold text-ink">Equipe do projeto</h2>
                 <p className="mt-3 leading-7 text-muted-ink">Esta Central de Ajuda Digital foi desenvolvida pelo grupo formado por Kleber, Cirlene, Divina, Robertin e Carlos.</p>
-                <p className="mt-3 leading-7 text-muted-ink">
-                    <strong className="text-ink">Kleber</strong> é o líder do grupo e desenvolvedor da Central de Ajuda Digital.
-                </p>
-                <h2 className="text-2xl font-bold text-ink">Conteúdo orientado por necessidades reais</h2>
+                <h2 className=" mt-9 text-2xl font-bold text-ink">Conteúdo orientado por necessidades reais</h2>
                 <p className="mt-4 max-w-2xl leading-7 text-muted-ink">A pesquisa serviu apenas como referência para definir as prioridades iniciais, como Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos e Canva. Nenhuma resposta individual ou dado identificável é exibido no portal.</p>
             </section>
         </main>

@@ -29,7 +29,7 @@ export function Footer() {
             </div>
             <div className="border-t border-line px-5 py-5 text-center text-xs text-muted-ink">
                 <p>Central de Ajuda Digital — Projeto Escolar 2026</p>
-                <p className="mt-1">Grupo: Kleber, Cirlene, Divina, Robertin e Carlos. Kleber é o líder do grupo e desenvolvedor da Central de Ajuda Digital.</p>
+                <p className="mt-1">Desenvlovido por Kleber, Cirlene, Divina, Robertin e Carlos</p>
             </div>
         </footer>
     );
