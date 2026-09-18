@@ -20,10 +20,16 @@
     --color-background: #ffffff;
     --color-foreground: #133345;
 
+    --color-card: oklch(1 0 0);
+    --color-card-foreground: oklch(0.34 0.045 215);
+
     /* Fonts */
     --font-display: "Nunito", ui-sans-serif, system-ui, sans-serif;
     --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
 }
+
+
+
 
 :root {
     --background: oklch(1 0 0);
@@ -88,13 +94,13 @@ a {
             transparent 70%
         ),
         radial-gradient(
-            ellipse 70% 60% at 10% 10%,
+            ellipse 70% 40% at 10% 10%,
             var(--color-mist-deep2),
             transparent 100%
         ),
         linear-gradient(
             180deg,
-            var(--color-mist) 0%,
+   
             var(--color-background) 100%
         );
 }

@@ -1,4 +1,4 @@
-import { CircleHelp, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { Button, Sheet, SheetContent, SheetTrigger } from "./ui";
 
@@ -16,10 +16,14 @@ export function Header() {
         <header className="border-b border-line bg-paper/95">
             <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5 lg:px-8">
                 <Link to="/" className="flex items-center gap-2 text-sm font-bold text-ink">
-                    <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#e5f0f2]">
-                        <CircleHelp className="h-5 w-5" />
-                    </span>
-                    <span>Central de Ajuda Digital</span>
+                    <div className="grid h-10 w-10 place-items-center rounded-lg ">
+                        <img src="/logo.png" alt="" />
+                    </div>
+                    <div className="leading-tight flex flex-col">
+                        <span className="text-lg font-bold text-ink">Hauy Conecta</span>
+
+                        <span className="text-xs text-muted-ink">Central de Ajuda Digital</span>
+                    </div>
                 </Link>
                 <nav className="hidden items-center gap-6 md:flex">
                     {links.map(([label, to]) => (

@@ -19,7 +19,7 @@ export function Separator({ className }) {
 export const Accordion = AccordionPrimitive.Root;
 export function AccordionItem({ children, value }) {
     return (
-        <AccordionPrimitive.Item value={value} className="border-b border-line">
+        <AccordionPrimitive.Item value={value} className="text-base border-b border-line ">
             {children}
         </AccordionPrimitive.Item>
     );
@@ -27,17 +27,20 @@ export function AccordionItem({ children, value }) {
 export function AccordionTrigger({ children }) {
     return (
         <AccordionPrimitive.Header>
-            <AccordionPrimitive.Trigger className="group flex w-full items-center justify-between gap-4 py-5 text-left font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/30">
+            <AccordionPrimitive.Trigger className=" cursor-pointer group flex w-full items-center justify-between gap-4 py-5 text-left
+             font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/30 hover:text-coral">
                 {children}
                 <ChevronDown className="h-5 w-5 text-muted-ink transition-transform group-data-[state=open]:rotate-180" />
             </AccordionPrimitive.Trigger>
         </AccordionPrimitive.Header>
     );
 }
+
+
 export function AccordionContent({ children }) {
     return (
-        <AccordionPrimitive.Content className="overflow-hidden text-sm leading-6 text-muted-ink">
-            <div className="pb-5">{children}</div>
+        <AccordionPrimitive.Content className="pb-6 pl-[18px] text-base leading-relaxed text-muted-foreground">
+            <div className="">{children}</div>
         </AccordionPrimitive.Content>
     );
 }

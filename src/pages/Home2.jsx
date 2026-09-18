@@ -26,8 +26,8 @@ export function Home() {
                     </div>
                 </div>
             </section>
-            <main className="px-0 lg:px-0">
-                <section className="py-9 px-5 flex mx-auto  max-w-6xl items-center flex-col">
+            <main className="px-0 lg:px-0  bg-background ">
+                <section className="py-9 px-5 flex mx-auto max-w-6xl items-center flex-col">
                     <SectionTitle title="Encontre ajuda por categoria" description="" />
                     <div className="mt-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
                         {categories.map((category) => (

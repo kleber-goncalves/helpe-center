@@ -1,8 +1,8 @@
 export const faq = [
-  { question: 'Como encontrar um tutorial?', answer: 'Use a busca no início da página ou entre em uma categoria para ver os tutoriais disponíveis.' },
-  { question: 'Como pesquisar uma dúvida?', answer: 'Escreva palavras simples, como “Excel”, “PDF”, “imprimir” ou “e-mail”, e escolha um resultado.' },
-  { question: 'Posso sugerir um novo tutorial?', answer: 'Sim. Use o botão “Enviar uma dúvida” para contar qual assunto você gostaria de encontrar aqui.' },
-  { question: 'Como pedir ajuda sobre uma ferramenta?', answer: 'Procure primeiro pelo nome da ferramenta. Se não encontrar, envie sua dúvida pelo formulário.' },
-  { question: 'Como enviar uma dificuldade que não aparece no portal?', answer: 'Acesse o formulário de dúvidas. Sua sugestão ajuda a melhorar os próximos tutoriais.' },
-  { question: 'Quem criou a Central de Ajuda Digital?', answer: 'A Central de Ajuda Digital é um projeto escolar criado para organizar orientações sobre ferramentas digitais.' },
-]
+    { question: "Como encontrar um tutorial?", answer: "Use a busca no início da página ou você pode navegar pelas categorias na página inicial ou abrir a página Tutoriais para ver a lista completa. Os tutoriais mais procurados também aparecem em destaque na página inicial." },
+    { question: "Como pesquisar uma dúvida?", answer: "Use a barra de pesquisa no topo da página inicial. Digite algumas palavras sobre o que você precisa, como “sumário”, “imprimir” ou “PDF”, e pressione Pesquisar. Os resultados mostram os tutoriais relacionados." },
+    { question: "Posso sugerir um novo tutorial?", answer: "Sim. Clique em “Enviar uma dúvida” e nós conte o que você gostaria de aprender ou encontrar aqui. Sua sugestão ajuda a melhorar os próximos tutoriais." },
+    { question: "Como pedir ajuda sobre uma ferramenta?", answer: "Primeiro procure a ferramenta na categoria correspondente (Word, Excel, Canva, etc.). Se não encontrar o que precisa, envie sua dúvida pelo formulário e explique qual ferramenta está usando." },
+    { question: "Como enviar uma dificuldade que não aparece no portal?", answer: "Acesse o formulário de dúvidas presente no topo e no final de cada página. Descreva a dificuldade com suas palavras, mas não precisa usar termos técnicos. Sua sugestão ajuda a melhorar os próximos tutoriais." },
+    { question: "Quem criou o Hauy Conecta?", answer: "O Hauy Conecta é um projeto escolar criado pelo um grupo de alunos do curso tecno de informatica de 2026 por Kleber, Cirlene, Divina, Robertin e Carlos. O projeto foi desenvolvido a partir de uma pesquisa com alunos, professores e funcionários. O objetivo era organizar orientações sobre ferramentas digitais usadas no dia a dia da escola em que a comunidade escolar tem dificuldade, como impressão, digitalização, compartilhamento de arquivos e Canva." },
+];
