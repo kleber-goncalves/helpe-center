@@ -5,7 +5,7 @@ import { About } from "./pages/About";
 import { Categories } from "./pages/Categories";
 import { Category } from "./pages/Category";
 import { FAQ } from "./pages/FAQ";
-import { Home } from "./pages/Home";
+import { Home } from "./pages/Home2";
 import { Tutorial } from "./pages/Tutorial";
 import { Tutorials } from "./pages/Tutorials";
 import "./App.css";

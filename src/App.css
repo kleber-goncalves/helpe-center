@@ -1,42 +1,132 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #133345;
-  --color-muted-ink: #627887;
-  --color-paper: #fdfdfb;
-  --color-mist: #f2f6f7;
-  --color-line: #dce6e9;
-  --color-coral: #e66f58;
-  --font-sans: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    /* Colors */
+    --color-ink: #133345;
+    --color-muted-ink: #627887;
+    --color-paper: #fdfdfb;
+    --color-mist: #f2f6f7;
+    --color-mist2: #eef8fa;
+    --color-mist-deep: #eaf1f3;
+    --color-mist-deep2: #e1f2f7;
+    --color-line: #dce6e9;
+
+    --color-coral: #e66f58;
+    --color-coral-soft: #ffe5e0;
+
+    --color-petrol-soft: #4f6f7d;
+    --color-muted-foreground: oklch(0.56 0.03 215);
+
+    --color-background: #ffffff;
+    --color-foreground: #133345;
+
+    /* Fonts */
+    --font-display: "Nunito", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.34 0.045 215);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  background: #fdfdfb;
-  color: #133345;
-  font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    margin: 0;
+    min-width: 320px;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-foreground);
 }
 
 button,
 input {
-  font: inherit;
+    font: inherit;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 ::selection {
-  background: #d7eaed;
-  color: #133345;
+    background: #d7eaed;
+    color: #133345;
+}
+
+/* --------------------------------
+   Soft section backgrounds
+--------------------------------- */
+
+@utility bg-hero-wash {
+    background:
+        radial-gradient(
+            ellipse 60% 55% at 85% 20%,
+            rgb(230 111 88 / 0.12),
+            transparent 70%
+        ),
+        radial-gradient(
+            ellipse 70% 60% at 10% 10%,
+            var(--color-mist-deep2),
+            transparent 100%
+        ),
+        linear-gradient(
+            180deg,
+            var(--color-mist) 0%,
+            var(--color-background) 100%
+        );
+}
+
+@utility bg-mist-wash {
+    background: linear-gradient(
+        180deg,
+        var(--color-background) 0%,
+        var(--color-mist2) 18%,
+        var(--color-mist2) 82%,
+        var(--color-background) 100%
+    );
+}
+
+@utility bg-warm-wash {
+    background: linear-gradient(
+        180deg,
+        var(--color-background) 0%,
+        var(--color-coral-soft) 100%
+    );
+}
+
+@utility dot-grid {
+    background-image:
+        radial-gradient(
+            var(--color-petrol-soft) 0.7px,
+            transparent 1px
+        );
+    background-size: 14px 14px;
+    mask-image: radial-gradient(
+        ellipse at center,
+        black 10%,
+        transparent 75%
+    );
 }
