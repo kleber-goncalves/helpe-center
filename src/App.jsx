@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { About } from "./pages/About";
 import { Categories } from "./pages/Categories";
 import { Category } from "./pages/Category";
@@ -11,8 +12,11 @@ import { Tutorials } from "./pages/Tutorials";
 import "./App.css";
 
 function App() {
+
     return (
         <BrowserRouter>
+            <ScrollToTop />
+
             <div className="min-h-screen bg-background">
                 <Header />
                 <Routes>

@@ -7,13 +7,16 @@ import { TutorialCard } from "../components/TutorialCard";
 import { categories, priorityTopics } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
+
+import { SectionTransition } from "../components/SectionTransition";
+
 export function Home() {
     return (
         <>
-            <section className=" bg-hero-wash px-0 lg:px-8 ">
+            <section className=" bg-mist3 px-0 lg:px-0 ">
                 <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
                 <div className=" mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
-                    <div className="mx-auto max-w-xl px-5 py-18 text-start lg:px-0 lg:py-23">
+                    <div className="mx-auto max-w-xl px-5 pt-18 text-start lg:px-0 lg:py-23">
                         <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-[3.4rem]">Olá, como podemos ajudar?</h1>
                         <p className="mt-4 max-w-xl text-lg text-muted-foreground sm:text-xl">Encontre tutoriais simples para resolver suas principais dúvidas digitais.</p>
                         <div className="mx-auto mt-8 max-w-3xl">
@@ -23,56 +26,63 @@ export function Home() {
                     </div>
                     <div
                         className="
-        relative
-        mx-auto
-        w-full
-        max-w-[390px]
-        sm:max-w-sm
-        lg:max-w-[460px]
-        lg:justify-self-end
-    "
+                            mb-17
+                            md:mb-0
+                            relative
+                            mx-auto
+                            w-full
+                            max-w-[390px]
+                            sm:max-w-sm
+                            lg:max-w-[460px]
+                            lg:justify-self-end
+                        "
                     >
                         <div
                             className="
-            pointer-events-none
-            absolute
-            bottom-[10%]
-            right-[15%]
-            z-0
-            h-[71%]
-            w-[73%]
-            rounded-3xl
-            bg-coral
-            dark:bg-[#edf4f6]
-        "
+                                pointer-events-none
+                                absolute
+                                bottom-[10%]
+                                right-[15%]
+                                z-0
+                                h-[71%]
+                                w-[73%]
+                                rounded-3xl
+                                bg-coral
+                                dark:bg-[#edf4f6]
+                            "
                         />
 
                         <img
                             src="/hero.png"
                             alt=""
                             className="
-            relative
-            z-10
-            block
-            h-auto
-            w-full
-            object-contain
-        "
+                                relative
+                                z-10
+                                block
+                                h-auto
+                                w-full
+                                object-contain
+                            "
                         />
                     </div>
                 </div>
+                <SectionTransition variant="wide" from="mist" to="background" size="large" animation />
             </section>
             <main className="px-0 lg:px-0  bg-background ">
-                <section className="py-9 px-5 flex mx-auto max-w-6xl items-center flex-col">
-                    <SectionTitle title="Encontre ajuda por categoria" description="" />
-                    <div className="mt-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
-                        {categories.map((category) => (
-                            <CategoryCard key={category.id} category={category} />
-                        ))}
+                <section className="bg-background">
+                    <div className="py-9 px-5 flex mx-auto max-w-6xl items-center flex-col">
+                        <SectionTitle title="Encontre ajuda por categoria" description="" />
+                        <div className="mt-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
+                            {categories.map((category) => (
+                                <CategoryCard key={category.id} category={category} />
+                            ))}
+                        </div>
                     </div>
+
+                    <SectionTransition variant="ribbon2" from="background" to="mist" size="large" animation />
                 </section>
-                <section className=" bg-mist-wash md:py-23 px-5 ">
-                    <div className="mx-auto max-w-6xl flex items-center flex-col text-center">
+                <section className=" bg-mist3 pt-4  ">
+                    <div className="mx-auto max-w-6xl px-5  flex items-center flex-col text-center mb-22">
                         <SectionTitle title="O que mais precisa de ajuda?" description="Os assuntos mais citados na pesquisa com a comunidade escolar." />
                         <div className="mt-8 grid gap-x-2 gap-y-2 overflow-hidden sm:grid-cols-2 lg:grid-cols-2">
                             {priorityTopics.map((topic) => {
@@ -92,6 +102,7 @@ export function Home() {
                             })}
                         </div>
                     </div>
+                    <SectionTransition variant="fold" from="mist" to="background" size="large" />
                 </section>
                 <section className="mx-auto px-5 max-w-6xl py-16">
                     <div className="flex flex-col items-center text-center gap-4 ">

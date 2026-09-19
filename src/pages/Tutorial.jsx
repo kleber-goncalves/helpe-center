@@ -1,4 +1,4 @@
-import { Check, ChevronLeft, ChevronRight, Monitor } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Monitor } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { Badge, Separator } from "../components/ui";
 import { categories } from "../data/categories";
@@ -20,12 +20,17 @@ export function Tutorial() {
     const steps = tutorial.steps ?? createSteps(tutorial);
     return (
         <main className="mx-auto max-w-4xl px-5 py-10 lg:px-8">
-            <nav className="flex flex-wrap gap-2 text-sm text-muted-ink">
-                <Link to="/">Início</Link>
-                <span>/</span>
-                <Link to={`/categorias/${category.id}`}>{category.name}</Link>
-                <span>/</span>
-                <span className="text-ink">{tutorial.title}</span>
+            <nav className="flex items-center flex-wrap gap-2 text-sm text-muted-ink">
+                <Link to="/tutoriais" className="inline-flex items-center gap-2 text-sm font-semibold text-ink hover:text-coral">
+                    <ArrowLeft className="h-4 w-4" />
+                    Todos os tutoriais
+                </Link>
+
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-ink" aria-hidden="true" />
+
+                <Link to={`/categorias/${tutorial.category}`} className="text-sm font-semibold text-muted-ink hover:text-ink">
+                    {category.name}
+                </Link>
             </nav>
             <article className="mt-10">
                 <Badge>{category.name}</Badge>
@@ -60,8 +65,6 @@ export function Tutorial() {
                                 </div>
                                 <div>
                                     <img src={step.image} alt={step.imgAlt} className="block h-auto w-full object-contain" />
-
-                                    
                                 </div>
                             </div>
                             {index < steps.length - 1 && <Separator className="mt-9" />}

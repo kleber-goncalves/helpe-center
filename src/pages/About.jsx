@@ -1,5 +1,6 @@
 import { BarChart3, BookOpen, Search, CircleHelp } from "lucide-react";
 import { HelpCTA } from "../components/HelpCTA2";
+import { SectionTransition } from "../components/SectionTransition";
 export function About() {
 
 
@@ -43,13 +44,18 @@ export function About() {
     ];
 
     return (
-        <main className="bg-hero-wash ">
-            <div className=" mx-auto max-w-6xl px-5 py-14 lg:px-8">
-                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#507283]">Sobre O</p>
-                <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Hauy Conecta</h1>
-                <p className="mt-5 max-w-2xl text-base leading-7 text-muted-ink">Um projeto escolar que foi criado para facilitar o acesso a orientações sobre ferramentas digitais usadas no dia a dia da escola para alunos, professores e funcionários.</p>
+        <main className="bg-baground">
+            <section className="">
+                <div className="bg-mist3">
+                    <div className=" mx-auto max-w-6xl px-5 pt-14 lg:px-8">
+                        <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#507283]">Sobre O</p>
+                        <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Hauy Conecta</h1>
+                        <p className="mt-5 max-w-2xl text-base leading-7 text-muted-ink">Um projeto escolar que foi criado para facilitar o acesso a orientações sobre ferramentas digitais usadas no dia a dia da escola para alunos, professores e funcionários.</p>
+                    </div>
+                    <SectionTransition variant="wide" from="mist" to="background" size="large" animation />
+                </div>
 
-                <section className="mt-16">
+                <section className=" mx-auto max-w-6xl px-5 lg:px-8">
                     <h2 id="processo-title" className="text-2xl font-extrabold text-foreground sm:text-3xl">
                         Como o Hauy Conecta foi criado
                     </h2>
@@ -77,26 +83,19 @@ export function About() {
                         </div>
                     </div>
                 </section>
-                <section className="flex flex-col mt-14 border-t border-line pt-10 gap-12">
-                    <div>
-                        <h2 className="text-xl font-bold text-ink">Equipe do projeto</h2>
-                        <p className="mt-3 leading-7 text-muted-ink">O Hauy Conecta foi desenvolvida pelo grupo formado por Kleber, Cirlene, Divina, Robertin e Carlos e Professores Fabio, Felipe Cordeiro e Auro.</p>
-                    </div>
-                    <div>
-                        <h2 className=" mt-9 text-2xl font-bold text-ink">Conteúdo orientado por necessidades reais</h2>
-                        <p className="mt-4 max-w-2xl leading-7 text-muted-ink">A pesquisa serviu apenas como referência para definir as prioridades iniciais, como Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos e Canva. Nenhuma resposta individual ou dado identificável é exibido no portal.</p>
-                    </div>
-                </section>
-            </div>
-            <section id="pesquisa" className="bg-mist-wash scroll-mt-20" aria-labelledby="pesquisa-title">
-                <div className=" py-16">
-                    <div className="mx-auto max-w-2xl text-center">
+            </section>
+
+            <section id="pesquisa" className="bg-mist3  scroll-mt-20" aria-labelledby="pesquisa-title">
+                <div className="">
+                    <SectionTransition variant="ribbon2" from="background" to="mist" size="large" animation />
+
+                    <div className="mx-auto max-w-2xl px-5 text-center">
                         <h2 id="pesquisa-title" className="text-2xl font-extrabold text-foreground sm:text-3xl">
                             O que a pesquisa mostrou
                         </h2>
                         <p className="mt-3 text-base text-muted-foreground sm:text-lg">Os assuntos abaixo orientam a ordem em que os tutoriais são criados. Nenhuma resposta individual é exibida.</p>
                     </div>
-                    <div className="mx-auto mt-10 grid max-w-4xl gap-4 md:grid-cols-3">
+                    <div className="mx-auto mt-10 px-5 grid max-w-4xl gap-4 md:grid-cols-3">
                         {priorities.map((group) => (
                             <div key={group.label} className="rounded-lg bg-card/80 border border-line p-5">
                                 <h3 className="font-display text-sm font-bold uppercase tracking-wide text-coral!">{group.label}</h3>
@@ -111,6 +110,18 @@ export function About() {
                             </div>
                         ))}
                     </div>
+                    <SectionTransition variant="fold" from="mist" to="background" size="large" />
+                </div>
+            </section>
+
+            <section className="flex flex-col  py-20 gap-12 mx-auto max-w-6xl px-5 lg:px-8">
+                <div>
+                    <h2 className="text-xl font-bold text-ink">Equipe do projeto</h2>
+                    <p className="mt-3 leading-7 text-muted-ink">O Hauy Conecta foi desenvolvida pelo grupo formado por Kleber, Cirlene, Divina, Robertin e Carlos e Professores Fabio, Felipe Cordeiro e Auro.</p>
+                </div>
+                <div>
+                    <h2 className=" mt-9 text-2xl font-bold text-ink">Conteúdo orientado por necessidades reais</h2>
+                    <p className="mt-4 max-w-2xl leading-7 text-muted-ink">A pesquisa serviu apenas como referência para definir as prioridades iniciais, como Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos e Canva. Nenhuma resposta individual ou dado identificável é exibido no portal.</p>
                 </div>
             </section>
 
