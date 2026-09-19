@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CategoryCard } from "../components/CategoryCard";
 import { HelpCTA } from "../components/HelpCTA2";
@@ -10,7 +10,7 @@ import { tutorials } from "../data/tutorials";
 export function Home() {
     return (
         <>
-            <section className="bg-hero-wash px-0 lg:px-8 ">
+            <section className=" bg-baground px-0 lg:px-8 ">
                 <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
                 <div className=" mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
                     <div className="mx-auto max-w-xl px-5 py-18 text-start lg:px-0 lg:py-23">
@@ -21,8 +21,44 @@ export function Home() {
                         </div>
                         <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
                     </div>
-                    <div className="mx-auto w-full max-w-[390px] sm:max-w-sm lg:max-w-[460px] lg:justify-self-end">
-                        <img src="/hero.png" className="object-cover" alt="" />
+                    <div
+                        className="
+        relative
+        mx-auto
+        w-full
+        max-w-[390px]
+        sm:max-w-sm
+        lg:max-w-[460px]
+        lg:justify-self-end
+    "
+                    >
+                        <div
+                            className="
+            pointer-events-none
+            absolute
+            bottom-[10%]
+            right-[15%]
+            z-0
+            h-[71%]
+            w-[73%]
+            rounded-3xl
+            bg-coral
+            dark:bg-[#edf4f6]
+        "
+                        />
+
+                        <img
+                            src="/hero.png"
+                            alt=""
+                            className="
+            relative
+            z-10
+            block
+            h-auto
+            w-full
+            object-contain
+        "
+                        />
                     </div>
                 </div>
             </section>
@@ -35,19 +71,25 @@ export function Home() {
                         ))}
                     </div>
                 </section>
-                <section className=" bg-mist-wash md:py-23 ">
+                <section className=" bg-mist-wash md:py-23 px-5 ">
                     <div className="mx-auto max-w-6xl flex items-center flex-col text-center">
                         <SectionTitle title="O que mais precisa de ajuda?" description="Os assuntos mais citados na pesquisa com a comunidade escolar." />
                         <div className="mt-8 grid gap-x-2 gap-y-2 overflow-hidden sm:grid-cols-2 lg:grid-cols-2">
-                            {priorityTopics.map((topic) => (
-                                <Link key={topic.title} to={`/categorias/${topic.category}`} className="group bg-white p-5 transition-colors rounded-lg border border-line  hover:bg-[#f7faf9]">
-                                    <h3 className="flex items-center justify-between font-bold text-ink">
-                                        {topic.title}
-                                        <ArrowRight className="h-4 w-4 text-muted-ink group-hover:text-ink" />
-                                    </h3>
-                                    <p className="mt-2 text-sm leading-5 text-muted-ink">{topic.description}</p>
-                                </Link>
-                            ))}
+                            {priorityTopics.map((topic) => {
+                                const Icon = topic.icon;
+                                return (
+                                    <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper/40  hover:text-coral">
+                                        <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-coral">
+                                            <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                        </span>
+                                        <div className="min-w-0 flex-1 text-left pr-18">
+                                            <span className="block font-display text-base font-bold text-foreground">{topic.title}</span>
+                                            <span className="block text-sm text-muted-foreground">{topic.description}</span>
+                                        </div>
+                                        <ChevronRight className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-coral" aria-hidden="true" />
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 </section>

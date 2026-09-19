@@ -1,3 +1,4 @@
+
 export const tutorials = [
     {
         id: "comecar-usar-excel",
@@ -49,9 +50,8 @@ export const tutorials = [
             {
                 title: "Abra o Microsoft Word",
                 description: "Abra o Word e crie um documento em branco ou abra o trabalho que deseja formatar.",
-              image: "/tutoriais/word/formatar-trabalho/passo-1.png",
-              imgAlt: "Abra o Microsoft Word e crie um documento em branco ou abra o trabalho que deseja formatar.",
-
+                image: "/tutoriais/word/formatar-trabalho/passo-1.png",
+                imgAlt: "Abra o Microsoft Word e crie um documento em branco ou abra o trabalho que deseja formatar.",
             },
             {
                 title: "Selecione o texto",

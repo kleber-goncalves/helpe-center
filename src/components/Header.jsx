@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { Button, Sheet, SheetContent, SheetTrigger } from "./ui";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
     ["Início", "/"],
@@ -31,6 +32,7 @@ export function Header() {
                             {label}
                         </NavLink>
                     ))}
+                    <ThemeToggle />
                     <a href="https://forms.gle/9LSAz3PdBqa899KW8" target="_blank" rel="noreferrer">
                         <Button variant="coral">Precisa de ajuda?</Button>
                     </a>

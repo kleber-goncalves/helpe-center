@@ -6,7 +6,7 @@ import { Badge, Card } from "./ui";
 export function TutorialCard({ tutorial }) {
     const category = categories.find((item) => item.id === tutorial.category);
     return (
-        <Card className="flex h-full flex-col p-5">
+        <Card className="flex h-full flex-col p-5 transition-all bg-card dark:bg-paper hover:-translate-y-0.5 border hover:border-coral/60 hover:shadow-lifted dark:hover:shadow-lifted-dark shadow-soft">
             <div className="flex items-center justify-between gap-3">
                 <Badge>{category?.name}</Badge>
                 <span className="flex items-center gap-1 text-xs text-muted-ink">

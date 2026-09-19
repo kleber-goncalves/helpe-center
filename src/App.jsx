@@ -13,7 +13,7 @@ import "./App.css";
 function App() {
     return (
         <BrowserRouter>
-            <div className="min-h-screen bg-paper">
+            <div className="min-h-screen bg-background">
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />
