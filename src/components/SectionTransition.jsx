@@ -31,7 +31,7 @@ const surfaces = {
 const inks = {
     background: "text-background",
     mist: "text-mist3",
-    "mist-deep2": "text-mist-deep2",
+    "mist-deep": "text-mist-deep",
     "coral-soft": "text-coral-soft",
     "petrol-soft": "text-petrol-soft",
 };
@@ -40,11 +40,11 @@ export function SectionTransition({ src, variant = "wide", position = "bottom", 
     const paths = shapes[variant] ?? shapes.wide;
 
     return (
-        <div className={cn("relative isolate w-full overflow-hidden", sizes[size] ?? sizes.medium, surfaces[from] ?? surfaces.background , className)} aria-hidden="true">
+        <div className={cn("relative isolate w-full overflow-hidden", sizes[size] ?? sizes.medium, surfaces[from] ?? surfaces.background, className)} aria-hidden="true">
             {src ? (
                 <img src={src} alt="" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] object-fill", position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")} />
             ) : (
-                <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] transition-organic", inks[to] ?? inks.mist, position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")}>
+                <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] section-transition-color", inks[to] ?? inks.mist, position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")}>
                     {paths.map((path) => (
                         <path key={path} d={path} fill="currentColor" />
                     ))}

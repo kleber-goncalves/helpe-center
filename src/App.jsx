@@ -15,9 +15,10 @@ function App() {
 
     return (
         <BrowserRouter>
+            <div id="theme-transition" className="pointer-events-none fixed inset-0 z-[9999] opacity-0" />
             <ScrollToTop />
 
-            <div className="min-h-screen bg-background">
+            <div className=" min-h-screen bg-background">
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />

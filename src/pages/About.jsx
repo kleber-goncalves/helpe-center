@@ -48,7 +48,7 @@ export function About() {
             <section className="">
                 <div className="bg-mist3">
                     <div className=" mx-auto max-w-6xl px-5 pt-14 lg:px-8">
-                        <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#507283]">Sobre O</p>
+                        <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Sobre O</p>
                         <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Hauy Conecta</h1>
                         <p className="mt-5 max-w-2xl text-base leading-7 text-muted-ink">Um projeto escolar que foi criado para facilitar o acesso a orientações sobre ferramentas digitais usadas no dia a dia da escola para alunos, professores e funcionários.</p>
                     </div>
@@ -66,7 +66,7 @@ export function About() {
                                 const Icon = step.icon;
                                 return (
                                     <li key={step.title} className="flex gap-4">
-                                        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#ebf5f6] text-petrol">
+                                        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-mist3 text-petrol">
                                             <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                         </span>
                                         <div>
@@ -97,7 +97,7 @@ export function About() {
                     </div>
                     <div className="mx-auto mt-10 px-5 grid max-w-4xl gap-4 md:grid-cols-3">
                         {priorities.map((group) => (
-                            <div key={group.label} className="rounded-lg bg-card/80 border border-line p-5">
+                            <div key={group.label} className="rounded-lg bg-card dark:bg-paper border border-line p-5">
                                 <h3 className="font-display text-sm font-bold uppercase tracking-wide text-coral!">{group.label}</h3>
                                 <ul className="mt-3 flex flex-col gap-1.5 text-[15px] text-foreground/85">
                                     {group.items.map((item) => (
@@ -116,7 +116,7 @@ export function About() {
 
             <section className="flex flex-col  py-20 gap-12 mx-auto max-w-6xl px-5 lg:px-8">
                 <div>
-                    <h2 className="text-xl font-bold text-ink">Equipe do projeto</h2>
+                    <h2 className="text-2xl font-bold text-ink">Equipe do projeto</h2>
                     <p className="mt-3 leading-7 text-muted-ink">O Hauy Conecta foi desenvolvida pelo grupo formado por Kleber, Cirlene, Divina, Robertin e Carlos e Professores Fabio, Felipe Cordeiro e Auro.</p>
                 </div>
                 <div>

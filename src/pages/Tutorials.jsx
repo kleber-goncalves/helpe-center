@@ -14,7 +14,7 @@ export function Tutorials() {
         <main className="bg-background">
             <div className="bg-mist3">
                 <div className=" mx-auto max-w-6xl px-5 pt-14 pb-7 lg:px-8">
-                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#507283]">Biblioteca de</p>
+                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Biblioteca de</p>
                     <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Tutoriais</h1>
                     <p className="mt-4 max-w-xl text-muted-ink">Encontre orientações rápidas para suas dúvidas mais comuns.</p>
                     <div className="mt-8 max-w-3xl">

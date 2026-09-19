@@ -2,10 +2,17 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
     return (
-        <footer className=" border-t border-line bg-[#f3f7f7]">
+        <footer className=" border-t border-line bg-mist3">
             <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:grid-cols-3 lg:px-5">
                 <div>
-                    <p className="font-display text-base font-bold text-foreground">Hauy Conecta</p>
+                    <div className="flex flex-row items-center gap-1">
+                        <img src="/logo.png" className="h-10 w-10" alt="logo hauy conecta" />
+                        <div className="flex flex-col">
+                            <p className="font-display leading-4 text-base font-bold text-foreground">Hauy</p>
+                            <p className="font-display leading-4 text-base font-bold text-foreground">Conecta</p>
+                        </div>
+                    </div>
+
                     <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">Tutoriais simples para alunos, professores e funcionários resolverem suas dúvidas digitais no dia a dia da escola.</p>
                 </div>
                 <div className="flex flex-col md:px-12">
