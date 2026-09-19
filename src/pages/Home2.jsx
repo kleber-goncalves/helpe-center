@@ -10,7 +10,7 @@ import { tutorials } from "../data/tutorials";
 export function Home() {
     return (
         <>
-            <section className=" bg-baground px-0 lg:px-8 ">
+            <section className=" bg-hero-wash px-0 lg:px-8 ">
                 <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
                 <div className=" mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
                     <div className="mx-auto max-w-xl px-5 py-18 text-start lg:px-0 lg:py-23">
