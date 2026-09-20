@@ -4,6 +4,7 @@ import { SearchBar } from "../components/SearchBar";
 import { TutorialCard } from "../components/TutorialCard";
 import { tutorials } from "../data/tutorials";
 import { SectionTransition } from "../components/SectionTransition";
+import { Reveal } from "../components/Reveal";
 
 export function Tutorials() {
     const [searchParams] = useSearchParams();
@@ -13,17 +14,21 @@ export function Tutorials() {
     return (
         <main className="bg-background">
             <div className="bg-mist3">
-                <div className=" mx-auto max-w-6xl px-5 pt-14 pb-7 lg:px-8">
-                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Biblioteca de</p>
-                    <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Tutoriais</h1>
-                    <p className="mt-4 max-w-xl text-muted-ink">Encontre orientações rápidas para suas dúvidas mais comuns.</p>
-                    <div className="mt-8 max-w-3xl">
-                        <SearchBar initialValue={query} />
+                <Reveal y={20} ease="sine.out" duration={0.85}>
+                    <div className=" mx-auto max-w-6xl px-5 pt-14 pb-12  lg:px-8">
+                        <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Biblioteca de</p>
+                        <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink">Tutoriais</h1>
+                        <p className="mt-4 max-w-xl text-muted-ink">Encontre orientações rápidas para suas dúvidas mais comuns.</p>
+                        <div className="mt-8 max-w-3xl">
+                            <SearchBar initialValue={query} />
+                        </div>
                     </div>
-                </div>
-                <SectionTransition variant="wide" from="mist" to="background" size="large" animation />
+                </Reveal>
+                <Reveal y={22} ease="sine.out">
+                    <SectionTransition variant="wide" from="mist" to="background" size="medium" animation />
+                </Reveal>
             </div>
-            <section className=" mx-auto max-w-6xl px-5 pt-0 pb-14 lg:px-8">
+            <section className=" mx-auto max-w-6xl px-5 pt-12 pb-14 lg:px-8">
                 {query && (
                     <p className="mb-5 text-sm text-muted-ink">
                         {results.length} {results.length === 1 ? "resultado encontrado" : "resultados encontrados"} para “{query}”
