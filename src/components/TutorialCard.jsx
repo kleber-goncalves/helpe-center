@@ -2,49 +2,14 @@ import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { categories } from "../data/categories";
 import { Badge, Card } from "./ui";
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export function TutorialCard({ tutorial }) {
     const category = categories.find((item) => item.id === tutorial.category);
     const Icon = tutorial.icon;
     const IconCategory = category.icon;
 
-    const gridRef = useRef(null);
-
-    useGSAP(() => {
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        if (reduceMotion) return;
-
-        gsap.fromTo(
-            gridRef.current.children,
-            {
-                autoAlpha: 0,
-                y: 20,
-            },
-            {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.55,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: gridRef.current,
-                    start: "top 88%",
-                    once: true,
-                },
-            },
-        );
-    }, []);
-
     return (
         <Card
-            ref={gridRef}
             className="flex group h-full cursor-pointer flex-col p-5 transition bg-card dark:bg-paper hover:-translate-y-0.5 duration-300 border hover:border-coral/60 hover:shadow-lifted dark:hover:shadow-lifted-dark shadow-soft focus-visible:ring-2
 focus-visible:ring-coral ease-in-out"
         >
