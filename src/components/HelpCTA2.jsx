@@ -4,7 +4,7 @@ import { SectionTransition } from "./SectionTransition";
 export function HelpCTA({ from = "background" }) {
     return (
         <section className=" bg-coral-soft ">
-            <SectionTransition variant="notch" from={from} to="coral-soft" size="medium" animation />
+            <SectionTransition variant="notch2" from={from} to="coral-soft" size="medium" animation />
             <div className=" bg-coral-soft px-6 py-12 sm:px-10 items-center justify-center flex flex-row">
                 <div className="flex flex-col max-w-6xl mx-auto items-center justify-between gap-6 md:gap-24 md:flex-row md:items-center">
                     <div className="flex flex-col w-full max-w-2xl">

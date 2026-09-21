@@ -10,7 +10,7 @@ export function Tutorial() {
         return (
             <main className="mx-auto max-w-4xl px-5 py-14">
                 <h1 className="text-3xl font-bold text-ink">Tutorial não encontrado</h1>
-                <Link className="mt-5 inline-block font-bold text-[#315d70]" to="/tutoriais">
+                <Link className="mt-5 inline-block font-bold text-muted-foreground" to="/tutoriais">
                     Ver tutoriais
                 </Link>
             </main>
@@ -40,11 +40,11 @@ export function Tutorial() {
                     <Badge>{tutorial.difficulty}</Badge>
                     <Badge>{tutorial.duration}</Badge>
                 </div>
-                <section className="mt-10 rounded-xl bg-[#f0f6f7] p-6">
+                <section className="mt-10 rounded-xl bg-mist p-6">
                     <h2 className="text-lg font-bold text-ink">O que você vai aprender?</h2>
                     <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                         {tutorial.learning.map((item) => (
-                            <li key={item} className="flex items-center gap-2 text-sm text-[#31566a]">
+                            <li key={item} className="flex items-center gap-2 text-sm text-ink">
                                 <Check className="h-4 w-4 text-coral" />
                                 {item}
                             </li>
@@ -54,13 +54,13 @@ export function Tutorial() {
                 <div className="mt-10">
                     {steps.map((step, index) => (
                         <section key={step.title} className="py-9 first:pt-0">
-                            <p className="text-xs font-bold tracking-[0.16em] text-[#527282]">PASSO {index + 1}</p>
+                            <p className="text-xs font-bold tracking-[0.16em] text-muted-foreground">PASSO {index + 1}</p>
                             <h2 className="mt-3 text-2xl font-bold text-ink">{step.title}</h2>
                             <p className="mt-3 max-w-2xl leading-7 text-muted-ink">{step.description}</p>
-                            <div className="mt-6 grid min-h-48 place-items-center rounded-xl border border-dashed border-[#b9cbd1] bg-[#f7faf9] text-center">
+                            <div className="mt-6 grid min-h-48 place-items-center rounded-xl border border-dashed border-line bg-mist text-center">
                                 <div>
-                                    <Monitor className="mx-auto h-7 w-7 text-[#6e919d]" />
-                                    <p className="mt-3 text-sm font-semibold text-[#527282]">Área para screenshot</p>
+                                    <Monitor className="mx-auto h-7 w-7 text-muted-foreground" />
+                                    <p className="mt-3 text-sm font-semibold text-muted-foreground">Área para screenshot</p>
                                     <p className="mt-1 text-xs text-muted-ink">{step.title}</p>
                                 </div>
                                 <div>
@@ -71,8 +71,8 @@ export function Tutorial() {
                         </section>
                     ))}
                 </div>
-                <section className="rounded-xl border border-[#bcd0d5] bg-[#f5f9f9] p-6">
-                    <p className="text-xs font-bold tracking-[0.16em] text-[#527282]">PRONTO!</p>
+                <section className="rounded-xl border border-line bg-mist p-6">
+                    <p className="text-xs font-bold tracking-[0.16em] text-muted-foreground">PRONTO!</p>
                     <h2 className="mt-2 text-2xl font-bold text-ink">Você concluiu este tutorial.</h2>
                     <p className="mt-2 text-sm text-muted-ink">Se precisar, volte aos passos e faça com calma.</p>
                 </section>
@@ -90,7 +90,7 @@ export function Tutorial() {
                     </section>
                 )}
                 <div className="mt-12 flex justify-between border-t border-line pt-6">
-                    <Link to="/tutoriais" className="inline-flex items-center gap-1 text-sm font-bold text-[#315d70]">
+                    <Link to="/tutoriais" className="inline-flex items-center gap-1 text-sm font-bold text-muted-foreground">
                         <ChevronLeft className="h-4 w-4" />
                         Todos os tutoriais
                     </Link>
