@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "./ui";
+import { cn } from "../lib/utils";
 
-export function ThemeToggle() {
+export function ThemeToggle({ iconClassName = "h-4 w-4", iconStrokeWidth = 1.8, className }) {
     const [theme, setTheme] = useState(() => {
         const savedTheme = localStorage.getItem("theme");
 
-        if (savedTheme) {
+        if (savedTheme === "dark" || savedTheme === "light") {
             return savedTheme;
         }
 
@@ -18,6 +19,9 @@ export function ThemeToggle() {
     const overlayRef = useRef(null);
     const isAnimatingRef = useRef(false);
 
+    /*
+     * Aplica o tema
+     */
     useEffect(() => {
         const root = document.documentElement;
 
@@ -26,13 +30,20 @@ export function ThemeToggle() {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
+    /*
+     * Troca de tema
+     */
     function toggleTheme() {
-        if (isAnimatingRef.current) return;
+        if (isAnimatingRef.current) {
+            return;
+        }
 
         const button = buttonRef.current;
         const overlay = overlayRef.current;
 
-        if (!button || !overlay) return;
+        if (!button || !overlay) {
+            return;
+        }
 
         isAnimatingRef.current = true;
 
@@ -41,6 +52,7 @@ export function ThemeToggle() {
         const buttonRect = button.getBoundingClientRect();
 
         const centerX = buttonRect.left + buttonRect.width / 2;
+
         const centerY = buttonRect.top + buttonRect.height / 2;
 
         const radius = 40;
@@ -93,15 +105,18 @@ export function ThemeToggle() {
 
     return (
         <>
-            <Button ref={buttonRef} type="button" variant="ghost" size="icon" onClick={toggleTheme} aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"} title={isDark ? "Ativar modo claro" : "Ativar modo escuro"} className="relative z-[10000] cursor-pointer text-muted-ink hover:bg-mist">
-                <span className="relative flex h-4 w-4 items-center justify-center">
-                    <Sun className={`absolute h-4 w-4 transition-all duration-300 ease-out ${isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-[#b58100]"}`} strokeWidth={1.8} aria-hidden="true" />
+            <Button ref={buttonRef} type="button" variant="ghost" size="icon" onClick={toggleTheme} aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"} title={isDark ? "Ativar modo claro" : "Ativar modo escuro"} className={cn("relative z-[10000]", "cursor-pointer", "text-muted-ink", "hover:bg-mist", className)}>
+                <span className={cn("relative flex items-center justify-center", iconClassName)} aria-hidden="true">
+                    {/* Sol */}
+                    <Sun className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-[#b58100]")} strokeWidth={iconStrokeWidth} />
 
-                    <Moon className={`absolute h-4 w-4 transition-all duration-300 ease-out ${isDark ? "rotate-0 scale-100 opacity-100 text-[#8da9b6]" : "-rotate-90 scale-0 opacity-0"}`} strokeWidth={1.8} aria-hidden="true" />
+                    {/* Lua */}
+                    <Moon className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-0 scale-100 opacity-100 text-[#8da9b6]" : "-rotate-90 scale-0 opacity-0")} strokeWidth={iconStrokeWidth} />
                 </span>
             </Button>
 
-            <div ref={overlayRef} aria-hidden="true" className="pointer-events-none will-change-transform invisible fixed left-1/2 top-1/2 z-[9999] h-20 w-20 -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full bg-black opacity-0" />
+            {/* Overlay */}
+            <div ref={overlayRef} aria-hidden="true" className={["pointer-events-none invisible", "fixed left-1/2 top-1/2", "z-[9999]", "h-20 w-20", "-translate-x-1/2 -translate-y-1/2", "scale-0", "rounded-full", "bg-black", "opacity-0", "will-change-transform"].join(" ")} />
         </>
     );
 }

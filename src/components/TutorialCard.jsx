@@ -9,7 +9,7 @@ export function TutorialCard({ tutorial }) {
     const IconCategory = category.icon;
 
     return (
-        <Link to={`/tutoriais/${tutorial.id}`} className="inline-flex items-center gap-1 text-sm font-bold text-coral hover:text-coral">
+        <Link to={`/tutoriais/${tutorial.id}`} className="">
             <Card
                 className="flex group h-full cursor-pointer flex-col p-5 transition bg-card dark:bg-paper hover:-translate-y-0.5 duration-300 border hover:border-coral/60 hover:shadow-lifted dark:hover:shadow-lifted-dark shadow-soft focus-visible:ring-2
 focus-visible:ring-coral ease-in-out"

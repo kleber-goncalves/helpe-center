@@ -145,9 +145,9 @@ export function Footer() {
                         <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto Escolar de Tecnologia e Informática</p>
                     </div>
 
-                    <div className="flex flex-col items-center md:flex-row  md:gap-2 text-xs text-muted-ink ">
-                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido em equipe, integrantes:</p>
-                        <p className="text-xs leading-5 text-muted-ink">Kleber, Cirlene, Divina, Robertin e Carlos</p>
+                    <div className="flex flex-col items-center md:flex-row  md:gap-1 text-xs text-muted-ink ">
+                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido em equipe, integrantes -</p>
+                        <p className="text-xs leading-5 text-muted-ink">Kleber | Cirlene | Divina | Robertin | Carlos</p>
                     </div>
                 </div>
             </div>

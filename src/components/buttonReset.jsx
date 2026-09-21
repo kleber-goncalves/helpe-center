@@ -102,6 +102,7 @@ export default function ButtonReset() {
     return (
         <div
             arial-label="Botão para voltar ao topo"
+            title="Voltar ao topo"
             ref={buttonRef}
             className="
                 fixed
