@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
+import { ProjectTeam } from "../components/ProjectTeam";
 
 gsap.registerPlugin(ScrollTrigger);
 export function About() {
@@ -31,7 +32,7 @@ export function About() {
         {
             icon: CircleHelp,
             title: "Hauy Conecta",
-            text: "Os tutoriais foram organizados em categorias, com pesquisa e um canal para enviar novas dúvidas — assim o Hauy Conecta continua crescendo.",
+            text: "Os tutoriais foram organizados em categorias, com pesquisa e um canal para enviar novas dúvidas, assim o Hauy Conecta continua crescendo.",
         },
     ];
 
@@ -185,11 +186,14 @@ export function About() {
                 <Reveal y={20} duration={0.6} ease="sine.out">
                     <div>
                         <h2 className="text-2xl font-bold text-ink">Equipe do projeto</h2>
-                        <p className="mt-3 leading-7 text-muted-ink">O Hauy Conecta foi desenvolvida pelo grupo formado por Kleber, Cirlene, Divina, Robertin e Carlos e Professores Fabio, Felipe Cordeiro e Auro.</p>
+
+                        <p className="mt-3 max-w-2xl leading-7 text-muted-ink">Alunos e professores que participaram do desenvolvimento do Hauy Conecta.</p>
+
+                        <ProjectTeam />
                     </div>
                 </Reveal>
                 <Reveal y={20} duration={0.6} ease="sine.out">
-                    <div>
+                    <div className="mt-12">
                         <h2 className=" mt-9 text-2xl font-bold text-ink">Conteúdo orientado por necessidades reais</h2>
                         <p className="mt-4 max-w-2xl leading-7 text-muted-ink">A pesquisa serviu apenas como referência para definir as prioridades iniciais, como Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos e Canva. Nenhuma resposta individual ou dado identificável é exibido no portal.</p>
                     </div>
