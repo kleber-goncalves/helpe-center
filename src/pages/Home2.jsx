@@ -51,7 +51,7 @@ export function Home() {
         { scope: priorityTopicsRef },
     );
     return (
-        <>
+        <main>
             <section className=" bg-mist3 px-0 lg:px-0 ">
                 <Reveal duration={2} y={32} ease="sine.out">
                     <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
@@ -118,7 +118,7 @@ export function Home() {
                     <SectionTransition variant="wide" from="mist" to="background" size="large" animation />
                 </Reveal>
             </section>
-            <main className="px-0 lg:px-0  bg-background ">
+            <section className="px-0 lg:px-0  bg-background ">
                 <section className="bg-background">
                     <Reveal delay={0.06}>
                         <div className="py-9 px-5 flex mx-auto max-w-6xl items-center flex-col">
@@ -170,7 +170,7 @@ export function Home() {
                             ))}
                         </div>
                         <div className="   flex mt-8 flex-col items-center">
-                            <Link to="/tutoriais" className="text-sm  border border-mauve-800 px-4 py-2 rounded-lg font-bold text-[#315d70] hover:text-ink flex items-center gap-3">
+                            <Link to="/tutoriais" className="text-sm  border border-mauve-800 px-4 py-2  rounded-lg font-bold text-[#315d70] hover:text-ink flex items-center gap-3">
                                 Ver todos os tutoriais
                                 <ArrowRight className="h-4 w-4 text-muted-ink" />
                             </Link>
@@ -180,8 +180,8 @@ export function Home() {
                 <Reveal delay={0.24} y={16}>
                     <HelpCTA />
                 </Reveal>
-            </main>
-        </>
+            </section>
+        </main>
     );
 }
 
