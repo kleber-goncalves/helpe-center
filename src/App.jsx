@@ -10,6 +10,7 @@ import { Home } from "./pages/Home2";
 import { Tutorial } from "./pages/Tutorial";
 import { Tutorials } from "./pages/Tutorials";
 import "./App.css";
+import ButtonReset from "./components/buttonReset";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 
             <div className=" min-h-screen bg-background">
                 <Header />
+                <ButtonReset />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/categorias" element={<Categories />} />

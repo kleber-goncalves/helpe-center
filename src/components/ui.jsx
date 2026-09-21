@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "../lib/utils";
 
 export function Button({ className, variant = "default", ...props }) {
-    const variants = { default: "bg-ink text-white hover:bg-[#1d4a60]", outline: "border border-line bg-white text-ink hover:bg-mist", coral: "bg-coral  text-white hover:bg-[#cf5f4b]" };
+    const variants = { default: "bg-ink text-white hover:bg-[#1d4a60]", outline: "border border-line bg-white text-ink hover:bg-mist", coral: "bg-coral-button text-white hover:bg-coral-button-hover" };
     return <button className={cn("inline-flex min-h-11 items-center justify-center cursor-pointer gap-2 rounded-lg px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2", variants[variant], className)} {...props} />;
 }
 export function Card({ className, ...props }) {

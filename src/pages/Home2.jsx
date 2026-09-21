@@ -53,26 +53,26 @@ export function Home() {
     return (
         <main>
             <section className=" bg-mist3 px-0 lg:px-0 ">
-                <Reveal duration={2} y={32} ease="sine.out">
-                    <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
-                    <div className=" mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
-                        <div className="mx-auto max-w-xl px-5 pt-18 text-start lg:px-0 lg:py-23">
-                            <Reveal duration={1} y={32} ease="sine.out">
-                                <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-[3.4rem]">Olá, como podemos ajudar?</h1>
-                            </Reveal>
+                <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
+                <div className="relative z-10 mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
+                    <div className="mx-auto max-w-xl px-5 pt-18 text-start lg:px-0 lg:py-23">
+                        <Reveal duration={1} y={32} ease="sine.out">
+                            <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-[3.4rem]">Olá, como podemos ajudar?</h1>
+                        </Reveal>
 
-                            <Reveal duration={0.7} y={20} delay={0.08} ease="sine.out">
-                                <p className="mt-4 max-w-xl text-lg text-muted-foreground sm:text-xl">Encontre tutoriais simples para resolver suas principais dúvidas digitais.</p>
-                            </Reveal>
+                        <Reveal duration={0.7} y={20} delay={0.08} ease="sine.out">
+                            <p className="mt-4 max-w-xl text-lg text-muted-foreground sm:text-xl">Encontre tutoriais simples para resolver suas principais dúvidas digitais.</p>
+                        </Reveal>
 
-                            <Reveal duration={0.7} y={16} delay={0.14} ease="sine.out">
-                                <div className="mx-auto mt-8 max-w-3xl">
-                                    <SearchBar />
-                                </div>
-                            </Reveal>
+                        <Reveal duration={0.7} y={16} delay={0.14} ease="sine.out" className="relative z-30">
+                            <div className="relative z-30 mx-auto mt-8 max-w-3xl">
+                                <SearchBar />
+                            </div>
+                        </Reveal>
 
-                            <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
-                        </div>
+                        <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
+                    </div>
+                    <Reveal duration={0.7} y={16} delay={0.14}>
                         <div
                             className="
                             mb-17
@@ -114,8 +114,10 @@ export function Home() {
                             "
                             />
                         </div>
-                    </div>
-                    <SectionTransition variant="wide" from="mist" to="background" size="large" animation />
+                    </Reveal>
+                </div>
+                <Reveal y={27} ease="sine.out">
+                    <SectionTransition variant="wide" from="mist" to="background" size="large" animation className="relative z-0" />
                 </Reveal>
             </section>
             <section className="px-0 lg:px-0  bg-background ">
@@ -134,7 +136,7 @@ export function Home() {
                     </Reveal>
                 </section>
                 <section className=" bg-mist3 pt-4  ">
-                    <Reveal delay={0.12} y={20} ease="sine.out">
+                    <Reveal delay={0.8} y={12} ease="sine.out">
                         <div className="mx-auto max-w-6xl px-5  flex items-center flex-col text-center mb-22">
                             <SectionTitle title="O que mais precisa de ajuda?" description="Os assuntos mais citados na pesquisa com a comunidade escolar." />
 

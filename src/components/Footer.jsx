@@ -30,7 +30,7 @@ function FooterLink({ to, children, external = false }) {
     function animateIn() {
         gsap.to(linkRef.current, {
             x: 4,
-            opacity: 0.65,
+            opacity: 1,
             duration: 0.3,
             ease: "power2.out",
             overwrite: true,
@@ -61,7 +61,7 @@ function FooterLink({ to, children, external = false }) {
         });
     }
 
-    const className = ["inline-flex flex-col items-start", "text-sm font-medium text-foreground", "will-change-transform", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ");
+    const className = ["inline-flex flex-col items-start", "text-sm font-medium !text-muted-ink hover:text-foreground! ", "will-change-transform", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ");
 
     const content = (
         <>
@@ -110,9 +110,9 @@ export function Footer() {
 
                     {/* Navegação */}
                     <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-coral">Navegação</p>
+                        <p className="text-sm font-bold uppercase tracking-[0.1em] text-coral">Navegação</p>
 
-                        <nav aria-label="Navegação do rodapé" className="mt-5 flex flex-col items-start gap-3">
+                        <nav aria-label="Navegação do rodapé" className="mt-5 flex flex-col items-start gap-3  ">
                             {mainLinks.map(([label, to]) => (
                                 <FooterLink key={to} to={to}>
                                     {label}
@@ -123,7 +123,7 @@ export function Footer() {
 
                     {/* Projeto */}
                     <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-coral">Projeto</p>
+                        <p className="text-sm font-bold uppercase tracking-[0.1em] text-coral">Projeto</p>
 
                         <div className="mt-5 flex flex-col items-start gap-3">
                             {projectLinks.map(([label, to]) => (
@@ -140,14 +140,15 @@ export function Footer() {
                 </div>
 
                 {/* Rodapé inferior */}
-                <div className="mt-12 border-t border-line pt-6">
+                <div className="flex flex-col gap-3 md:flex-row items-center justify-between mt-12 border-t border-line pt-6">
                     <div className="flex flex-col gap-3 text-xs text-muted-ink sm:flex-row sm:items-center sm:justify-between">
-                        <p>© 2026 Hauy Conecta — Projeto Escolar de Tecnologia e Informática</p>
-
-                        <p>Projeto desenvolvido em equipe</p>
+                        <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto Escolar de Tecnologia e Informática</p>
                     </div>
 
-                    <p className="mt-2 text-xs leading-5 text-muted-ink">Kleber, Cirlene, Divina, Robertin e Carlos</p>
+                    <div className="flex flex-col items-center md:flex-row  md:gap-2 text-xs text-muted-ink ">
+                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido em equipe, integrantes:</p>
+                        <p className="text-xs leading-5 text-muted-ink">Kleber, Cirlene, Divina, Robertin e Carlos</p>
+                    </div>
                 </div>
             </div>
         </footer>
