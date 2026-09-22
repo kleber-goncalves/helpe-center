@@ -41,9 +41,9 @@ focus-visible:ring-coral ease-in-out"
                 </div>
 
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4 text-coral">
-                    <Link to={`/tutoriais/${tutorial.id}`} className="inline-flex items-center gap-1 text-sm font-bold text-coral hover:text-coral">
+                    <span  className="inline-flex items-center gap-1 text-sm font-bold text-coral hover:text-coral">
                         Ver tutorial <ArrowRight className="h-4 w-4 text-coral group-hover:translate-x-0.75 transition-transform duration-200" />
-                    </Link>
+                    </span>
                 </div>
             </Card>
         </Link>

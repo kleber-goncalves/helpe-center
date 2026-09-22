@@ -137,7 +137,7 @@ export function ProjectTeam() {
                         <article key={`${activeGroup}-${member.name}`} className="group min-w-0">
                             {/* Foto */}
                             <div className={["relative overflow-hidden", "rounded-lg border border-line", "bg-mist3"].join(" ")}>
-                                <img src={member.image} alt={`Foto de ${member.name}`} loading="lazy" decoding="async" className={["aspect-[4/5] w-full", "object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")} />
+                                <img src={member.image} alt={`Foto de ${member.name}`} loading="lazy" fetchPriority="low" decoding="async" draggable="false" className={["aspect-[4/5] w-full", "object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")} />
                             </div>
 
                             {/* Informação */}

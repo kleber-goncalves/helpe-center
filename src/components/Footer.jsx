@@ -95,7 +95,7 @@ export function Footer() {
                     <div className="max-w-md">
                         <Link to="/" className="group inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/40 focus-visible:ring-offset-2">
                             <div className="grid h-11 w-11 shrink-0 place-items-center">
-                                <img src="/logo.png" alt="" className="h-full w-full object-contain" />
+                                <img src="/logo.png" className="h-full w-full object-contain" />
                             </div>
 
                             <div className="flex flex-col leading-none">

@@ -64,7 +64,7 @@ export function Tutorial() {
                                     <p className="mt-1 text-xs text-muted-ink">{step.title}</p>
                                 </div>
                                 <div>
-                                    <img src={step.image} alt={step.imgAlt} className="block h-auto w-full object-contain" />
+                                    <img src={step.image} loading="lazy" decoding="async" draggable="false" alt={step.imgAlt} className="block h-auto w-full object-contain" />
                                 </div>
                             </div>
                             {index < steps.length - 1 && <Separator className="mt-9" />}
@@ -81,7 +81,7 @@ export function Tutorial() {
                         <h2 className="text-2xl font-bold text-ink">Você também pode gostar de</h2>
                         <div className="mt-5 grid gap-4 sm:grid-cols-2">
                             {related.map((item) => (
-                                <Link key={item.id} to={`/tutoriais/${item.id}`} className="rounded-xl border border-line bg-white p-5 font-bold text-ink transition-colors hover:bg-mist">
+                                <Link key={item.id} to={`/tutoriais/${item.id}`} className="rounded-xl border border-line bg-mist p-5 font-bold text-ink transition-colors hover:bg-mist">
                                     {item.title}
                                     <ChevronRight className="float-right h-5 w-5 text-muted-ink" />
                                 </Link>

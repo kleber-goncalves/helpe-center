@@ -144,7 +144,7 @@ export function About() {
 
                         <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                             <Reveal y={18} duration={0.6}>
-                                <img src="about.png" alt="" />
+                                <img src="about.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
                             </Reveal>
                         </div>
                     </div>

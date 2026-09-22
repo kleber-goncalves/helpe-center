@@ -7,7 +7,6 @@ import { TutorialCard } from "../components/TutorialCard";
 import { categories, priorityTopics } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
-
 import { useRef } from "react";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
@@ -21,7 +20,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function Home() {
     const priorityTopicsRef = useRef(null);
-    
+
     useGSAP(
         () => {
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -103,7 +102,10 @@ export function Home() {
 
                             <img
                                 src="/hero.png"
-                                alt=""
+                                alt="Mulher mexendo no notebook"
+                                fetchPriority="high"
+                                decoding="async"
+                                draggable="false"
                                 className="
                                 relative
                                 z-10
