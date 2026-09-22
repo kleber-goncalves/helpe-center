@@ -1,4 +1,4 @@
-import { FileText, FolderOpen, GraduationCap, Mail, Palette, Printer, Table2, FileType, HardDrive } from "lucide-react";
+import { FileText, FolderOpen, GraduationCap, Mail, Palette, Printer, Table2, FileType, HardDrive } from "@sketchyicons/react";
 
 export const categories = [
     { id: "word", name: "Word", description: "Formatação, documentos e trabalhos escolares.", icon: FileText },

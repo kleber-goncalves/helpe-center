@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { BookOpen, CircleHelp, Folder, House, Info } from "lucide-react";
+import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
 import { Link, NavLink } from "react-router-dom";
 import { Button, Sheet, SheetContent, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";

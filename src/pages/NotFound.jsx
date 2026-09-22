@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Home, SearchX } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Home, SearchX } from "@sketchyicons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";

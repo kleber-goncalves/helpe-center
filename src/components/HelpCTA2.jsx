@@ -1,4 +1,4 @@
-import { MessageCircleQuestion } from "lucide-react";
+import { MessageCircleQuestion } from "@sketchyicons/react";
 import { Button } from "./ui";
 import { SectionTransition } from "./SectionTransition";
 export function HelpCTA({ from = "background" }) {

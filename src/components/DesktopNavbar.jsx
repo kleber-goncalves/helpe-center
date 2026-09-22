@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { BookOpen, CircleHelp, Folder, House, Info } from "lucide-react";
+import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
 import { Link, NavLink } from "react-router-dom";
 
 import { Button } from "./ui";
