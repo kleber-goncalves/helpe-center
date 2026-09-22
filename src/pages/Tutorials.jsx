@@ -154,7 +154,7 @@ export function Tutorials() {
                     /* Estado vazio */
                     <div className="flex flex-col items-center rounded-xl px-6 text-center">
                         <div className="mx-auto mt-6 w-full max-w-[220px] sm:max-w-[370px]">
-                            <img src="/search.png" alt="" />
+                            <img src="/search.png" fetchPriority="low" loading="lazy" decoding="async" alt="" />
                         </div>
 
                         <h2 className="mt-6 text-xl font-bold text-foreground">Não encontramos nenhum tutorial para essa dúvida.</h2>

@@ -138,7 +138,7 @@ export function MobileHeader() {
                     {/* Logo */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" alt="" className="h-full w-full object-contain" />
+                            <img src="/logo.png" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">

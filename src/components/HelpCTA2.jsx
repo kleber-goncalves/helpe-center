@@ -18,7 +18,7 @@ export function HelpCTA({ from = "background" }) {
                         </a>
                     </div>
                     <div className="mx-auto w-full max-w-[370px] sm:max-w-[260px] md:max-w-[330px] md:justify-self-end">
-                        <img src="/helpCTA.png" alt="" srcset="" />
+                        <img src="/helpCTA.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia" />
                     </div>
                 </div>
             </div>

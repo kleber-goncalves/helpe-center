@@ -154,7 +154,7 @@ export function DesktopNavbar() {
                     {/* Logo */}
                     <Link to="/" className={cn("flex items-center gap-2", "rounded-lg", "text-sm font-bold text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2")}>
                         <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" alt="" className="h-full w-full object-contain" />
+                            <img src="/logo.png" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
