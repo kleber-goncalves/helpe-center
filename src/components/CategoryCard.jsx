@@ -11,13 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
 export function CategoryCard({ category }) {
     const cardRef = useRef(null);
     const Icon = category.icon;
-    // const count = tutorials.filter((tutorial) => tutorial.category === category.id).length;
 
     useGSAP(
         () => {
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-            if (reduceMotion) return;
+            if (reduceMotion || !cardRef.current) {
+                return;
+            }
 
             gsap.from(cardRef.current, {
                 opacity: 0,
@@ -33,23 +34,20 @@ export function CategoryCard({ category }) {
         },
         { scope: cardRef },
     );
-    return (
-        <Link ref={cardRef} to={`/categorias/${category.id}`} className="group block">
-            <Card
-                className="flex flex-col items-center text-center h-full p-5 transition bg-card
-            dark:bg-paper hover:-translate-y-0.5 border hover:border-coral/60 hover:shadow-lifted dark:hover:shadow-lifted-dark shadow-soft duration-300 ease-in-out"
-            >
-                <div className="flex flex-col items-center gap-3">
-                    <span className="grid h-12 w-12 place-items-center rounded-full bg-mist3 text-petrol transition-colors group-hover:bg-coral-soft group-hover:text-coral">
-                        <Icon className="h-5.5 w-5.5" />
-                    </span>
-                    <h3 className="mt-1 font-bold text-ink">{category.name}</h3>
-                </div>
 
-                <p className="mt-2 text-sm leading-5 text-muted-ink">{category.description}</p>
-                {/* <p className="mt-4 text-xs font-semibold text-[#527282]">
-                    {count} {count === 1 ? "tutorial" : "tutoriais"}
-                </p> */}
+    return (
+        <Link ref={cardRef} to={`/categorias/${category.id}`} className={["group relative block h-full", "pt-7", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/50", "focus-visible:ring-offset-2"].join(" ")}>
+            {/* Ícone destacado */}
+            <span className={["absolute left-1/2 top-0 z-20", "-translate-x-1/2", "grid size-14 place-items-center", "rounded-full", "border-4 border-background", "bg-mist3 text-petrol", "transition-all duration-300 ease-out", "group-hover:bg-coral-soft", "group-hover:text-coral", "group-hover:scale-105"].join(" ")} aria-hidden="true">
+                <Icon className="size-6" strokeWidth={1.75} />
+            </span>
+
+            <Card className={["h-full", "bg-card dark:bg-paper", "border border-line", "p-5 pt-10", "text-center", "shadow-soft", "transition-all duration-300 ease-in-out", "group-hover:-translate-y-0.5", "group-hover:border-coral/60", "group-hover:shadow-lifted", "dark:group-hover:shadow-lifted-dark"].join(" ")}>
+                <div className="flex flex-col items-center">
+                    <h3 className="font-bold text-ink">{category.name}</h3>
+
+                    <p className="mt-2 text-sm leading-5 text-muted-ink">{category.description}</p>
+                </div>
             </Card>
         </Link>
     );
