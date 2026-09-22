@@ -1,4 +1,4 @@
-import { BarChart3, BookOpen, Search, CircleHelp } from "@sketchyicons/react";
+import { BarChart3, BookOpen, Search } from "@sketchyicons/react";
 import { HelpCTA } from "../components/HelpCTA2";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
@@ -30,7 +30,7 @@ export function About() {
             text: "Cada assunto virou um tutorial em passo a passo, escrito em linguagem simples e pensado para quem está começando.",
         },
         {
-            icon: CircleHelp,
+            logo: "/logo.png",
             title: "Hauy Conecta",
             text: "Os tutoriais foram organizados em categorias, com pesquisa e um canal para enviar novas dúvidas, assim o Hauy Conecta continua crescendo.",
         },
@@ -152,18 +152,15 @@ export function About() {
                     <div className="flex flex-col md:flex-row items-center gap-22">
                         <ol ref={processRef} className="mt-8 flex flex-col gap-6">
                             {process.map((step, index) => {
-                                const Icon = step.icon;
                                 const isLast = index === process.length - 1;
 
                                 return (
                                     <li key={step.title} className="relative flex gap-4">
-                                        {/* Conector até a próxima etapa */}
+                                        {/* Conector */}
                                         {!isLast && <span className={["pointer-events-none", "absolute left-[21px] top-[22px]", "z-0 w-px", "h-[calc(100%+1.5rem)]", "bg-line"].join(" ")} aria-hidden="true" />}
 
-                                        {/* Ícone */}
-                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>
-                                            <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
-                                        </span>
+                                        {/* Ícone / Logo */}
+                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
 
                                         {/* Conteúdo */}
                                         <div>

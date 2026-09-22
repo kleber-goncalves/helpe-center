@@ -196,7 +196,7 @@ export function MobileHeader() {
 
                                     {/* Rodapé */}
                                     <div className="border-t border-line p-5">
-                                        <a href="https://forms.gle/9LSAz3PdBqa899KW8" target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>
+                                        <a href="https://forms.gle/ZqU8536KnujhMeJR6" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
                                             <Button variant="coral" className="w-full">
                                                 Precisa de ajuda?
                                             </Button>
