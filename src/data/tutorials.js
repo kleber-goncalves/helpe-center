@@ -1,4 +1,4 @@
-import { SignalLow, SignalMedium } from "lucide-react";
+import { SignalLow, SignalMedium } from "@sketchyicons/react";
 
 export const tutorials = [
     {

@@ -1,4 +1,4 @@
-import { BarChart3, BookOpen, Search, CircleHelp } from "lucide-react";
+import { BarChart3, BookOpen, Search } from "@sketchyicons/react";
 import { HelpCTA } from "../components/HelpCTA2";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
@@ -30,7 +30,7 @@ export function About() {
             text: "Cada assunto virou um tutorial em passo a passo, escrito em linguagem simples e pensado para quem está começando.",
         },
         {
-            icon: CircleHelp,
+            logo: "/logo.png",
             title: "Hauy Conecta",
             text: "Os tutoriais foram organizados em categorias, com pesquisa e um canal para enviar novas dúvidas, assim o Hauy Conecta continua crescendo.",
         },
@@ -39,15 +39,37 @@ export function About() {
     const priorities = [
         {
             label: "Maior prioridade",
-            items: ["Excel", "Formatação no Word", "Impressão", "Digitalização", "Compartilhamento de arquivos", "Sumário automático", "Canva"],
+            items: [
+                { label: "Excel", color: "bg-petrol-soft" },
+                { label: "Formatação no Word", color: "bg-coral" },
+                { label: "Impressão", color: "bg-searchPesq" },
+                { label: "Digitalização", color: "bg-petrol-soft" },
+                { label: "Compartilhamento de arquivos", color: "bg-coral" },
+                { label: "Sumário automático", color: "bg-searchPesq" },
+                { label: "Canva", color: "bg-petrol-soft" },
+            ],
         },
         {
             label: "Também importantes",
-            items: ["PDF", "E-mail", "Plataforma da escola", "Acesso a contas", "Google Drive"],
+            items: [
+                { label: "PDF", color: "bg-petrol-soft" },
+                { label: "E-mail", color: "bg-coral" },
+                { label: "Plataforma da escola", color: "bg-searchPesq" },
+                { label: "Acesso a contas", color: "bg-petrol-soft" },
+                { label: "Google Drive", color: "bg-coral" },
+            ],
         },
         {
             label: "Outras necessidades",
-            items: ["PowerPoint", "LibreOffice", "Digitação", "Informática básica", "Data Show", "Edição de imagens e vídeos", "Banco de dados e programação"],
+            items: [
+                { label: "PowerPoint", color: "bg-petrol-soft" },
+                { label: "LibreOffice", color: "bg-coral" },
+                { label: "Digitação", color: "bg-searchPesq" },
+                { label: "Informática básica", color: "bg-petrol-soft" },
+                { label: "Data Show", color: "bg-coral" },
+                { label: "Edição de imagens e vídeos", color: "bg-searchPesq" },
+                { label: "Banco de dados e programação", color: "bg-petrol-soft" },
+            ],
         },
     ];
 
@@ -55,10 +77,14 @@ export function About() {
         () => {
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-            if (reduceMotion) return;
+            if (reduceMotion || !processRef.current) {
+                return;
+            }
+
+            const items = processRef.current.querySelectorAll("li");
 
             gsap.fromTo(
-                processRef.current.children,
+                items,
                 {
                     autoAlpha: 0,
                     y: 20,
@@ -126,15 +152,22 @@ export function About() {
                     <div className="flex flex-col md:flex-row items-center gap-22">
                         <ol ref={processRef} className="mt-8 flex flex-col gap-6">
                             {process.map((step, index) => {
-                                const Icon = step.icon;
+                                const isLast = index === process.length - 1;
+
                                 return (
-                                    <li key={step.title} className="flex gap-4">
-                                        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-mist3 text-petrol">
-                                            <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
-                                        </span>
+                                    <li key={step.title} className="relative flex gap-4">
+                                        {/* Conector */}
+                                        {!isLast && <span className={["pointer-events-none", "absolute left-[21px] top-[22px]", "z-0 w-px", "h-[calc(100%+1.5rem)]", "bg-line"].join(" ")} aria-hidden="true" />}
+
+                                        {/* Ícone / Logo */}
+                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
+
+                                        {/* Conteúdo */}
                                         <div>
                                             <p className="font-display text-xs font-bold uppercase tracking-wider text-coral">Etapa {index + 1}</p>
+
                                             <h3 className="mt-0.5 text-lg font-bold text-foreground">{step.title}</h3>
+
                                             <p className="mt-1 text-base text-muted-foreground">{step.text}</p>
                                         </div>
                                     </li>
@@ -168,9 +201,10 @@ export function About() {
                                 <h3 className="font-display text-sm font-bold uppercase tracking-wide text-coral!">{group.label}</h3>
                                 <ul className="mt-3 flex flex-col gap-1.5 text-[15px] text-foreground/85">
                                     {group.items.map((item) => (
-                                        <li key={item} className="flex items-center gap-2">
-                                            <span className="size-1.5 rounded-full bg-petrol-soft" aria-hidden="true" />
-                                            {item}
+                                        <li key={item.label} className="flex items-center gap-2">
+                                            <span className={`size-1.5 shrink-0 rounded-full ${item.color}`} aria-hidden="true" />
+
+                                            {item.label}
                                         </li>
                                     ))}
                                 </ul>

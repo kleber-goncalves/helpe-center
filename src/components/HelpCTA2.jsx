@@ -1,4 +1,4 @@
-import { MessageCircleQuestion } from "lucide-react";
+import { MessageCircleQuestion } from "@sketchyicons/react";
 import { Button } from "./ui";
 import { SectionTransition } from "./SectionTransition";
 export function HelpCTA({ from = "background" }) {
@@ -13,7 +13,7 @@ export function HelpCTA({ from = "background" }) {
                         </div>
                         <h2 className="font-extrabold text-foreground text-2xl sm:text-3xl ">Ainda precisa de ajuda?</h2>
                         <p className="mt-3  text-muted-foreground text-base sm:text-lg ">Não encontrou o que procurava? Envie sua dúvida e ajude-nos a melhorar o Hauy Conecta.</p>
-                        <a className="mt-6" href="https://forms.gle/9LSAz3PdBqa899KW8" target="_blank" rel="noreferrer">
+                        <a className="mt-6" href="https://forms.gle/ZqU8536KnujhMeJR6" target="_blank" rel="noopener noreferrer">
                             <Button variant="coral">Enviar uma dúvida</Button>
                         </a>
                     </div>

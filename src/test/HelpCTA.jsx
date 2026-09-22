@@ -1,4 +1,4 @@
-import { MessageCircleQuestion } from "lucide-react";
+import { MessageCircleQuestion } from "@sketchyicons/react";
 import { Button } from "./ui";
 export function HelpCTA() {
     return (

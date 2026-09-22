@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { BookOpen, CircleHelp, Folder, House, Info } from "lucide-react";
+import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
 import { Link, NavLink } from "react-router-dom";
 
 import { Button } from "./ui";
@@ -174,7 +174,7 @@ export function DesktopNavbar() {
 
                         <ThemeToggle />
 
-                        <a href="https://forms.gle/9LSAz3PdBqa899KW8" target="_blank" rel="noreferrer">
+                        <a href="https://forms.gle/ZqU8536KnujhMeJR6" target="_blank" rel="noopener noreferrer">
                             <Button variant="coral">Precisa de ajuda?</Button>
                         </a>
                     </nav>
