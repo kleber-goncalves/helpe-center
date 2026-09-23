@@ -1,6 +1,7 @@
 import { MessageCircleQuestion } from "@sketchyicons/react";
 import { Button } from "./ui";
 import { SectionTransition } from "./SectionTransition";
+import { Link } from "react-router-dom";
 export function HelpCTA({ from = "background" }) {
     return (
         <section className=" bg-coral-soft ">
@@ -13,9 +14,9 @@ export function HelpCTA({ from = "background" }) {
                         </div>
                         <h2 className="font-extrabold text-foreground text-2xl sm:text-3xl ">Ainda precisa de ajuda?</h2>
                         <p className="mt-3  text-muted-foreground text-base sm:text-lg ">Não encontrou o que procurava? Envie sua dúvida e ajude-nos a melhorar o Hauy Conecta.</p>
-                        <a className="mt-6" href="https://forms.gle/ZqU8536KnujhMeJR6" target="_blank" rel="noopener noreferrer">
+                        <Link to="/enviar-duvida" className="mt-6 inline-flex">
                             <Button variant="coral">Enviar uma dúvida</Button>
-                        </a>
+                        </Link>
                     </div>
                     <div className="mx-auto w-full max-w-[370px] sm:max-w-[260px] md:max-w-[330px] md:justify-self-end">
                         <img src="/helpCTA.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia" />

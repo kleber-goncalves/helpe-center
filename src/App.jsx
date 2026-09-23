@@ -54,6 +54,12 @@ const Tutorial = lazy(() =>
     })),
 );
 
+const SendQuestion = lazy(() =>
+    import("./pages/SendQuestion").then((module) => ({
+        default: module.SendQuestion,
+    })),
+);
+
 const NotFound = lazy(() =>
     import("./pages/NotFound").then((module) => ({
         default: module.NotFound,
@@ -110,7 +116,9 @@ function App() {
                         <Route path="/faq" element={<FAQ />} />
 
                         <Route path="/sobre" element={<About />} />
-                        
+
+                        <Route path="/enviar-duvida" element={<SendQuestion />} />
+
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </Suspense>

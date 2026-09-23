@@ -166,9 +166,9 @@ export function Tutorials() {
                                 Ver categorias
                             </Link>
 
-                            <a className="mt-6 inline-block" href="https://forms.gle/9LSAz3PdBqa899KW8" target="_blank" rel="noreferrer">
+                            <Link to="/enviar-duvida" className="mt-6">
                                 <Button variant="coral">Enviar uma dúvida</Button>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 )}
