@@ -17,6 +17,86 @@ const INITIAL_FORM = {
     device: "",
 };
 
+function formatContactValue(value) {
+    /*
+     * Se a pessoa começar a escrever um e-mail
+     * ou qualquer texto com letras, não aplicamos
+     * máscara de telefone.
+     */
+    if (/[a-zA-Z@]/.test(value)) {
+        return value;
+    }
+
+    /*
+     * Mantém somente os números.
+     */
+    const digits = value.replace(/\D/g, "");
+
+    if (!digits) {
+        return "";
+    }
+
+    /*
+     * Suporte a números brasileiros com +55.
+     *
+     * Só consideramos 55 como DDI quando já
+     * existem mais de 11 dígitos.
+     */
+    let nationalDigits = digits;
+    let countryPrefix = "";
+
+    if (digits.length > 11 && digits.startsWith("55")) {
+        countryPrefix = "+55 ";
+        nationalDigits = digits.slice(2);
+    }
+
+    /*
+     * Limita ao DDD + número:
+     * 2 + 9 = 11 dígitos.
+     */
+    nationalDigits = nationalDigits.slice(0, 11);
+
+    /*
+     * Ainda digitando o DDD.
+     */
+    if (nationalDigits.length <= 2) {
+        return countryPrefix + nationalDigits;
+    }
+
+    const ddd = nationalDigits.slice(0, 2);
+
+    const phone = nationalDigits.slice(2);
+
+    /*
+     * Celular brasileiro:
+     * começa com 9.
+     *
+     * (33) 99999-9999
+     */
+    if (phone.startsWith("9")) {
+        const firstPart = phone.slice(0, 5);
+
+        const secondPart = phone.slice(5, 9);
+
+        const formattedPhone = secondPart ? `${firstPart}-${secondPart}` : firstPart;
+
+        return `${countryPrefix}(${ddd}) ${formattedPhone}`;
+    }
+
+    /*
+     * Telefone fixo:
+     *
+     * (33) 3333-3333
+     */
+    const firstPart = phone.slice(0, 4);
+
+    const secondPart = phone.slice(4, 8);
+
+    const formattedPhone = secondPart ? `${firstPart}-${secondPart}` : firstPart;
+
+    return `${countryPrefix}(${ddd}) ${formattedPhone}`;
+}
+
 export function QuestionForm() {
     const [form, setForm] = useState(INITIAL_FORM);
 
@@ -70,9 +150,11 @@ export function QuestionForm() {
     function handleChange(event) {
         const { name, value } = event.target;
 
+        const nextValue = name === "contact" ? formatContactValue(value) : value;
+
         setForm((current) => ({
             ...current,
-            [name]: value,
+            [name]: nextValue,
         }));
 
         setErrors((current) => ({
@@ -391,11 +473,15 @@ export function QuestionForm() {
                     {/* Contato */}
                     <div>
                         <label htmlFor="contact" className="block text-sm font-bold text-foreground">
-                            Como podemos entrar em contato?
+                            Como podemos entrar em contato com você?
                             <span className="ml-1 text-xs font-normal text-muted-foreground">opcional</span>
                         </label>
 
-                        <Input ref={contactRef} id="contact" name="contact" type="text" value={form.contact} onChange={handleChange} disabled={submitting} maxLength={200} autoComplete="off" spellCheck={false} aria-invalid={Boolean(errors.contact)} aria-describedby={errors.contact ? "contact-error" : undefined} className="mt-2" placeholder="E-mail ou WhatsApp" />
+                        <p id="contact-help" className="mt-1 text-sm leading-6 text-muted-foreground">
+                            Caso queira receber uma resposta, informe seu e-mail ou seu número de WhatsApp com DDD.
+                        </p>
+
+                        <Input ref={contactRef} id="contact" name="contact" type="text" value={form.contact} onChange={handleChange} disabled={submitting} maxLength={200} autoComplete="email" inputMode="text" spellCheck={false} aria-invalid={Boolean(errors.contact)} aria-describedby={["contact-help", errors.contact ? "contact-error" : ""].filter(Boolean).join(" ")} className="mt-2" placeholder="Ex.: (33) 99999-9999 ou nome@email.com" />
 
                         {errors.contact && (
                             <p id="contact-error" className="mt-2 text-sm text-coral">

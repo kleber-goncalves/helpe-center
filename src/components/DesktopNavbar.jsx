@@ -174,9 +174,9 @@ export function DesktopNavbar() {
 
                         <ThemeToggle />
 
-                        <a href="https://forms.gle/ZqU8536KnujhMeJR6" target="_blank" rel="noopener noreferrer">
+                        <Link to="/enviar-duvida">
                             <Button variant="coral">Precisa de ajuda?</Button>
-                        </a>
+                        </Link>
                     </nav>
                 </div>
             </header>
