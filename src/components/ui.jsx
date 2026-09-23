@@ -21,7 +21,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
         coral: "bg-coral-button text-white hover:bg-coral-button-hover",
     };
 
-    return <button ref={ref} className={cn(["inline-flex min-h-11", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "px-4", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:pointer-events-none", "disabled:opacity-60"].join(" "), variants[variant], className)} {...props} />;
+    return <button ref={ref} className={cn(["inline-flex min-h-11", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "px-4", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:´pointer-events-none", "disabled:opacity-60"].join(" "), variants[variant], className)} {...props} />;
 });
 
 /* =========================================================
@@ -216,16 +216,104 @@ export function AccordionContent({ children }) {
 
 export const Sheet = Dialog.Root;
 
-export const SheetTrigger = Dialog.Trigger;
+export const SheetTrigger =
+    Dialog.Trigger;
 
-export function SheetContent({ children }) {
+export const SheetTitle =
+    Dialog.Title;
+
+export const SheetDescription =
+    Dialog.Description;
+
+export const SheetClose =
+    Dialog.Close;
+
+export function SheetContent({
+    children,
+    className,
+    side = "right",
+    ...props
+}) {
+    const sideClasses = {
+        right: [
+            "inset-y-0 right-0",
+            "border-l border-line",
+        ],
+
+        left: [
+            "inset-y-0 left-0",
+            "border-r border-line",
+        ],
+    };
+
     return (
         <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 z-40 bg-ink/30" />
+            {/* Overlay */}
+            <Dialog.Overlay
+                className={[
+                    "fixed inset-0 z-40",
+                    "bg-ink/30",
+                    "data-[state=open]:animate-in",
+                    "data-[state=closed]:animate-out",
+                    "data-[state=closed]:fade-out-0",
+                    "data-[state=open]:fade-in-0",
+                ].join(" ")}
+            />
 
-            <Dialog.Content className={["fixed inset-y-0 right-0 z-50", "flex", "w-[min(88vw,360px)]", "flex-col", "bg-paper", "p-6", "shadow-xl"].join(" ")}>
-                <Dialog.Close className={["ml-auto", "rounded-lg", "p-2", "transition-colors", "hover:bg-mist", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink/30"].join(" ")} aria-label="Fechar menu">
-                    <X className="h-5 w-5" aria-hidden="true" />
+            {/* Content */}
+            <Dialog.Content
+                className={cn(
+                    [
+                        "fixed z-50",
+                        "flex flex-col",
+                        "bg-paper",
+                        "shadow-xl",
+                        "outline-none",
+
+                        "data-[state=open]:animate-in",
+                        "data-[state=closed]:animate-out",
+
+                        "data-[state=closed]:duration-200",
+                        "data-[state=open]:duration-300",
+
+                        side === "right"
+                            ? "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right"
+                            : "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
+                    ].join(" "),
+                    sideClasses[side]?.join(
+                        " ",
+                    ),
+                    className,
+                )}
+                {...props}
+            >
+                {/* 
+                 * Botão padrão do Radix.
+                 *
+                 * O MobileHeader pode escondê-lo usando:
+                 * [&>button]:hidden
+                 */}
+                <Dialog.Close
+                    className={[
+                        "absolute right-4 top-4",
+                        "z-10",
+                        "inline-flex size-8",
+                        "items-center justify-center",
+                        "rounded-md",
+                        "text-muted-ink",
+                        "transition-colors",
+                        "hover:bg-mist",
+                        "hover:text-ink",
+                        "focus-visible:outline-none",
+                        "focus-visible:ring-2",
+                        "focus-visible:ring-ink/30",
+                    ].join(" ")}
+                    aria-label="Fechar menu"
+                >
+                    <X
+                        className="size-5"
+                        aria-hidden="true"
+                    />
                 </Dialog.Close>
 
                 {children}

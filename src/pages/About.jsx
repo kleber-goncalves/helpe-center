@@ -8,10 +8,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 import { ProjectTeam } from "../components/ProjectTeam";
 
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+
 gsap.registerPlugin(ScrollTrigger);
 export function About() {
     const processRef = useRef(null);
     const cardRef = useRef(null);
+    const reduceMotion = useReducedMotion();
+
 
     const process = [
         {
@@ -75,8 +80,6 @@ export function About() {
 
     useGSAP(
         () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
             if (reduceMotion || !processRef.current) {
                 return;
             }
@@ -103,7 +106,7 @@ export function About() {
                 },
             );
         },
-        { scope: processRef },
+        { scope: processRef, dependencies: [reduceMotion] },
     );
 
     useGSAP(

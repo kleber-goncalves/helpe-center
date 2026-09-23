@@ -1,13 +1,21 @@
 import { useRef } from "react";
+
 import { useGSAP } from "@gsap/react";
+
 import gsap from "gsap";
+
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
+
 import { Link, NavLink } from "react-router-dom";
 
 import { Button } from "./ui";
+
 import { ThemeToggle } from "./ThemeToggle";
+
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
 import { cn } from "../lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -22,10 +30,11 @@ const links = [
 
 const navClass = ({ isActive }) =>
     cn(
-        "relative inline-block  pb-1.5 text-sm font-semibold",
+        "relative inline-block pb-1.5 text-sm font-semibold",
+
         "!text-muted-ink transition-colors duration-200 hover:text-ink!",
 
-        // Linha inferior
+        /* Linha inferior */
         "after:absolute after:bottom-0 after:left-0",
         "after:h-[2px] after:w-full",
         "after:origin-left",
@@ -35,7 +44,7 @@ const navClass = ({ isActive }) =>
 
         isActive ? "!text-coral hover:!text-coral after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100",
 
-        // Acessibilidade
+        /* Acessibilidade */
         "focus-visible:outline-none",
         "focus-visible:ring-2",
         "focus-visible:ring-coral/40",
@@ -44,14 +53,15 @@ const navClass = ({ isActive }) =>
 
 export function DesktopNavbar() {
     const headerRef = useRef(null);
+    const reduceMotion = useReducedMotion();
 
     useGSAP(
         () => {
             const header = headerRef.current;
 
-            if (!header) return;
-
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (!header) {
+                return;
+            }
 
             /*
              * Estado normal
@@ -63,8 +73,11 @@ export function DesktopNavbar() {
                 width: "100%",
                 maxWidth: "none",
                 borderRadius: 0,
+
                 backgroundColor: "color-mix(in srgb, var(--color-paper) 95%, transparent)",
+
                 backdropFilter: "blur(4px)",
+
                 boxShadow: "0 0 0 rgba(0, 0, 0, 0)",
             };
 
@@ -78,8 +91,11 @@ export function DesktopNavbar() {
                 width: "calc(100% - 32px)",
                 maxWidth: 1100,
                 borderRadius: 16,
+
                 backgroundColor: "color-mix(in srgb, var(--color-paper) 76%, transparent)",
+
                 backdropFilter: "blur(14px)",
+
                 boxShadow: "0 10px 35px rgba(0, 0, 0, 0.10)",
             };
 
@@ -89,34 +105,41 @@ export function DesktopNavbar() {
             gsap.set(header, docked);
 
             /*
-             * Respeita acessibilidade de movimento reduzido
+             * Respeita acessibilidade
+             * de movimento reduzido.
              */
             if (reduceMotion) {
                 return;
             }
 
             /*
-             * Função para transformar
-             * o navbar em uma ilha flutuante.
+             * Transforma o navbar
+             * em uma ilha flutuante.
              */
             const setFloating = () => {
                 gsap.to(header, {
                     ...floating,
+
                     duration: 0.5,
+
                     ease: "power3.out",
+
                     overwrite: "auto",
                 });
             };
 
             /*
-             * Função para devolver
-             * o navbar ao estado normal.
+             * Devolve o navbar
+             * ao estado normal.
              */
             const setDocked = () => {
                 gsap.to(header, {
                     ...docked,
+
                     duration: 0.45,
+
                     ease: "power3.out",
+
                     overwrite: "auto",
                 });
             };
@@ -143,6 +166,8 @@ export function DesktopNavbar() {
         },
         {
             scope: headerRef,
+            dependencies: [reduceMotion],
+            revertOnUpdate: true,
         },
     );
 
@@ -154,7 +179,7 @@ export function DesktopNavbar() {
                     {/* Logo */}
                     <Link to="/" className={cn("flex items-center gap-2", "rounded-lg", "text-sm font-bold text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2")}>
                         <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
+                            <img src="/logo.png" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
@@ -172,8 +197,12 @@ export function DesktopNavbar() {
                             </NavLink>
                         ))}
 
+                       
+
+                        {/* Tema */}
                         <ThemeToggle />
 
+                        {/* Ajuda */}
                         <Link to="/enviar-duvida">
                             <Button variant="coral">Precisa de ajuda?</Button>
                         </Link>

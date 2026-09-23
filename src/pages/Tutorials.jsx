@@ -12,6 +12,8 @@ import { SectionTransition } from "../components/SectionTransition";
 import { TutorialCard } from "../components/TutorialCard";
 import { Button } from "../components/ui";
 
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
 import { tutorials } from "../data/tutorials";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,8 +21,9 @@ gsap.registerPlugin(ScrollTrigger);
 export function Tutorials() {
     const cardsRef = useRef(null);
 
+    const reduceMotion = useReducedMotion();
+    
     const [searchParams, setSearchParams] = useSearchParams();
-
     const query = searchParams.get("q") || "";
     const normalized = query.trim().toLowerCase();
 
@@ -65,8 +68,6 @@ export function Tutorials() {
                 return;
             }
 
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
             if (reduceMotion) {
                 gsap.set(elements, {
                     autoAlpha: 1,
@@ -98,7 +99,7 @@ export function Tutorials() {
         },
         {
             scope: cardsRef,
-            dependencies: [query],
+            dependencies: [query, reduceMotion],
             revertOnUpdate: true,
         },
     );

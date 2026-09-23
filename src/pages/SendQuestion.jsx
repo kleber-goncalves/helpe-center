@@ -5,12 +5,16 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 import { QuestionForm } from "../components/QuestionForm";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
 
 export function SendQuestion() {
     const pageRef = useRef(null);
     const headerRef = useRef(null);
     const infoRef = useRef(null);
     const formRef = useRef(null);
+    const reduceMotion = useReducedMotion();
+
 
     useEffect(() => {
         const previousTitle = document.title;
@@ -53,8 +57,6 @@ export function SendQuestion() {
             if (!header || !info || !form) {
                 return;
             }
-
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduceMotion) {
                 gsap.set([header, info, form], {
@@ -116,6 +118,7 @@ export function SendQuestion() {
         },
         {
             scope: pageRef,
+            dependencies: [reduceMotion],
         },
     );
 

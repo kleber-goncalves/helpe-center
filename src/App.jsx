@@ -9,6 +9,7 @@ import ButtonReset from "./components/buttonReset";
 
 import "./App.css";
 import { Category } from "./pages/Category";
+import { AccessibilityMenu } from "./components/AccessibilityMenu";
 
 /*
  * Code Splitting das páginas.
@@ -98,7 +99,7 @@ function App() {
 
             <div className="min-h-screen bg-background">
                 <Header />
-
+                <AccessibilityMenu />
                 <ButtonReset />
 
                 <Suspense fallback={<RouteLoadingFallback />}>

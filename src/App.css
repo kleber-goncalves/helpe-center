@@ -95,11 +95,75 @@
 }
 
 html {
+
+    --accessibility-font-scale: 1;
+
+    font-size: calc(
+        100% * var(--accessibility-font-scale)
+    );
+
     scroll-behavior: smooth;
 
     /* Barra de rolagem */
-    crollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--color-mist3);
+}
+
+html[data-accessibility-contrast="high"] {
+    /* Fundo principal */
+    --color-background: #0d1b24;
+
+    /* Texto principal */
+    --color-foreground: #ffffff;
+
+    /* Texto / elementos importantes */
+    --color-ink: #ffffff;
+
+    /* Texto secundário */
+    --color-muted-ink: #d5e6ed;
+
+    /* Superfície principal */
+    --color-paper: #132d3d;
+
+    /* Superfícies secundárias */
+    --color-mist: #17384a;
+    --color-mist2: #1c4358;
+    --color-mist3: #204b61;
+
+    /* Superfícies mais destacadas */
+    --color-mist-deep: #25546b;
+    --color-mist-deep2: #2a5c74;
+
+    /* Bordas */
+    --color-line: #9fbac6;
+
+    /* Ícones / textos auxiliares */
+    --color-petrol-soft: #d8e8ed;
+
+    /* Cor de destaque */
+    --color-coral: #ff8f78;
+
+    /* Fundo do destaque */
+    --color-coral-soft: #4b2924;
+
+    /* Botões */
+    --color-coral-button: #e66f58;
+    --color-coral-button-hover: #f07b64;
+
+    /* Pesquisa */
+    --color-searchPesq: #ffffff;
+
+    /* Scrollbar */
+    --scrollbar-thumb: #d8e8ed;
+    --scrollbar-thumb-hover: #ffffff;
+}
+
+html[data-accessibility-motion="reduced"] *,
+html[data-accessibility-motion="reduced"] *::before,
+html[data-accessibility-motion="reduced"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
 }
 
 html::-webkit-scrollbar {

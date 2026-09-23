@@ -7,6 +7,9 @@ import { TutorialCard } from "../components/TutorialCard";
 import { categories, priorityTopics } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+
 import { useRef } from "react";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
@@ -20,35 +23,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function Home() {
     const priorityTopicsRef = useRef(null);
+    const reduceMotion = useReducedMotion();
 
-    useGSAP(
-        () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-            if (reduceMotion) return;
+        useGSAP(
+            () => {
+                if (reduceMotion) {
+                    return;
+                }
 
-            gsap.fromTo(
-                priorityTopicsRef.current.children,
-                {
-                    autoAlpha: 0,
-                    y: 22,
-                },
-                {
-                    autoAlpha: 1,
-                    y: 0,
-                    duration: 0.55,
-                    stagger: 0.06,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: priorityTopicsRef.current,
-                        start: "top 88%",
-                        once: true,
+                gsap.fromTo(
+                    priorityTopicsRef.current.children,
+                    {
+                        autoAlpha: 0,
+                        y: 22,
                     },
-                },
-            );
-        },
-        { scope: priorityTopicsRef },
-    );
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        duration: 0.55,
+                        stagger: 0.06,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: priorityTopicsRef.current,
+                            start: "top 88%",
+                            once: true,
+                        },
+                    },
+                );
+            },
+            {
+                scope: priorityTopicsRef,
+                dependencies: [reduceMotion],
+            },
+        );
     return (
         <main>
             <section className=" bg-mist3 px-0 lg:px-0 ">
