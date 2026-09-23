@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { Check, Send } from "lucide-react";
 
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "./ui";
@@ -17,85 +18,73 @@ const INITIAL_FORM = {
     device: "",
 };
 
-function formatContactValue(value) {
-    /*
-     * Se a pessoa começar a escrever um e-mail
-     * ou qualquer texto com letras, não aplicamos
-     * máscara de telefone.
-     */
-    if (/[a-zA-Z@]/.test(value)) {
-        return value;
+/* =========================================================
+   CONTACT MASK
+========================================================= */
+
+    function formatContactValue(value) {
+        /*
+         * Se a pessoa começou a digitar um e-mail,
+         * não aplicamos máscara de telefone.
+         */
+        if (/[a-zA-Z@]/.test(value)) {
+            return value;
+        }
+
+        const digits = value.replace(/\D/g, "");
+
+        if (!digits) {
+            return "";
+        }
+
+        let nationalDigits = digits;
+        let countryPrefix = "";
+
+        /*
+         * DDI Brasil.
+         */
+        if (digits.length > 11 && digits.startsWith("55")) {
+            countryPrefix = "+55 ";
+            nationalDigits = digits.slice(2);
+        }
+
+        nationalDigits = nationalDigits.slice(0, 11);
+
+        /*
+         * Apenas DDD.
+         */
+        if (nationalDigits.length <= 2) {
+            return countryPrefix + nationalDigits;
+        }
+
+        const ddd = nationalDigits.slice(0, 2);
+
+        const phone = nationalDigits.slice(2);
+
+        /*
+         * Celular.
+         */
+        if (phone.startsWith("9")) {
+            const firstPart = phone.slice(0, 5);
+
+            const secondPart = phone.slice(5, 9);
+
+            return `${countryPrefix}(${ddd}) ${firstPart}${secondPart ? `-${secondPart}` : ""}`;
+        }
+
+        /*
+         * Fixo.
+         */
+        const firstPart = phone.slice(0, 4);
+
+        const secondPart = phone.slice(4, 8);
+
+        return `${countryPrefix}(${ddd}) ${firstPart}${secondPart ? `-${secondPart}` : ""}`;
     }
 
-    /*
-     * Mantém somente os números.
-     */
-    const digits = value.replace(/\D/g, "");
-
-    if (!digits) {
-        return "";
-    }
-
-    /*
-     * Suporte a números brasileiros com +55.
-     *
-     * Só consideramos 55 como DDI quando já
-     * existem mais de 11 dígitos.
-     */
-    let nationalDigits = digits;
-    let countryPrefix = "";
-
-    if (digits.length > 11 && digits.startsWith("55")) {
-        countryPrefix = "+55 ";
-        nationalDigits = digits.slice(2);
-    }
-
-    /*
-     * Limita ao DDD + número:
-     * 2 + 9 = 11 dígitos.
-     */
-    nationalDigits = nationalDigits.slice(0, 11);
-
-    /*
-     * Ainda digitando o DDD.
-     */
-    if (nationalDigits.length <= 2) {
-        return countryPrefix + nationalDigits;
-    }
-
-    const ddd = nationalDigits.slice(0, 2);
-
-    const phone = nationalDigits.slice(2);
-
-    /*
-     * Celular brasileiro:
-     * começa com 9.
-     *
-     * (33) 99999-9999
-     */
-    if (phone.startsWith("9")) {
-        const firstPart = phone.slice(0, 5);
-
-        const secondPart = phone.slice(5, 9);
-
-        const formattedPhone = secondPart ? `${firstPart}-${secondPart}` : firstPart;
-
-        return `${countryPrefix}(${ddd}) ${formattedPhone}`;
-    }
-
-    /*
-     * Telefone fixo:
-     *
-     * (33) 3333-3333
-     */
-    const firstPart = phone.slice(0, 4);
-
-    const secondPart = phone.slice(4, 8);
-
-    const formattedPhone = secondPart ? `${firstPart}-${secondPart}` : firstPart;
-
-    return `${countryPrefix}(${ddd}) ${formattedPhone}`;
-}
+/* =========================================================
+   COMPONENT
+========================================================= */
 
 export function QuestionForm() {
     const [form, setForm] = useState(INITIAL_FORM);
@@ -107,19 +96,23 @@ export function QuestionForm() {
     const [submitted, setSubmitted] = useState(false);
 
     const categoryRef = useRef(null);
+
     const messageRef = useRef(null);
+
     const nameRef = useRef(null);
+
     const contactRef = useRef(null);
+
     const deviceRef = useRef(null);
 
     const successHeadingRef = useRef(null);
 
     const formErrorRef = useRef(null);
 
-    /*
-     * Move o foco para a mensagem de sucesso
-     * quando o envio for concluído.
-     */
+    /* =====================================================
+       SUCCESS FOCUS
+    ====================================================== */
+
     useEffect(() => {
         if (!submitted) {
             return;
@@ -130,10 +123,10 @@ export function QuestionForm() {
         });
     }, [submitted]);
 
-    /*
-     * Move o foco para o erro geral quando
-     * ocorrer uma falha durante o envio.
-     */
+    /* =====================================================
+       GENERAL ERROR FOCUS
+    ====================================================== */
+
     useEffect(() => {
         if (!errors.form) {
             return;
@@ -144,9 +137,10 @@ export function QuestionForm() {
         });
     }, [errors.form]);
 
-    /*
-     * Campos Input e Textarea.
-     */
+    /* =====================================================
+       INPUT / TEXTAREA
+    ====================================================== */
+
     function handleChange(event) {
         const { name, value } = event.target;
 
@@ -164,12 +158,10 @@ export function QuestionForm() {
         }));
     }
 
-    /*
-     * Campos Select.
-     *
-     * O Radix Select não dispara um
-     * event.target como um input nativo.
-     */
+    /* =====================================================
+       SELECT
+    ====================================================== */
+
     function handleSelectChange(name, value) {
         setForm((current) => ({
             ...current,
@@ -183,6 +175,43 @@ export function QuestionForm() {
         }));
     }
 
+    /* =====================================================
+       FIELD VALIDATION
+    ====================================================== */
+
+    function validateField(fieldName, value = form[fieldName]) {
+        const fieldSchema = questionSchema.shape[fieldName];
+
+        if (!fieldSchema) {
+            return true;
+        }
+
+        const result = fieldSchema.safeParse(value);
+
+        if (result.success) {
+            setErrors((current) => ({
+                ...current,
+                [fieldName]: "",
+            }));
+
+            return true;
+        }
+
+        const message = result.error.issues?.[0]?.message || "Valor inválido.";
+
+        setErrors((current) => ({
+            ...current,
+            [fieldName]: message,
+            form: "",
+        }));
+
+        return false;
+    }
+
+    /* =====================================================
+       FOCUS FIRST INVALID
+    ====================================================== */
+
     function focusFirstInvalidField(fieldErrors) {
         const fieldOrder = ["category", "message", "name", "contact", "device"];
 
@@ -194,9 +223,13 @@ export function QuestionForm() {
 
         const refs = {
             category: categoryRef,
+
             message: messageRef,
+
             name: nameRef,
+
             contact: contactRef,
+
             device: deviceRef,
         };
 
@@ -205,6 +238,32 @@ export function QuestionForm() {
         });
     }
 
+    /* =====================================================
+       SERVER FIELD ERRORS
+    ====================================================== */
+
+    function applyServerErrors(fieldErrors) {
+        const nextErrors = {
+            category: fieldErrors?.category?.[0] || "",
+
+            message: fieldErrors?.message?.[0] || "",
+
+            name: fieldErrors?.name?.[0] || "",
+
+            contact: fieldErrors?.contact?.[0] || "",
+
+            device: fieldErrors?.device?.[0] || "",
+        };
+
+        setErrors(nextErrors);
+
+        focusFirstInvalidField(nextErrors);
+    }
+
+    /* =====================================================
+       SUBMIT
+    ====================================================== */
+
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -212,9 +271,10 @@ export function QuestionForm() {
             return;
         }
 
-        /*
-         * Validação do frontend com Zod.
-         */
+        /* ===============================================
+           FRONTEND ZOD
+        ============================================== */
+
         const result = questionSchema.safeParse(form);
 
         if (!result.success) {
@@ -239,10 +299,10 @@ export function QuestionForm() {
             return;
         }
 
-        /*
-         * result.data contém os valores
-         * já tratados pelo schema.
-         */
+        /* ===============================================
+           VALID DATA
+        ============================================== */
+
         const validData = result.data;
 
         setErrors({});
@@ -251,11 +311,10 @@ export function QuestionForm() {
 
         setSubmitted(false);
 
-        /*
-         * Cria o corpo como
-         * application/x-www-form-urlencoded,
-         * evitando preflight CORS nesse fluxo.
-         */
+        /* ===============================================
+           BODY
+        ============================================== */
+
         const body = new URLSearchParams();
 
         body.set("category", validData.category);
@@ -268,13 +327,11 @@ export function QuestionForm() {
 
         body.set("device", validData.device);
 
-        /*
-         * Honeypot.
-         *
-         * Usuários normais deixam vazio.
-         * O Apps Script também verifica isso.
-         */
         body.set("website", "");
+
+        /* ===============================================
+           TIMEOUT
+        ============================================== */
 
         const controller = new AbortController();
 
@@ -283,33 +340,88 @@ export function QuestionForm() {
         }, REQUEST_TIMEOUT);
 
         try {
-            await fetch(SUPPORT_ENDPOINT, {
+            const response = await fetch(SUPPORT_ENDPOINT, {
                 method: "POST",
 
-                /*
-                 * O Apps Script está em outro
-                 * domínio. Com no-cors o navegador
-                 * pode realizar o envio, mas não
-                 * permite que o React leia a resposta.
-                 */
-                mode: "no-cors",
+                headers: {
+                    Accept: "application/json",
+                },
 
                 body,
 
                 signal: controller.signal,
             });
 
-            /*
-             * IMPORTANTE:
-             *
-             * Como usamos no-cors, não podemos
-             * verificar response.ok, response.status
-             * ou response.text().
-             *
-             * O Apps Script possui a validação
-             * do servidor e grava os dados antes
-             * de responder.
-             */
+            let payload = null;
+
+            try {
+                payload = await response.json();
+            } catch {
+                payload = null;
+            }
+
+            /* ===========================================
+               SERVER VALIDATION
+            ========================================== */
+
+            if (!response.ok) {
+                if (response.status === 400) {
+                    if (payload?.fieldErrors) {
+                        applyServerErrors(payload.fieldErrors);
+                    } else {
+                        setErrors({
+                            form: payload?.message || "Confira os dados preenchidos.",
+                        });
+                    }
+
+                    setSubmitting(false);
+
+                    return;
+                }
+
+                if (response.status === 429) {
+                    setSubmitting(false);
+
+                    setErrors({
+                        form: "Muitas tentativas de envio. Aguarde alguns minutos e tente novamente.",
+                    });
+
+                    return;
+                }
+
+                if (response.status === 502 || response.status === 504) {
+                    setSubmitting(false);
+
+                    setErrors({
+                        form: "O serviço de atendimento não respondeu corretamente. Tente novamente em alguns instantes.",
+                    });
+
+                    return;
+                }
+
+                setSubmitting(false);
+
+                setErrors({
+                    form: payload?.message || "Não foi possível enviar sua dúvida.",
+                });
+
+                return;
+            }
+
+            /* ===========================================
+               SUCESSO REAL
+            ========================================== */
+
+            if (!payload?.ok) {
+                setSubmitting(false);
+
+                setErrors({
+                    form: "Não foi possível confirmar o envio da sua dúvida.",
+                });
+
+                return;
+            }
+
             setForm(INITIAL_FORM);
 
             setErrors({});
@@ -336,9 +448,10 @@ export function QuestionForm() {
         }
     }
 
-    /*
-     * Tela de sucesso.
-     */
+    /* =====================================================
+       SUCCESS
+    ====================================================== */
+
     if (submitted) {
         return (
             <section className={["border border-line", "bg-card dark:bg-paper", "p-8 text-center", "shadow-soft sm:p-10"].join(" ")} role="status" aria-live="polite" aria-labelledby="question-success-title">
@@ -369,6 +482,10 @@ export function QuestionForm() {
         );
     }
 
+    /* =====================================================
+       FORM
+    ====================================================== */
+
     return (
         <form onSubmit={handleSubmit} noValidate aria-busy={submitting} aria-describedby="question-form-help" className={["border border-line", "bg-card dark:bg-paper", "p-6 shadow-soft", "sm:p-8"].join(" ")}>
             {/* Honeypot */}
@@ -383,9 +500,10 @@ export function QuestionForm() {
             </p>
 
             <div className="grid gap-6">
-                {/* =====================================================
+                {/* =================================================
                     CATEGORIA
-                ====================================================== */}
+                ================================================== */}
+
                 <div>
                     <label htmlFor="category" className="block text-sm font-bold text-foreground">
                         Sobre o que você precisa de ajuda?
@@ -395,8 +513,8 @@ export function QuestionForm() {
                         <span className="sr-only">obrigatório</span>
                     </label>
 
-                    <Select value={form.category} onValueChange={(value) => handleSelectChange("category", value)} disabled={submitting} required>
-                        <SelectTrigger ref={categoryRef} id="category" aria-required="true" aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined} className="mt-2">
+                    <Select value={form.category} onValueChange={(value) => handleSelectChange("category", value)} disabled={submitting}>
+                        <SelectTrigger ref={categoryRef} id="category" aria-required="true" aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined} onBlur={() => validateField("category")} className="mt-2">
                             <SelectValue placeholder="Escolha uma opção" />
                         </SelectTrigger>
 
@@ -416,9 +534,10 @@ export function QuestionForm() {
                     )}
                 </div>
 
-                {/* =====================================================
+                {/* =================================================
                     DÚVIDA
-                ====================================================== */}
+                ================================================== */}
+
                 <div>
                     <label htmlFor="message" className="block text-sm font-bold text-foreground">
                         Conte-nos sua dúvida
@@ -432,7 +551,7 @@ export function QuestionForm() {
                         Explique o que você está tentando fazer e onde encontrou dificuldade.
                     </p>
 
-                    <Textarea ref={messageRef} id="message" name="message" value={form.message} onChange={handleChange} disabled={submitting} required aria-required="true" aria-invalid={Boolean(errors.message)} aria-describedby={["message-help", errors.message ? "message-error" : ""].filter(Boolean).join(" ")} rows={6} minLength={10} maxLength={2000} spellCheck={true} className="mt-3" placeholder="Ex.: Não consigo criar um sumário automático no Word..." />
+                    <Textarea ref={messageRef} id="message" name="message" value={form.message} onChange={handleChange} onBlur={() => validateField("message")} disabled={submitting} required aria-required="true" aria-invalid={Boolean(errors.message)} aria-describedby={["message-help", errors.message ? "message-error" : ""].filter(Boolean).join(" ")} rows={6} minLength={10} maxLength={2000} spellCheck={true} className="mt-3" placeholder="Ex.: Não consigo criar um sumário automático no Word..." />
 
                     <div className="mt-2 flex items-center justify-between gap-4">
                         {errors.message ? (
@@ -450,18 +569,20 @@ export function QuestionForm() {
                     </div>
                 </div>
 
-                {/* =====================================================
+                {/* =================================================
                     NOME E CONTATO
-                ====================================================== */}
+                ================================================== */}
+
                 <div className="grid gap-6 sm:grid-cols-2">
                     {/* Nome */}
+
                     <div>
                         <label htmlFor="name" className="block text-sm font-bold text-foreground">
                             Seu nome
                             <span className="ml-1 text-xs font-normal text-muted-foreground">opcional</span>
                         </label>
 
-                        <Input ref={nameRef} id="name" name="name" type="text" value={form.name} onChange={handleChange} disabled={submitting} maxLength={100} autoComplete="name" spellCheck={false} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} className="mt-2" placeholder="Como podemos chamar você?" />
+                        <Input ref={nameRef} id="name" name="name" type="text" value={form.name} onChange={handleChange} onBlur={() => validateField("name")} disabled={submitting} minLength={2} maxLength={100} autoComplete="name" spellCheck={false} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} className="mt-2" placeholder="Como podemos chamar você?" />
 
                         {errors.name && (
                             <p id="name-error" className="mt-2 text-sm text-coral">
@@ -471,6 +592,7 @@ export function QuestionForm() {
                     </div>
 
                     {/* Contato */}
+
                     <div>
                         <label htmlFor="contact" className="block text-sm font-bold text-foreground">
                             Como podemos entrar em contato com você?
@@ -481,7 +603,7 @@ export function QuestionForm() {
                             Caso queira receber uma resposta, informe seu e-mail ou seu número de WhatsApp com DDD.
                         </p>
 
-                        <Input ref={contactRef} id="contact" name="contact" type="text" value={form.contact} onChange={handleChange} disabled={submitting} maxLength={200} autoComplete="email" inputMode="text" spellCheck={false} aria-invalid={Boolean(errors.contact)} aria-describedby={["contact-help", errors.contact ? "contact-error" : ""].filter(Boolean).join(" ")} className="mt-2" placeholder="Ex.: (33) 99999-9999 ou nome@email.com" />
+                        <Input ref={contactRef} id="contact" name="contact" type="text" value={form.contact} onChange={handleChange} onBlur={() => validateField("contact")} disabled={submitting} maxLength={200} autoComplete="off" inputMode="text" spellCheck={false} aria-invalid={Boolean(errors.contact)} aria-describedby={["contact-help", errors.contact ? "contact-error" : ""].filter(Boolean).join(" ")} className="mt-2" placeholder="Ex.: (33) 99999-9999 ou nome@email.com" />
 
                         {errors.contact && (
                             <p id="contact-error" className="mt-2 text-sm text-coral">
@@ -491,9 +613,10 @@ export function QuestionForm() {
                     </div>
                 </div>
 
-                {/* =====================================================
+                {/* =================================================
                     DISPOSITIVO
-                ====================================================== */}
+                ================================================== */}
+
                 <div>
                     <label htmlFor="device" className="block text-sm font-bold text-foreground">
                         Onde você está tentando realizar essa tarefa?
@@ -503,8 +626,8 @@ export function QuestionForm() {
                         <span className="sr-only">obrigatório</span>
                     </label>
 
-                    <Select value={form.device} onValueChange={(value) => handleSelectChange("device", value)} disabled={submitting} required>
-                        <SelectTrigger ref={deviceRef} id="device" aria-required="true" aria-invalid={Boolean(errors.device)} aria-describedby={errors.device ? "device-error" : undefined} className="mt-2">
+                    <Select value={form.device} onValueChange={(value) => handleSelectChange("device", value)} disabled={submitting}>
+                        <SelectTrigger ref={deviceRef} id="device" aria-required="true" aria-invalid={Boolean(errors.device)} aria-describedby={errors.device ? "device-error" : undefined} onBlur={() => validateField("device")} className="mt-2">
                             <SelectValue placeholder="Escolha uma opção" />
                         </SelectTrigger>
 
@@ -524,27 +647,30 @@ export function QuestionForm() {
                     )}
                 </div>
 
-                {/* =====================================================
+                {/* =================================================
                     AVISO
-                ====================================================== */}
+                ================================================== */}
+
                 <div className="border-l-2 border-coral pl-4" role="note">
                     <p className="text-sm leading-6 text-muted-foreground">
                         <strong className="text-foreground">Importante:</strong> não envie senhas, códigos de acesso, documentos pessoais ou outras informações confidenciais.
                     </p>
                 </div>
 
-                {/* =====================================================
+                {/* =================================================
                     ERRO GERAL
-                ====================================================== */}
+                ================================================== */}
+
                 {errors.form && (
                     <div ref={formErrorRef} role="alert" tabIndex={-1} className={["border border-coral/30", "bg-coral-soft", "p-4", "text-sm text-foreground", "outline-none"].join(" ")}>
                         {errors.form}
                     </div>
                 )}
 
-                {/* =====================================================
+                {/* =================================================
                     ENVIO
-                ====================================================== */}
+                ================================================== */}
+
                 <div className="flex items-center justify-end gap-4">
                     <span className="sr-only" role="status" aria-live="polite">
                         {submitting ? "Enviando sua dúvida..." : ""}
