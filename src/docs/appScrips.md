@@ -40,3 +40,24 @@ Status = Nova
 └──────────────┬───────────────┘
                ↓
         Google Sheets
+
+
+
+                INTERNET
+                   │
+                   ▼
+              Vercel API
+                   │
+          ┌────────┼────────┐
+          │        │        │
+        Zod    Rate limit  Origin
+          │
+          ▼
+        Apps Script
+          │
+      ┌───┼────┐
+      │   │    │
+    Zod  Honeypot  Duplicate
+      │
+      ▼
+   Google Sheets

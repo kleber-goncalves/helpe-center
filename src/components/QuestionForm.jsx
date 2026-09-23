@@ -463,7 +463,7 @@ export function QuestionForm() {
                     Dúvida enviada!
                 </h2>
 
-                <p className="mx-auto mt-3 max-w-md text-base leading-7 text-muted-foreground">Recebemos sua mensagem. A equipe do Hauy Conecta vai analisar sua dúvida.</p>
+                <p className="mx-auto mt-3 max-w-md text-base leading-7 text-muted-foreground">Recebemos sua mensagem. A equipe do Hauy Conecta vai analisar sua dúvida e, caso você tenha informado um contato, poderá entrar em contato para ajudar.</p>
 
                 <button
                     type="button"
@@ -549,6 +549,10 @@ export function QuestionForm() {
 
                     <p id="message-help" className="mt-1 text-sm text-muted-foreground">
                         Explique o que você está tentando fazer e onde encontrou dificuldade.
+                    </p>
+                    <p id="message-help" className="mt-1 text-sm text-muted-foreground">
+                        Ex: Estou tentando criar um sumário automático no Word,
+                        mas a opção não aparece em Referências no Sumário.
                     </p>
 
                     <Textarea ref={messageRef} id="message" name="message" value={form.message} onChange={handleChange} onBlur={() => validateField("message")} disabled={submitting} required aria-required="true" aria-invalid={Boolean(errors.message)} aria-describedby={["message-help", errors.message ? "message-error" : ""].filter(Boolean).join(" ")} rows={6} minLength={10} maxLength={2000} spellCheck={true} className="mt-3" placeholder="Ex.: Não consigo criar um sumário automático no Word..." />

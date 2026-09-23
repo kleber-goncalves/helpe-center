@@ -33,3 +33,24 @@ O formulário é um componente da página; colocar <title> e <meta> dentro dele 
 └──────────────┬───────────────┘
                ↓
         Google Sheets
+
+
+
+                INTERNET
+                   │
+                   ▼
+              Vercel API
+                   │
+          ┌────────┼────────┐
+          │        │        │
+        Zod    Rate limit  Origin
+          │
+          ▼
+        Apps Script
+          │
+      ┌───┼────┐
+      │   │    │
+    Zod  Honeypot  Duplicate
+      │
+      ▼
+   Google Sheets
