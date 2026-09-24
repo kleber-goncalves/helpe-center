@@ -21,7 +21,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
         coral: "bg-coral-button text-white hover:bg-coral-button-hover",
     };
 
-    return <button ref={ref} className={cn(["inline-flex min-h-11", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "px-4", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:´pointer-events-none", "disabled:opacity-60"].join(" "), variants[variant], className)} {...props} />;
+    return <button ref={ref} className={cn(["inline-flex min-h-11", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "px-4", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:cursor-not-allowed", "disabled:opacity-60"].join(" "), variants[variant], className)} {...props} />;
 });
 
 /* =========================================================
