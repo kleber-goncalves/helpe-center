@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 import { gsap } from "gsap";
 
-import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
+import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
 
 import { Accessibility, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -18,6 +18,7 @@ const links = [
     ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
     ["FAQ", "/faq", CircleHelp],
+    ["Assistente", "/assistente", MessageCircleQuestion],
     ["Sobre", "/sobre", Info],
 ];
 

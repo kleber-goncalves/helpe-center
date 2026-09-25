@@ -13,3 +13,32 @@ top 3 tutoriais
 Gemini 3.5 Flash-Lite
    ↓
 resposta
+
+
+{suggestions.map((suggestion) => (
+                                <button
+                                    key={suggestion}
+                                    type="button"
+                                    onClick={() => handleSuggestion(suggestion)}
+                                    className="
+                                            rounded-lg
+                                            border
+                                            border-line
+                                            bg-background
+                                            px-3
+                                            py-2
+                                            text-left
+                                            text-sm
+                                            font-semibold
+                                            text-ink
+                                            transition-colors
+                                            hover:border-coral
+                                            hover:text-coral
+                                            focus-visible:outline-none
+                                            focus-visible:ring-2
+                                            focus-visible:ring-coral
+                                        "
+                                >
+                                    {suggestion}
+                                </button>
+                            ))}

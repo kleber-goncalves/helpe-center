@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -11,6 +11,7 @@ import "./App.css";
 import { Category } from "./pages/Category";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
 import { Assistente } from "./pages/Assistente";
+import { HauyAssistantWidget } from "./components/HauyAssistantWidget";
 
 /*
  * Code Splitting das páginas.
@@ -82,53 +83,239 @@ function RouteLoadingFallback() {
         </div>
     );
 }
+/*
+ * =========================================================
+ * CONTEÚDO DA APLICAÇÃO
+ * =========================================================
+ *
+ * Este componente está dentro do BrowserRouter,
+ * portanto pode utilizar useLocation().
+ */
 
-function App() {
-    const [loading, setLoading] = useState(true);
+function AppContent() {
+    const [loading, setLoading] =
+        useState(true);
 
-    const handlePreloaderComplete = useCallback(() => {
-        setLoading(false);
-    }, []);
+    const location =
+        useLocation();
+
+    const handlePreloaderComplete =
+        useCallback(() => {
+            setLoading(false);
+        }, []);
 
     return (
-        <BrowserRouter>
-            {loading && <Preloader onComplete={handlePreloaderComplete} />}
+        <>
+            {/* ==============================================
+                PRELOADER
+            ============================================== */}
 
-            <div id="theme-transition" className="pointer-events-none fixed inset-0 z-[9999] opacity-0" aria-hidden="true" />
+            {loading && (
+                <Preloader
+                    onComplete={
+                        handlePreloaderComplete
+                    }
+                />
+            )}
+
+            {/* ==============================================
+                TRANSIÇÃO DE TEMA
+            ============================================== */}
+
+            <div
+                id="theme-transition"
+                className="
+                    pointer-events-none
+                    fixed
+                    inset-0
+                    z-[9999]
+                    opacity-0
+                "
+                aria-hidden="true"
+            />
+
+            {/* ==============================================
+                SCROLL
+            ============================================== */}
 
             <ScrollToTop />
 
+            {/* ==============================================
+                APLICAÇÃO
+            ============================================== */}
+
             <div className="min-h-screen bg-background">
+                {/* ==========================================
+                    HEADER
+                ========================================== */}
+
                 <Header />
+
+                {/* ==========================================
+                    ACESSIBILIDADE
+                ========================================== */}
+
                 <AccessibilityMenu />
+
+                {/* ==========================================
+                    RESET
+                ========================================== */}
+
                 <ButtonReset />
 
-                <Suspense fallback={<RouteLoadingFallback />}>
+                {/* ==========================================
+                    ASSISTENTE GLOBAL
+                ==========================================
+                
+                    O key faz o widget ser remontado
+                    quando a rota muda.
+
+                    Isso reseta:
+
+                    open = false
+
+                    sem precisar chamar
+                    setOpen() dentro de useEffect.
+                */}
+
+                <HauyAssistantWidget
+                    key={location.pathname}
+                />
+
+                {/* ==========================================
+                    ROTAS
+                ========================================== */}
+
+                <Suspense
+                    fallback={
+                        <RouteLoadingFallback />
+                    }
+                >
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        {/* ================================
+                            HOME
+                        ================================= */}
 
-                        <Route path="/categorias" element={<Categories />} />
+                        <Route
+                            path="/"
+                            element={
+                                <Home />
+                            }
+                        />
 
-                        <Route path="/categorias/:categoryId" element={<Category />} />
+                        {/* ================================
+                            CATEGORIAS
+                        ================================= */}
 
-                        <Route path="/tutoriais" element={<Tutorials />} />
+                        <Route
+                            path="/categorias"
+                            element={
+                                <Categories />
+                            }
+                        />
 
-                        <Route path="/tutoriais/:tutorialId" element={<Tutorial />} />
+                        <Route
+                            path="/categorias/:categoryId"
+                            element={
+                                <Category />
+                            }
+                        />
 
-                        <Route path="/faq" element={<FAQ />} />
+                        {/* ================================
+                            TUTORIAIS
+                        ================================= */}
 
-                        <Route path="/sobre" element={<About />} />
+                        <Route
+                            path="/tutoriais"
+                            element={
+                                <Tutorials />
+                            }
+                        />
 
-                        <Route path="/enviar-duvida" element={<SendQuestion />} />
+                        <Route
+                            path="/tutoriais/:tutorialId"
+                            element={
+                                <Tutorial />
+                            }
+                        />
 
-                        <Route path="/assistente" element={<Assistente />} />
+                        {/* ================================
+                            FAQ
+                        ================================= */}
 
-                        <Route path="*" element={<NotFound />} />
+                        <Route
+                            path="/faq"
+                            element={
+                                <FAQ />
+                            }
+                        />
+
+                        {/* ================================
+                            SOBRE
+                        ================================= */}
+
+                        <Route
+                            path="/sobre"
+                            element={
+                                <About />
+                            }
+                        />
+
+                        {/* ================================
+                            ENVIAR DÚVIDA
+                        ================================= */}
+
+                        <Route
+                            path="/enviar-duvida"
+                            element={
+                                <SendQuestion />
+                            }
+                        />
+
+                        {/* ================================
+                            ASSISTENTE
+                        ================================= */}
+
+                        <Route
+                            path="/assistente"
+                            element={
+                                <Assistente />
+                            }
+                        />
+
+                        {/* ================================
+                            404
+                        ================================= */}
+
+                        <Route
+                            path="*"
+                            element={
+                                <NotFound />
+                            }
+                        />
                     </Routes>
                 </Suspense>
 
+                {/* ==========================================
+                    FOOTER
+                ========================================== */}
+
                 <Footer />
             </div>
+        </>
+    );
+}
+
+/*
+ * =========================================================
+ * APP
+ * =========================================================
+ */
+
+function App() {
+    return (
+        <BrowserRouter>
+            <AppContent />
         </BrowserRouter>
     );
 }

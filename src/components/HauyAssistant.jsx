@@ -1,6 +1,6 @@
-import { ArrowUpRight, BookOpen, MessageCircleQuestion, Send } from "lucide-react";
+import { ArrowUpRight, BookOpen, MessageCircleQuestion, Send, X } from "lucide-react";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,11 @@ const MAX_MESSAGE_LENGTH = 1000;
 
 const suggestions = ["Como criar um sumário no Word?", "Como compartilhar um arquivo?", "Como começar a usar o Excel?"];
 
-export function HauyAssistant() {
+export function HauyAssistant({ inputRef: externalInputRef = null, onClose = null, compact = false }) {
+    const internalInputRef = useRef(null);
+
+    const inputRef = externalInputRef || internalInputRef;
+
     const [message, setMessage] = useState("");
 
     const [messages, setMessages] = useState([]);
@@ -19,7 +23,30 @@ export function HauyAssistant() {
 
     const [error, setError] = useState("");
 
-    const inputRef = useRef(null);
+    /*
+     * =========================================================
+     * FOCO INICIAL
+     * =========================================================
+     *
+     * Quando o Assistente estiver sendo usado como widget,
+     * o foco vai diretamente para o campo de pergunta.
+     */
+
+    useEffect(() => {
+        if (!compact) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            inputRef.current?.focus();
+        });
+    }, [compact, inputRef]);
+
+    /*
+     * =========================================================
+     * ENVIO
+     * =========================================================
+     */
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -31,6 +58,11 @@ export function HauyAssistant() {
         }
 
         setError("");
+
+        /*
+         * Mostra imediatamente a pergunta
+         * do usuário na conversa.
+         */
 
         setMessages((current) => [
             ...current,
@@ -65,6 +97,12 @@ export function HauyAssistant() {
         }
     }
 
+    /*
+     * =========================================================
+     * SUGESTÕES
+     * =========================================================
+     */
+
     function handleSuggestion(suggestion) {
         setMessage(suggestion);
 
@@ -74,13 +112,41 @@ export function HauyAssistant() {
     }
 
     return (
-        <section className="mx-auto w-full max-w-4xl">
-            {/* =========================================
+        <section
+            aria-label="Assistente Hauy"
+            className={
+                compact
+                    ? `
+                        flex
+                        h-full
+                        min-h-0
+                        w-full
+                        max-w-none
+                        flex-col
+                    `
+                    : "mx-auto w-full max-w-4xl"
+            }
+        >
+            {/* ==================================================
                 CABEÇALHO
-            ========================================= */}
+            ================================================== */}
 
-            <header className="mb-8">
+            <header
+                className={
+                    compact
+                        ? `
+                            shrink-0
+                            border-b
+                            border-line
+                            px-5
+                            py-4
+                        `
+                        : "mb-8"
+                }
+            >
                 <div className="flex items-center gap-3">
+                    {/* Ícone */}
+
                     <div
                         className="
                             flex
@@ -94,11 +160,19 @@ export function HauyAssistant() {
                             bg-mist
                             text-coral
                         "
+                        aria-hidden="true"
                     >
-                        <MessageCircleQuestion className="size-5" aria-hidden="true" />
+                        <MessageCircleQuestion className="size-5" />
                     </div>
 
-                    <div>
+                    {/* Título */}
+
+                    <div
+                        className="
+                            min-w-0
+                            flex-1
+                        "
+                    >
                         <p
                             className="
                                 text-sm
@@ -114,7 +188,7 @@ export function HauyAssistant() {
                         <h2
                             className="
                                 mt-1
-                                text-2xl
+                                text-xl
                                 font-bold
                                 text-ink
                             "
@@ -122,29 +196,83 @@ export function HauyAssistant() {
                             Tire uma dúvida
                         </h2>
                     </div>
+
+                    {/* Fechar widget */}
+
+                    {onClose && (
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="Fechar Assistente Hauy"
+                            className="
+                                flex
+                                size-10
+                                shrink-0
+                                cursor-pointer
+                                items-center
+                                justify-center
+                                rounded-lg
+                                border
+                                border-line
+                                text-muted-ink
+                                transition-colors
+                                hover:bg-mist
+                                hover:text-ink
+                                focus-visible:outline-none
+                                focus-visible:ring-2
+                                focus-visible:ring-coral
+                                focus-visible:ring-offset-2
+                            "
+                        >
+                            <X className="size-5" aria-hidden="true" />
+                        </button>
+                    )}
                 </div>
 
                 <p
-                    className="
-                        mt-4
-                        max-w-2xl
-                        text-base
-                        text-muted-foreground
-                    "
+                    className={
+                        compact
+                            ? `
+                                mt-3
+                                text-sm
+                                leading-6
+                                text-muted-foreground
+                            `
+                            : `
+                                mt-4
+                                max-w-2xl
+                                text-base
+                                text-muted-foreground
+                            `
+                    }
                 >
                     Pergunte sobre os assuntos disponíveis na Central de Ajuda.
                 </p>
             </header>
 
-            {/* =========================================
+            {/* ==================================================
                 CONVERSA
-            ========================================= */}
+            ================================================== */}
 
             <div
-                className="
-                    space-y-5
-                "
+                className={
+                    compact
+                        ? `
+                            min-h-0
+                            flex-1
+                            overflow-y-auto
+                            overscroll-contain
+                            px-5
+                            py-5
+                        `
+                        : "space-y-5"
+                }
+                aria-live="polite"
             >
+                {/* =============================================
+                    ESTADO INICIAL
+                ============================================= */}
+
                 {messages.length === 0 && (
                     <div
                         className="
@@ -152,7 +280,7 @@ export function HauyAssistant() {
                             border
                             border-line
                             bg-mist
-                            p-6
+                            p-5
                         "
                     >
                         <p
@@ -167,6 +295,7 @@ export function HauyAssistant() {
                         <p
                             className="
                                 mt-2
+                                text-sm
                                 text-muted-foreground
                             "
                         >
@@ -177,7 +306,7 @@ export function HauyAssistant() {
                             className="
                                 mt-4
                                 flex
-                                flex-wrap
+                                flex-col
                                 gap-2
                             "
                         >
@@ -187,6 +316,8 @@ export function HauyAssistant() {
                                     type="button"
                                     onClick={() => handleSuggestion(suggestion)}
                                     className="
+                                            min-h-11
+                                            cursor-pointer
                                             rounded-lg
                                             border
                                             border-line
@@ -203,6 +334,7 @@ export function HauyAssistant() {
                                             focus-visible:outline-none
                                             focus-visible:ring-2
                                             focus-visible:ring-coral
+                                            focus-visible:ring-offset-2
                                         "
                                 >
                                     {suggestion}
@@ -212,166 +344,205 @@ export function HauyAssistant() {
                     </div>
                 )}
 
-                {messages.map((item, index) => (
-                    <div key={`${item.role}-${index}`} className={item.role === "user" ? "flex justify-end" : "flex justify-start"}>
-                        <div
-                            className={
-                                item.role === "user"
-                                    ? `
-                                            max-w-[85%]
-                                            rounded-2xl
-                                            bg-ink
-                                            px-5
-                                            py-4
-                                            text-paper
-                                        `
-                                    : `
-                                            w-full
-                                            max-w-[92%]
-                                            rounded-2xl
-                                            border
-                                            border-line
-                                            bg-background
-                                            px-5
-                                            py-5
-                                        `
-                            }
-                        >
-                            <p
-                                className="
-                                        whitespace-pre-wrap
-                                        text-base
-                                        leading-7
-                                    "
-                            >
-                                {item.content}
-                            </p>
+                {/* =============================================
+                    MENSAGENS
+                ============================================= */}
 
-                            {item.role === "assistant" && item.tutorials?.length > 0 && (
-                                <div
+                <div className="mt-5 space-y-5">
+                    {messages.map((item, index) => (
+                        <div key={`${item.role}-${index}`} className={item.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                            <div
+                                className={
+                                    item.role === "user"
+                                        ? `
+                                                max-w-[85%]
+                                                rounded-2xl
+                                                bg-ink
+                                                px-5
+                                                py-4
+                                                text-paper
+                                            `
+                                        : `
+                                                w-full
+                                                rounded-2xl
+                                                border
+                                                border-line
+                                                bg-background
+                                                px-5
+                                                py-5
+                                            `
+                                }
+                            >
+                                <p
                                     className="
-                                                mt-5
-                                                space-y-3
-                                            "
+                                            whitespace-pre-wrap
+                                            text-base
+                                            leading-7
+                                        "
                                 >
+                                    {item.content}
+                                </p>
+
+                                {/* =================================
+                                        TUTORIAIS RELACIONADOS
+                                    ================================= */}
+
+                                {item.role === "assistant" && item.tutorials?.length > 0 && (
                                     <div
                                         className="
-                                                    flex
-                                                    items-center
-                                                    gap-2
-                                                    text-sm
-                                                    font-bold
-                                                    text-ink
+                                                    mt-5
+                                                    space-y-3
                                                 "
                                     >
-                                        <BookOpen className="size-4" aria-hidden="true" />
-                                        Tutoriais relacionados
-                                    </div>
-
-                                    {item.tutorials.map((tutorial) => (
-                                        <Link
-                                            key={tutorial.id}
-                                            to={`/tutoriais/${tutorial.id}`}
+                                        <div
                                             className="
-                                                            group
-                                                            flex
-                                                            items-start
-                                                            justify-between
-                                                            gap-4
-                                                            rounded-xl
-                                                            border
-                                                            border-line
-                                                            bg-mist
-                                                            p-4
-                                                            transition-colors
-                                                            hover:border-coral
-                                                        "
+                                                        flex
+                                                        items-center
+                                                        gap-2
+                                                        text-sm
+                                                        font-bold
+                                                        text-ink
+                                                    "
                                         >
-                                            <div>
-                                                <p
-                                                    className="
-                                                                    font-bold
-                                                                    text-ink
-                                                                    group-hover:text-coral
-                                                                "
-                                                >
-                                                    {tutorial.title}
-                                                </p>
+                                            <BookOpen className="size-4" aria-hidden="true" />
 
-                                                <p
+                                            <span>Tutoriais relacionados</span>
+                                        </div>
+
+                                        {item.tutorials.map((tutorial) => (
+                                            <Link
+                                                key={tutorial.id}
+                                                to={`/tutoriais/${tutorial.id}`}
+                                                className="
+                                                                group
+                                                                flex
+                                                                items-start
+                                                                justify-between
+                                                                gap-4
+                                                                rounded-xl
+                                                                border
+                                                                border-line
+                                                                bg-mist
+                                                                p-4
+                                                                transition-colors
+                                                                hover:border-coral
+                                                                focus-visible:outline-none
+                                                                focus-visible:ring-2
+                                                                focus-visible:ring-coral
+                                                                focus-visible:ring-offset-2
+                                                            "
+                                            >
+                                                <div>
+                                                    <p
+                                                        className="
+                                                                        font-bold
+                                                                        text-ink
+                                                                        group-hover:text-coral
+                                                                    "
+                                                    >
+                                                        {tutorial.title}
+                                                    </p>
+
+                                                    <p
+                                                        className="
+                                                                        mt-1
+                                                                        text-sm
+                                                                        leading-5
+                                                                        text-muted-foreground
+                                                                    "
+                                                    >
+                                                        {tutorial.description}
+                                                    </p>
+                                                </div>
+
+                                                <ArrowUpRight
                                                     className="
                                                                     mt-1
-                                                                    text-sm
+                                                                    size-4
+                                                                    shrink-0
                                                                     text-muted-foreground
+                                                                    group-hover:text-coral
                                                                 "
-                                                >
-                                                    {tutorial.description}
-                                                </p>
-                                            </div>
-
-                                            <ArrowUpRight
-                                                className="
-                                                                mt-1
-                                                                size-4
-                                                                shrink-0
-                                                                text-muted-foreground
-                                                                group-hover:text-coral
-                                                            "
-                                                aria-hidden="true"
-                                            />
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
+                                                    aria-hidden="true"
+                                                />
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
 
-                {loading && (
-                    <div
-                        className="
-                            flex
-                            justify-start
-                        "
-                        aria-live="polite"
-                    >
+                    {/* =============================================
+                        LOADING
+                    ============================================= */}
+
+                    {loading && (
                         <div
                             className="
-                                rounded-2xl
-                                border
-                                border-line
-                                bg-mist
-                                px-5
-                                py-4
+                                flex
+                                justify-start
+                            "
+                            role="status"
+                            aria-live="polite"
+                        >
+                            <div
+                                className="
+                                    rounded-2xl
+                                    border
+                                    border-line
+                                    bg-mist
+                                    px-5
+                                    py-4
+                                    text-sm
+                                    font-semibold
+                                    text-muted-foreground
+                                "
+                            >
+                                O Assistente Hauy está preparando uma resposta...
+                            </div>
+                        </div>
+                    )}
+
+                    {/* =============================================
+                        ERRO
+                    ============================================= */}
+
+                    {error && (
+                        <p
+                            className="
                                 text-sm
                                 font-semibold
-                                text-muted-foreground
+                                text-coral-button
                             "
+                            role="alert"
                         >
-                            O Assistente Hauy está preparando uma resposta...
-                        </div>
-                    </div>
-                )}
-
-                {error && (
-                    <p
-                        className="
-                            text-sm
-                            font-semibold
-                            text-coral-button
-                        "
-                        role="alert"
-                    >
-                        {error}
-                    </p>
-                )}
+                            {error}
+                        </p>
+                    )}
+                </div>
             </div>
 
-            {/* =========================================
-                CAMPO
-            ========================================= */}
+            {/* ==================================================
+                CAMPO DE PERGUNTA
+            ================================================== */}
 
-            <form onSubmit={handleSubmit} className="mt-8">
+            <form
+                onSubmit={handleSubmit}
+                className={
+                    compact
+                        ? `
+                            shrink-0
+                            border-t
+                            border-line
+                            bg-background
+                            px-4
+                            pb-[calc(1rem+env(safe-area-inset-bottom))]
+                            pt-4
+                        `
+                        : "mt-8"
+                }
+            >
                 <div
                     className="
                         flex
@@ -401,12 +572,15 @@ export function HauyAssistant() {
                         disabled={loading}
                         className="
                             min-h-12
+                            max-h-32
                             flex-1
                             resize-none
+                            overflow-y-auto
                             bg-transparent
                             px-3
                             py-2
                             text-base
+                            leading-6
                             text-foreground
                             outline-none
                             placeholder:text-muted-foreground
@@ -421,6 +595,7 @@ export function HauyAssistant() {
                             flex
                             size-11
                             shrink-0
+                            cursor-pointer
                             items-center
                             justify-center
                             rounded-xl
@@ -433,16 +608,26 @@ export function HauyAssistant() {
                             focus-visible:outline-none
                             focus-visible:ring-2
                             focus-visible:ring-coral
+                            focus-visible:ring-offset-2
                         "
                     >
                         <Send className="size-5" aria-hidden="true" />
                     </button>
                 </div>
 
-                <div className="mt-2 flex justify-between gap-4">
+                <div
+                    className="
+                        mt-2
+                        flex
+                        items-start
+                        justify-between
+                        gap-4
+                    "
+                >
                     <p
                         className="
                             text-xs
+                            leading-5
                             text-muted-foreground
                         "
                     >
@@ -455,6 +640,7 @@ export function HauyAssistant() {
                             text-xs
                             text-muted-foreground
                         "
+                        aria-hidden="true"
                     >
                         {message.length}/{MAX_MESSAGE_LENGTH}
                     </span>

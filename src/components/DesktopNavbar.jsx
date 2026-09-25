@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
+import { BookOpen, CircleHelp, Folder, House, Info,  MessageCircleQuestion, } from "@sketchyicons/react";
 
 import { Link, NavLink } from "react-router-dom";
 
@@ -25,6 +25,7 @@ const links = [
     ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
     ["FAQ", "/faq", CircleHelp],
+    ["Assistente", "/assistente", MessageCircleQuestion],
     ["Sobre", "/sobre", Info],
 ];
 
