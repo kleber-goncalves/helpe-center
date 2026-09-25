@@ -2,11 +2,19 @@ import process from "node:process";
 
 import { questionSchema } from "../src/schemas/questionSchema.js";
 
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
 const MAX_BODY_BYTES = 10000;
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 
 const RATE_LIMIT_MAX_REQUESTS = 20;
+
+/* =========================================================
+   RATE LIMIT
+========================================================= */
 
 /*
  * Rate limit de melhor esforço.
@@ -15,9 +23,16 @@ const RATE_LIMIT_MAX_REQUESTS = 20;
  * reiniciada entre execuções ou variar por instância.
  *
  * Portanto isso não substitui um rate limiter
- * distribuído, mas adiciona uma camada útil.
+ * distribuído.
  */
+
 const rateLimitStore = new Map();
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+const SEARCH_QUERY_MAX_LENGTH = 200;
 
 /* =========================================================
    JSON RESPONSE
@@ -26,6 +41,7 @@ const rateLimitStore = new Map();
 function jsonResponse(body, status = 200) {
     return Response.json(body, {
         status,
+
         headers: {
             "Cache-Control": "no-store",
 
@@ -55,21 +71,22 @@ function getClientIp(request) {
 function cleanupRateLimitStore() {
     const now = Date.now();
 
-    for (const [ip, entry] of rateLimitStore) {
+    for (const [key, entry] of rateLimitStore) {
         if (now >= entry.resetAt) {
-            rateLimitStore.delete(ip);
+            rateLimitStore.delete(key);
         }
     }
 }
 
-function isRateLimited(ip) {
+function isRateLimited(key) {
     const now = Date.now();
 
-    const current = rateLimitStore.get(ip);
+    const current = rateLimitStore.get(key);
 
     if (!current) {
-        rateLimitStore.set(ip, {
+        rateLimitStore.set(key, {
             count: 1,
+
             resetAt: now + RATE_LIMIT_WINDOW_MS,
         });
 
@@ -77,8 +94,9 @@ function isRateLimited(ip) {
     }
 
     if (now >= current.resetAt) {
-        rateLimitStore.set(ip, {
+        rateLimitStore.set(key, {
             count: 1,
+
             resetAt: now + RATE_LIMIT_WINDOW_MS,
         });
 
@@ -102,8 +120,10 @@ function isAllowedOrigin(request) {
     const origin = request.headers.get("origin");
 
     /*
-     * Alguns clientes podem não enviar Origin.
+     * Alguns clientes podem
+     * não enviar Origin.
      */
+
     if (!origin) {
         return true;
     }
@@ -193,10 +213,16 @@ export async function POST(request) {
     const params = new URLSearchParams(rawBody);
 
     /* =====================================================
+       TYPE
+    ====================================================== */
+
+    const type = (params.get("type") || "").trim();
+
+    /* =====================================================
        HONEYPOT
     ====================================================== */
 
-    const website = params.get("website")?.trim() || "";
+    const website = (params.get("website") || "").trim();
 
     if (website) {
         return jsonResponse({
@@ -204,6 +230,204 @@ export async function POST(request) {
         });
     }
 
+    /* =====================================================
+       PESQUISA SEM RESULTADO
+    ====================================================== */
+
+    if (type === "search-no-result") {
+        return handleSearchWithoutResult({
+            params,
+            request,
+            appsScriptEndpoint,
+        });
+    }
+
+    /* =====================================================
+       ATENDIMENTO
+    ====================================================== */
+
+    return handleAttendance({
+        params,
+        request,
+        appsScriptEndpoint,
+    });
+}
+
+/* =========================================================
+   PESQUISA SEM RESULTADO
+========================================================= */
+
+async function handleSearchWithoutResult({ params, request, appsScriptEndpoint }) {
+    /* =====================================================
+       QUERY
+    ====================================================== */
+
+    const query = (params.get("query") || "").trim();
+
+    if (!query) {
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "A consulta de pesquisa é obrigatória.",
+            },
+            400,
+        );
+    }
+
+    if (query.length > SEARCH_QUERY_MAX_LENGTH) {
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "A consulta de pesquisa excede o tamanho permitido.",
+            },
+            400,
+        );
+    }
+
+    /* =====================================================
+       RATE LIMIT
+    ====================================================== */
+
+    const clientIp = getClientIp(request);
+
+    /*
+     * Prefixo separado para que pesquisas
+     * não consumam o limite do atendimento.
+     */
+
+    const rateLimitKey = `search:${clientIp}`;
+
+    if (isRateLimited(rateLimitKey)) {
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "Muitas pesquisas. Aguarde alguns minutos e tente novamente.",
+            },
+            429,
+        );
+    }
+
+    /* =====================================================
+       APPS SCRIPT BODY
+    ====================================================== */
+
+    const appsScriptBody = new URLSearchParams();
+
+    appsScriptBody.set("type", "search-no-result");
+
+    appsScriptBody.set("query", query);
+
+    /* =====================================================
+       APPS SCRIPT REQUEST
+    ====================================================== */
+
+    const controller = new AbortController();
+
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, 10000);
+
+    let appsScriptResponse;
+
+    try {
+        appsScriptResponse = await fetch(appsScriptEndpoint, {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+
+                Accept: "text/plain",
+            },
+
+            body: appsScriptBody.toString(),
+
+            redirect: "follow",
+
+            signal: controller.signal,
+        });
+    } catch (error) {
+        if (error?.name === "AbortError") {
+            return jsonResponse(
+                {
+                    ok: false,
+
+                    message: "O serviço de pesquisa demorou mais que o esperado.",
+                },
+                504,
+            );
+        }
+
+        console.error("[Hauy Conecta] Erro ao comunicar com Apps Script:", error?.message);
+
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "Não foi possível comunicar com o serviço de pesquisa.",
+            },
+            502,
+        );
+    } finally {
+        clearTimeout(timeoutId);
+    }
+
+    /* =====================================================
+       APPS SCRIPT RESPONSE
+    ====================================================== */
+
+    let responseText;
+
+    try {
+        responseText = (await appsScriptResponse.text()).trim();
+    } catch {
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "O serviço de pesquisa retornou uma resposta inválida.",
+            },
+            502,
+        );
+    }
+
+    /* =====================================================
+       CONFIRM SUCCESS
+    ====================================================== */
+
+    const accepted = appsScriptResponse.ok && (responseText === "Pesquisa registrada." || responseText === "OK");
+
+    if (!accepted) {
+        console.error("[Hauy Conecta] Apps Script rejeitou a pesquisa.", {
+            status: appsScriptResponse.status,
+        });
+
+        return jsonResponse(
+            {
+                ok: false,
+
+                message: "Não foi possível registrar a pesquisa.",
+            },
+            502,
+        );
+    }
+
+    /* =====================================================
+       SUCCESS
+    ====================================================== */
+
+    return jsonResponse({
+        ok: true,
+    });
+}
+
+/* =========================================================
+   ATENDIMENTO
+========================================================= */
+
+async function handleAttendance({ params, request, appsScriptEndpoint }) {
     /* =====================================================
        DATA
     ====================================================== */
@@ -249,7 +473,14 @@ export async function POST(request) {
 
     const clientIp = getClientIp(request);
 
-    if (isRateLimited(clientIp)) {
+    /*
+     * Mantém o rate limit do
+     * atendimento separado das pesquisas.
+     */
+
+    const rateLimitKey = `attendance:${clientIp}`;
+
+    if (isRateLimited(rateLimitKey)) {
         return jsonResponse(
             {
                 ok: false,
@@ -279,6 +510,7 @@ export async function POST(request) {
     /*
      * Honeypot vazio.
      */
+
     appsScriptBody.set("website", "");
 
     /* =====================================================

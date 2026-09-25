@@ -16,6 +16,7 @@
     "@radix-ui/react-select": "^2.3.7",
     "@radix-ui/react-slot": "^1.3.3",
     "@sketchyicons/react": "^0.5.0",
+    "@thesvg/react": "^3.3.8",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
     "lucide-react": "^1.47.0",

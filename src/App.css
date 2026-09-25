@@ -5,6 +5,7 @@
     --color-ink: #133345;
     --color-muted-ink: #27638a;
     --color-searchPesq: #000000;
+    --color-frete: #ffffff;
     --color-paper: #fdfdfb;
 
     --color-mist: #f2f6f7;
@@ -48,6 +49,7 @@
 
 .dark {
     --color-searchPesq: #ffffff;
+    --color-frete: #000000;
     --color-background: #122838;
     --color-foreground: #edf4f6;
     color: #436d78;

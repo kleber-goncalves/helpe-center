@@ -301,7 +301,7 @@ export const tutorials = [
         icon: SignalLow,
         duration: "5 minutos",
         description: "Aprenda a organizar seu trabalho de forma simples.",
-        keywords: ["word", "formatação", "trabalho", "fonte", "margens"],
+        keywords: ["word", "organizar", "trabalho", "Word", "formatação", "trabalho", "fonte", "margens"],
         learning: ["Ajustar fonte e tamanho", "Alinhar o texto", "Configurar espaçamento", "Organizar parágrafos"],
         steps: [
             {
