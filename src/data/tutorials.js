@@ -1979,9 +1979,12 @@ export const tutorials = [
 
                         description: "Clique no título do slide e substitua pelo título do seu trabalho ou do assunto que será apresentado.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-3-titulo.webp",
+                        image: null,
 
                         alt: "Slide do Canva mostrando um título sendo editado.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-3-titulo.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-titulo-poster.png",
                     },
 
                     {
@@ -1989,19 +1992,12 @@ export const tutorials = [
 
                         description: "Selecione as caixas de texto e substitua o conteúdo pelo texto que deseja apresentar, mantendo as informações objetivas.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-3-texto.webp",
+                        image: null,
 
                         alt: "Slide do Canva com uma caixa de texto sendo editada.",
-                    },
 
-                    {
-                        title: "Texto curto",
-
-                        description: "Prefira frases curtas, palavras-chave e tópicos para que o público consiga acompanhar o conteúdo enquanto você apresenta.",
-
-                        image: "/tutoriais/canva/apresentacao-canva/passo-3-curto.webp",
-
-                        alt: "Slide do Canva mostrando textos curtos organizados em tópicos.",
+                        video: "/tutoriais/canva/apresentacao-canva/passo-3-texto.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-texto-poster.png",
                     },
                 ],
 
@@ -2021,9 +2017,12 @@ export const tutorials = [
 
                         description: "Clique na opção de adicionar página para criar um novo slide e continuar desenvolvendo o conteúdo da apresentação.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar.webp",
+                        image: null,
 
                         alt: "Editor do Canva mostrando a opção de adicionar uma nova página.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar-poster.png",
                     },
 
                     {
@@ -2031,9 +2030,12 @@ export const tutorials = [
 
                         description: "Quando quiser manter o mesmo estilo visual, duplique uma página existente e altere somente os textos e elementos necessários.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar.webp",
+                        image: null,
 
                         alt: "Canva mostrando uma página da apresentação sendo duplicada.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar-poster.png",
                     },
 
                     {
@@ -2041,9 +2043,12 @@ export const tutorials = [
 
                         description: "Selecione uma página que não será utilizada e use a opção de excluir para removê-la da apresentação.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-4-excluir.webp",
+                        image: null,
 
                         alt: "Canva mostrando a opção de excluir uma página da apresentação.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-4-excluir.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-excluir-poster.png",
                     },
                 ],
 
