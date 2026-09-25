@@ -10,6 +10,7 @@ import ButtonReset from "./components/buttonReset";
 import "./App.css";
 import { Category } from "./pages/Category";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
+import { Assistente } from "./pages/Assistente";
 
 /*
  * Code Splitting das páginas.
@@ -119,6 +120,8 @@ function App() {
                         <Route path="/sobre" element={<About />} />
 
                         <Route path="/enviar-duvida" element={<SendQuestion />} />
+
+                        <Route path="/assistente" element={<Assistente />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Routes>
