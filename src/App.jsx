@@ -110,13 +110,7 @@ function AppContent() {
                 PRELOADER
             ============================================== */}
 
-            {loading && (
-                <Preloader
-                    onComplete={
-                        handlePreloaderComplete
-                    }
-                />
-            )}
+            {loading && <Preloader onComplete={handlePreloaderComplete} />}
 
             {/* ==============================================
                 TRANSIÇÃO DE TEMA
@@ -178,121 +172,65 @@ function AppContent() {
                     setOpen() dentro de useEffect.
                 */}
 
-                <HauyAssistantWidget
-                    key={location.pathname}
-                />
+                {location.pathname !== "/assistente" && <HauyAssistantWidget key={location.pathname} />}
 
                 {/* ==========================================
                     ROTAS
                 ========================================== */}
 
-                <Suspense
-                    fallback={
-                        <RouteLoadingFallback />
-                    }
-                >
+                <Suspense fallback={<RouteLoadingFallback />}>
                     <Routes>
                         {/* ================================
                             HOME
                         ================================= */}
 
-                        <Route
-                            path="/"
-                            element={
-                                <Home />
-                            }
-                        />
+                        <Route path="/" element={<Home />} />
 
                         {/* ================================
                             CATEGORIAS
                         ================================= */}
 
-                        <Route
-                            path="/categorias"
-                            element={
-                                <Categories />
-                            }
-                        />
+                        <Route path="/categorias" element={<Categories />} />
 
-                        <Route
-                            path="/categorias/:categoryId"
-                            element={
-                                <Category />
-                            }
-                        />
+                        <Route path="/categorias/:categoryId" element={<Category />} />
 
                         {/* ================================
                             TUTORIAIS
                         ================================= */}
 
-                        <Route
-                            path="/tutoriais"
-                            element={
-                                <Tutorials />
-                            }
-                        />
+                        <Route path="/tutoriais" element={<Tutorials />} />
 
-                        <Route
-                            path="/tutoriais/:tutorialId"
-                            element={
-                                <Tutorial />
-                            }
-                        />
+                        <Route path="/tutoriais/:tutorialId" element={<Tutorial />} />
 
                         {/* ================================
                             FAQ
                         ================================= */}
 
-                        <Route
-                            path="/faq"
-                            element={
-                                <FAQ />
-                            }
-                        />
+                        <Route path="/faq" element={<FAQ />} />
 
                         {/* ================================
                             SOBRE
                         ================================= */}
 
-                        <Route
-                            path="/sobre"
-                            element={
-                                <About />
-                            }
-                        />
+                        <Route path="/sobre" element={<About />} />
 
                         {/* ================================
                             ENVIAR DÚVIDA
                         ================================= */}
 
-                        <Route
-                            path="/enviar-duvida"
-                            element={
-                                <SendQuestion />
-                            }
-                        />
+                        <Route path="/enviar-duvida" element={<SendQuestion />} />
 
                         {/* ================================
                             ASSISTENTE
                         ================================= */}
 
-                        <Route
-                            path="/assistente"
-                            element={
-                                <Assistente />
-                            }
-                        />
+                        <Route path="/assistente" element={<Assistente />} />
 
                         {/* ================================
                             404
                         ================================= */}
 
-                        <Route
-                            path="*"
-                            element={
-                                <NotFound />
-                            }
-                        />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </Suspense>
 

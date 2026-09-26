@@ -17,7 +17,18 @@ function getFocusableElements(container) {
         return [];
     }
 
-    return Array.from(container.querySelectorAll(["a[href]", "button:not([disabled])", "textarea:not([disabled])", "input:not([disabled])", "select:not([disabled])", "[tabindex]:not([tabindex='-1'])"].join(",")));
+    return Array.from(
+        container.querySelectorAll(
+            [
+                "a[href]",
+                "button:not([disabled])",
+                "textarea:not([disabled])",
+                "input:not([disabled])",
+                "select:not([disabled])",
+                "[tabindex]:not([tabindex='-1'])",
+            ].join(","),
+        ),
+    );
 }
 
 /*
@@ -81,9 +92,9 @@ export function HauyAssistantWidget() {
         const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
         /*
-         * ==============================================
+         * =====================================================
          * TECLADO
-         * ==============================================
+         * =====================================================
          */
 
         function handleKeyDown(event) {
@@ -108,9 +119,9 @@ export function HauyAssistantWidget() {
             }
 
             /*
-             * ==============================================
+             * =================================================
              * TRAP DE FOCO MOBILE
-             * ==============================================
+             * =================================================
              */
 
             const focusable = getFocusableElements(dialog);
@@ -151,9 +162,14 @@ export function HauyAssistantWidget() {
         document.addEventListener("keydown", handleKeyDown);
 
         /*
-         * ==============================================
-         * BLOQUEAR SCROLL NO MOBILE
-         * ==============================================
+         * =====================================================
+         * BLOQUEAR SCROLL DO BODY
+         * =====================================================
+         *
+         * Somente no mobile.
+         *
+         * A conversa dentro do assistente será responsável
+         * pelo próprio scroll.
          */
 
         if (isMobile) {
@@ -163,19 +179,107 @@ export function HauyAssistantWidget() {
         }
 
         /*
-         * ==============================================
+         * =====================================================
+         * VISUAL VIEWPORT
+         * =====================================================
+         *
+         * O Android/Chrome altera o visual viewport quando
+         * o teclado virtual aparece.
+         *
+         * Em vez de deixar o navegador reposicionar todo o
+         * conteúdo, ajustamos a altura do painel.
+         */
+
+        const visualViewport = window.visualViewport;
+
+        function updateViewport() {
+            if (!visualViewport || !dialog) {
+                return;
+            }
+
+            /*
+             * Altura real atualmente visível.
+             */
+
+            const height = visualViewport.height;
+
+            /*
+             * Offset vertical do viewport visual.
+             *
+             * Em alguns navegadores Android esse valor pode
+             * mudar quando o teclado aparece.
+             */
+
+            const offsetTop = visualViewport.offsetTop;
+
+            dialog.style.height = `${height}px`;
+
+            dialog.style.top = `${offsetTop}px`;
+            dialog.style.bottom = "auto";
+        }
+
+        if (isMobile && visualViewport) {
+            updateViewport();
+
+            visualViewport.addEventListener("resize", updateViewport);
+
+            visualViewport.addEventListener("scroll", updateViewport);
+        }
+
+        /*
+         * =====================================================
          * FOCO INICIAL
-         * ==============================================
+         * =====================================================
+         *
+         * O foco é aplicado uma única vez.
+         *
+         * preventScroll evita que o navegador tente mover
+         * a página para revelar o textarea.
          */
 
         requestAnimationFrame(() => {
-            inputRef.current?.focus();
+            requestAnimationFrame(() => {
+                inputRef.current?.focus({
+                    preventScroll: true,
+                });
+            });
         });
+
+        /*
+         * =====================================================
+         * CLEANUP
+         * =====================================================
+         */
 
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
 
-            document.body.style.overflow = previousBodyOverflow.current;
+            if (isMobile) {
+                document.body.style.overflow =
+                    previousBodyOverflow.current;
+            }
+
+            if (visualViewport) {
+                visualViewport.removeEventListener(
+                    "resize",
+                    updateViewport,
+                );
+
+                visualViewport.removeEventListener(
+                    "scroll",
+                    updateViewport,
+                );
+            }
+
+            /*
+             * Limpa os estilos inline adicionados ao painel.
+             */
+
+            if (dialog) {
+                dialog.style.height = "";
+                dialog.style.top = "";
+                dialog.style.bottom = "";
+            }
         };
     }, [open]);
 
@@ -207,10 +311,7 @@ export function HauyAssistantWidget() {
                         BACKDROP MOBILE
                     ========================================= */}
 
-                    <button
-                        type="button"
-                        aria-label="Fechar Assistente Hauy"
-                        onClick={closeAssistant}
+                    <div
                         className="
                             fixed
                             inset-0
@@ -220,6 +321,8 @@ export function HauyAssistantWidget() {
                             backdrop-blur-[2px]
                             md:hidden
                         "
+                        aria-hidden="true"
+                        onPointerDown={closeAssistant}
                     />
 
                     {/* =========================================
@@ -230,7 +333,12 @@ export function HauyAssistantWidget() {
                         ref={dialogRef}
                         id="hauy-assistant-dialog"
                         role="dialog"
-                        aria-modal={window.matchMedia("(max-width: 767px)").matches ? "true" : "false"}
+                        aria-modal={
+                            window.matchMedia("(max-width: 767px)")
+                                .matches
+                                ? "true"
+                                : "false"
+                        }
                         aria-labelledby="hauy-assistant-title"
                         className="
                             fixed
@@ -238,9 +346,11 @@ export function HauyAssistantWidget() {
                             z-[230]
 
                             flex
-                            h-[100dvh]
+                            min-h-0
                             w-full
                             flex-col
+
+                            overflow-hidden
 
                             bg-background
 
@@ -250,18 +360,24 @@ export function HauyAssistantWidget() {
                             md:h-[min(720px,calc(100dvh-96px))]
                             md:w-[min(420px,calc(100vw-32px))]
 
-                            md:overflow-hidden
                             md:rounded-2xl
                             md:border
                             md:border-line
                             md:shadow-[0_18px_60px_rgb(0_0_0_/_0.18)]
                         "
                     >
-                        <span id="hauy-assistant-title" className="sr-only">
+                        <span
+                            id="hauy-assistant-title"
+                            className="sr-only"
+                        >
                             Assistente Hauy
                         </span>
 
-                        <HauyAssistant compact onClose={closeAssistant} inputRef={inputRef} />
+                        <HauyAssistant
+                            compact
+                            onClose={closeAssistant}
+                            inputRef={inputRef}
+                        />
                     </div>
                 </>
             )}
@@ -277,9 +393,10 @@ export function HauyAssistantWidget() {
                     onClick={openAssistant}
                     aria-label="Abrir Assistente Hauy"
                     aria-controls="hauy-assistant-dialog"
+                    aria-expanded={false}
                     className="
                         fixed
-                        z-[210]
+                        z-50
 
                         inline-flex
                         min-h-12
@@ -315,7 +432,8 @@ export function HauyAssistantWidget() {
                         /* MOBILE */
 
                         bottom-[calc(1rem+env(safe-area-inset-bottom))]
-                        right-4
+                        left-4
+                        right-auto
 
                         /* DESKTOP */
 

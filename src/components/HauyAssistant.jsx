@@ -1,6 +1,12 @@
-import { ArrowUpRight, BookOpen, MessageCircleQuestion, Send, X } from "lucide-react";
+import {
+    ArrowUpRight,
+    BookOpen,
+    MessageCircleQuestion,
+    Send,
+    X,
+} from "lucide-react";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -8,9 +14,17 @@ import { askAssistant } from "../lib/assistant";
 
 const MAX_MESSAGE_LENGTH = 1000;
 
-const suggestions = ["Como criar um sumário no Word?", "Como compartilhar um arquivo?", "Como começar a usar o Excel?"];
+const suggestions = [
+    "Como criar um sumário no Word?",
+    "Como compartilhar um arquivo?",
+    "Como começar a usar o Excel?",
+];
 
-export function HauyAssistant({ inputRef: externalInputRef = null, onClose = null, compact = false }) {
+export function HauyAssistant({
+    inputRef: externalInputRef = null,
+    onClose = null,
+    compact = false,
+}) {
     const internalInputRef = useRef(null);
 
     const inputRef = externalInputRef || internalInputRef;
@@ -22,25 +36,6 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
     const [loading, setLoading] = useState(false);
 
     const [error, setError] = useState("");
-
-    /*
-     * =========================================================
-     * FOCO INICIAL
-     * =========================================================
-     *
-     * Quando o Assistente estiver sendo usado como widget,
-     * o foco vai diretamente para o campo de pergunta.
-     */
-
-    useEffect(() => {
-        if (!compact) {
-            return;
-        }
-
-        requestAnimationFrame(() => {
-            inputRef.current?.focus();
-        });
-    }, [compact, inputRef]);
 
     /*
      * =========================================================
@@ -60,8 +55,7 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
         setError("");
 
         /*
-         * Mostra imediatamente a pergunta
-         * do usuário na conversa.
+         * Mostra imediatamente a pergunta do usuário.
          */
 
         setMessages((current) => [
@@ -73,6 +67,7 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
         ]);
 
         setMessage("");
+
         setLoading(true);
 
         try {
@@ -87,12 +82,24 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                 },
             ]);
         } catch (requestError) {
-            setError(requestError.message || "Não foi possível responder agora.");
+            setError(
+                requestError.message ||
+                    "Não foi possível responder agora.",
+            );
         } finally {
             setLoading(false);
 
+            /*
+             * Mantém o foco no campo depois da resposta.
+             *
+             * preventScroll evita que o Android/Chrome
+             * tente reposicionar a página.
+             */
+
             requestAnimationFrame(() => {
-                inputRef.current?.focus();
+                inputRef.current?.focus({
+                    preventScroll: true,
+                });
             });
         }
     }
@@ -107,7 +114,9 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
         setMessage(suggestion);
 
         requestAnimationFrame(() => {
-            inputRef.current?.focus();
+            inputRef.current?.focus({
+                preventScroll: true,
+            });
         });
     }
 
@@ -138,6 +147,7 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                             shrink-0
                             border-b
                             border-line
+                            bg-background
                             px-5
                             py-4
                         `
@@ -197,7 +207,7 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                         </h2>
                     </div>
 
-                    {/* Fechar widget */}
+                    {/* Fechar */}
 
                     {onClose && (
                         <button
@@ -224,7 +234,10 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                                 focus-visible:ring-offset-2
                             "
                         >
-                            <X className="size-5" aria-hidden="true" />
+                            <X
+                                className="size-5"
+                                aria-hidden="true"
+                            />
                         </button>
                     )}
                 </div>
@@ -246,7 +259,8 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                             `
                     }
                 >
-                    Pergunte sobre os assuntos disponíveis na Central de Ajuda.
+                    Pergunte sobre os assuntos disponíveis na Central de
+                    Ajuda.
                 </p>
             </header>
 
@@ -264,14 +278,16 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                             overscroll-contain
                             px-5
                             py-5
+                            [scrollbar-gutter:stable]
+                            [-webkit-overflow-scrolling:touch]
                         `
                         : "space-y-5"
                 }
                 aria-live="polite"
             >
-                {/* =============================================
+                {/* =================================================
                     ESTADO INICIAL
-                ============================================= */}
+                ================================================= */}
 
                 {messages.length === 0 && (
                     <div
@@ -314,28 +330,30 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                                 <button
                                     key={suggestion}
                                     type="button"
-                                    onClick={() => handleSuggestion(suggestion)}
+                                    onClick={() =>
+                                        handleSuggestion(suggestion)
+                                    }
                                     className="
-                                            min-h-11
-                                            cursor-pointer
-                                            rounded-lg
-                                            border
-                                            border-line
-                                            bg-background
-                                            px-3
-                                            py-2
-                                            text-left
-                                            text-sm
-                                            font-semibold
-                                            text-ink
-                                            transition-colors
-                                            hover:border-coral
-                                            hover:text-coral
-                                            focus-visible:outline-none
-                                            focus-visible:ring-2
-                                            focus-visible:ring-coral
-                                            focus-visible:ring-offset-2
-                                        "
+                                        min-h-11
+                                        cursor-pointer
+                                        rounded-lg
+                                        border
+                                        border-line
+                                        bg-background
+                                        px-3
+                                        py-2
+                                        text-left
+                                        text-sm
+                                        font-semibold
+                                        text-ink
+                                        transition-colors
+                                        hover:border-coral
+                                        hover:text-coral
+                                        focus-visible:outline-none
+                                        focus-visible:ring-2
+                                        focus-visible:ring-coral
+                                        focus-visible:ring-offset-2
+                                    "
                                 >
                                     {suggestion}
                                 </button>
@@ -344,145 +362,161 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                     </div>
                 )}
 
-                {/* =============================================
+                {/* =================================================
                     MENSAGENS
-                ============================================= */}
+                ================================================= */}
 
                 <div className="mt-5 space-y-5">
                     {messages.map((item, index) => (
-                        <div key={`${item.role}-${index}`} className={item.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                        <div
+                            key={`${item.role}-${index}`}
+                            className={
+                                item.role === "user"
+                                    ? "flex justify-end"
+                                    : "flex justify-start"
+                            }
+                        >
                             <div
                                 className={
                                     item.role === "user"
                                         ? `
-                                                max-w-[85%]
-                                                rounded-2xl
-                                                bg-ink
-                                                px-5
-                                                py-4
-                                                text-paper
-                                            `
+                                            max-w-[85%]
+                                            rounded-2xl
+                                            bg-ink
+                                            px-5
+                                            py-4
+                                            text-paper
+                                        `
                                         : `
-                                                w-full
-                                                rounded-2xl
-                                                border
-                                                border-line
-                                                bg-background
-                                                px-5
-                                                py-5
-                                            `
+                                            w-full
+                                            rounded-2xl
+                                            border
+                                            border-line
+                                            bg-background
+                                            px-5
+                                            py-5
+                                        `
                                 }
                             >
                                 <p
                                     className="
-                                            whitespace-pre-wrap
-                                            text-base
-                                            leading-7
-                                        "
+                                        whitespace-pre-wrap
+                                        text-base
+                                        leading-7
+                                    "
                                 >
                                     {item.content}
                                 </p>
 
                                 {/* =================================
-                                        TUTORIAIS RELACIONADOS
-                                    ================================= */}
+                                    TUTORIAIS
+                                ================================= */}
 
-                                {item.role === "assistant" && item.tutorials?.length > 0 && (
-                                    <div
-                                        className="
-                                                    mt-5
-                                                    space-y-3
-                                                "
-                                    >
+                                {item.role === "assistant" &&
+                                    item.tutorials?.length > 0 && (
                                         <div
                                             className="
-                                                        flex
-                                                        items-center
-                                                        gap-2
-                                                        text-sm
-                                                        font-bold
-                                                        text-ink
-                                                    "
+                                                mt-5
+                                                space-y-3
+                                            "
                                         >
-                                            <BookOpen className="size-4" aria-hidden="true" />
-
-                                            <span>Tutoriais relacionados</span>
-                                        </div>
-
-                                        {item.tutorials.map((tutorial) => (
-                                            <Link
-                                                key={tutorial.id}
-                                                to={`/tutoriais/${tutorial.id}`}
+                                            <div
                                                 className="
-                                                                group
-                                                                flex
-                                                                items-start
-                                                                justify-between
-                                                                gap-4
-                                                                rounded-xl
-                                                                border
-                                                                border-line
-                                                                bg-mist
-                                                                p-4
-                                                                transition-colors
-                                                                hover:border-coral
-                                                                focus-visible:outline-none
-                                                                focus-visible:ring-2
-                                                                focus-visible:ring-coral
-                                                                focus-visible:ring-offset-2
-                                                            "
+                                                    flex
+                                                    items-center
+                                                    gap-2
+                                                    text-sm
+                                                    font-bold
+                                                    text-ink
+                                                "
                                             >
-                                                <div>
-                                                    <p
-                                                        className="
-                                                                        font-bold
-                                                                        text-ink
-                                                                        group-hover:text-coral
-                                                                    "
-                                                    >
-                                                        {tutorial.title}
-                                                    </p>
-
-                                                    <p
-                                                        className="
-                                                                        mt-1
-                                                                        text-sm
-                                                                        leading-5
-                                                                        text-muted-foreground
-                                                                    "
-                                                    >
-                                                        {tutorial.description}
-                                                    </p>
-                                                </div>
-
-                                                <ArrowUpRight
-                                                    className="
-                                                                    mt-1
-                                                                    size-4
-                                                                    shrink-0
-                                                                    text-muted-foreground
-                                                                    group-hover:text-coral
-                                                                "
+                                                <BookOpen
+                                                    className="size-4"
                                                     aria-hidden="true"
                                                 />
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
+
+                                                <span>
+                                                    Tutoriais relacionados
+                                                </span>
+                                            </div>
+
+                                            {item.tutorials.map(
+                                                (tutorial) => (
+                                                    <Link
+                                                        key={tutorial.id}
+                                                        to={`/tutoriais/${tutorial.id}`}
+                                                        className="
+                                                            group
+                                                            flex
+                                                            items-start
+                                                            justify-between
+                                                            gap-4
+                                                            rounded-xl
+                                                            border
+                                                            border-line
+                                                            bg-mist
+                                                            p-4
+                                                            transition-colors
+                                                            hover:border-coral
+                                                            focus-visible:outline-none
+                                                            focus-visible:ring-2
+                                                            focus-visible:ring-coral
+                                                            focus-visible:ring-offset-2
+                                                        "
+                                                    >
+                                                        <div>
+                                                            <p
+                                                                className="
+                                                                    font-bold
+                                                                    text-ink
+                                                                    group-hover:text-coral
+                                                                "
+                                                            >
+                                                                {
+                                                                    tutorial.title
+                                                                }
+                                                            </p>
+
+                                                            <p
+                                                                className="
+                                                                    mt-1
+                                                                    text-sm
+                                                                    leading-5
+                                                                    text-muted-foreground
+                                                                "
+                                                            >
+                                                                {
+                                                                    tutorial.description
+                                                                }
+                                                            </p>
+                                                        </div>
+
+                                                        <ArrowUpRight
+                                                            className="
+                                                                mt-1
+                                                                size-4
+                                                                shrink-0
+                                                                text-muted-foreground
+                                                                group-hover:text-coral
+                                                            "
+                                                            aria-hidden="true"
+                                                        />
+                                                    </Link>
+                                                ),
+                                            )}
+                                        </div>
+                                    )}
                             </div>
                         </div>
                     ))}
 
-                    {/* =============================================
+                    {/* =================================================
                         LOADING
-                    ============================================= */}
+                    ================================================= */}
 
                     {loading && (
                         <div
-                            className="
-                                flex
-                                justify-start
-                            "
+                            className="flex justify-start"
                             role="status"
                             aria-live="polite"
                         >
@@ -499,14 +533,15 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                                     text-muted-foreground
                                 "
                             >
-                                O Assistente Hauy está preparando uma resposta...
+                                O Assistente Hauy está preparando uma
+                                resposta...
                             </div>
                         </div>
                     )}
 
-                    {/* =============================================
+                    {/* =================================================
                         ERRO
-                    ============================================= */}
+                    ================================================= */}
 
                     {error && (
                         <p
@@ -557,7 +592,10 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                         focus-within:border-coral
                     "
                 >
-                    <label htmlFor="hauy-assistant-input" className="sr-only">
+                    <label
+                        htmlFor="hauy-assistant-input"
+                        className="sr-only"
+                    >
                         Digite sua dúvida
                     </label>
 
@@ -565,11 +603,14 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                         ref={inputRef}
                         id="hauy-assistant-input"
                         value={message}
-                        onChange={(event) => setMessage(event.target.value)}
+                        onChange={(event) =>
+                            setMessage(event.target.value)
+                        }
                         placeholder="O que você precisa aprender?"
                         rows={2}
                         maxLength={MAX_MESSAGE_LENGTH}
                         disabled={loading}
+                        enterKeyHint="send"
                         className="
                             min-h-12
                             max-h-32
@@ -589,7 +630,9 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
 
                     <button
                         type="submit"
-                        disabled={loading || !message.trim()}
+                        disabled={
+                            loading || !message.trim()
+                        }
                         aria-label="Enviar dúvida"
                         className="
                             flex
@@ -611,7 +654,10 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                             focus-visible:ring-offset-2
                         "
                     >
-                        <Send className="size-5" aria-hidden="true" />
+                        <Send
+                            className="size-5"
+                            aria-hidden="true"
+                        />
                     </button>
                 </div>
 
@@ -631,7 +677,8 @@ export function HauyAssistant({ inputRef: externalInputRef = null, onClose = nul
                             text-muted-foreground
                         "
                     >
-                        O Assistente utiliza os conteúdos disponíveis na Central.
+                        O Assistente utiliza os conteúdos disponíveis na
+                        Central.
                     </p>
 
                     <span
