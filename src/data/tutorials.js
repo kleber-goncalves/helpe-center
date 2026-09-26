@@ -2068,9 +2068,12 @@ export const tutorials = [
 
                         description: "Abra a opção de imagens ou carregue um arquivo do computador para inserir uma imagem relacionada ao conteúdo do slide.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-5-imagens.webp",
+                        image: null,
 
                         alt: "Menu do Canva mostrando opções para adicionar imagens à apresentação.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-5-imagens.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-imagens-poster.png",
                     },
 
                     {
@@ -2078,9 +2081,12 @@ export const tutorials = [
 
                         description: "Utilize formas, ícones e outros elementos visuais para destacar informações ou organizar melhor o conteúdo.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-5-elementos.webp",
+                        image: null,
 
                         alt: "Editor do Canva mostrando formas e elementos visuais sendo adicionados ao slide.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-5-elementos.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-elementos-poster.png",
                     },
 
                     {
@@ -2088,9 +2094,12 @@ export const tutorials = [
 
                         description: "Arraste os elementos para ajustar sua posição e mantenha espaços suficientes entre textos, imagens e outros objetos.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento.webp",
+                        image: null,
 
                         alt: "Slide do Canva mostrando textos e elementos visuais organizados na página.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento-poster.png",
                     },
                 ],
 
@@ -2152,9 +2161,12 @@ export const tutorials = [
 
                         description: "Clique em Apresentar para abrir a apresentação em modo de exibição e mostrar os slides ao público.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar.webp",
+                        image: null,
 
                         alt: "Canva mostrando a opção Apresentar para exibir os slides.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar-poster.png",
                     },
 
                     {
@@ -2162,9 +2174,12 @@ export const tutorials = [
 
                         description: "Use a opção Compartilhar quando quiser enviar a apresentação ou disponibilizá-la para outras pessoas.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar.webp",
+                        image: null,
 
                         alt: "Canva mostrando a janela de compartilhamento da apresentação.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar-poster.png",
                     },
 
                     {
@@ -2172,9 +2187,12 @@ export const tutorials = [
 
                         description: "Selecione Compartilhar > Baixar e escolha um dos formatos disponíveis para salvar uma cópia da apresentação.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-7-baixar.webp",
+                        image: null,
 
                         alt: "Canva mostrando a opção de baixar a apresentação em um formato de arquivo.",
+
+                        video: "/tutoriais/canva/apresentacao-canva/passo-7-baixar.mp4",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-baixar-poster.png",
                     },
                 ],
 

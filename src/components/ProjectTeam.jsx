@@ -15,12 +15,12 @@ const team = {
             {
                 name: "Cirlene",
                 role: "Aluna",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: "/equipe/alunos/cirlena.png",
             },
             {
                 name: "Divina",
                 role: "Aluna",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: "/equipe/alunos/divina.png",
             },
             {
                 name: "Robertin",
