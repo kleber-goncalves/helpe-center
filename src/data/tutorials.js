@@ -514,7 +514,7 @@ export const tutorials = [
     {
         id: "imprimir-documento",
 
-        title: "Como imprimir um documento",
+        title: "Como imprimir um documento...",
 
         category: "informatica-basica",
 
@@ -748,7 +748,7 @@ export const tutorials = [
     {
         id: "digitalizar-documento",
 
-        title: "Como digitalizar um documento",
+        title: "Como digitalizar um documento...",
 
         category: "informatica-basica",
 
@@ -990,7 +990,7 @@ export const tutorials = [
 
                         description: "Abra o Google Drive no navegador e entre na conta Google que contém o arquivo que será compartilhado.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.png",
 
                         alt: "Tela inicial do Google Drive aberta no navegador.",
                     },
@@ -1000,45 +1000,13 @@ export const tutorials = [
 
                         description: "Confira se você está conectado à conta Google correta antes de procurar o arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.png",
 
                         alt: "Google Drive mostrando uma conta Google conectada.",
                     },
                 ],
 
                 tip: "Confira a conta conectada antes de começar. O arquivo precisa estar armazenado nessa conta ou em um local ao qual você tenha acesso.",
-
-                video: null,
-            },
-
-            {
-                title: "Localize o arquivo",
-
-                description: "Procure o documento ou arquivo desejado entre suas pastas. Você também pode utilizar a barra de pesquisa do Google Drive.",
-
-                examples: [
-                    {
-                        title: "Pelas pastas",
-
-                        description: "Navegue pelas pastas do Google Drive até encontrar o arquivo que deseja compartilhar.",
-
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-2-pastas.webp",
-
-                        alt: "Google Drive mostrando pastas e arquivos armazenados.",
-                    },
-
-                    {
-                        title: "Barra de pesquisa",
-
-                        description: "Digite o nome do arquivo ou uma palavra relacionada na barra de pesquisa para encontrá-lo mais rapidamente.",
-
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-2-pesquisa.webp",
-
-                        alt: "Barra de pesquisa do Google Drive sendo usada para localizar um arquivo.",
-                    },
-                ],
-
-                tip: "Quando você não souber em qual pasta o arquivo está, use a barra de pesquisa do Google Drive para encontrá-lo mais rapidamente.",
 
                 video: null,
             },
@@ -1054,7 +1022,7 @@ export const tutorials = [
 
                         description: "Clique com o botão direito sobre o arquivo para abrir o menu com as opções disponíveis.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.png",
 
                         alt: "Menu de contexto do Google Drive aberto sobre um arquivo.",
                     },
@@ -1064,7 +1032,7 @@ export const tutorials = [
 
                         description: "No menu exibido, selecione Compartilhar para abrir a janela de permissões e acesso.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.png",
 
                         alt: "Menu do Google Drive mostrando a opção Compartilhar.",
                     },
@@ -1082,23 +1050,23 @@ export const tutorials = [
 
                 examples: [
                     {
-                        title: "Compartilhar com pessoas específicas",
-
-                        description: "Digite o endereço de e-mail das pessoas que devem receber acesso ao arquivo.",
-
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.webp",
-
-                        alt: "Janela de compartilhamento do Google Drive com um endereço de e-mail sendo informado.",
-                    },
-
-                    {
                         title: "Acesso geral",
 
                         description: "Verifique a configuração de acesso geral quando quiser compartilhar o arquivo por meio de um link.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.png",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando as configurações de acesso geral.",
+                    },
+
+                    {
+                        title: "Compartilhar com pessoas específicas",
+
+                        description: "Digite o endereço de e-mail das pessoas que devem receber acesso ao arquivo.",
+
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.png",
+
+                        alt: "Janela de compartilhamento do Google Drive com um endereço de e-mail sendo informado.",
                     },
                 ],
 
@@ -1118,7 +1086,7 @@ export const tutorials = [
 
                         description: "Use a permissão de visualização quando a pessoa precisar apenas abrir e consultar o conteúdo do arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.png",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de visualizador.",
                     },
@@ -1128,7 +1096,7 @@ export const tutorials = [
 
                         description: "Escolha a opção de comentar quando a pessoa precisar fazer comentários ou sugestões sem alterar diretamente o conteúdo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.png",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de comentarista.",
                     },
@@ -1138,7 +1106,7 @@ export const tutorials = [
 
                         description: "Selecione a permissão de edição quando a pessoa precisar modificar o conteúdo do arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.png",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de editor.",
                     },
@@ -1160,7 +1128,7 @@ export const tutorials = [
 
                         description: "Clique em Copiar link para copiar o endereço do arquivo e depois cole-o em uma mensagem, e-mail ou outro aplicativo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.png",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando o botão Copiar link.",
                     },
@@ -1170,7 +1138,7 @@ export const tutorials = [
 
                         description: "Quando disponível, use a opção de envio da própria janela para compartilhar o arquivo diretamente com as pessoas selecionadas.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.webp",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.png",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando a opção de enviar o acesso.",
                     },
@@ -1214,19 +1182,9 @@ export const tutorials = [
 
                         description: "Abra o documento no Microsoft Word e confira se o conteúdo está pronto para ser convertido em PDF.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.png",
 
                         alt: "Documento aberto no Microsoft Word antes de ser convertido para PDF.",
-                    },
-
-                    {
-                        title: "LibreOffice",
-
-                        description: "Abra o arquivo no LibreOffice e confira o conteúdo antes de iniciar a exportação para PDF.",
-
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-libreoffice.webp",
-
-                        alt: "Documento aberto no LibreOffice antes de ser convertido para PDF.",
                     },
                 ],
 
@@ -1256,7 +1214,7 @@ export const tutorials = [
 
                         description: "Em alguns programas, utilize a opção Exportar para escolher o formato PDF diretamente.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.png",
 
                         alt: "Menu do programa mostrando a opção de exportar o documento.",
                     },
@@ -1298,7 +1256,7 @@ export const tutorials = [
 
                         description: "Quando houver uma opção específica para exportação, selecione Exportar como PDF para gerar o arquivo diretamente.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.png",
 
                         alt: "Programa mostrando a opção Exportar como PDF.",
                     },
@@ -1320,7 +1278,7 @@ export const tutorials = [
 
                         description: "Navegue pelas pastas do computador e selecione o local onde o arquivo PDF deverá ser armazenado.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.png",
 
                         alt: "Janela de salvamento mostrando a escolha da pasta para guardar o arquivo PDF.",
                     },
@@ -1330,7 +1288,7 @@ export const tutorials = [
 
                         description: "Digite um nome fácil de reconhecer, como 'Trabalho_Final.pdf' ou 'Curriculo_2026.pdf'.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.png",
 
                         alt: "Janela de salvamento mostrando o nome de um arquivo PDF.",
                     },
@@ -1352,65 +1310,13 @@ export const tutorials = [
 
                         description: "Depois de escolher o formato, local e nome do arquivo, confirme a operação para iniciar a criação do PDF.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.webp",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.png",
 
                         alt: "Janela de salvamento mostrando a confirmação para criar o arquivo PDF.",
-                    },
-
-                    {
-                        title: "Arquivo sendo criado",
-
-                        description: "Aguarde alguns instantes enquanto o programa salva ou exporta o documento no formato PDF.",
-
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-processando.webp",
-
-                        alt: "Programa concluindo a exportação de um documento para PDF.",
                     },
                 ],
 
                 tip: "Documentos maiores ou com muitas imagens podem levar alguns instantes para serem exportados.",
-
-                video: null,
-            },
-
-            {
-                title: "Abra o PDF para conferir",
-
-                description: "Abra o arquivo recém-criado e confira se textos, imagens e páginas foram mantidos corretamente antes de enviá-lo ou imprimi-lo.",
-
-                examples: [
-                    {
-                        title: "Confira o texto",
-
-                        description: "Abra o PDF e verifique se os textos aparecem corretamente, sem cortes, espaços inesperados ou alterações de formatação.",
-
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-6-texto.webp",
-
-                        alt: "Arquivo PDF aberto mostrando o texto do documento convertido.",
-                    },
-
-                    {
-                        title: "Confira as imagens",
-
-                        description: "Verifique se as imagens, tabelas e outros elementos visuais foram mantidos corretamente no arquivo PDF.",
-
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-6-imagens.webp",
-
-                        alt: "Arquivo PDF aberto mostrando imagens e elementos visuais preservados.",
-                    },
-
-                    {
-                        title: "Confira as páginas",
-
-                        description: "Passe pelas páginas do documento para verificar se nenhuma página foi cortada, duplicada ou ficou fora da ordem.",
-
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-6-paginas.webp",
-
-                        alt: "Documento PDF sendo revisado página por página após a conversão.",
-                    },
-                ],
-
-                tip: "Sempre abra o PDF antes de compartilhar ou imprimir para confirmar que o resultado ficou como esperado.",
 
                 video: null,
             },
@@ -1448,19 +1354,9 @@ export const tutorials = [
 
                         description: "Abra o Gmail no navegador e entre na conta de e-mail que será utilizada para enviar a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-1-gmail.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-1-gmail.png",
 
                         alt: "Tela inicial do Gmail aberta no navegador.",
-                    },
-
-                    {
-                        title: "Conta conectada",
-
-                        description: "Confira se você está conectado à conta de e-mail correta antes de criar a mensagem.",
-
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-1-conta.webp",
-
-                        alt: "Serviço de e-mail mostrando uma conta conectada.",
                     },
                 ],
 
@@ -1480,7 +1376,7 @@ export const tutorials = [
 
                         description: "No Gmail, clique em Escrever para abrir uma nova janela de mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-escrever.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-escrever.png",
 
                         alt: "Gmail mostrando o botão Escrever para criar uma nova mensagem.",
                     },
@@ -1490,7 +1386,7 @@ export const tutorials = [
 
                         description: "Uma janela será aberta para que você possa preencher os dados da mensagem e adicionar o arquivo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.png",
 
                         alt: "Janela de nova mensagem aberta no serviço de e-mail.",
                     },
@@ -1512,7 +1408,7 @@ export const tutorials = [
 
                         description: "No campo Para, digite o endereço de e-mail da pessoa que deverá receber a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.png",
 
                         alt: "Nova mensagem mostrando um endereço de e-mail preenchido no campo Para.",
                     },
@@ -1522,7 +1418,7 @@ export const tutorials = [
 
                         description: "No campo Assunto, escreva uma frase curta que ajude o destinatário a entender o motivo da mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-assunto.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-assunto.png",
 
                         alt: "Nova mensagem mostrando um assunto preenchido.",
                     },
@@ -1544,7 +1440,7 @@ export const tutorials = [
 
                         description: "Localize o ícone de clipe de papel na barra de ferramentas da mensagem e clique nele para abrir a seleção de arquivos.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-clipe.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-clipe.png",
 
                         alt: "Janela de nova mensagem mostrando o ícone de clipe de papel para anexar arquivos.",
                     },
@@ -1554,7 +1450,7 @@ export const tutorials = [
 
                         description: "Depois de clicar no clipe, uma janela do computador ou dispositivo será aberta para que você possa localizar o arquivo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.png",
 
                         alt: "Janela de seleção de arquivos aberta para adicionar um anexo ao e-mail.",
                     },
@@ -1572,21 +1468,11 @@ export const tutorials = [
 
                 examples: [
                     {
-                        title: "Localizar o arquivo",
-
-                        description: "Navegue pelas pastas do computador até encontrar o documento, imagem ou outro arquivo que deseja enviar.",
-
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-localizar.webp",
-
-                        alt: "Janela de seleção mostrando pastas e arquivos disponíveis para anexar.",
-                    },
-
-                    {
                         title: "Arquivo selecionado",
 
                         description: "Selecione o arquivo desejado e confirme a escolha para começar o carregamento do anexo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.png",
 
                         alt: "Arquivo selecionado em uma janela do computador para ser anexado ao e-mail.",
                     },
@@ -1596,7 +1482,7 @@ export const tutorials = [
 
                         description: "Aguarde até que o carregamento termine e confira se o nome do arquivo aparece na mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-carregado.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-carregado.png",
 
                         alt: "Mensagem de e-mail mostrando um arquivo anexado após o carregamento.",
                     },
@@ -1618,7 +1504,7 @@ export const tutorials = [
 
                         description: "Revise o endereço do destinatário, o assunto, o texto da mensagem e o nome do arquivo anexado antes de enviar.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-conferir.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-conferir.png",
 
                         alt: "Mensagem de e-mail preenchida com destinatário, assunto, texto e arquivo anexado.",
                     },
@@ -1628,7 +1514,7 @@ export const tutorials = [
 
                         description: "Depois de conferir todas as informações, clique no botão Enviar para encaminhar a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-enviar.webp",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-enviar.png",
 
                         alt: "Janela de nova mensagem mostrando o botão Enviar.",
                     },
@@ -1672,7 +1558,7 @@ export const tutorials = [
 
                         description: "Abra o Google Drive no navegador e entre na conta Google onde deseja guardar o arquivo.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.webp",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.png",
 
                         alt: "Tela inicial do Google Drive aberta no navegador.",
                     },
@@ -1682,7 +1568,7 @@ export const tutorials = [
 
                         description: "Confira se você está conectado à conta Google correta antes de enviar o arquivo.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-conta.webp",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-conta.png",
 
                         alt: "Google Drive mostrando uma conta Google conectada.",
                     },
@@ -1702,21 +1588,14 @@ export const tutorials = [
                     {
                         title: "Pasta existente",
 
-                        description: "Navegue pelas pastas do Google Drive e abra a pasta onde o arquivo deverá ser armazenado.",
+                        description: "Navegue pelas pastas do Google Drive e abra a pasta onde o arquivo deverá ser armazenado, ou crie uma nova.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta.webp",
+                        image: null,
 
                         alt: "Google Drive mostrando pastas disponíveis para armazenar um arquivo.",
-                    },
 
-                    {
-                        title: "Organização por pastas",
-
-                        description: "Escolha uma pasta relacionada ao conteúdo, como Documentos, Fotos, Trabalhos ou Arquivos pessoais.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-2-organizar.webp",
-
-                        alt: "Google Drive mostrando arquivos organizados dentro de uma pasta.",
+                        video: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta.mp4",
+                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta-poster.png",
                     },
                 ],
 
@@ -1736,7 +1615,7 @@ export const tutorials = [
 
                         description: "No lado esquerdo do Google Drive, clique no botão Novo para abrir o menu de opções.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-novo.webp",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-novo.png",
 
                         alt: "Google Drive mostrando o botão Novo no menu lateral.",
                     },
@@ -1746,7 +1625,7 @@ export const tutorials = [
 
                         description: "No menu que será exibido, selecione Upload de arquivo para escolher um arquivo armazenado no computador.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-upload.webp",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-upload.png",
 
                         alt: "Menu Novo do Google Drive mostrando a opção Upload de arquivo.",
                     },
@@ -1764,101 +1643,20 @@ export const tutorials = [
 
                 examples: [
                     {
-                        title: "Localizar o arquivo",
+                        title: "Localize o arquivo e clique em no arquivo selecionado",
 
-                        description: "Navegue pelas pastas do computador até encontrar o documento, imagem ou outro arquivo que deseja enviar.",
+                        description: "Navegue pelas pastas do computador até encontrar o documento, imagem ou outro arquivo que deseja enviar. Clique no arquivo desejado e confirme a seleção para iniciar o envio para o Google Drive.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar.webp",
+                        image: null,
 
                         alt: "Janela de seleção mostrando arquivos disponíveis para upload no Google Drive.",
-                    },
 
-                    {
-                        title: "Arquivo selecionado",
-
-                        description: "Clique no arquivo desejado e confirme a seleção para iniciar o envio para o Google Drive.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-4-selecionar.webp",
-
-                        alt: "Arquivo selecionado em uma janela do computador para ser enviado ao Google Drive.",
+                        video: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar.mp4",
+                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar-pasta-poster.png",
                     },
                 ],
 
                 tip: "Confira o nome do arquivo antes de confirmar para garantir que você está enviando o documento correto.",
-
-                video: null,
-            },
-
-            {
-                title: "Aguarde o envio terminar",
-
-                description: "Espere até que o carregamento seja concluído. Não feche a página enquanto o arquivo ainda estiver sendo enviado.",
-
-                examples: [
-                    {
-                        title: "Progresso do upload",
-
-                        description: "Observe o indicador de carregamento para acompanhar o progresso do envio do arquivo.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-5-progresso.webp",
-
-                        alt: "Google Drive mostrando o progresso do upload de um arquivo.",
-                    },
-
-                    {
-                        title: "Upload concluído",
-
-                        description: "Aguarde até que o Drive informe que o arquivo foi enviado ou até que ele apareça dentro da pasta escolhida.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-5-concluido.webp",
-
-                        alt: "Google Drive mostrando um arquivo após a conclusão do upload.",
-                    },
-                ],
-
-                tip: "Arquivos maiores podem levar mais tempo para serem enviados. Aguarde a conclusão antes de fechar a página ou desligar o computador.",
-
-                video: null,
-            },
-
-            {
-                title: "Confira o arquivo no Drive",
-
-                description: "Depois do upload, confirme se o arquivo aparece dentro da pasta escolhida. Agora ele poderá ser acessado novamente pela sua conta.",
-
-                examples: [
-                    {
-                        title: "Arquivo na pasta",
-
-                        description: "Verifique se o arquivo aparece na pasta de destino e confira se o nome está correto.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-6-arquivo.webp",
-
-                        alt: "Google Drive mostrando o arquivo armazenado dentro da pasta escolhida.",
-                    },
-
-                    {
-                        title: "Abrir o arquivo",
-
-                        description: "Clique duas vezes no arquivo para confirmar que ele está disponível e pode ser aberto normalmente.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-6-abrir.webp",
-
-                        alt: "Arquivo armazenado no Google Drive sendo aberto para conferência.",
-                    },
-
-                    {
-                        title: "Pesquisar depois",
-
-                        description: "Quando precisar encontrar o arquivo novamente, use as pastas do Drive ou a barra de pesquisa para localizá-lo.",
-
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-6-pesquisa.webp",
-
-                        alt: "Barra de pesquisa do Google Drive sendo usada para localizar um arquivo armazenado.",
-                    },
-                ],
-
-                tip: "Depois de salvar o arquivo no Drive, você poderá acessá-lo novamente pela sua conta em dispositivos conectados à internet.",
 
                 video: null,
             },
