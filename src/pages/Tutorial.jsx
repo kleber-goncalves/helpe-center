@@ -39,13 +39,24 @@ export function Tutorial() {
      * - <title> próprio
      * - meta description própria
      * - canonical próprio
+     * - Open Graph
+     * - Twitter Card
      * - JSON-LD próprio
      *
      */
+
     useEffect(() => {
         if (!tutorial) {
-            setPageTitle(`Tutorial não encontrado | ${SITE_NAME}`);
-            return;
+            const pageTitle = `Tutorial não encontrado | ${SITE_NAME}`;
+
+            setPageTitle(pageTitle);
+
+            setMetaTag("robots", "noindex, follow");
+
+            return () => {
+                removePageTitle();
+                removeMetaTag("robots");
+            };
         }
 
         const pageTitle = `${tutorial.title} | ${SITE_NAME}`;
@@ -58,15 +69,22 @@ export function Tutorial() {
 
         setMetaTag("description", description);
 
+        setMetaTag("robots", "index, follow");
+
         setCanonical(canonicalUrl);
 
         setMetaProperty("og:title", pageTitle);
+
         setMetaProperty("og:description", description);
+
         setMetaProperty("og:type", "article");
+
         setMetaProperty("og:url", canonicalUrl);
 
         setMetaProperty("twitter:card", "summary");
+
         setMetaProperty("twitter:title", pageTitle);
+
         setMetaProperty("twitter:description", description);
 
         const category = categories.find((item) => item.id === tutorial.category);
@@ -74,19 +92,27 @@ export function Tutorial() {
         const structuredData = {
             "@context": "https://schema.org",
             "@type": "Article",
+
             headline: tutorial.title,
+
             description,
+
             url: canonicalUrl,
+
             inLanguage: "pt-BR",
+
             articleSection: category?.name ?? tutorial.category,
+
             author: {
                 "@type": "Organization",
                 name: SITE_NAME,
             },
+
             publisher: {
                 "@type": "Organization",
                 name: SITE_NAME,
             },
+
             mainEntityOfPage: {
                 "@type": "WebPage",
                 "@id": canonicalUrl,
@@ -100,6 +126,8 @@ export function Tutorial() {
 
             removeMetaTag("description");
 
+            removeMetaTag("robots");
+
             removeMetaProperty("og:title");
             removeMetaProperty("og:description");
             removeMetaProperty("og:type");
@@ -110,6 +138,7 @@ export function Tutorial() {
             removeMetaProperty("twitter:description");
 
             removeCanonical();
+
             removeJsonLd();
         };
     }, [tutorial]);
@@ -204,9 +233,11 @@ export function Tutorial() {
     return (
         <main className="bg-background">
             <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-                {/* ==================================================
-                    BREADCRUMB
-                ================================================== */}
+                {/*
+                 * ==================================================
+                 * BREADCRUMB
+                 * ==================================================
+                 */}
 
                 <nav aria-label="Navegação do tutorial" className="flex flex-wrap items-center gap-2 text-sm text-muted-ink">
                     <Link
@@ -240,9 +271,11 @@ export function Tutorial() {
                     </Link>
                 </nav>
 
-                {/* ==================================================
-                    LAYOUT
-                ================================================== */}
+                {/*
+                 * ==================================================
+                 * LAYOUT
+                 * ==================================================
+                 */}
 
                 <div
                     className="
@@ -253,22 +286,28 @@ export function Tutorial() {
                         lg:gap-12
                     "
                 >
-                    {/* ==================================================
-                        SIDEBAR
-                    ================================================== */}
+                    {/*
+                     * ==================================================
+                     * SIDEBAR
+                     * ==================================================
+                     */}
 
                     <TutorialStepNav steps={steps} activeStep={activeStep} onNavigate={handleStepNavigation} />
 
-                    {/* ==================================================
-                        CONTEÚDO PRINCIPAL
-                    ================================================== */}
+                    {/*
+                     * ==================================================
+                     * CONTEÚDO PRINCIPAL
+                     * ==================================================
+                     */}
 
                     <article className="min-w-0">
                         {activeStep === 0 && (
                             <>
-                                {/* ==================================================
-                                    CABEÇALHO
-                                ================================================== */}
+                                {/*
+                                 * ==================================================
+                                 * CABEÇALHO
+                                 * ==================================================
+                                 */}
 
                                 <header>
                                     <Badge>{category?.name ?? tutorial.category}</Badge>
@@ -306,9 +345,11 @@ export function Tutorial() {
                                     </div>
                                 </header>
 
-                                {/* ==================================================
-                                    O QUE VOCÊ VAI APRENDER
-                                ================================================== */}
+                                {/*
+                                 * ==================================================
+                                 * O QUE VOCÊ VAI APRENDER
+                                 * ==================================================
+                                 */}
 
                                 <section
                                     className="
@@ -326,20 +367,20 @@ export function Tutorial() {
                                             <li
                                                 key={item}
                                                 className="
-                                                    flex
-                                                    items-start
-                                                    gap-2
-                                                    text-sm
-                                                    text-ink
-                                                "
+                                                        flex
+                                                        items-start
+                                                        gap-2
+                                                        text-sm
+                                                        text-ink
+                                                    "
                                             >
                                                 <Check
                                                     className="
-                                                        mt-0.5
-                                                        size-4
-                                                        shrink-0
-                                                        text-coral
-                                                    "
+                                                            mt-0.5
+                                                            size-4
+                                                            shrink-0
+                                                            text-coral
+                                                        "
                                                     aria-hidden="true"
                                                 />
 
@@ -351,17 +392,21 @@ export function Tutorial() {
                             </>
                         )}
 
-                        {/* ==================================================
-                            PASSO ATUAL
-                        ================================================== */}
+                        {/*
+                         * ==================================================
+                         * PASSO ATUAL
+                         * ==================================================
+                         */}
 
                         <div className="mt-10 max-w-4xl">
                             <TutorialStep key={`${currentStep.title}-${activeStep}`} step={currentStep} index={activeStep} />
                         </div>
 
-                        {/* ==================================================
-                            NAVEGAÇÃO ENTRE PASSOS
-                        ================================================== */}
+                        {/*
+                         * ==================================================
+                         * NAVEGAÇÃO ENTRE PASSOS
+                         * ==================================================
+                         */}
 
                         <div
                             className="
@@ -418,9 +463,11 @@ export function Tutorial() {
                             )}
                         </div>
 
-                        {/* ==================================================
-                            CONCLUSÃO
-                        ================================================== */}
+                        {/*
+                         * ==================================================
+                         * CONCLUSÃO
+                         * ==================================================
+                         */}
 
                         {activeStep === steps.length - 1 && (
                             <section
@@ -468,9 +515,11 @@ export function Tutorial() {
                             </section>
                         )}
 
-                        {/* ==================================================
-                            RELACIONADOS
-                        ================================================== */}
+                        {/*
+                         * ==================================================
+                         * RELACIONADOS
+                         * ==================================================
+                         */}
 
                         {activeStep === steps.length - 1 && related.length > 0 && (
                             <section className="mt-12 max-w-4xl">
@@ -482,25 +531,25 @@ export function Tutorial() {
                                             key={item.id}
                                             to={`/tutoriais/${item.id}`}
                                             className="
-                                                    rounded-xl
-                                                    border
-                                                    border-line
-                                                    bg-mist
-                                                    p-5
-                                                    font-bold
-                                                    text-ink
-                                                    transition-colors
-                                                    hover:bg-mist2
-                                                "
+                                                        rounded-xl
+                                                        border
+                                                        border-line
+                                                        bg-mist
+                                                        p-5
+                                                        font-bold
+                                                        text-ink
+                                                        transition-colors
+                                                        hover:bg-mist2
+                                                    "
                                         >
                                             {item.title}
 
                                             <ChevronRight
                                                 className="
-                                                        float-right
-                                                        size-5
-                                                        text-muted-ink
-                                                    "
+                                                            float-right
+                                                            size-5
+                                                            text-muted-ink
+                                                        "
                                                 aria-hidden="true"
                                             />
                                         </Link>
@@ -509,9 +558,11 @@ export function Tutorial() {
                             </section>
                         )}
 
-                        {/* ==================================================
-                            VOLTAR
-                        ================================================== */}
+                        {/*
+                         * ==================================================
+                         * VOLTAR
+                         * ==================================================
+                         */}
 
                         <div
                             className="
@@ -555,12 +606,8 @@ export function Tutorial() {
  * O key faz o Tutorial ser remontado quando o tutorialId
  * mudar. Dessa forma, activeStep volta naturalmente para 0.
  *
- * Isso evita precisar de:
- *
- * useEffect(() => {
- *     setActiveStep(0);
- * }, [tutorialId]);
- *
+ * Isso evita precisar de um useEffect apenas para resetar
+ * activeStep quando o tutorial muda.
  */
 
 export function TutorialRoute() {
@@ -580,7 +627,7 @@ function createSteps(tutorial) {
         {
             title: "Abra a ferramenta ou arquivo que você vai usar.",
 
-            description: `Comece abrindo o programa ou o arquivo relacionado a “${tutorial.title}”. Se ainda não estiver com ele salvo, escolha uma pasta que você consiga encontrar depois.`,
+            description: `Comece abrindo o programa ou o arquivo relacionado a “${tutorial.title}”. ` + "Se ainda não estiver com ele salvo, escolha uma pasta que você consiga encontrar depois.",
 
             examples: [],
 
@@ -613,106 +660,4 @@ function createSteps(tutorial) {
             video: null,
         },
     ];
-}
-
-/*
- * =========================================================
- * SEO — META TAG
- * =========================================================
- */
-
-function setMetaTag(name, content) {
-    let element = document.head.querySelector(`meta[name="${name}"]`);
-
-    if (!element) {
-        element = document.createElement("meta");
-
-        element.setAttribute("name", name);
-
-        document.head.appendChild(element);
-    }
-
-    element.setAttribute("content", content);
-}
-
-/*
- * =========================================================
- * SEO — META PROPERTY
- * =========================================================
- */
-
-function setMetaProperty(property, content) {
-    let element = document.head.querySelector(`meta[property="${property}"]`);
-
-    if (!element) {
-        element = document.createElement("meta");
-
-        element.setAttribute("property", property);
-
-        document.head.appendChild(element);
-    }
-
-    element.setAttribute("content", content);
-}
-
-/*
- * =========================================================
- * SEO — CANONICAL
- * =========================================================
- */
-
-function setCanonical(url) {
-    let element = document.head.querySelector('link[rel="canonical"]');
-
-    if (!element) {
-        element = document.createElement("link");
-
-        element.setAttribute("rel", "canonical");
-
-        document.head.appendChild(element);
-    }
-
-    element.setAttribute("href", url);
-}
-
-/*
- * =========================================================
- * SEO — JSON-LD
- * =========================================================
- */
-
-function setJsonLd(data) {
-    removeJsonLd();
-
-    const script = document.createElement("script");
-
-    script.id = "tutorial-jsonld";
-
-    script.type = "application/ld+json";
-
-    script.textContent = JSON.stringify(data);
-
-    document.head.appendChild(script);
-}
-
-/*
- * =========================================================
- * LIMPEZA
- * =========================================================
- */
-
-function removeMetaTag(name) {
-    document.head.querySelector(`meta[name="${name}"]`)?.remove();
-}
-
-function removeMetaProperty(property) {
-    document.head.querySelector(`meta[property="${property}"]`)?.remove();
-}
-
-function removeCanonical() {
-    document.head.querySelector('link[rel="canonical"]')?.remove();
-}
-
-function removeJsonLd() {
-    document.getElementById("tutorial-jsonld")?.remove();
 }
