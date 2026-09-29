@@ -295,36 +295,204 @@ export const tutorials = [
 
     {
         id: "formatar-trabalho-word",
+
         title: "Como formatar um trabalho no Word",
+
         category: "word",
+
         difficulty: "Fácil",
+
         icon: SignalLow,
+
         duration: "5 minutos",
-        description: "Aprenda a organizar seu trabalho de forma simples.",
-        keywords: ["word", "organizar", "trabalho", "Word", "formatação", "trabalho", "fonte", "margens"],
-        learning: ["Ajustar fonte e tamanho", "Alinhar o texto", "Configurar espaçamento", "Organizar parágrafos"],
+
+        description: "Aprenda a formatar um trabalho no Word, ajustando fonte, tamanho do texto, alinhamento, espaçamento, parágrafos e organização do documento.",
+
+        keywords: ["word", "organizar", "trabalho", "formatação", "fonte", "tamanho", "alinhamento", "espaçamento", "parágrafo", "margens"],
+
+        learning: ["Abrir um documento no Microsoft Word", "Selecionar o texto do trabalho", "Ajustar a fonte e o tamanho", "Alinhar o texto corretamente", "Configurar o espaçamento entre linhas", "Organizar os parágrafos", "Revisar e salvar o trabalho"],
+
         steps: [
             {
                 title: "Abra o Microsoft Word",
+
                 description: "Abra o Word e crie um documento em branco ou abra o trabalho que deseja formatar.",
-                image: "/tutoriais/word/formatar-trabalho/passo-1.png",
-                imgAlt: "Abra o Microsoft Word e crie um documento em branco ou abra o trabalho que deseja formatar.",
+
+                examples: [
+                    {
+                        title: "Abrir o Word",
+
+                        description: "Abra o Microsoft Word pelo computador e aguarde a tela inicial do programa.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-1.png",
+
+                        alt: "Tela inicial do Microsoft Word mostrando a opção de criar ou abrir um documento.",
+                    },
+                ],
+
+                tip: "Antes de começar a fazer alterações, verifique se você abriu o arquivo correto para não modificar outro documento por engano.",
+
+                video: null,
             },
+
             {
                 title: "Selecione o texto",
-                description: "Clique no início do texto, segure o botão do mouse e arraste até selecionar a parte desejada.",
+
+                description: "Selecione o texto que deseja formatar. Você pode selecionar apenas uma parte do trabalho ou todo o conteúdo do documento.",
+
+                examples: [
+                    {
+                        title: "Selecionar uma parte do texto",
+
+                        description: "Clique no início do trecho, segure o botão do mouse e arraste até o final da parte que deseja selecionar.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-2-parte-texto-selecionado.png",
+
+                        alt: "Microsoft Word mostrando uma parte do texto selecionada.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+
+                    {
+                        title: "Selecionar todo o conteúdo",
+
+                        description: "Para aplicar a mesma formatação em todo o trabalho, selecione todo o texto antes de fazer as alterações.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-2-todo-texto.png",
+
+                        alt: "Documento do Microsoft Word com todo o conteúdo selecionado.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+                ],
+
+                tip: "Quando quiser aplicar uma mesma configuração ao trabalho inteiro, selecionar todo o texto primeiro evita ter que repetir o processo várias vezes.",
+
+                video: null,
             },
+
             {
                 title: "Escolha a fonte e o tamanho",
-                description: "Na guia Página Inicial, escolha uma fonte legível, como Arial ou Times New Roman, e use o tamanho solicitado pelo professor.",
+
+                description: "Na guia Página Inicial, escolha uma fonte legível, como Arial ou Times New Roman, e ajuste o tamanho de acordo com as orientações do professor.",
+
+                examples: [
+                    {
+                        title: "Escolher a fonte",
+
+                        description: "Na guia Página Inicial, localize a opção de fonte e escolha a utilizada no trabalho.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-fonte.png",
+
+                        alt: "Guia Página Inicial do Microsoft Word mostrando a opção para escolher a fonte.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+
+                    {
+                        title: "Ajustar o tamanho",
+
+                        description: "Selecione o tamanho solicitado para o trabalho, mantendo o texto confortável para leitura.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-tamanho.png",
+
+                        alt: "Microsoft Word mostrando a opção de alterar o tamanho da fonte.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+                ],
+
+                tip: "Sempre siga as orientações fornecidas pelo professor ou pela instituição. Nem todo trabalho precisa usar a mesma fonte ou tamanho.",
+
+                video: null,
             },
+
             {
                 title: "Ajuste o alinhamento e o espaçamento",
-                description: "Use o alinhamento solicitado e, em Parágrafo, ajuste o espaçamento entre as linhas.",
+
+                description: "Use a ferramenta de alinhamento para organizar o texto e, na seção Parágrafo, ajuste o espaçamento entre as linhas conforme a orientação do trabalho.",
+
+                examples: [
+                    {
+                        title: "Alinhar o texto",
+
+                        description: "Na guia Página Inicial, escolha o alinhamento necessário, como à esquerda, centralizado, à direita ou justificado.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-4-ajustar-alinhamento.png",
+
+                        alt: "Microsoft Word mostrando as opções de alinhamento de texto.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+
+                    {
+                        title: "Configurar o espaçamento",
+
+                        description: "Abra as opções de Parágrafo e ajuste o espaçamento entre as linhas do texto.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-4-configurar-espacamento.png",
+
+                        alt: "Microsoft Word mostrando as opções de espaçamento entre linhas no menu Parágrafo.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+                ],
+
+                tip: "Evite misturar diferentes tipos de alinhamento e espaçamento sem necessidade. Manter um padrão deixa o trabalho mais organizado e fácil de ler.",
+
+                video: null,
             },
+
             {
                 title: "Revise e salve o trabalho",
-                description: "Confira se os títulos, parágrafos e margens estão organizados. Depois, salve o arquivo.",
+
+                description: "Revise o documento para verificar se a formatação está consistente e depois salve o arquivo.",
+
+                examples: [
+                    {
+                        title: "Revise a formatação",
+
+                        description: "Confira se a fonte, o tamanho, o alinhamento e o espaçamento estão iguais nas partes que deveriam seguir o mesmo padrão.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-formato.png",
+
+                        alt: "Documento do Microsoft Word sendo revisado para conferir a formatação do trabalho.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+
+                    {
+                        title: "Confira as margens",
+
+                        description: "Verifique se as margens do documento estão de acordo com as orientações recebidas para o trabalho.",
+
+                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-margens.png",
+
+                        alt: "Microsoft Word mostrando um documento com margens configuradas.",
+
+                        video: null,
+
+                        poster: null,
+                    },
+                ],
+
+                tip: "Antes de entregar o trabalho, faça uma última revisão. Verificar a formatação no final ajuda a encontrar pequenas diferenças entre títulos, parágrafos e margens.",
+
+                video: null,
             },
         ],
     },
@@ -342,57 +510,25 @@ export const tutorials = [
 
         duration: "4 minutos",
 
-        description: "Aprenda a organizar os títulos do documento, criar um sumário automático e atualizá-lo depois das alterações.",
+        description: "Aprenda a aplicar estilos aos títulos e inserir um sumário automático no Word.",
 
-        keywords: ["word", "sumário", "indice", "índice", "títulos", "subtítulos", "estilos", "referências", "sumário automático", "atualizar sumário"],
+        keywords: ["word", "sumário", "índice", "títulos", "subtítulos", "estilos", "referências", "sumário automático"],
 
-        learning: ["Organizar títulos e subtítulos", "Aplicar estilos de título no Word", "Inserir um sumário automático", "Atualizar o sumário após alterações"],
+        learning: ["Aplicar estilos aos títulos e subtítulos", "Inserir um sumário automático", "Organizar a estrutura do documento"],
 
         steps: [
             {
-                title: "Organize os títulos do trabalho",
+                title: "Aplique estilos aos títulos",
 
-                description: "Revise seu documento e identifique os títulos, capítulos e subtítulos que devem aparecer no sumário. Organize a estrutura do conteúdo antes de inserir o sumário.",
-
-                examples: [
-                    {
-                        title: "Título principal",
-
-                        description: "Identifique os títulos dos capítulos ou partes principais do trabalho, como Introdução, Desenvolvimento e Conclusão.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo.webp",
-
-                        alt: "Documento do Word mostrando títulos principais organizados ao longo do trabalho.",
-                    },
-
-                    {
-                        title: "Subtítulos",
-
-                        description: "Identifique os subtítulos que fazem parte de cada capítulo, como 1.1 Introdução ao tema ou 2.1 Metodologia.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-1-subtitulos.webp",
-
-                        alt: "Documento do Word mostrando títulos e subtítulos organizados em diferentes níveis.",
-                    },
-                ],
-
-                tip: "Antes de criar o sumário, organize a estrutura do documento. Isso ajuda a manter os títulos nos níveis corretos.",
-
-                video: null,
-            },
-
-            {
-                title: "Aplique o estilo aos títulos",
-
-                description: "Selecione um título, abra a guia Página Inicial e escolha um estilo como Título 1. Para subtítulos, utilize Título 2 ou outro nível adequado.",
+                description: "Selecione os títulos do trabalho e, na guia Página Inicial, aplique Título 1 aos capítulos principais e Título 2 aos subtítulos.",
 
                 examples: [
                     {
                         title: "Título 1",
 
-                        description: "Selecione o título de um capítulo e aplique o estilo Título 1 para indicar que ele é um título principal.",
+                        description: "Selecione um capítulo principal e escolha Título 1 na seção de estilos do Word.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-2-titulo-1.webp",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-1.png",
 
                         alt: "Guia Página Inicial do Word mostrando o estilo Título 1 aplicado a um título.",
                     },
@@ -400,47 +536,15 @@ export const tutorials = [
                     {
                         title: "Título 2",
 
-                        description: "Selecione um subtítulo relacionado ao capítulo e aplique o estilo Título 2 para criar um segundo nível na estrutura do documento.",
+                        description: "Selecione um subtítulo e escolha Título 2 para indicar que ele pertence a um capítulo principal.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-2-titulo-2.webp",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-2.png",
 
                         alt: "Documento do Word mostrando um subtítulo com o estilo Título 2 aplicado.",
                     },
                 ],
 
-                tip: "Use Título 1 para capítulos principais e Título 2 ou Título 3 para subtítulos, mantendo a hierarquia do documento.",
-
-                video: null,
-            },
-
-            {
-                title: "Repita o processo nos outros títulos",
-
-                description: "Aplique os estilos correspondentes em todos os capítulos e subtítulos do trabalho. O Word utilizará esses estilos para identificar quais textos devem aparecer no sumário.",
-
-                examples: [
-                    {
-                        title: "Capítulos",
-
-                        description: "Aplique Título 1 em todos os capítulos principais do documento, mantendo o mesmo nível de hierarquia.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-3-capitulos.webp",
-
-                        alt: "Documento do Word com vários capítulos utilizando o estilo Título 1.",
-                    },
-
-                    {
-                        title: "Subtítulos",
-
-                        description: "Aplique Título 2 nos subtítulos de cada capítulo para que eles apareçam organizados abaixo dos títulos principais.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-3-subtitulos.webp",
-
-                        alt: "Documento do Word mostrando capítulos e subtítulos com diferentes níveis de título.",
-                    },
-                ],
-
-                tip: "Não aplique os estilos de forma aleatória. O nível escolhido determina como cada título será organizado no sumário.",
+                tip: "Use Título 1 para os capítulos principais e Título 2 para os subtítulos. O Word usa esses estilos para organizar o sumário automaticamente.",
 
                 video: null,
             },
@@ -448,63 +552,31 @@ export const tutorials = [
             {
                 title: "Insira o sumário automático",
 
-                description: "Clique no local onde o sumário deve aparecer, abra a guia Referências, selecione Sumário e escolha um dos modelos automáticos disponíveis.",
+                description: "Coloque o cursor no local onde o sumário deve aparecer, abra a guia Referências e clique em Sumário para escolher um modelo automático.",
 
                 examples: [
                     {
-                        title: "Guia Referências",
+                        title: "Abrir a opção Sumário",
 
-                        description: "Coloque o cursor no local desejado, abra a guia Referências e procure a opção Sumário.",
+                        description: "Na guia Referências, localize a opção Sumário e clique nela para abrir os modelos disponíveis.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-4-referencias.webp",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-2-referencias.png",
 
                         alt: "Guia Referências do Word mostrando a opção Sumário.",
                     },
 
                     {
-                        title: "Modelo automático",
+                        title: "Veja o sumário pronto",
 
-                        description: "Clique em Sumário e escolha um dos modelos automáticos oferecidos pelo Word para inserir a tabela no documento.",
+                        description: "Escolha um dos modelos automáticos e o Word criará o sumário usando os títulos e subtítulos que foram configurados.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-4-modelo.webp",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-2-modelo.png",
 
-                        alt: "Menu de Sumário do Word mostrando modelos automáticos disponíveis.",
+                        alt: "Documento do Word mostrando um sumário automático criado a partir dos títulos e subtítulos.",
                     },
                 ],
 
-                tip: "Insira o sumário em um local próprio do documento, normalmente depois da capa e dos elementos iniciais do trabalho.",
-
-                video: null,
-            },
-
-            {
-                title: "Atualize o sumário",
-
-                description: "Depois de editar o trabalho, clique no sumário e escolha Atualizar Sumário. Você poderá atualizar somente os números das páginas ou toda a tabela.",
-
-                examples: [
-                    {
-                        title: "Atualizar números das páginas",
-
-                        description: "Use essa opção quando os títulos permanecerem iguais, mas as páginas do documento tiverem mudado.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-5-paginas.webp",
-
-                        alt: "Word mostrando a opção de atualizar apenas os números das páginas do sumário.",
-                    },
-
-                    {
-                        title: "Atualizar toda a tabela",
-
-                        description: "Escolha a atualização completa quando novos títulos forem adicionados, removidos ou modificados no documento.",
-
-                        image: "/tutoriais/word/sumario-automatico-word/passo-5-tabela.webp",
-
-                        alt: "Word mostrando a opção de atualizar toda a tabela do sumário.",
-                    },
-                ],
-
-                tip: "Sempre atualize o sumário depois de fazer alterações importantes no documento para manter títulos e números de páginas corretos.",
+                tip: "Pronto! O Word monta o sumário automaticamente com base nos estilos aplicados aos títulos do documento.",
 
                 video: null,
             },
