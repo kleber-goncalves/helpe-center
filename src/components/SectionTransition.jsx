@@ -42,7 +42,7 @@ export function SectionTransition({ src, variant = "wide", position = "bottom", 
     return (
         <div className={cn("relative isolate w-full overflow-hidden", sizes[size] ?? sizes.medium, surfaces[from] ?? surfaces.background, className)} aria-hidden="true">
             {src ? (
-                <img src={src} alt="" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] object-fill", position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")} />
+                <img src={src} alt="degrade transition" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] object-fill", position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")} />
             ) : (
                 <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className={cn("pointer-events-none absolute -inset-x-[4%] inset-y-0 h-full w-[108%] section-transition-color", inks[to] ?? inks.mist, position === "top" && "rotate-180", animation && "motion-safe:animate-organic-drift")}>
                     {paths.map((path) => (

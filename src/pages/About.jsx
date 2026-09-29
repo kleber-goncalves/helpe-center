@@ -224,7 +224,7 @@ export function About() {
                                         {!isLast && <span className={["pointer-events-none", "absolute left-[21px] top-[22px]", "z-0 w-px", "h-[calc(100%+1.5rem)]", "bg-line"].join(" ")} aria-hidden="true" />}
 
                                         {/* Ícone / Logo */}
-                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
+                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="logo do Hauy Conecta" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
 
                                         {/* Conteúdo */}
                                         <div>

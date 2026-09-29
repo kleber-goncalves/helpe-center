@@ -465,7 +465,7 @@ export function Preloader({ onComplete }) {
             <div className="flex w-full max-w-xs flex-col items-center text-center">
                 {/* Logo */}
                 <div ref={logoRef} className="w-24 sm:w-28">
-                    <img src="/logo.png" alt="" fetchPriority="high" decoding="async" draggable="false" className={["block h-auto w-full", "select-none"].join(" ")} />
+                    <img src="/logo.png" alt="logo Hauy Conecta" fetchPriority="high" decoding="async" draggable="false" className={["block h-auto w-full", "select-none"].join(" ")} />
                 </div>
 
                 {/* Título */}
