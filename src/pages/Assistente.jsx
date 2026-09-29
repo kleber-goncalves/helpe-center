@@ -1,10 +1,72 @@
+import { useEffect } from "react";
+
 import { ArrowLeft } from "lucide-react";
 
 import { Link } from "react-router-dom";
 
 import { HauyAssistant } from "../components/HauyAssistant";
 
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
+
 export function Assistente() {
+        useEffect(() => {
+            const pageTitle = `Assistente | ${SITE_NAME}`;
+    
+            const description = "Assistente Hauy para resolver suas dúvidas.";
+    
+            const canonicalUrl = `${SITE_URL}/assistente`;
+    
+            setPageTitle(pageTitle);
+    
+            setMetaTag("description", description);
+    
+            setCanonical(canonicalUrl);
+    
+            setMetaProperty("og:title", pageTitle);
+            setMetaProperty("og:description", description);
+            setMetaProperty("og:type", "website");
+            setMetaProperty("og:url", canonicalUrl);
+    
+            setMetaProperty("twitter:card", "summary");
+            setMetaProperty("twitter:title", pageTitle);
+            setMetaProperty("twitter:description", description);
+    
+            const structuredData = {
+                "@context": "https://schema.org",
+                "@type": "AboutPage",
+                name: pageTitle,
+                description,
+                url: canonicalUrl,
+                inLanguage: "pt-BR",
+                isPartOf: {
+                    "@type": "WebSite",
+                    name: SITE_NAME,
+                    url: SITE_URL,
+                },
+            };
+    
+            setJsonLd(structuredData);
+    
+            return () => {
+                removePageTitle();
+    
+                removeMetaTag("description");
+    
+                removeMetaProperty("og:title");
+                removeMetaProperty("og:description");
+                removeMetaProperty("og:type");
+                removeMetaProperty("og:url");
+    
+                removeMetaProperty("twitter:card");
+                removeMetaProperty("twitter:title");
+                removeMetaProperty("twitter:description");
+    
+                removeCanonical();
+                removeJsonLd();
+            };
+        }, []);
+
     return (
         <main
             className="

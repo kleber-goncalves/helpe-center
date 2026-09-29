@@ -37,8 +37,6 @@ const Categories = lazy(() =>
     })),
 );
 
-<Route path="/categorias/:categoryId" element={<Category />} />;
-
 const FAQ = lazy(() =>
     import("./pages/FAQ").then((module) => ({
         default: module.FAQ,
@@ -51,9 +49,9 @@ const Tutorials = lazy(() =>
     })),
 );
 
-const Tutorial = lazy(() =>
+const TutorialRoute = lazy(() =>
     import("./pages/Tutorial").then((module) => ({
-        default: module.Tutorial,
+        default: module.TutorialRoute,
     })),
 );
 
@@ -200,7 +198,7 @@ function AppContent() {
 
                         <Route path="/tutoriais" element={<Tutorials />} />
 
-                        <Route path="/tutoriais/:tutorialId" element={<Tutorial />} />
+                        <Route path="/tutoriais/:tutorialId" element={<TutorialRoute />} />
 
                         {/* ================================
                             FAQ

@@ -10,10 +10,13 @@ import { tutorials } from "../data/tutorials";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
 import { useGSAP } from "@gsap/react";
+
+import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
 
 import gsap from "gsap";
 
@@ -24,6 +27,57 @@ gsap.registerPlugin(ScrollTrigger);
 export function Home() {
     const priorityTopicsRef = useRef(null);
     const reduceMotion = useReducedMotion();
+
+    useEffect(() => {
+        const pageTitle = `Home | ${SITE_NAME}`;
+        const description = DEFAULT_DESCRIPTION;
+        const canonicalUrl = `${SITE_URL}/`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE_NAME,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
+
 
 
         useGSAP(

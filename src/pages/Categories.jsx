@@ -1,9 +1,67 @@
+import { useEffect } from "react";
 import { CategoryCard } from "../components/CategoryCard";
 import { HelpCTA } from "../components/HelpCTA2";
 import { Reveal } from "../components/Reveal";
 import { SectionTransition } from "../components/SectionTransition";
 import { categories } from "../data/categories";
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 export function Categories() {
+        useEffect(() => {
+            const pageTitle = `Categorias | ${SITE_NAME}`;
+    
+            const description = "Todas as categorias de ferramentas para facilidade a procura.";
+    
+            const canonicalUrl = `${SITE_URL}/categorias`;
+    
+            setPageTitle(pageTitle);
+    
+            setMetaTag("description", description);
+    
+            setCanonical(canonicalUrl);
+    
+            setMetaProperty("og:title", pageTitle);
+            setMetaProperty("og:description", description);
+            setMetaProperty("og:type", "website");
+            setMetaProperty("og:url", canonicalUrl);
+    
+            setMetaProperty("twitter:card", "summary");
+            setMetaProperty("twitter:title", pageTitle);
+            setMetaProperty("twitter:description", description);
+    
+            const structuredData = {
+                "@context": "https://schema.org",
+                "@type": "AboutPage",
+                name: pageTitle,
+                description,
+                url: canonicalUrl,
+                inLanguage: "pt-BR",
+                isPartOf: {
+                    "@type": "WebSite",
+                    name: SITE_NAME,
+                    url: SITE_URL,
+                },
+            };
+    
+            setJsonLd(structuredData);
+    
+            return () => {
+                removePageTitle();
+    
+                removeMetaTag("description");
+    
+                removeMetaProperty("og:title");
+                removeMetaProperty("og:description");
+                removeMetaProperty("og:type");
+                removeMetaProperty("og:url");
+    
+                removeMetaProperty("twitter:card");
+                removeMetaProperty("twitter:title");
+                removeMetaProperty("twitter:description");
+    
+                removeCanonical();
+                removeJsonLd();
+            };
+        }, []);
     return (
         <main className="bg-background">
             <div className="bg-mist3">

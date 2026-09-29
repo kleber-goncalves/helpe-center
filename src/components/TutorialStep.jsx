@@ -54,7 +54,7 @@ export function TutorialStep({ step, index }) {
 
                             {example.image && (
                                 <div className="bg-background p-3 sm:p-5">
-                                    <img src={example.image} alt={example.alt ?? ""} loading="eager" decoding="async" draggable="false" className="mx-auto block h-auto w-full max-w-3xl rounded-lg object-contain" />
+                                    <img src={example.image} alt={example.alt ?? `Exemplo do passo ${index + 1}: ${example.title}`} loading="eager" decoding="async" draggable="false" className="mx-auto block h-auto w-full max-w-3xl rounded-lg object-contain" />
                                 </div>
                             )}
 

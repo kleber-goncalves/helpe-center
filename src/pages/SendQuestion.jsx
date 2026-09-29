@@ -7,6 +7,8 @@ import gsap from "gsap";
 import { QuestionForm } from "../components/QuestionForm";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
 
 export function SendQuestion() {
     const pageRef = useRef(null);
@@ -16,37 +18,62 @@ export function SendQuestion() {
     const reduceMotion = useReducedMotion();
 
 
-    useEffect(() => {
-        const previousTitle = document.title;
+     useEffect(() => {
+         const pageTitle = `Enviar uma dúvida | ${SITE_NAME}`;
 
-        const description = "Envie uma dúvida para a equipe do Hauy Conecta. Conte o que você está tentando fazer e onde encontrou dificuldade.";
+         const description = "Envie uma dúvida para a equipe do Hauy Conecta. Conte o que você está tentando fazer e onde encontrou dificuldade.";
 
-        document.title = "Enviar uma dúvida — Hauy Conecta";
+         const canonicalUrl = `${SITE_URL}/enviar-duvida`;
 
-        let metaDescription = document.querySelector('meta[name="description"]');
+         setPageTitle(pageTitle);
 
-        const createdDescription = !metaDescription;
+         setMetaTag("description", description);
 
-        if (!metaDescription) {
-            metaDescription = document.createElement("meta");
-            metaDescription.name = "description";
-            document.head.appendChild(metaDescription);
-        }
+         setCanonical(canonicalUrl);
 
-        const previousDescription = metaDescription.getAttribute("content");
+         setMetaProperty("og:title", pageTitle);
+         setMetaProperty("og:description", description);
+         setMetaProperty("og:type", "website");
+         setMetaProperty("og:url", canonicalUrl);
 
-        metaDescription.setAttribute("content", description);
+         setMetaProperty("twitter:card", "summary");
+         setMetaProperty("twitter:title", pageTitle);
+         setMetaProperty("twitter:description", description);
 
-        return () => {
-            document.title = previousTitle;
+         const structuredData = {
+             "@context": "https://schema.org",
+             "@type": "WebPage",
+             name: pageTitle,
+             description,
+             url: canonicalUrl,
+             inLanguage: "pt-BR",
+             isPartOf: {
+                 "@type": "WebSite",
+                 name: SITE_NAME,
+                 url: SITE_URL,
+             },
+         };
 
-            if (createdDescription) {
-                metaDescription.remove();
-            } else if (previousDescription !== null) {
-                metaDescription.setAttribute("content", previousDescription);
-            }
-        };
-    }, []);
+         setJsonLd(structuredData);
+
+         return () => {
+             removePageTitle();
+
+             removeMetaTag("description");
+
+             removeMetaProperty("og:title");
+             removeMetaProperty("og:description");
+             removeMetaProperty("og:type");
+             removeMetaProperty("og:url");
+
+             removeMetaProperty("twitter:card");
+             removeMetaProperty("twitter:title");
+             removeMetaProperty("twitter:description");
+
+             removeCanonical();
+             removeJsonLd();
+         };
+     }, []);
 
     useGSAP(
         () => {

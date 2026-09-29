@@ -5,10 +5,13 @@ import { Reveal } from "../components/Reveal";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { ProjectTeam } from "../components/ProjectTeam";
 
 import { useReducedMotion } from "../hooks/useReducedMotion";
+
+
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -77,6 +80,64 @@ export function About() {
             ],
         },
     ];
+
+    useEffect(() => {
+        const pageTitle = `Sobre o projeto | ${SITE_NAME}`;
+
+        const description = "Conheça o Hauy Conecta, um projeto escolar criado para facilitar o acesso a orientações sobre ferramentas digitais usadas no dia a dia da escola.";
+
+        const canonicalUrl = `${SITE_URL}/sobre`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: pageTitle,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+            isPartOf: {
+                "@type": "WebSite",
+                name: SITE_NAME,
+                url: SITE_URL,
+            },
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
+
 
     useGSAP(
         () => {
