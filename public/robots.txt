@@ -1,0 +1,12 @@
+# Robots exclusion policy
+#
+# Hauy Conecta — Central de Ajuda Digital
+# https://hauy-conecta.vercel.app/
+
+User-agent: *
+Allow: /
+
+# Endpoints de API não são páginas públicas de conteúdo.
+Disallow: /api/
+
+Sitemap: https://hauy-conecta.vercel.app/sitemap.xml
