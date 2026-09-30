@@ -1,19 +1,17 @@
 import { ArrowLeft, Check, ChevronLeft, ChevronRight } from "lucide-react";
-
 import { Link, useParams } from "react-router-dom";
-
 import { useEffect, useState } from "react";
 
+// components
 import { Badge, Button } from "../components/ui";
-
 import { TutorialStep } from "../components/TutorialStep";
-
 import { TutorialStepNav } from "../components/TutorialStepNav";
 
+// data
 import { categories } from "../data/categories";
-
 import { findTutorial, tutorials } from "../data/tutorials";
 
+// SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 /*

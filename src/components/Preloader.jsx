@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import HeroImg from "../assets/hero.webp";
 
 function preloadImage(src) {
     return new Promise((resolve) => {
@@ -72,7 +73,7 @@ function getCriticalTasks(pathname) {
     if (pathname === "/") {
         tasks.push({
             label: "Carregando a ilustração principal...",
-            load: () => preloadImage("/hero.webp"),
+            load: () => preloadImage(HeroImg),
         });
     }
 

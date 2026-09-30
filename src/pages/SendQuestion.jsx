@@ -1,12 +1,18 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, MessageCircleQuestion, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// GSAP
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+// SEO
 import { QuestionForm } from "../components/QuestionForm";
+
+// Hooks
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
+// SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 

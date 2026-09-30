@@ -1,24 +1,33 @@
+import { useRef, useEffect } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// Components
 import { CategoryCard } from "../components/CategoryCard";
 import { HelpCTA } from "../components/HelpCTA2";
 import { SearchBar } from "../components/SearchBar";
 import { TutorialCard } from "../components/TutorialCard";
+import { SectionTransition } from "../components/SectionTransition";
+import { Reveal } from "../components/Reveal";
+
+// Data
 import { categories, priorityTopics } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
+// Hooks
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
-import { useRef, useEffect } from "react";
-import { SectionTransition } from "../components/SectionTransition";
-import { Reveal } from "../components/Reveal";
+// GSAP
+import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import heroImg from "../assets/hero.webp";
+
+// SEO
 import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
-import gsap from "gsap";
 
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -159,7 +168,7 @@ export function Home() {
                             />
 
                             <img
-                                src="/hero.webp"
+                                src={heroImg}
                                 alt="Mulher mexendo no notebook"
                                 fetchPriority="high"
                                 decoding="async"

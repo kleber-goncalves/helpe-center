@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, Home, SearchX } from "@sketchyicons/react";
 import { Link, useNavigate } from "react-router-dom";
+
+// GSAP
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+// SEO
 import { SITE_NAME, setPageTitle, setMetaTag, setMetaProperty, removePageTitle, removeMetaTag, removeMetaProperty } from "../lib/seo";
 
 export function NotFound() {

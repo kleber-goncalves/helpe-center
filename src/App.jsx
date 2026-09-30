@@ -1,17 +1,19 @@
 import { lazy, Suspense, useCallback, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
 
+// Componentes
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Preloader } from "./components/Preloader";
 import { ScrollToTop } from "./components/ScrollToTop";
 import ButtonReset from "./components/buttonReset";
-
-import "./App.css";
-import { Category } from "./pages/Category";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
-import { Assistente } from "./pages/Assistente";
 import { HauyAssistantWidget } from "./components/HauyAssistantWidget";
+
+// Páginas
+import { Category } from "./pages/Category";
+import { Assistente } from "./pages/Assistente";
 
 /*
  * Code Splitting das páginas.

@@ -1,15 +1,22 @@
+import { useRef, useEffect } from "react";
+import aboutImg from "../assets/about.webp";
 import { BarChart3, BookOpen, Search } from "@sketchyicons/react";
-import { HelpCTA } from "../components/HelpCTA2";
-import { SectionTransition } from "../components/SectionTransition";
-import { Reveal } from "../components/Reveal";
+
+// GSAP
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef, useEffect } from "react";
+
+// Componetes
+import { HelpCTA } from "../components/HelpCTA2";
+import { SectionTransition } from "../components/SectionTransition";
+import { Reveal } from "../components/Reveal";
 import { ProjectTeam } from "../components/ProjectTeam";
 
+// Hooks
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
+// SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -237,7 +244,7 @@ export function About() {
 
                         <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                             <Reveal y={18} duration={0.6}>
-                                <img src="/about.webp" fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                <img src={aboutImg} fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
                             </Reveal>
                         </div>
                     </div>

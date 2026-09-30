@@ -1,11 +1,15 @@
 import { useEffect } from "react";
-
 import { Link, useParams, } from "react-router-dom";
-import { TutorialCard } from "../components/TutorialCard";
-import { categories } from "../data/categories";
-import { tutorials } from "../data/tutorials";
 import { ChevronRight } from "lucide-react";
 
+// Components
+import { TutorialCard } from "../components/TutorialCard";
+
+// Data
+import { categories } from "../data/categories";
+import { tutorials } from "../data/tutorials";
+
+// SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 export function Category() {
     const { categoryId } = useParams();

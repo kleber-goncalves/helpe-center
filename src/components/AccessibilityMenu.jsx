@@ -169,7 +169,7 @@ export function AccessibilityPanel({ onClose }) {
      *
      * IMPORTANTE:
      *
-     * Aqui NÃO fazemos setReducedMotion()
+     * Aqui NÃO chamaas setReducedMotion()
      * imediatamente dentro do effect.
      *
      * O effect apenas registra o listener.

@@ -1,19 +1,18 @@
 import { useRef } from "react";
-
-import { useGSAP } from "@gsap/react";
-
-import gsap from "gsap";
-
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { BookOpen, CircleHelp, Folder, House, Info,  MessageCircleQuestion, } from "@sketchyicons/react";
-
 import { Link, NavLink } from "react-router-dom";
 
-import { Button } from "./ui";
+// GSAP
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+
+// Componetes
+import { Button } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
 
+// Hooks
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 import { cn } from "../lib/utils";

@@ -1,15 +1,15 @@
 import { useLayoutEffect, useRef, useState } from "react";
-
-import { gsap } from "gsap";
-
 import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
-
 import { Accessibility, ChevronLeft, ChevronRight } from "lucide-react";
-
 import { Link, NavLink } from "react-router-dom";
 
-import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
+// GSAP
+import { gsap } from "gsap";
 
+
+
+// Componetes
+import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AccessibilityPanel } from "./AccessibilityMenu";
 

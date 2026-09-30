@@ -1,9 +1,15 @@
 import { useEffect } from "react";
+
+// Components
 import { FAQAccordion } from "../components/FAQAccordion";
 import { HelpCTA } from "../components/HelpCTA2";
 import { Reveal } from "../components/Reveal";
 import { SectionTransition } from "../components/SectionTransition";
+
+// Data
 import { faq } from "../data/faq";
+
+// SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 export function FAQ() {
