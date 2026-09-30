@@ -1,48 +1,85 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, MessageCircleQuestion, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// GSAP
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
+// SEO
 import { QuestionForm } from "../components/QuestionForm";
+
+// Hooks
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// SEO
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
 
 export function SendQuestion() {
     const pageRef = useRef(null);
     const headerRef = useRef(null);
     const infoRef = useRef(null);
     const formRef = useRef(null);
+    const reduceMotion = useReducedMotion();
 
-    useEffect(() => {
-        const previousTitle = document.title;
 
-        const description = "Envie uma dúvida para a equipe do Hauy Conecta. Conte o que você está tentando fazer e onde encontrou dificuldade.";
+     useEffect(() => {
+         const pageTitle = `Enviar uma dúvida | ${SITE_NAME}`;
 
-        document.title = "Enviar uma dúvida — Hauy Conecta";
+         const description = "Envie uma dúvida para a equipe do Hauy Conecta. Conte o que você está tentando fazer e onde encontrou dificuldade.";
 
-        let metaDescription = document.querySelector('meta[name="description"]');
+         const canonicalUrl = `${SITE_URL}/enviar-duvida`;
 
-        const createdDescription = !metaDescription;
+         setPageTitle(pageTitle);
 
-        if (!metaDescription) {
-            metaDescription = document.createElement("meta");
-            metaDescription.name = "description";
-            document.head.appendChild(metaDescription);
-        }
+         setMetaTag("description", description);
 
-        const previousDescription = metaDescription.getAttribute("content");
+         setCanonical(canonicalUrl);
 
-        metaDescription.setAttribute("content", description);
+         setMetaProperty("og:title", pageTitle);
+         setMetaProperty("og:description", description);
+         setMetaProperty("og:type", "website");
+         setMetaProperty("og:url", canonicalUrl);
 
-        return () => {
-            document.title = previousTitle;
+         setMetaProperty("twitter:card", "summary");
+         setMetaProperty("twitter:title", pageTitle);
+         setMetaProperty("twitter:description", description);
 
-            if (createdDescription) {
-                metaDescription.remove();
-            } else if (previousDescription !== null) {
-                metaDescription.setAttribute("content", previousDescription);
-            }
-        };
-    }, []);
+         const structuredData = {
+             "@context": "https://schema.org",
+             "@type": "WebPage",
+             name: pageTitle,
+             description,
+             url: canonicalUrl,
+             inLanguage: "pt-BR",
+             isPartOf: {
+                 "@type": "WebSite",
+                 name: SITE_NAME,
+                 url: SITE_URL,
+             },
+         };
+
+         setJsonLd(structuredData);
+
+         return () => {
+             removePageTitle();
+
+             removeMetaTag("description");
+
+             removeMetaProperty("og:title");
+             removeMetaProperty("og:description");
+             removeMetaProperty("og:type");
+             removeMetaProperty("og:url");
+
+             removeMetaProperty("twitter:card");
+             removeMetaProperty("twitter:title");
+             removeMetaProperty("twitter:description");
+
+             removeCanonical();
+             removeJsonLd();
+         };
+     }, []);
 
     useGSAP(
         () => {
@@ -53,8 +90,6 @@ export function SendQuestion() {
             if (!header || !info || !form) {
                 return;
             }
-
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduceMotion) {
                 gsap.set([header, info, form], {
@@ -116,6 +151,7 @@ export function SendQuestion() {
         },
         {
             scope: pageRef,
+            dependencies: [reduceMotion],
         },
     );
 

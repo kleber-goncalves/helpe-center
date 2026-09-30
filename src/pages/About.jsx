@@ -1,17 +1,29 @@
+import { useRef, useEffect } from "react";
+import aboutImg from "../assets/about.webp";
 import { BarChart3, BookOpen, Search } from "@sketchyicons/react";
-import { HelpCTA } from "../components/HelpCTA2";
-import { SectionTransition } from "../components/SectionTransition";
-import { Reveal } from "../components/Reveal";
+
+// GSAP
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+
+// Componetes
+import { HelpCTA } from "../components/HelpCTA2";
+import { SectionTransition } from "../components/SectionTransition";
+import { Reveal } from "../components/Reveal";
 import { ProjectTeam } from "../components/ProjectTeam";
+
+// Hooks
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// SEO
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
 gsap.registerPlugin(ScrollTrigger);
 export function About() {
     const processRef = useRef(null);
     const cardRef = useRef(null);
+    const reduceMotion = useReducedMotion();
 
     const process = [
         {
@@ -73,10 +85,65 @@ export function About() {
         },
     ];
 
+    useEffect(() => {
+        const pageTitle = `Sobre o projeto | ${SITE_NAME}`;
+
+        const description = "Conheça o Hauy Conecta, um projeto escolar criado para facilitar o acesso a orientações sobre ferramentas digitais usadas no dia a dia da escola.";
+
+        const canonicalUrl = `${SITE_URL}/sobre`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: pageTitle,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+            isPartOf: {
+                "@type": "WebSite",
+                name: SITE_NAME,
+                url: SITE_URL,
+            },
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
+
     useGSAP(
         () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
             if (reduceMotion || !processRef.current) {
                 return;
             }
@@ -103,7 +170,7 @@ export function About() {
                 },
             );
         },
-        { scope: processRef },
+        { scope: processRef, dependencies: [reduceMotion] },
     );
 
     useGSAP(
@@ -160,7 +227,7 @@ export function About() {
                                         {!isLast && <span className={["pointer-events-none", "absolute left-[21px] top-[22px]", "z-0 w-px", "h-[calc(100%+1.5rem)]", "bg-line"].join(" ")} aria-hidden="true" />}
 
                                         {/* Ícone / Logo */}
-                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
+                                        <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="logo do Hauy Conecta" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
 
                                         {/* Conteúdo */}
                                         <div>
@@ -177,7 +244,7 @@ export function About() {
 
                         <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                             <Reveal y={18} duration={0.6}>
-                                <img src="about.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                <img src={aboutImg} fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
                             </Reveal>
                         </div>
                     </div>

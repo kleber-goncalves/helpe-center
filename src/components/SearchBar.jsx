@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 import { Button } from "./ui";
+import { searchTutorials } from "../lib/searchTutorials";
 
 const RECENT_SEARCHES_KEY = "hauy-conecta-recent-searches";
 const MAX_RECENT_SEARCHES = 5;
@@ -35,15 +36,7 @@ export function SearchBar({ initialValue = "" }) {
     /*
      * Resultados da pesquisa atual
      */
-    const results = useMemo(() => {
-        const normalizedQuery = query.trim().toLowerCase();
-
-        if (!normalizedQuery) {
-            return [];
-        }
-
-        return tutorials.filter((tutorial) => [tutorial.title, tutorial.description, tutorial.category, ...tutorial.keywords].join(" ").toLowerCase().includes(normalizedQuery));
-    }, [query]);
+    const results = useMemo(() => searchTutorials(query, tutorials, categories), [query]);
 
     /*
      * Salva a pesquisa no histórico

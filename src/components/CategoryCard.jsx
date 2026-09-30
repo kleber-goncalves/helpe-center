@@ -4,17 +4,20 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import gsap from "gsap";
 
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function CategoryCard({ category }) {
     const cardRef = useRef(null);
+    const reduceMotion = useReducedMotion();
     const Icon = category.icon;
 
     useGSAP(
         () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduceMotion || !cardRef.current) {
                 return;
@@ -32,7 +35,8 @@ export function CategoryCard({ category }) {
                 },
             });
         },
-        { scope: cardRef },
+        { scope: cardRef, dependencies: [reduceMotion], },
+        
     );
 
     return (

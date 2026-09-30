@@ -19,21 +19,51 @@ export function ThemeToggle({ iconClassName = "h-4 w-4", iconStrokeWidth = 1.8, 
     const overlayRef = useRef(null);
     const isAnimatingRef = useRef(false);
 
+    const [highContrast, setHighContrast] = useState(() => {
+        try {
+            return localStorage.getItem("hauy-conecta-high-contrast") === "true";
+        } catch {
+            return false;
+        }
+    });
+
+    useEffect(() => {
+        function handleContrastChange(event) {
+            setHighContrast(Boolean(event.detail?.enabled));
+        }
+
+        window.addEventListener("hauy-conecta-contrast-change", handleContrastChange);
+
+        return () => {
+            window.removeEventListener("hauy-conecta-contrast-change", handleContrastChange);
+        };
+    }, []);
+
     /*
      * Aplica o tema
      */
     useEffect(() => {
         const root = document.documentElement;
 
-        root.classList.toggle("dark", theme === "dark");
+        /*
+         * Alto contraste sempre utiliza
+         * a versão escura da interface.
+         *
+         * Porém a preferência original do usuário
+         * continua salva em "theme".
+         */
+        root.classList.toggle("dark", highContrast || theme === "dark");
 
         localStorage.setItem("theme", theme);
-    }, [theme]);
+    }, [theme, highContrast]);
 
     /*
      * Troca de tema
      */
     function toggleTheme() {
+        if (highContrast) {
+                return;
+        }
         if (isAnimatingRef.current) {
             return;
         }
@@ -101,12 +131,12 @@ export function ThemeToggle({ iconClassName = "h-4 w-4", iconStrokeWidth = 1.8, 
             });
     }
 
-    const isDark = theme === "dark";
+    const isDark = highContrast || theme === "dark";
 
     return (
         <>
-            <Button ref={buttonRef} type="button" variant="ghost" size="icon" onClick={toggleTheme} aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"} title={isDark ? "Ativar modo claro" : "Ativar modo escuro"} className={cn("relative z-[10000]", "cursor-pointer", "text-muted-ink", "hover:bg-mist", className)}>
-                <span className={cn("relative flex items-center justify-center", iconClassName)} aria-hidden="true">
+            <Button ref={buttonRef} type="button" variant="ghost" size="icon" onClick={toggleTheme} disabled={highContrast} aria-label={highContrast ? "Modo escuro fixado pelo alto contraste" : isDark ? "Ativar modo claro" : "Ativar modo escuro"} title={highContrast ? "Desative o alto contraste para alterar o tema" : isDark ? "Ativar modo claro" : "Ativar modo escuro"} className={cn("relative z-[10000]", highContrast ? "cursor-not-allowed opacity-60" : "cursor-pointer", "text-muted-ink", "hover:bg-mist", className)}>
+                <span className={cn("relative flex items-center justify-center", iconClassName, highContrast && ["cursor-not-allowed", "opacity-60"])} aria-hidden="true">
                     {/* Sol */}
                     <Sun className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-[#b58100]")} strokeWidth={iconStrokeWidth} />
 

@@ -2,19 +2,19 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-
 export function Reveal({ children, autoAlpha = 1, ease = "power2.out", className = "", y = 92, duration = 2, delay = 0 }) {
     const ref = useRef(null);
+    const reduceMotion = useReducedMotion();
 
     useGSAP(
         () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-            if (reduceMotion) return;
+            if (reduceMotion) {
+                return;
+            }
 
             gsap.fromTo(
                 ref.current,
@@ -36,7 +36,10 @@ export function Reveal({ children, autoAlpha = 1, ease = "power2.out", className
                 },
             );
         },
-        { scope: ref },
+        {
+            scope: ref,
+            dependencies: [reduceMotion],
+        },
     );
 
     return (

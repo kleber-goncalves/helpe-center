@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import HeroImg from "../assets/hero.webp";
 
 function preloadImage(src) {
     return new Promise((resolve) => {
@@ -72,7 +73,7 @@ function getCriticalTasks(pathname) {
     if (pathname === "/") {
         tasks.push({
             label: "Carregando a ilustração principal...",
-            load: () => preloadImage("/hero.png"),
+            load: () => preloadImage(HeroImg),
         });
     }
 
@@ -465,7 +466,7 @@ export function Preloader({ onComplete }) {
             <div className="flex w-full max-w-xs flex-col items-center text-center">
                 {/* Logo */}
                 <div ref={logoRef} className="w-24 sm:w-28">
-                    <img src="/logo.png" alt="" fetchPriority="high" decoding="async" draggable="false" className={["block h-auto w-full", "select-none"].join(" ")} />
+                    <img src="/logo.png" alt="logo Hauy Conecta" fetchPriority="high" decoding="async" draggable="false" className={["block h-auto w-full", "select-none"].join(" ")} />
                 </div>
 
                 {/* Título */}

@@ -1,18 +1,9 @@
 import { DesktopNavbar } from "./DesktopNavbar";
 import { MobileHeader } from "./MobileHeader";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 export function Header() {
-    return (
-        <>
-            {/* Desktop */}
-            <div className="hidden md:block">
-                <DesktopNavbar />
-            </div>
+    const isDesktop = useMediaQuery("(min-width: 768px)");
 
-            {/* Mobile */}
-            <div className="md:hidden">
-                <MobileHeader />
-            </div>
-        </>
-    );
+    return isDesktop ? <DesktopNavbar /> : <MobileHeader />;
 }

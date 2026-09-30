@@ -2,6 +2,8 @@ import { MessageCircleQuestion } from "@sketchyicons/react";
 import { Button } from "./ui";
 import { SectionTransition } from "./SectionTransition";
 import { Link } from "react-router-dom";
+import helpCTAImg from "../assets/helpCTA.webp";
+
 export function HelpCTA({ from = "background" }) {
     return (
         <section className=" bg-coral-soft ">
@@ -19,7 +21,7 @@ export function HelpCTA({ from = "background" }) {
                         </Link>
                     </div>
                     <div className="mx-auto w-full max-w-[370px] sm:max-w-[260px] md:max-w-[330px] md:justify-self-end">
-                        <img src="/helpCTA.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia" />
+                        <img src={helpCTAImg} fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia" />
                     </div>
                 </div>
             </div>

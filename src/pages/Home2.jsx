@@ -1,31 +1,95 @@
+import { useRef, useEffect } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// Components
 import { CategoryCard } from "../components/CategoryCard";
 import { HelpCTA } from "../components/HelpCTA2";
 import { SearchBar } from "../components/SearchBar";
 import { TutorialCard } from "../components/TutorialCard";
+import { SectionTransition } from "../components/SectionTransition";
+import { Reveal } from "../components/Reveal";
+
+// Data
 import { categories, priorityTopics } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
-import { useRef } from "react";
-import { SectionTransition } from "../components/SectionTransition";
-import { Reveal } from "../components/Reveal";
-import { useGSAP } from "@gsap/react";
+// Hooks
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
+// GSAP
 import gsap from "gsap";
-
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import heroImg from "../assets/hero.webp";
+
+// SEO
+import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
+
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function Home() {
     const priorityTopicsRef = useRef(null);
+    const reduceMotion = useReducedMotion();
+
+    useEffect(() => {
+        const pageTitle = `Home | ${SITE_NAME}`;
+        const description = DEFAULT_DESCRIPTION;
+        const canonicalUrl = `${SITE_URL}/`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE_NAME,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
 
     useGSAP(
         () => {
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-            if (reduceMotion) return;
+            if (reduceMotion) {
+                return;
+            }
 
             gsap.fromTo(
                 priorityTopicsRef.current.children,
@@ -47,7 +111,10 @@ export function Home() {
                 },
             );
         },
-        { scope: priorityTopicsRef },
+        {
+            scope: priorityTopicsRef,
+            dependencies: [reduceMotion],
+        },
     );
     return (
         <main>
@@ -101,7 +168,7 @@ export function Home() {
                             />
 
                             <img
-                                src="/hero.png"
+                                src={heroImg}
                                 alt="Mulher mexendo no notebook"
                                 fetchPriority="high"
                                 decoding="async"

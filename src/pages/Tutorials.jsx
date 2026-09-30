@@ -1,41 +1,203 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { Google } from "@thesvg/react";
 
+// GSAP
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+// Componetes
 import { HelpCTA } from "../components/HelpCTA2";
 import { Reveal } from "../components/Reveal";
 import { SearchBar } from "../components/SearchBar";
 import { SectionTransition } from "../components/SectionTransition";
 import { TutorialCard } from "../components/TutorialCard";
 import { Button } from "../components/ui";
+import { SUPPORT_ENDPOINT } from "../components/support";
 
+// Hooks
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+// Data
+import { categories } from "../data/categories";
 import { tutorials } from "../data/tutorials";
 
+// Lib
+import { searchTutorials } from "../lib/searchTutorials";
+
+import searchImg from "../assets/search.webp";
+
+
+import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
 gsap.registerPlugin(ScrollTrigger);
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const SEARCH_REPORT_MAX_LENGTH = 200;
+
+/* =========================================================
+   NORMALIZA PESQUISA
+========================================================= */
+
+function normalizeSearchQuery(value) {
+    return String(value || "")
+        .normalize("NFKC")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+}
+
+/* =========================================================
+   ENVIA PESQUISA SEM RESULTADO
+========================================================= */
+
+async function reportSearchWithoutResult(value) {
+    const query = normalizeSearchQuery(value);
+
+    if (!query) {
+        return;
+    }
+
+    if (query.length > SEARCH_REPORT_MAX_LENGTH) {
+        return;
+    }
+
+    const body = new URLSearchParams();
+
+    body.set("type", "search-no-result");
+
+    body.set("query", query);
+
+    try {
+        await fetch(SUPPORT_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body,
+        });
+    } catch {
+        /*
+         * O registro da pesquisa é secundário.
+         *
+         * Mesmo que o envio falhe,
+         * a busca continua funcionando normalmente.
+         */
+    }
+}
 
 export function Tutorials() {
     const cardsRef = useRef(null);
 
+    const reportedSearchRef = useRef("");
+
+    const reduceMotion = useReducedMotion();
+
     const [searchParams, setSearchParams] = useSearchParams();
 
     const query = searchParams.get("q") || "";
-    const normalized = query.trim().toLowerCase();
 
-    /*
-     * Sem pesquisa:
-     * mostra todos os tutoriais.
-     *
-     * Com pesquisa:
-     * mostra apenas os tutoriais encontrados.
-     */
-    const results = normalized ? tutorials.filter((tutorial) => [tutorial.title, tutorial.description, tutorial.category, ...tutorial.keywords].join(" ").toLowerCase().includes(normalized)) : tutorials;
+    /* =====================================================
+       RESULTADOS
+    ===================================================== */
 
-    /*
-     * Limpar pesquisa
-     */
+    const results = query.trim() ? searchTutorials(query, tutorials, categories) : tutorials;
+
+    useEffect(() => {
+        const pageTitle = `Tutoriais | ${SITE_NAME}`;
+        const description = "Tutoriais e guias para ajudar você no dia a dia com as ferramentas da escola";
+        const canonicalUrl = `${SITE_URL}/tutoriais`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE_NAME,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
+
+    /* =====================================================
+       REGISTRA PESQUISA SEM RESULTADO
+    ===================================================== */
+
+    useEffect(() => {
+        const value = query.trim();
+
+        /*
+         * Sem pesquisa não existe
+         * nada para registrar.
+         */
+        if (!value) {
+            return;
+        }
+
+        /*
+         * Só registra quando
+         * nenhum tutorial foi encontrado.
+         */
+        if (results.length > 0) {
+            return;
+        }
+
+        const normalizedQuery = normalizeSearchQuery(value);
+
+        /*
+         * Evita enviar a mesma consulta
+         * várias vezes enquanto o componente
+         * estiver com a mesma pesquisa.
+         */
+        if (reportedSearchRef.current === normalizedQuery) {
+            return;
+        }
+
+        reportedSearchRef.current = normalizedQuery;
+
+        void reportSearchWithoutResult(value);
+    }, [query, results.length]);
+
+    /* =====================================================
+       LIMPAR PESQUISA
+    ===================================================== */
+
     function clearSearch() {
         const nextParams = new URLSearchParams(searchParams);
 
@@ -44,9 +206,10 @@ export function Tutorials() {
         setSearchParams(nextParams);
     }
 
-    /*
-     * Animação dos cards
-     */
+    /* =====================================================
+       ANIMAÇÃO DOS CARDS
+    ===================================================== */
+
     useGSAP(
         () => {
             const cards = cardsRef.current;
@@ -64,8 +227,6 @@ export function Tutorials() {
             if (!elements.length) {
                 return;
             }
-
-            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduceMotion) {
                 gsap.set(elements, {
@@ -98,14 +259,17 @@ export function Tutorials() {
         },
         {
             scope: cardsRef,
-            dependencies: [query],
+            dependencies: [query, reduceMotion],
             revertOnUpdate: true,
         },
     );
 
     return (
         <main className="bg-background">
-            {/* Hero da página */}
+            {/* =================================================
+                HERO DA PÁGINA
+            ================================================= */}
+
             <div className="bg-mist3">
                 <Reveal y={20} ease="sine.out" duration={0.85} className="relative z-20">
                     <div className="mx-auto max-w-6xl px-5 pb-12 pt-14 lg:px-8">
@@ -126,14 +290,22 @@ export function Tutorials() {
                 </Reveal>
             </div>
 
-            {/* Conteúdo */}
+            {/* =================================================
+                CONTEÚDO
+            ================================================= */}
+
             <section className="mx-auto max-w-6xl px-5 pb-14 lg:px-8">
-                {/* Informações da busca */}
+                {/* =================================================
+                    INFORMAÇÕES DA BUSCA
+                ================================================= */}
+
                 {query && (
                     <Reveal y={20} ease="sine.out" duration={0.85}>
                         <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
                             <p className="text-muted-ink">
-                                {results.length} {results.length === 1 ? "resultado encontrado" : "resultados encontrados"} para <span className="font-bold text-searchPesq">“{query}”</span>
+                                {results.length} {results.length === 1 ? "resultado encontrado" : "resultados encontrados"}
+                                {" para "}
+                                <span className="font-bold text-searchPesq">“{query}”</span>
                             </p>
 
                             <button type="button" aria-label="Limpar pesquisa" onClick={clearSearch} className={["cursor-pointer font-bold text-coral", "underline-offset-4 hover:underline", "transition-colors duration-200", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
@@ -143,7 +315,10 @@ export function Tutorials() {
                     </Reveal>
                 )}
 
-                {/* Resultados */}
+                {/* =================================================
+                    RESULTADOS
+                ================================================= */}
+
                 {results.length > 0 ? (
                     <div ref={cardsRef} className="grid gap-4 pt-12 md:grid-cols-2 lg:grid-cols-3">
                         {results.map((tutorial) => (
@@ -151,20 +326,40 @@ export function Tutorials() {
                         ))}
                     </div>
                 ) : (
-                    /* Estado vazio */
+                    /* =============================================
+                       ESTADO VAZIO
+                    ============================================= */
+
                     <div className="flex flex-col items-center rounded-xl px-6 text-center">
                         <div className="mx-auto mt-6 w-full max-w-[220px] sm:max-w-[370px]">
-                            <img src="/search.png" fetchPriority="low" loading="lazy" decoding="async" alt="" />
+                            <img src={searchImg} fetchPriority="low" loading="lazy" decoding="async" alt="Mulher com uma lupa de pesquisa" />
                         </div>
 
                         <h2 className="mt-6 text-xl font-bold text-foreground">Não encontramos nenhum tutorial para essa dúvida.</h2>
 
-                        <p className="mt-2 max-w-xl text-base text-muted-foreground">Tente outras palavras, como o nome do programa (Word, Excel, Canva) ou o que você quer fazer (imprimir, anexar, compartilhar), ou envie sua dúvida para nós.</p>
+                        <p className="mt-2 max-w-xl text-base text-muted-foreground">Tente outras palavras, como o nome do programa (Word, Excel, Canva) ou o que você quer fazer (imprimir, anexar, compartilhar), ou envie sua dúvida para nós. Você também pode pesquisar essa dúvida no Google.</p>
 
-                        <div className="flex flex-row items-center gap-6">
-                            <Link to="/categorias" className={["mt-6 inline-block rounded-lg border border-line", "px-4 py-3", "text-sm font-bold text-muted-foreground", "hover:bg-mist", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                        <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+                            {/* =====================================
+                                CATEGORIAS
+                            ===================================== */}
+
+                            <Link to="/categorias" className={["mt-6 inline-flex items-center justify-center", "rounded-lg border border-line", "px-4 py-3", "text-sm font-bold text-muted-foreground", "hover:bg-mist", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                                 Ver categorias
                             </Link>
+
+                            {/* =====================================
+                                GOOGLE
+                            ===================================== */}
+
+                            <a href={`https://www.google.com/search?q=${encodeURIComponent(query.trim())}`} target="_blank" rel="noopener noreferrer" className={["mt-6 inline-flex items-center justify-center gap-2", "rounded-lg bg-searchPesq", "px-4 py-3", "text-sm font-bold text-frete!", "transition-colors duration-200", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <Google className="h-6 w-6" />
+                                Pesquisar no Google
+                            </a>
+
+                            {/* =====================================
+                                ENVIAR DÚVIDA
+                            ===================================== */}
 
                             <Link to="/enviar-duvida" className="mt-6">
                                 <Button variant="coral">Enviar uma dúvida</Button>
@@ -174,7 +369,10 @@ export function Tutorials() {
                 )}
             </section>
 
-            {/* CTA */}
+            {/* =================================================
+                CTA
+            ================================================= */}
+
             <HelpCTA />
         </main>
     );

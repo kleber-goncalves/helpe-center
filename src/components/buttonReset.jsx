@@ -106,7 +106,7 @@ export default function ButtonReset() {
             ref={buttonRef}
             className="
                 fixed
-                bottom-1
+                bottom-6
                 right-5
                 z-50
                 

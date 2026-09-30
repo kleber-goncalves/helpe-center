@@ -2,6 +2,14 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { TeamOption } from "./TeamOption";
 
+// Assets alunos
+import testeAlunos from "../assets/equipe/alunos/testeAlunos.jpg";
+import cirlena from "../assets/equipe/alunos/cirlena.png";
+import divina from "../assets/equipe/alunos/divina.png";
+
+// Assets professores
+import testeProf from "../assets/equipe/professores/testeProf.jpg";
+
 const team = {
     alunos: {
         label: "Alunos",
@@ -10,27 +18,27 @@ const team = {
             {
                 name: "Kleber",
                 role: "Aluno",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: testeAlunos,
             },
             {
                 name: "Cirlene",
                 role: "Aluna",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: cirlena,
             },
             {
                 name: "Divina",
                 role: "Aluna",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: divina,
             },
             {
                 name: "Robertin",
                 role: "Aluno",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: testeAlunos,
             },
             {
                 name: "Carlos",
                 role: "Aluno",
-                image: "/equipe/alunos/testeAlunos.jpg",
+                image: testeAlunos,
             },
         ],
     },
@@ -42,17 +50,17 @@ const team = {
             {
                 name: "Fabio",
                 role: "Professor",
-                image: "/equipe/professores/testeProf.jpg",
+                image: testeProf,
             },
             {
                 name: "Felipe Cordeiro",
                 role: "Professor",
-                image: "/equipe/professores/testeProf.jpg",
+                image: testeProf,
             },
             {
                 name: "Auro",
                 role: "Professor",
-                image: "/equipe/professores/testeProf.jpg",
+                image: testeProf,
             },
         ],
     },
