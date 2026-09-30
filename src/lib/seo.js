@@ -15,7 +15,7 @@
  */
 
 export const SITE_NAME = "Hauy Conecta";
-export const SITE_URL = "https://seu-dominio.com";
+export const SITE_URL = "https://hauy-conecta.vercel.app";
 export const DEFAULT_DESCRIPTION = "Hauy Conecta — Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mairync.";
 
 
