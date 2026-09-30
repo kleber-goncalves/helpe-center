@@ -22,7 +22,7 @@ async function main() {
 
         const tutorials = tutorialsModule.tutorials ?? [];
 
-        const routes = ["/", "/sobre", "/categorias", "/tutoriais", "/faq", "/enviar-duvida", ...categories.map((category) => `/categorias/${category.id}`), ...tutorials.map((tutorial) => `/tutoriais/${tutorial.id}`)];
+        const routes = ["/", "/sobre", "/categorias", "/tutoriais", "/faq", "/enviar-duvida", "/assistente", ...categories.map((category) => `/categorias/${category.id}`), ...tutorials.map((tutorial) => `/tutoriais/${tutorial.id}`)];
 
         const uniqueRoutes = [...new Set(routes)].sort();
 
