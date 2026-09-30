@@ -72,7 +72,7 @@ function getCriticalTasks(pathname) {
     if (pathname === "/") {
         tasks.push({
             label: "Carregando a ilustração principal...",
-            load: () => preloadImage("/hero.png"),
+            load: () => preloadImage("/hero.webp"),
         });
     }
 

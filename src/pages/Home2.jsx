@@ -9,14 +9,12 @@ import { tutorials } from "../data/tutorials";
 
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
-
 import { useRef, useEffect } from "react";
 import { SectionTransition } from "../components/SectionTransition";
 import { Reveal } from "../components/Reveal";
 import { useGSAP } from "@gsap/react";
 
 import { SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
-
 
 import gsap from "gsap";
 
@@ -78,39 +76,37 @@ export function Home() {
         };
     }, []);
 
+    useGSAP(
+        () => {
+            if (reduceMotion) {
+                return;
+            }
 
-
-        useGSAP(
-            () => {
-                if (reduceMotion) {
-                    return;
-                }
-
-                gsap.fromTo(
-                    priorityTopicsRef.current.children,
-                    {
-                        autoAlpha: 0,
-                        y: 22,
+            gsap.fromTo(
+                priorityTopicsRef.current.children,
+                {
+                    autoAlpha: 0,
+                    y: 22,
+                },
+                {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.55,
+                    stagger: 0.06,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: priorityTopicsRef.current,
+                        start: "top 88%",
+                        once: true,
                     },
-                    {
-                        autoAlpha: 1,
-                        y: 0,
-                        duration: 0.55,
-                        stagger: 0.06,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: priorityTopicsRef.current,
-                            start: "top 88%",
-                            once: true,
-                        },
-                    },
-                );
-            },
-            {
-                scope: priorityTopicsRef,
-                dependencies: [reduceMotion],
-            },
-        );
+                },
+            );
+        },
+        {
+            scope: priorityTopicsRef,
+            dependencies: [reduceMotion],
+        },
+    );
     return (
         <main>
             <section className=" bg-mist3 px-0 lg:px-0 ">
@@ -163,7 +159,7 @@ export function Home() {
                             />
 
                             <img
-                                src="/hero.png"
+                                src="/hero.webp"
                                 alt="Mulher mexendo no notebook"
                                 fetchPriority="high"
                                 decoding="async"

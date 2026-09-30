@@ -32,7 +32,7 @@ export const tutorials = [
 
                         description: "Escolha a opção de criar uma nova pasta de trabalho em branco para começar sua planilha.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-1.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-1.webp",
 
                         alt: "Tela inicial do Microsoft Excel mostrando a opção de criar uma pasta de trabalho em branco.",
                     },
@@ -54,7 +54,7 @@ export const tutorials = [
 
                         description: "A1 é a célula localizada na coluna A e na linha 1.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-a1.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-a1.webp",
 
                         alt: "Planilha do Excel com a célula A1 selecionada.",
                     },
@@ -64,7 +64,7 @@ export const tutorials = [
 
                         description: "B2 é a célula localizada na coluna B e na linha 2.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-b2.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-b2.webp",
 
                         alt: "Planilha do Excel com a célula B2 selecionada.",
                     },
@@ -74,7 +74,7 @@ export const tutorials = [
 
                         description: "C5 é a célula localizada na coluna C e na linha 5.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-c5.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-c5.webp",
 
                         alt: "Planilha do Excel com a célula C5 selecionada.",
                     },
@@ -84,7 +84,7 @@ export const tutorials = [
 
                         description: "A coluna B é identificada pela letra B no topo da planilha e contém as células dessa coluna.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-coluna-b.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-coluna-b.webp",
 
                         alt: "Planilha do Excel destacando a coluna B.",
                     },
@@ -94,7 +94,7 @@ export const tutorials = [
 
                         description: "A linha 2 é identificada pelo número 2 no lado esquerdo da planilha.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-linha-2.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-2-linha-2.webp",
 
                         alt: "Planilha do Excel destacando a linha 2.",
                     },
@@ -116,7 +116,7 @@ export const tutorials = [
 
                         description: "Clique em uma célula, como A1, digite um nome e pressione Enter para confirmar.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-3-nome.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-3-nome.webp",
 
                         alt: "Planilha do Excel com um nome sendo digitado na célula A1.",
                     },
@@ -126,7 +126,7 @@ export const tutorials = [
 
                         description: "Use outra célula para inserir um número, como a nota de um aluno.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-3-nota.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-3-nota.webp",
 
                         alt: "Planilha do Excel com uma nota sendo inserida em uma célula.",
                     },
@@ -148,7 +148,7 @@ export const tutorials = [
 
                         description: "Na primeira linha, escreva o título que identifica os nomes.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-nome.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-nome.webp",
 
                         alt: "Planilha do Excel mostrando o título Nome na primeira linha.",
                     },
@@ -158,7 +158,7 @@ export const tutorials = [
 
                         description: "Crie uma coluna específica para identificar a turma.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-turma.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-turma.webp",
 
                         alt: "Planilha do Excel mostrando o título Turma na primeira linha.",
                     },
@@ -168,7 +168,7 @@ export const tutorials = [
 
                         description: "Crie uma coluna para organizar as notas.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-nota.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-nota.webp",
 
                         alt: "Planilha do Excel mostrando o título Nota na primeira linha.",
                     },
@@ -178,7 +178,7 @@ export const tutorials = [
 
                         description: "Crie uma coluna para registrar datas quando necessário.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-data.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-4-data.webp",
 
                         alt: "Planilha do Excel mostrando o título Data na primeira linha.",
                     },
@@ -200,7 +200,7 @@ export const tutorials = [
 
                         description: "Cada aluno ocupa uma linha, enquanto as colunas organizam os diferentes tipos de informação.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-5-alunos.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-5-alunos.webp",
 
                         alt: "Planilha do Excel organizada com nomes, turmas e notas em colunas e alunos em linhas.",
                     },
@@ -210,7 +210,7 @@ export const tutorials = [
 
                         description: "Mantenha nomes, turmas e notas em colunas separadas para facilitar a leitura.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-5-colunas.png",
+                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-5-colunas.webp",
 
                         alt: "Planilha do Excel mostrando diferentes tipos de informação organizados em colunas.",
                     },
@@ -237,7 +237,7 @@ export const tutorials = [
                         alt: "Excel mostrando o título de uma coluna selecionado com a opção de negrito.",
 
                         video: "/tutoriais/excel/como-comecar-usar-excel/passo-6-N.mp4",
-                        poster: "/tutoriais/excel/como-comecar-usar-excel/passo-6-N-poster.png",
+                        poster: "/tutoriais/excel/como-comecar-usar-excel/passo-6-N-poster.webp",
                     },
 
                     {
@@ -250,7 +250,7 @@ export const tutorials = [
                         alt: "Excel mostrando opções de alinhamento aplicadas ao conteúdo da planilha.",
 
                         video: "/tutoriais/excel/como-comecar-usar-excel/passo-6-A.mp4",
-                        poster: "/tutoriais/excel/como-comecar-usar-excel/passo-6-A-poster.png",
+                        poster: "/tutoriais/excel/como-comecar-usar-excel/passo-6-A-poster.webp",
                     },
                 ],
 
@@ -324,7 +324,7 @@ export const tutorials = [
 
                         description: "Abra o Microsoft Word pelo computador e aguarde a tela inicial do programa.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-1.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-1.webp",
 
                         alt: "Tela inicial do Microsoft Word mostrando a opção de criar ou abrir um documento.",
                     },
@@ -346,7 +346,7 @@ export const tutorials = [
 
                         description: "Clique no início do trecho, segure o botão do mouse e arraste até o final da parte que deseja selecionar.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-2-parte-texto-selecionado.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-2-parte-texto-selecionado.webp",
 
                         alt: "Microsoft Word mostrando uma parte do texto selecionada.",
 
@@ -360,7 +360,7 @@ export const tutorials = [
 
                         description: "Para aplicar a mesma formatação em todo o trabalho, selecione todo o texto antes de fazer as alterações.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-2-todo-texto.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-2-todo-texto.webp",
 
                         alt: "Documento do Microsoft Word com todo o conteúdo selecionado.",
 
@@ -386,7 +386,7 @@ export const tutorials = [
 
                         description: "Na guia Página Inicial, localize a opção de fonte e escolha a utilizada no trabalho.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-fonte.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-fonte.webp",
 
                         alt: "Guia Página Inicial do Microsoft Word mostrando a opção para escolher a fonte.",
 
@@ -400,7 +400,7 @@ export const tutorials = [
 
                         description: "Selecione o tamanho solicitado para o trabalho, mantendo o texto confortável para leitura.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-tamanho.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-3-escolher-tamanho.webp",
 
                         alt: "Microsoft Word mostrando a opção de alterar o tamanho da fonte.",
 
@@ -426,7 +426,7 @@ export const tutorials = [
 
                         description: "Na guia Página Inicial, escolha o alinhamento necessário, como à esquerda, centralizado, à direita ou justificado.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-4-ajustar-alinhamento.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-4-ajustar-alinhamento.webp",
 
                         alt: "Microsoft Word mostrando as opções de alinhamento de texto.",
 
@@ -440,7 +440,7 @@ export const tutorials = [
 
                         description: "Abra as opções de Parágrafo e ajuste o espaçamento entre as linhas do texto.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-4-configurar-espacamento.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-4-configurar-espacamento.webp",
 
                         alt: "Microsoft Word mostrando as opções de espaçamento entre linhas no menu Parágrafo.",
 
@@ -466,7 +466,7 @@ export const tutorials = [
 
                         description: "Confira se a fonte, o tamanho, o alinhamento e o espaçamento estão iguais nas partes que deveriam seguir o mesmo padrão.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-formato.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-formato.webp",
 
                         alt: "Documento do Microsoft Word sendo revisado para conferir a formatação do trabalho.",
 
@@ -480,7 +480,7 @@ export const tutorials = [
 
                         description: "Verifique se as margens do documento estão de acordo com as orientações recebidas para o trabalho.",
 
-                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-margens.png",
+                        image: "/tutoriais/word/formatar-trabalho/passo-5-confirmar-margens.webp",
 
                         alt: "Microsoft Word mostrando um documento com margens configuradas.",
 
@@ -528,7 +528,7 @@ export const tutorials = [
 
                         description: "Selecione um capítulo principal e escolha Título 1 na seção de estilos do Word.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-1.png",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-1.webp",
 
                         alt: "Guia Página Inicial do Word mostrando o estilo Título 1 aplicado a um título.",
                     },
@@ -538,7 +538,7 @@ export const tutorials = [
 
                         description: "Selecione um subtítulo e escolha Título 2 para indicar que ele pertence a um capítulo principal.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-2.png",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-1-titulo-2.webp",
 
                         alt: "Documento do Word mostrando um subtítulo com o estilo Título 2 aplicado.",
                     },
@@ -560,7 +560,7 @@ export const tutorials = [
 
                         description: "Na guia Referências, localize a opção Sumário e clique nela para abrir os modelos disponíveis.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-2-referencias.png",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-2-referencias.webp",
 
                         alt: "Guia Referências do Word mostrando a opção Sumário.",
                     },
@@ -570,7 +570,7 @@ export const tutorials = [
 
                         description: "Escolha um dos modelos automáticos e o Word criará o sumário usando os títulos e subtítulos que foram configurados.",
 
-                        image: "/tutoriais/word/sumario-automatico-word/passo-2-modelo.png",
+                        image: "/tutoriais/word/sumario-automatico-word/passo-2-modelo.webp",
 
                         alt: "Documento do Word mostrando um sumário automático criado a partir dos títulos e subtítulos.",
                     },
@@ -1062,7 +1062,7 @@ export const tutorials = [
 
                         description: "Abra o Google Drive no navegador e entre na conta Google que contém o arquivo que será compartilhado.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.webp",
 
                         alt: "Tela inicial do Google Drive aberta no navegador.",
                     },
@@ -1072,7 +1072,7 @@ export const tutorials = [
 
                         description: "Confira se você está conectado à conta Google correta antes de procurar o arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.webp",
 
                         alt: "Google Drive mostrando uma conta Google conectada.",
                     },
@@ -1094,7 +1094,7 @@ export const tutorials = [
 
                         description: "Clique com o botão direito sobre o arquivo para abrir o menu com as opções disponíveis.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.webp",
 
                         alt: "Menu de contexto do Google Drive aberto sobre um arquivo.",
                     },
@@ -1104,7 +1104,7 @@ export const tutorials = [
 
                         description: "No menu exibido, selecione Compartilhar para abrir a janela de permissões e acesso.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.webp",
 
                         alt: "Menu do Google Drive mostrando a opção Compartilhar.",
                     },
@@ -1126,7 +1126,7 @@ export const tutorials = [
 
                         description: "Verifique a configuração de acesso geral quando quiser compartilhar o arquivo por meio de um link.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.webp",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando as configurações de acesso geral.",
                     },
@@ -1136,7 +1136,7 @@ export const tutorials = [
 
                         description: "Digite o endereço de e-mail das pessoas que devem receber acesso ao arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.webp",
 
                         alt: "Janela de compartilhamento do Google Drive com um endereço de e-mail sendo informado.",
                     },
@@ -1158,7 +1158,7 @@ export const tutorials = [
 
                         description: "Use a permissão de visualização quando a pessoa precisar apenas abrir e consultar o conteúdo do arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.webp",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de visualizador.",
                     },
@@ -1168,7 +1168,7 @@ export const tutorials = [
 
                         description: "Escolha a opção de comentar quando a pessoa precisar fazer comentários ou sugestões sem alterar diretamente o conteúdo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.webp",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de comentarista.",
                     },
@@ -1178,7 +1178,7 @@ export const tutorials = [
 
                         description: "Selecione a permissão de edição quando a pessoa precisar modificar o conteúdo do arquivo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.webp",
 
                         alt: "Configuração de compartilhamento do Google Drive mostrando a permissão de editor.",
                     },
@@ -1200,7 +1200,7 @@ export const tutorials = [
 
                         description: "Clique em Copiar link para copiar o endereço do arquivo e depois cole-o em uma mensagem, e-mail ou outro aplicativo.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.webp",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando o botão Copiar link.",
                     },
@@ -1210,7 +1210,7 @@ export const tutorials = [
 
                         description: "Quando disponível, use a opção de envio da própria janela para compartilhar o arquivo diretamente com as pessoas selecionadas.",
 
-                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.png",
+                        image: "/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.webp",
 
                         alt: "Janela de compartilhamento do Google Drive mostrando a opção de enviar o acesso.",
                     },
@@ -1254,7 +1254,7 @@ export const tutorials = [
 
                         description: "Abra o documento no Microsoft Word e confira se o conteúdo está pronto para ser convertido em PDF.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.webp",
 
                         alt: "Documento aberto no Microsoft Word antes de ser convertido para PDF.",
                     },
@@ -1286,7 +1286,7 @@ export const tutorials = [
 
                         description: "Em alguns programas, utilize a opção Exportar para escolher o formato PDF diretamente.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.webp",
 
                         alt: "Menu do programa mostrando a opção de exportar o documento.",
                     },
@@ -1328,7 +1328,7 @@ export const tutorials = [
 
                         description: "Quando houver uma opção específica para exportação, selecione Exportar como PDF para gerar o arquivo diretamente.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.webp",
 
                         alt: "Programa mostrando a opção Exportar como PDF.",
                     },
@@ -1350,7 +1350,7 @@ export const tutorials = [
 
                         description: "Navegue pelas pastas do computador e selecione o local onde o arquivo PDF deverá ser armazenado.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.webp",
 
                         alt: "Janela de salvamento mostrando a escolha da pasta para guardar o arquivo PDF.",
                     },
@@ -1360,7 +1360,7 @@ export const tutorials = [
 
                         description: "Digite um nome fácil de reconhecer, como 'Trabalho_Final.pdf' ou 'Curriculo_2026.pdf'.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.webp",
 
                         alt: "Janela de salvamento mostrando o nome de um arquivo PDF.",
                     },
@@ -1382,7 +1382,7 @@ export const tutorials = [
 
                         description: "Depois de escolher o formato, local e nome do arquivo, confirme a operação para iniciar a criação do PDF.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.png",
+                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.webp",
 
                         alt: "Janela de salvamento mostrando a confirmação para criar o arquivo PDF.",
                     },
@@ -1426,7 +1426,7 @@ export const tutorials = [
 
                         description: "Abra o Gmail no navegador e entre na conta de e-mail que será utilizada para enviar a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-1-gmail.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-1-gmail.webp",
 
                         alt: "Tela inicial do Gmail aberta no navegador.",
                     },
@@ -1448,7 +1448,7 @@ export const tutorials = [
 
                         description: "No Gmail, clique em Escrever para abrir uma nova janela de mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-escrever.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-escrever.webp",
 
                         alt: "Gmail mostrando o botão Escrever para criar uma nova mensagem.",
                     },
@@ -1458,7 +1458,7 @@ export const tutorials = [
 
                         description: "Uma janela será aberta para que você possa preencher os dados da mensagem e adicionar o arquivo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.webp",
 
                         alt: "Janela de nova mensagem aberta no serviço de e-mail.",
                     },
@@ -1480,7 +1480,7 @@ export const tutorials = [
 
                         description: "No campo Para, digite o endereço de e-mail da pessoa que deverá receber a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.webp",
 
                         alt: "Nova mensagem mostrando um endereço de e-mail preenchido no campo Para.",
                     },
@@ -1490,7 +1490,7 @@ export const tutorials = [
 
                         description: "No campo Assunto, escreva uma frase curta que ajude o destinatário a entender o motivo da mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-assunto.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-3-assunto.webp",
 
                         alt: "Nova mensagem mostrando um assunto preenchido.",
                     },
@@ -1512,7 +1512,7 @@ export const tutorials = [
 
                         description: "Localize o ícone de clipe de papel na barra de ferramentas da mensagem e clique nele para abrir a seleção de arquivos.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-clipe.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-clipe.webp",
 
                         alt: "Janela de nova mensagem mostrando o ícone de clipe de papel para anexar arquivos.",
                     },
@@ -1522,7 +1522,7 @@ export const tutorials = [
 
                         description: "Depois de clicar no clipe, uma janela do computador ou dispositivo será aberta para que você possa localizar o arquivo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.webp",
 
                         alt: "Janela de seleção de arquivos aberta para adicionar um anexo ao e-mail.",
                     },
@@ -1544,7 +1544,7 @@ export const tutorials = [
 
                         description: "Selecione o arquivo desejado e confirme a escolha para começar o carregamento do anexo.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.webp",
 
                         alt: "Arquivo selecionado em uma janela do computador para ser anexado ao e-mail.",
                     },
@@ -1554,7 +1554,7 @@ export const tutorials = [
 
                         description: "Aguarde até que o carregamento termine e confira se o nome do arquivo aparece na mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-carregado.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-5-carregado.webp",
 
                         alt: "Mensagem de e-mail mostrando um arquivo anexado após o carregamento.",
                     },
@@ -1576,7 +1576,7 @@ export const tutorials = [
 
                         description: "Revise o endereço do destinatário, o assunto, o texto da mensagem e o nome do arquivo anexado antes de enviar.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-conferir.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-conferir.webp",
 
                         alt: "Mensagem de e-mail preenchida com destinatário, assunto, texto e arquivo anexado.",
                     },
@@ -1586,7 +1586,7 @@ export const tutorials = [
 
                         description: "Depois de conferir todas as informações, clique no botão Enviar para encaminhar a mensagem.",
 
-                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-enviar.png",
+                        image: "/tutoriais/email/anexar-arquivo-email/passo-6-enviar.webp",
 
                         alt: "Janela de nova mensagem mostrando o botão Enviar.",
                     },
@@ -1630,7 +1630,7 @@ export const tutorials = [
 
                         description: "Abra o Google Drive no navegador e entre na conta Google onde deseja guardar o arquivo.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.png",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.webp",
 
                         alt: "Tela inicial do Google Drive aberta no navegador.",
                     },
@@ -1640,7 +1640,7 @@ export const tutorials = [
 
                         description: "Confira se você está conectado à conta Google correta antes de enviar o arquivo.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-conta.png",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-1-conta.webp",
 
                         alt: "Google Drive mostrando uma conta Google conectada.",
                     },
@@ -1667,7 +1667,7 @@ export const tutorials = [
                         alt: "Google Drive mostrando pastas disponíveis para armazenar um arquivo.",
 
                         video: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta.mp4",
-                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta-poster.png",
+                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta-poster.webp",
                     },
                 ],
 
@@ -1687,7 +1687,7 @@ export const tutorials = [
 
                         description: "No lado esquerdo do Google Drive, clique no botão Novo para abrir o menu de opções.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-novo.png",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-novo.webp",
 
                         alt: "Google Drive mostrando o botão Novo no menu lateral.",
                     },
@@ -1697,7 +1697,7 @@ export const tutorials = [
 
                         description: "No menu que será exibido, selecione Upload de arquivo para escolher um arquivo armazenado no computador.",
 
-                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-upload.png",
+                        image: "/tutoriais/google-drive/salvar-google-drive/passo-3-upload.webp",
 
                         alt: "Menu Novo do Google Drive mostrando a opção Upload de arquivo.",
                     },
@@ -1724,7 +1724,7 @@ export const tutorials = [
                         alt: "Janela de seleção mostrando arquivos disponíveis para upload no Google Drive.",
 
                         video: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar.mp4",
-                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar-pasta-poster.png",
+                        poster: "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar-pasta-poster.webp",
                     },
                 ],
 
@@ -1766,7 +1766,7 @@ export const tutorials = [
 
                         description: "Acesse o Canva pelo navegador e faça login na conta que será utilizada para criar a apresentação.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-1-inicio.png",
+                        image: "/tutoriais/canva/apresentacao-canva/passo-1-inicio.webp",
 
                         alt: "Página inicial do Canva aberta no navegador.",
                     },
@@ -1776,7 +1776,7 @@ export const tutorials = [
 
                         description: "Na página inicial, procure por Apresentação ou utilize a busca para encontrar o formato de apresentação.",
 
-                        image: "/tutoriais/canva/apresentacao-canva/passo-1-apresentacao.png",
+                        image: "/tutoriais/canva/apresentacao-canva/passo-1-apresentacao.webp",
 
                         alt: "Canva mostrando a opção de criar uma apresentação.",
                     },
@@ -1803,7 +1803,7 @@ export const tutorials = [
                         alt: "Canva mostrando modelos de apresentação disponíveis para escolha.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-2-pesquisa.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-pesquisa-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-pesquisa-poster.webp",
                     },
 
                     {
@@ -1816,7 +1816,7 @@ export const tutorials = [
                         alt: "Galeria de modelos de apresentação do Canva com um modelo selecionado.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-2-modelo.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-modelo-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-modelo-poster.webp",
                     },
 
                     {
@@ -1829,7 +1829,7 @@ export const tutorials = [
                         alt: "Canva mostrando a opção de iniciar uma apresentação em branco.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-2-branco.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-branco-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-2-branco-poster.webp",
                     },
                 ],
 
@@ -1854,7 +1854,7 @@ export const tutorials = [
                         alt: "Slide do Canva mostrando um título sendo editado.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-3-titulo.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-titulo-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-titulo-poster.webp",
                     },
 
                     {
@@ -1867,7 +1867,7 @@ export const tutorials = [
                         alt: "Slide do Canva com uma caixa de texto sendo editada.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-3-texto.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-texto-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-3-texto-poster.webp",
                     },
                 ],
 
@@ -1892,7 +1892,7 @@ export const tutorials = [
                         alt: "Editor do Canva mostrando a opção de adicionar uma nova página.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-adicionar-poster.webp",
                     },
 
                     {
@@ -1905,7 +1905,7 @@ export const tutorials = [
                         alt: "Canva mostrando uma página da apresentação sendo duplicada.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-duplicar-poster.webp",
                     },
 
                     {
@@ -1918,7 +1918,7 @@ export const tutorials = [
                         alt: "Canva mostrando a opção de excluir uma página da apresentação.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-4-excluir.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-excluir-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-4-excluir-poster.webp",
                     },
                 ],
 
@@ -1943,7 +1943,7 @@ export const tutorials = [
                         alt: "Menu do Canva mostrando opções para adicionar imagens à apresentação.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-5-imagens.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-imagens-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-imagens-poster.webp",
                     },
 
                     {
@@ -1956,7 +1956,7 @@ export const tutorials = [
                         alt: "Editor do Canva mostrando formas e elementos visuais sendo adicionados ao slide.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-5-elementos.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-elementos-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-elementos-poster.webp",
                     },
 
                     {
@@ -1969,7 +1969,7 @@ export const tutorials = [
                         alt: "Slide do Canva mostrando textos e elementos visuais organizados na página.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento-poster.webp",
                     },
                 ],
 
@@ -2036,7 +2036,7 @@ export const tutorials = [
                         alt: "Canva mostrando a opção Apresentar para exibir os slides.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-apresentar-poster.webp",
                     },
 
                     {
@@ -2049,7 +2049,7 @@ export const tutorials = [
                         alt: "Canva mostrando a janela de compartilhamento da apresentação.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar-poster.webp",
                     },
 
                     {
@@ -2062,7 +2062,7 @@ export const tutorials = [
                         alt: "Canva mostrando a opção de baixar a apresentação em um formato de arquivo.",
 
                         video: "/tutoriais/canva/apresentacao-canva/passo-7-baixar.mp4",
-                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-baixar-poster.png",
+                        poster: "/tutoriais/canva/apresentacao-canva/passo-7-baixar-poster.webp",
                     },
                 ],
 

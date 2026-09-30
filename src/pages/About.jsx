@@ -10,16 +10,13 @@ import { ProjectTeam } from "../components/ProjectTeam";
 
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
-
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
-
 
 gsap.registerPlugin(ScrollTrigger);
 export function About() {
     const processRef = useRef(null);
     const cardRef = useRef(null);
     const reduceMotion = useReducedMotion();
-
 
     const process = [
         {
@@ -138,7 +135,6 @@ export function About() {
         };
     }, []);
 
-
     useGSAP(
         () => {
             if (reduceMotion || !processRef.current) {
@@ -241,7 +237,7 @@ export function About() {
 
                         <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                             <Reveal y={18} duration={0.6}>
-                                <img src="about.png" fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                <img src="/about.webp" fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
                             </Reveal>
                         </div>
                     </div>

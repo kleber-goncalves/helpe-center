@@ -98,55 +98,55 @@ export function Tutorials() {
 
     const results = query.trim() ? searchTutorials(query, tutorials, categories) : tutorials;
 
-        useEffect(() => {
-            const pageTitle = `Tutoriais | ${SITE_NAME}`;
-            const description = "Tutoriais e guias para ajudar você no dia a dia com as ferramentas da escola";
-            const canonicalUrl = `${SITE_URL}/tutoriais`;
-    
-            setPageTitle(pageTitle);
-    
-            setMetaTag("description", description);
-    
-            setCanonical(canonicalUrl);
-    
-            setMetaProperty("og:title", pageTitle);
-            setMetaProperty("og:description", description);
-            setMetaProperty("og:type", "website");
-            setMetaProperty("og:url", canonicalUrl);
-    
-            setMetaProperty("twitter:card", "summary");
-            setMetaProperty("twitter:title", pageTitle);
-            setMetaProperty("twitter:description", description);
-    
-            const structuredData = {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                name: SITE_NAME,
-                description,
-                url: canonicalUrl,
-                inLanguage: "pt-BR",
-            };
-    
-            setJsonLd(structuredData);
-    
-            return () => {
-                removePageTitle();
-    
-                removeMetaTag("description");
-    
-                removeMetaProperty("og:title");
-                removeMetaProperty("og:description");
-                removeMetaProperty("og:type");
-                removeMetaProperty("og:url");
-    
-                removeMetaProperty("twitter:card");
-                removeMetaProperty("twitter:title");
-                removeMetaProperty("twitter:description");
-    
-                removeCanonical();
-                removeJsonLd();
-            };
-        }, []);
+    useEffect(() => {
+        const pageTitle = `Tutoriais | ${SITE_NAME}`;
+        const description = "Tutoriais e guias para ajudar você no dia a dia com as ferramentas da escola";
+        const canonicalUrl = `${SITE_URL}/tutoriais`;
+
+        setPageTitle(pageTitle);
+
+        setMetaTag("description", description);
+
+        setCanonical(canonicalUrl);
+
+        setMetaProperty("og:title", pageTitle);
+        setMetaProperty("og:description", description);
+        setMetaProperty("og:type", "website");
+        setMetaProperty("og:url", canonicalUrl);
+
+        setMetaProperty("twitter:card", "summary");
+        setMetaProperty("twitter:title", pageTitle);
+        setMetaProperty("twitter:description", description);
+
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE_NAME,
+            description,
+            url: canonicalUrl,
+            inLanguage: "pt-BR",
+        };
+
+        setJsonLd(structuredData);
+
+        return () => {
+            removePageTitle();
+
+            removeMetaTag("description");
+
+            removeMetaProperty("og:title");
+            removeMetaProperty("og:description");
+            removeMetaProperty("og:type");
+            removeMetaProperty("og:url");
+
+            removeMetaProperty("twitter:card");
+            removeMetaProperty("twitter:title");
+            removeMetaProperty("twitter:description");
+
+            removeCanonical();
+            removeJsonLd();
+        };
+    }, []);
 
     /* =====================================================
        REGISTRA PESQUISA SEM RESULTADO
@@ -325,7 +325,7 @@ export function Tutorials() {
 
                     <div className="flex flex-col items-center rounded-xl px-6 text-center">
                         <div className="mx-auto mt-6 w-full max-w-[220px] sm:max-w-[370px]">
-                            <img src="/search.png" fetchPriority="low" loading="lazy" decoding="async" alt="Mulher com uma lupa de pesquisa" />
+                            <img src="/search.webp" fetchPriority="low" loading="lazy" decoding="async" alt="Mulher com uma lupa de pesquisa" />
                         </div>
 
                         <h2 className="mt-6 text-xl font-bold text-foreground">Não encontramos nenhum tutorial para essa dúvida.</h2>
