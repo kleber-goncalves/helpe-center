@@ -1,122 +1,261 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { lazy, Suspense, useCallback, useState } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Componentes
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { Preloader } from "./components/Preloader";
+import { ScrollToTop } from "./components/ScrollToTop";
+import ButtonReset from "./components/buttonReset";
+import { AccessibilityMenu } from "./components/AccessibilityMenu";
+import { HauyAssistantWidget } from "./components/HauyAssistantWidget";
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+// Páginas
+import { Category } from "./pages/Category";
+import { Assistente } from "./pages/Assistente";
+
+/*
+ * Code Splitting das páginas.
+ *
+ * Cada arquivo só é baixado quando a rota
+ * correspondente precisar dele.
+ */
+const Home = lazy(() =>
+    import("./pages/Home2").then((module) => ({
+        default: module.Home,
+    })),
+);
+
+const About = lazy(() =>
+    import("./pages/About").then((module) => ({
+        default: module.About,
+    })),
+);
+
+const Categories = lazy(() =>
+    import("./pages/Categories").then((module) => ({
+        default: module.Categories,
+    })),
+);
+
+const FAQ = lazy(() =>
+    import("./pages/FAQ").then((module) => ({
+        default: module.FAQ,
+    })),
+);
+
+const Tutorials = lazy(() =>
+    import("./pages/Tutorials").then((module) => ({
+        default: module.Tutorials,
+    })),
+);
+
+const TutorialRoute = lazy(() =>
+    import("./pages/Tutorial").then((module) => ({
+        default: module.TutorialRoute,
+    })),
+);
+
+const SendQuestion = lazy(() =>
+    import("./pages/SendQuestion").then((module) => ({
+        default: module.SendQuestion,
+    })),
+);
+
+const NotFound = lazy(() =>
+    import("./pages/NotFound").then((module) => ({
+        default: module.NotFound,
+    })),
+);
+
+/*
+ * Fallback utilizado quando uma página ainda está
+ * sendo baixada durante uma navegação interna.
+ */
+function RouteLoadingFallback() {
+    return (
+        <div className="flex min-h-[40vh] items-center justify-center" aria-live="polite" aria-label="Carregando página">
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-line border-t-coral" aria-hidden="true" />
+                <span>Carregando...</span>
+            </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    );
+}
+/*
+ * =========================================================
+ * CONTEÚDO DA APLICAÇÃO
+ * =========================================================
+ *
+ * Este componente está dentro do BrowserRouter,
+ * portanto pode utilizar useLocation().
+ */
 
-      <div className="ticks"></div>
+function AppContent() {
+    const [loading, setLoading] =
+        useState(true);
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    const location =
+        useLocation();
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    const handlePreloaderComplete =
+        useCallback(() => {
+            setLoading(false);
+        }, []);
+
+    return (
+        <>
+            {/* ==============================================
+                PRELOADER
+            ============================================== */}
+
+            {loading && <Preloader onComplete={handlePreloaderComplete} />}
+
+            {/* ==============================================
+                TRANSIÇÃO DE TEMA
+            ============================================== */}
+
+            <div
+                id="theme-transition"
+                className="
+                    pointer-events-none
+                    fixed
+                    inset-0
+                    z-[9999]
+                    opacity-0
+                "
+                aria-hidden="true"
+            />
+
+            {/* ==============================================
+                SCROLL
+            ============================================== */}
+
+            <ScrollToTop />
+
+            {/* ==============================================
+                APLICAÇÃO
+            ============================================== */}
+
+            <div className="min-h-screen bg-background">
+                {/* ==========================================
+                    HEADER
+                ========================================== */}
+
+                <Header />
+
+                {/* ==========================================
+                    ACESSIBILIDADE
+                ========================================== */}
+
+                <AccessibilityMenu />
+
+                {/* ==========================================
+                    RESET
+                ========================================== */}
+
+                <ButtonReset />
+
+                {/* ==========================================
+                    ASSISTENTE GLOBAL
+                ==========================================
+                
+                    O key faz o widget ser remontado
+                    quando a rota muda.
+
+                    Isso reseta:
+
+                    open = false
+
+                    sem precisar chamar
+                    setOpen() dentro de useEffect.
+                */}
+
+                {location.pathname !== "/assistente" && <HauyAssistantWidget key={location.pathname} />}
+
+                {/* ==========================================
+                    ROTAS
+                ========================================== */}
+
+                <Suspense fallback={<RouteLoadingFallback />}>
+                    <Routes>
+                        {/* ================================
+                            HOME
+                        ================================= */}
+
+                        <Route path="/" element={<Home />} />
+
+                        {/* ================================
+                            CATEGORIAS
+                        ================================= */}
+
+                        <Route path="/categorias" element={<Categories />} />
+
+                        <Route path="/categorias/:categoryId" element={<Category />} />
+
+                        {/* ================================
+                            TUTORIAIS
+                        ================================= */}
+
+                        <Route path="/tutoriais" element={<Tutorials />} />
+
+                        <Route path="/tutoriais/:tutorialId" element={<TutorialRoute />} />
+
+                        {/* ================================
+                            FAQ
+                        ================================= */}
+
+                        <Route path="/faq" element={<FAQ />} />
+
+                        {/* ================================
+                            SOBRE
+                        ================================= */}
+
+                        <Route path="/sobre" element={<About />} />
+
+                        {/* ================================
+                            ENVIAR DÚVIDA
+                        ================================= */}
+
+                        <Route path="/enviar-duvida" element={<SendQuestion />} />
+
+                        {/* ================================
+                            ASSISTENTE
+                        ================================= */}
+
+                        <Route path="/assistente" element={<Assistente />} />
+
+                        {/* ================================
+                            404
+                        ================================= */}
+
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Suspense>
+
+                {/* ==========================================
+                    FOOTER
+                ========================================== */}
+
+                <Footer />
+            </div>
+        </>
+    );
 }
 
-export default App
+/*
+ * =========================================================
+ * APP
+ * =========================================================
+ */
+
+function App() {
+    return (
+        <BrowserRouter>
+            <AppContent />
+        </BrowserRouter>
+    );
+}
+
+export default App;
