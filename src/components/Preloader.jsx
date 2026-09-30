@@ -462,7 +462,7 @@ export function Preloader({ onComplete }) {
     );
 
     return (
-        <div ref={containerRef} className={["fixed inset-0 z-[99999]", "flex items-center justify-center", "bg-background px-6"].join(" ")}>
+        <div id="site-preloader" ref={containerRef} className={["fixed inset-0 z-[99999]", "flex items-center justify-center", "bg-background px-6"].join(" ")}>
             <div className="flex w-full max-w-xs flex-col items-center text-center">
                 {/* Logo */}
                 <div ref={logoRef} className="w-24 sm:w-28">
