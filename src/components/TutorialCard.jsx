@@ -22,7 +22,7 @@ focus-visible:ring-coral ease-in-out"
                             </span>
                             {category?.name}
                         </Badge>
-                        <Badge className=" bg-[#fff1ec] text-[#a94c3c]">
+                        <Badge className="bg-coral-soft text-coral">
                             <span className="flex mb-1">
                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                             </span>

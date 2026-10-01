@@ -213,7 +213,7 @@ export function Home() {
                                 {priorityTopics.map((topic) => {
                                     const Icon = topic.icon;
                                     return (
-                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper/40  hover:text-coral">
+                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
                                             <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-coral">
                                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                             </span>
@@ -241,7 +241,7 @@ export function Home() {
                             ))}
                         </div>
                         <div className="   flex mt-8 flex-col items-center">
-                            <Link to="/tutoriais" className="text-sm  border border-mauve-800 px-4 py-2  rounded-lg font-bold text-[#315d70] hover:text-ink flex items-center gap-3">
+                            <Link to="/tutoriais" className="text-sm  border border-line px-4 py-2 rounded-lg font-bold text-coral hover:text-ink transition-colors flex items-center gap-3">
                                 Ver todos os tutoriais
                                 <ArrowRight className="h-4 w-4 text-muted-ink" />
                             </Link>
