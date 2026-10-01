@@ -163,7 +163,7 @@ export function Category() {
                 </span>
             </nav>
             <div className="mt-7 flex items-start gap-4">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-[#eaf3f5] text-[#315d70]">
+                <span className="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-coral-soft)] text-[var(--color-coral)]">
                     <Icon className="h-6 w-6" />
                 </span>
                 <div>
