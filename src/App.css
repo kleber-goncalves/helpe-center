@@ -4,36 +4,36 @@
 
 @theme {
     /* Colors */
-    --color-ink: #133345;
-    --color-muted-ink: #27638a;
+    --color-ink: #26231f;
+    --color-muted-ink: #6b6861;
     --color-searchPesq: #000000;
     --color-frete: #ffffff;
-    --color-paper: #fdfdfb;
+    --color-paper: #fffdf9;
 
-    --color-mist: #f2f6f7;
-    --color-mist2: #eef8fa;
-    --color-mist3: #ebf5f6;
-    --color-mist-deep: #eaf1f3;
-    --color-mist-deep2: #e1f2f7;
+    --color-mist: #f8f4ee;
+    --color-mist2: #f5f0e8;
+    --color-mist3: #f3eee6;
+    --color-mist-deep: #eee6dc;
+    --color-mist-deep2: #e7ddd1;
 
-    --color-line: #dce6e9;
+    --color-line: #ded7cc;
 
-    --color-coral: #e66f58;
-    --color-coral-soft: #ffe5e0;
+    --color-coral: #b4532d;
+    --color-coral-soft: #f5e0d3;
 
-    --color-coral-button: #cf5f4b;
-    --color-coral-button-hover: #b85140;
+    --color-coral-button: #b4532d;
+    --color-coral-button-hover: #963f22;
 
-    --color-petrol-soft: #4f6f7d;
+    --color-petrol-soft: #756a60;
 
     /* Texto secundário */
-    --color-muted-foreground: #436d78;
+    --color-muted-foreground: #6b6861;
 
     --color-background: #ffffff;
-    --color-foreground: #133345;
+    --color-foreground: #26231f;
 
-    --color-card: oklch(1 0 0);
-    --color-card-foreground: oklch(0.34 0.045 215);
+    --color-card: oklch(0.995 0.005 85);
+    --color-card-foreground: oklch(0.25 0.012 75);
 
     /* =========================================================
        FONTES
@@ -73,46 +73,46 @@
 
     /* Compatibilidade */
     --color-frete: #000000;
-    --color-background: #122838;
-    --color-foreground: #edf4f6;
-    color: #436d78;
-    --color-ink: #edf4f6;
-    --color-muted-ink: #a9bbc5;
+    --color-background: #181614;
+    --color-foreground: #f7f2ea;
+    color: #6b6861;
+    --color-ink: #f7f2ea;
+    --color-muted-ink: #c5bdb3;
 
-    --color-paper: #182f41;
+    --color-paper: #211e1a;
 
-    --color-mist: #1c374d;
-    --color-mist2: #204057;
-    --color-mist3: #204057;
-    --color-mist-deep: #25475e;
-    --color-mist-deep2: #2a4d65;
+    --color-mist: #28241f;
+    --color-mist2: #302b25;
+    --color-mist3: #302b25;
+    --color-mist-deep: #362f28;
+    --color-mist-deep2: #3c342d;
 
-    --color-line: #355365;
+    --color-line: #4a433b;
 
-    --color-coral: #cf5f4b;
-    --color-coral-soft: #452b26;
+    --color-coral: #b4532d;
+    --color-coral-soft: #44291f;
 
-    --color-petrol-soft: #8da9b6;
+    --color-petrol-soft: #b7aaa0;
 
-    --color-muted-foreground: oklch(0.735 0.025 215);
+    --color-muted-foreground: #bcb3a9;
 
-    --scrollbar-thumb: #8da9b6;
-    --scrollbar-thumb-hover: #a9c0ca;
+    --scrollbar-thumb: #b7aaa0;
+    --scrollbar-thumb-hover: #a9998b;
 
-    --color-coral-button: #a94839;
-    --color-coral-button-hover: #963c30;
+    --color-coral-button: #c86137;
+    --color-coral-button-hover: #d87547;
 }
 
 
 
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.34 0.045 215);
+    --background: oklch(0.995 0.005 85);
+    --foreground: oklch(0.25 0.012 75);
 
     /* barra de rolagem */
-    --scrollbar-thumb: #e66f58;
-    --scrollbar-thumb-hover: #d85f49;
+    --scrollbar-thumb: #b4532d;
+    --scrollbar-thumb-hover: #a94e2b;
 }
 
 
@@ -156,7 +156,7 @@ html {
 
 html[data-accessibility-contrast="high"] {
     /* Fundo principal */
-    --color-background: #0d1b24;
+    --color-background: #0f0d0b;
 
     /* =========================================================
        TEXTO PRINCIPAL
@@ -169,35 +169,35 @@ html[data-accessibility-contrast="high"] {
     --color-ink-hover: #f4eee7;
 
     /* Texto secundário */
-    --color-muted-ink: #d5e6ed;
+    --color-muted-ink: #f0e8de;
 
     /* Superfície principal */
-    --color-paper: #132d3d;
+    --color-paper: #1c1815;
 
     /* Superfícies secundárias */
-    --color-mist: #17384a;
-    --color-mist2: #1c4358;
-    --color-mist3: #204b61;
+    --color-mist: #241e19;
+    --color-mist2: #2c241e;
+    --color-mist3: #342a22;
 
     /* Superfícies mais destacadas */
-    --color-mist-deep: #25546b;
-    --color-mist-deep2: #2a5c74;
+    --color-mist-deep: #3f3127;
+    --color-mist-deep2: #49372b;
 
     /* Bordas */
-    --color-line: #9fbac6;
+    --color-line: #b7a698;
 
     /* Ícones / textos auxiliares */
-    --color-petrol-soft: #d8e8ed;
+    --color-petrol-soft: #eee4d9;
 
     /* Cor de destaque */
-    --color-coral: #ff8f78;
+    --color-coral: #ffab80;
 
     /* Fundo do destaque */
-    --color-coral-soft: #4b2924;
+    --color-coral-soft: #522d21;
 
     /* Botões */
-    --color-coral-button: #e66f58;
-    --color-coral-button-hover: #f07b64;
+    --color-coral-button: #b4532d;
+    --color-coral-button-hover: #d9784d;
 
     /* =========================================================
        PESQUISA
@@ -206,7 +206,7 @@ html[data-accessibility-contrast="high"] {
     --color-searchPesq: #ffffff;
 
     /* Scrollbar */
-    --scrollbar-thumb: #d8e8ed;
+    --scrollbar-thumb: #eee4d9;
     --scrollbar-thumb-hover: #ffffff;
 }
 
@@ -314,8 +314,8 @@ a {
 ============================================================ */
 
 ::selection {
-    background: #d7eaed;
-    color: #133345;
+    background: #f3d3c4;
+    color: #26231f;
 }
 
 
