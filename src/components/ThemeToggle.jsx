@@ -138,10 +138,10 @@ export function ThemeToggle({ iconClassName = "h-4 w-4", iconStrokeWidth = 1.8, 
             <Button ref={buttonRef} type="button" variant="ghost" size="icon" onClick={toggleTheme} disabled={highContrast} aria-label={highContrast ? "Modo escuro fixado pelo alto contraste" : isDark ? "Ativar modo claro" : "Ativar modo escuro"} title={highContrast ? "Desative o alto contraste para alterar o tema" : isDark ? "Ativar modo claro" : "Ativar modo escuro"} className={cn("relative z-[10000]", highContrast ? "cursor-not-allowed opacity-60" : "cursor-pointer", "text-muted-ink", "hover:bg-mist", className)}>
                 <span className={cn("relative flex items-center justify-center", iconClassName, highContrast && ["cursor-not-allowed", "opacity-60"])} aria-hidden="true">
                     {/* Sol */}
-                    <Sun className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-[#b58100]")} strokeWidth={iconStrokeWidth} />
+                    <Sun className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-coral")} strokeWidth={iconStrokeWidth} />
 
                     {/* Lua */}
-                    <Moon className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-0 scale-100 opacity-100 text-[#8da9b6]" : "-rotate-90 scale-0 opacity-0")} strokeWidth={iconStrokeWidth} />
+                    <Moon className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-0 scale-100 opacity-100 text-muted-ink" : "-rotate-90 scale-0 opacity-0")} strokeWidth={iconStrokeWidth} />
                 </span>
             </Button>
 

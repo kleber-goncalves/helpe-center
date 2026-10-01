@@ -14,9 +14,9 @@ import { cn } from "../lib/utils";
 
 export const Button = forwardRef(function Button({ className, variant = "default", ...props }, ref) {
     const variants = {
-        default: "bg-ink text-white hover:bg-[#1d4a60]",
+        default: "bg-ink text-white hover:bg-ink-hover",
 
-        outline: "border border-line bg-white text-ink hover:bg-mist",
+        outline: "border border-line bg-background text-ink hover:bg-mist",
 
         coral: "bg-coral-button text-white hover:bg-coral-button-hover",
     };
@@ -29,7 +29,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
 ========================================================= */
 
 export function Card({ className, ...props }) {
-    return <div className={cn("min-w-0 rounded-xl border border-line bg-white", className)} {...props} />;
+    return <div className={cn("min-w-0 rounded-xl border border-line bg-card", className)} {...props} />;
 }
 
 /* =========================================================
@@ -37,7 +37,7 @@ export function Card({ className, ...props }) {
 ========================================================= */
 
 export function Badge({ children, className }) {
-    return <span className={cn(["inline-flex shrink-0", "items-center justify-center", "whitespace-nowrap", "rounded-full", "bg-[#edf4f5]", "px-2.5", "text-xs font-semibold", "text-[#31566a]"].join(" "), className)}>{children}</span>;
+    return <span className={cn(["inline-flex shrink-0", "items-center justify-center", "whitespace-nowrap", "rounded-full", "bg-mist2", "px-2.5", "text-xs font-semibold", "text-muted-ink"].join(" "), className)}>{children}</span>;
 }
 
 /* =========================================================

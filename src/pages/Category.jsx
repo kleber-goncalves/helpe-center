@@ -137,7 +137,7 @@ export function Category() {
         return (
             <main className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                 <h1 className="text-3xl font-bold text-ink">Categoria não encontrada</h1>
-                <Link className="mt-5 inline-block font-bold text-[#315d70]" to="/categorias">
+                <Link className="mt-5 inline-block font-bold text-coral" to="/categorias">
                     Ver categorias
                 </Link>
             </main>
