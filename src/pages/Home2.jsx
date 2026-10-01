@@ -163,7 +163,7 @@ export function Home() {
                                 w-[73%]
                                 rounded-3xl
                                 bg-coral
-                                dark:bg-[#edf4f6]
+                                dark:bg-coral-soft
                             "
                             />
 

@@ -1,270 +1,558 @@
 @import "tailwindcss";
 
 @theme {
-    /* Colors */
-    --color-ink: #133345;
-    --color-muted-ink: #27638a;
-    --color-searchPesq: #000000;
-    --color-frete: #ffffff;
-    --color-paper: #fdfdfb;
+    /* =========================================================
+       CORES — IDENTIDADE HAUY CONECTA
+       Baseada na identidade visual da escola:
+       grafite + laranja queimado + tons neutros
+    ========================================================= */
 
-    --color-mist: #f2f6f7;
-    --color-mist2: #eef8fa;
-    --color-mist3: #ebf5f6;
-    --color-mist-deep: #eaf1f3;
-    --color-mist-deep2: #e1f2f7;
-
-    --color-line: #dce6e9;
-
-    --color-coral: #e66f58;
-    --color-coral-soft: #ffe5e0;
-
-    --color-coral-button: #cf5f4b;
-    --color-coral-button-hover: #b85140;
-
-    --color-petrol-soft: #4f6f7d;
+    /* Texto principal */
+    --color-ink: #26231f;
 
     /* Texto secundário */
-    --color-muted-foreground: #436d78;
+    --color-muted-ink: #6b6861;
 
-    --color-background: #ffffff;
-    --color-foreground: #133345;
+    /* Pesquisa / estados auxiliares */
+    --color-searchPesq: #26231f;
 
-    --color-card: oklch(1 0 0);
-    --color-card-foreground: oklch(0.34 0.045 215);
+    /* Mantido para compatibilidade */
+    --color-frete: #ffffff;
 
-    /* Fonts */
-    --font-display: "Nunito", ui-sans-serif, system-ui, sans-serif;
-    --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    /* Superfície principal */
+    --color-paper: #fffdf9;
+
+    /* =========================================================
+       FUNDOS
+    ========================================================= */
+
+    --color-mist: #f8f4ee;
+
+    --color-mist2: #f5f0e8;
+
+    --color-mist3: #f3eee6;
+
+    --color-mist-deep: #eee6dc;
+
+    --color-mist-deep2: #e7ddd1;
+
+    /* =========================================================
+       BORDAS
+    ========================================================= */
+
+    --color-line: #ded7cc;
+
+    /* =========================================================
+       IDENTIDADE / LARANJA ESCOLAR
+    ========================================================= */
+
+    /* Usada em textos, links e elementos de destaque */
+    --color-coral: #b4532d;
+
+    /* Fundo suave do destaque */
+    --color-coral-soft: #f5e0d3;
+
+    /* Botões */
+    --color-coral-button: #a94e2b;
+
+    /* Hover dos botões */
+    --color-coral-button-hover: #963f22;
+
+    /* =========================================================
+       TOM SECUNDÁRIO
+       Mantido para ícones e elementos auxiliares.
+       Sai o azul forte e entra um neutro quente.
+    ========================================================= */
+
+    --color-petrol-soft: #756a60;
+
+    /* =========================================================
+       TEXTO SECUNDÁRIO
+    ========================================================= */
+
+    --color-muted-foreground: #6b6861;
+
+    /* =========================================================
+       BACKGROUND / FOREGROUND
+    ========================================================= */
+
+    --color-background: #fffdf9;
+
+    --color-foreground: #26231f;
+
+    /* =========================================================
+       CARDS
+    ========================================================= */
+
+    --color-card: oklch(0.995 0.005 85);
+
+    --color-card-foreground: oklch(0.25 0.012 75);
+
+    /* =========================================================
+       FONTES
+    ========================================================= */
+
+    --font-display:
+        "Nunito",
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
+
+    --font-sans:
+        "Source Sans 3",
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
+
+    /* =========================================================
+       SOMBRAS
+       Tons neutros/quentes em vez de azulados.
+    ========================================================= */
 
     --shadow-soft:
-        0 1px 2px oklch(0.35 0.04 215 / 0.05),
-        0 6px 20px -8px oklch(0.35 0.04 215 / 0.12);
+        0 1px 2px rgb(38 35 31 / 0.05),
+        0 6px 20px -8px rgb(38 35 31 / 0.12);
 
     --shadow-lift:
-        0 2px 4px oklch(0.35 0.04 215 / 0.06),
-        0 14px 32px -12px oklch(0.35 0.04 215 / 0.2);
+        0 2px 4px rgb(38 35 31 / 0.06),
+        0 14px 32px -12px rgb(38 35 31 / 0.18);
 }
 
+
+/* ============================================================
+   DARK MODE
+============================================================ */
 
 .dark {
+    /* Pesquisa */
     --color-searchPesq: #ffffff;
+
+    /* Compatibilidade */
     --color-frete: #000000;
-    --color-background: #122838;
-    --color-foreground: #edf4f6;
-    color: #436d78;
-    --color-ink: #edf4f6;
-    --color-muted-ink: #a9bbc5;
 
-    --color-paper: #182f41;
+    /* Fundo principal */
+    --color-background: #181614;
 
-    --color-mist: #1c374d;
-    --color-mist2: #204057;
-    --color-mist3: #204057;
-    --color-mist-deep: #25475e;
-    --color-mist-deep2: #2a4d65;
+    /* Texto principal */
+    --color-foreground: #f7f2ea;
 
-    --color-line: #355365;
+    /* Cor base */
+    color: #c9c1b7;
 
-    --color-coral: #cf5f4b;
-    --color-coral-soft: #452b26;
+    /* Texto principal */
+    --color-ink: #f7f2ea;
 
-    --color-petrol-soft: #8da9b6;
+    /* Texto secundário */
+    --color-muted-ink: #c5bdb3;
 
-    --color-muted-foreground: oklch(0.735 0.025 215);
+    /* Superfície */
+    --color-paper: #211e1a;
 
-    --scrollbar-thumb: #8da9b6;
-    --scrollbar-thumb-hover: #a9c0ca;
+    /* =========================================================
+       FUNDOS SECUNDÁRIOS
+    ========================================================= */
 
-    --color-coral-button: #a94839;
-    --color-coral-button-hover: #963c30;
+    --color-mist: #28241f;
+
+    --color-mist2: #2c2823;
+
+    --color-mist3: #302b25;
+
+    --color-mist-deep: #362f28;
+
+    --color-mist-deep2: #3c342d;
+
+    /* =========================================================
+       BORDAS
+    ========================================================= */
+
+    --color-line: #4a433b;
+
+    /* =========================================================
+       LARANJA
+    ========================================================= */
+
+    --color-coral: #e07a4c;
+
+    --color-coral-soft: #44291f;
+
+    --color-coral-button: #c86137;
+
+    --color-coral-button-hover: #d87547;
+
+    /* =========================================================
+       TOM AUXILIAR
+    ========================================================= */
+
+    --color-petrol-soft: #b7aaa0;
+
+    /* Texto secundário */
+    --color-muted-foreground: #bcb3a9;
+
+    /* Scrollbar */
+    --scrollbar-thumb: #8e7f73;
+
+    --scrollbar-thumb-hover: #a9998b;
 }
 
 
-
+/* ============================================================
+   ROOT
+============================================================ */
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.34 0.045 215);
+    /* Background */
+    --background: oklch(0.995 0.005 85);
 
-    /* barra de rolagem */
-    --scrollbar-thumb: #e66f58;
-    --scrollbar-thumb-hover: #d85f49;
+    /* Foreground */
+    --foreground: oklch(0.25 0.012 75);
+
+    /* =========================================================
+       BARRA DE ROLAGEM
+    ========================================================= */
+
+    --scrollbar-thumb: #b4532d;
+
+    --scrollbar-thumb-hover: #a94e2b;
 }
+
+
+/* ============================================================
+   BOX MODEL
+============================================================ */
 
 * {
     box-sizing: border-box;
 }
 
+
+/* ============================================================
+   HTML
+============================================================ */
+
 html {
+    /* =========================================================
+       ESCALA DE ACESSIBILIDADE
+    ========================================================= */
 
     --accessibility-font-scale: 1;
 
-    font-size: calc(
-        100% * var(--accessibility-font-scale)
-    );
+    font-size:
+        calc(
+            100% *
+            var(--accessibility-font-scale)
+        );
+
+    /* =========================================================
+       SCROLL
+    ========================================================= */
 
     scroll-behavior: smooth;
 
-    /* Barra de rolagem */
-    scrollbar-color: var(--scrollbar-thumb) var(--color-mist3);
+    /* =========================================================
+       BARRA DE ROLAGEM
+    ========================================================= */
+
+    scrollbar-color:
+        var(--scrollbar-thumb)
+        var(--color-mist3);
 }
+
+
+/* ============================================================
+   ALTO CONTRASTE
+============================================================ */
 
 html[data-accessibility-contrast="high"] {
-    /* Fundo principal */
-    --color-background: #0d1b24;
+    /* =========================================================
+       FUNDO PRINCIPAL
+    ========================================================= */
 
-    /* Texto principal */
+    --color-background: #0f0d0b;
+
+    /* =========================================================
+       TEXTO PRINCIPAL
+    ========================================================= */
+
     --color-foreground: #ffffff;
 
-    /* Texto / elementos importantes */
     --color-ink: #ffffff;
 
-    /* Texto secundário */
-    --color-muted-ink: #d5e6ed;
+    /* =========================================================
+       TEXTO SECUNDÁRIO
+    ========================================================= */
 
-    /* Superfície principal */
-    --color-paper: #132d3d;
+    --color-muted-ink: #f0e8de;
 
-    /* Superfícies secundárias */
-    --color-mist: #17384a;
-    --color-mist2: #1c4358;
-    --color-mist3: #204b61;
+    --color-muted-foreground: #f0e8de;
 
-    /* Superfícies mais destacadas */
-    --color-mist-deep: #25546b;
-    --color-mist-deep2: #2a5c74;
+    /* =========================================================
+       SUPERFÍCIE
+    ========================================================= */
 
-    /* Bordas */
-    --color-line: #9fbac6;
+    --color-paper: #1c1815;
 
-    /* Ícones / textos auxiliares */
-    --color-petrol-soft: #d8e8ed;
+    /* =========================================================
+       SUPERFÍCIES SECUNDÁRIAS
+    ========================================================= */
 
-    /* Cor de destaque */
-    --color-coral: #ff8f78;
+    --color-mist: #241e19;
 
-    /* Fundo do destaque */
-    --color-coral-soft: #4b2924;
+    --color-mist2: #2c241e;
 
-    /* Botões */
-    --color-coral-button: #e66f58;
-    --color-coral-button-hover: #f07b64;
+    --color-mist3: #342a22;
 
-    /* Pesquisa */
+    /* =========================================================
+       SUPERFÍCIES MAIS DESTACADAS
+    ========================================================= */
+
+    --color-mist-deep: #3f3127;
+
+    --color-mist-deep2: #49372b;
+
+    /* =========================================================
+       BORDAS
+    ========================================================= */
+
+    --color-line: #b7a698;
+
+    /* =========================================================
+       ÍCONES / AUXILIARES
+    ========================================================= */
+
+    --color-petrol-soft: #eee4d9;
+
+    /* =========================================================
+       DESTAQUE
+    ========================================================= */
+
+    --color-coral: #ffab80;
+
+    /* =========================================================
+       FUNDO DO DESTAQUE
+    ========================================================= */
+
+    --color-coral-soft: #522d21;
+
+    /* =========================================================
+       BOTÕES
+    ========================================================= */
+
+    --color-coral-button: #c86137;
+
+    --color-coral-button-hover: #d9784d;
+
+    /* =========================================================
+       PESQUISA
+    ========================================================= */
+
     --color-searchPesq: #ffffff;
 
-    /* Scrollbar */
-    --scrollbar-thumb: #d8e8ed;
+    /* =========================================================
+       SCROLLBAR
+    ========================================================= */
+
+    --scrollbar-thumb: #eee4d9;
+
     --scrollbar-thumb-hover: #ffffff;
 }
+
+
+/* ============================================================
+   MOVIMENTO REDUZIDO
+============================================================ */
 
 html[data-accessibility-motion="reduced"] *,
 html[data-accessibility-motion="reduced"] *::before,
 html[data-accessibility-motion="reduced"] *::after {
     animation-duration: 0.01ms !important;
+
     animation-iteration-count: 1 !important;
+
     transition-duration: 0.01ms !important;
+
     scroll-behavior: auto !important;
 }
+
+
+/* ============================================================
+   SCROLLBAR — CHROME / EDGE / SAFARI
+============================================================ */
 
 html::-webkit-scrollbar {
     width: 10px;
 }
 
+
 html::-webkit-scrollbar-track {
     background: var(--color-mist3);
 }
 
+
 html::-webkit-scrollbar-thumb {
-    
     background: var(--scrollbar-thumb);
+
     border-radius: 999px;
 }
+
 
 html::-webkit-scrollbar-thumb:hover {
     background: var(--scrollbar-thumb-hover);
 }
 
+
+/* ============================================================
+   BODY
+============================================================ */
+
 body {
     margin: 0;
+
     min-width: 320px;
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans);
+
+    background-color:
+        var(--color-background);
+
+    color:
+        var(--color-foreground);
+
+    font-family:
+        var(--font-sans);
+
     font-size: 1.0625rem;
+
     line-height: 1.6;
+
     -webkit-font-smoothing: antialiased;
 }
 
+
+/* ============================================================
+   TÍTULOS
+============================================================ */
 
 h1,
 h2,
 h3,
 h4 {
     margin: 0;
-    font-family: var(--font-display);
+
+    font-family:
+        var(--font-display);
+
     font-weight: 700;
+
     letter-spacing: -0.01em;
+
     line-height: 1.15;
-    color: var(--color-foreground);
+
+    color:
+        var(--color-foreground);
 }
+
+
+/* ============================================================
+   FORMULÁRIOS
+============================================================ */
 
 button,
 input {
     font: inherit;
 }
 
+
+/* ============================================================
+   LINKS
+============================================================ */
+
 a {
     color: inherit;
+
     text-decoration: none;
 }
 
+
+/* ============================================================
+   SELEÇÃO DE TEXTO
+============================================================ */
+
 ::selection {
-    background: #d7eaed;
-    color: #133345;
+    background: #f3d3c4;
+
+    color: #26231f;
 }
+
+
+/* ============================================================
+   IMAGENS / LINKS
+============================================================ */
 
 img,
 a {
     -webkit-user-drag: none;
+
     user-drag: none;
 }
 
+
 img {
     user-select: none;
+
     -webkit-user-select: none;
+
     -webkit-user-drag: none;
+
     user-drag: none;
 }
+
+
+/* ============================================================
+   SEARCH INPUT
+============================================================ */
 
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
     -webkit-appearance: none;
+
     appearance: none;
 }
+
+
+/* ============================================================
+   ANIMAÇÃO DE ENTRADA DOS PASSOS DO TUTORIAL
+============================================================ */
 
 @keyframes tutorial-step-in {
     from {
         opacity: 0;
-        transform: translateY(10px);
+
+        transform:
+            translateY(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
 }
 
-/* --------------------------------
-   Soft section backgrounds
---------------------------------- */
+
+/* ============================================================
+   SOFT SECTION BACKGROUNDS
+============================================================ */
+
+
+/* ============================================================
+   HERO WASH
+============================================================ */
 
 @utility bg-hero-wash {
     background:
         radial-gradient(
             ellipse 60% 55% at 85% 20%,
-            rgb(230 111 88 / 0.12),
+            rgb(180 83 45 / 0.10),
             transparent 70%
         ),
         radial-gradient(
@@ -274,28 +562,44 @@ input[type="search"]::-webkit-search-decoration {
         ),
         linear-gradient(
             180deg,
-   
             var(--color-background) 100%
         );
 }
 
+
+/* ============================================================
+   MIST WASH
+============================================================ */
+
 @utility bg-mist-wash {
-    background: linear-gradient(
-        180deg,
-        var(--color-background) 0%,
-        var(--color-mist2) 18%,
-        var(--color-mist2) 82%,
-        var(--color-background) 100%
-    );
+    background:
+        linear-gradient(
+            180deg,
+            var(--color-background) 0%,
+            var(--color-mist2) 18%,
+            var(--color-mist2) 82%,
+            var(--color-background) 100%
+        );
 }
 
+
+/* ============================================================
+   WARM WASH
+============================================================ */
+
 @utility bg-warm-wash {
-    background: linear-gradient(
-        180deg,
-        var(--color-background) 0%,
-        var(--color-coral-soft) 100%
-    );
+    background:
+        linear-gradient(
+            180deg,
+            var(--color-background) 0%,
+            var(--color-coral-soft) 100%
+        );
 }
+
+
+/* ============================================================
+   DOT GRID
+============================================================ */
 
 @utility dot-grid {
     background-image:
@@ -303,11 +607,13 @@ input[type="search"]::-webkit-search-decoration {
             var(--color-petrol-soft) 0.7px,
             transparent 1px
         );
-    background-size: 14px 14px;
-    mask-image: radial-gradient(
-        ellipse at center,
-        black 10%,
-        transparent 75%
-    );
-}
 
+    background-size: 14px 14px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 10%,
+            transparent 75%
+        );
+}
