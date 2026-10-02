@@ -6,6 +6,8 @@ import { TeamOption } from "./TeamOption";
 import testeAlunos from "../assets/equipe/alunos/testeAlunos.jpg";
 import cirlena from "../assets/equipe/alunos/cirlena.png";
 import divina from "../assets/equipe/alunos/divina.png";
+import carlos from "../assets/equipe/alunos/carlos.png";
+import joseRoberto from "../assets/equipe/alunos/jose-roberto.png";
 
 // Assets professores
 import testeProf from "../assets/equipe/professores/testeProf.jpg";
@@ -16,14 +18,14 @@ const team = {
         description: "Integrantes responsáveis pelo desenvolvimento do projeto.",
         members: [
             {
-                name: "Kleber",
-                role: "Aluno",
-                image: testeAlunos,
-            },
-            {
                 name: "Cirlene",
                 role: "Aluna",
                 image: cirlena,
+            },
+            {
+                name: "Carlos",
+                role: "Aluno",
+                image: carlos,
             },
             {
                 name: "Divina",
@@ -31,12 +33,12 @@ const team = {
                 image: divina,
             },
             {
-                name: "Robertin",
+                name: "José Roberto",
                 role: "Aluno",
-                image: testeAlunos,
+                image: joseRoberto,
             },
             {
-                name: "Carlos",
+                name: "Kleber",
                 role: "Aluno",
                 image: testeAlunos,
             },
