@@ -244,7 +244,7 @@ export function About() {
 
                         <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                             <Reveal y={18} duration={0.6}>
-                                <img src={aboutImg} fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                <img src="/about.png" fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
                             </Reveal>
                         </div>
                     </div>
