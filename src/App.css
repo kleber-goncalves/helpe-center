@@ -3,6 +3,25 @@
 @import "tailwindcss";
 
 @theme {
+    /* =========================================================
+       PALETA PRINCIPAL — ORANGE
+       Referência: paleta fornecida pelo projeto.
+    ========================================================= */
+
+    --color-orange-light: #fef1e8;
+    --color-orange-light-hover: #feeadc;
+    --color-orange-light-active: #fdd4b7;
+
+    --color-orange-normal: #f97316;
+    --color-orange-normal-hover: #e06814;
+    --color-orange-normal-active: #c75c12;
+
+    --color-orange-dark: #bb5611;
+    --color-orange-dark-hover: #95450d;
+    --color-orange-dark-active: #70340a;
+
+    --color-orange-darker: #572808;
+
     /* Colors */
     --color-ink: #26231f;
     --color-muted-ink: #6b6861;
@@ -18,11 +37,11 @@
 
     --color-line: #ded7cc;
 
-    --color-coral: #b4532d;
-    --color-coral-soft: #f5e0d3;
+    --color-coral: #f97316;
+    --color-coral-soft: #fef1e8;
 
-    --color-coral-button: #b4532d;
-    --color-coral-button-hover: #963f22;
+    --color-coral-button: #f97316;
+    --color-coral-button-hover: #e06814;
 
     --color-petrol-soft: #756a60;
 
@@ -89,8 +108,8 @@
 
     --color-line: #4a433b;
 
-    --color-coral: #b4532d;
-    --color-coral-soft: #44291f;
+    --color-coral: #f97316;
+    --color-coral-soft: #70340a;
 
     --color-petrol-soft: #b7aaa0;
 
@@ -99,8 +118,8 @@
     --scrollbar-thumb: #b7aaa0;
     --scrollbar-thumb-hover: #a9998b;
 
-    --color-coral-button: #c86137;
-    --color-coral-button-hover: #d87547;
+    --color-coral-button: #f97316;
+    --color-coral-button-hover: #e06814;
 }
 
 
@@ -111,8 +130,8 @@
     --foreground: oklch(0.25 0.012 75);
 
     /* barra de rolagem */
-    --scrollbar-thumb: #b4532d;
-    --scrollbar-thumb-hover: #a94e2b;
+    --scrollbar-thumb: #f97316;
+    --scrollbar-thumb-hover: #e06814;
 }
 
 
@@ -314,7 +333,7 @@ a {
 ============================================================ */
 
 ::selection {
-    background: #f3d3c4;
+    background: #fdd4b7;
     color: #26231f;
 }
 
@@ -388,7 +407,7 @@ input[type="search"]::-webkit-search-decoration {
     background:
         radial-gradient(
             ellipse 60% 55% at 85% 20%,
-            rgb(180 83 45 / 0.10),
+            rgb(249 115 22 / 0.10),
             transparent 70%
         ),
         radial-gradient(
