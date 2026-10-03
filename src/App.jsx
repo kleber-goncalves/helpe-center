@@ -100,6 +100,7 @@ function AppContent() {
 
     const handlePreloaderComplete =
         useCallback(() => {
+            document.documentElement.setAttribute("data-hauy-preloader-ready", "true");
             setLoading(false);
         }, []);
 
