@@ -100,24 +100,13 @@ function AppContent() {
 
     const handlePreloaderComplete =
         useCallback(() => {
+            document.documentElement.setAttribute(
+                "data-hauy-preloader-ready",
+                "true",
+            );
+
             setLoading(false);
         }, []);
-
-    /*
-     * O sinal do prerender só é enviado depois que
-     * o Preloader foi desmontado e o seu cleanup
-     * restaurou o overflow original do body.
-     */
-    useEffect(() => {
-        if (loading) {
-            return;
-        }
-
-        document.documentElement.setAttribute(
-            "data-hauy-preloader-ready",
-            "true",
-        );
-    }, [loading]);
 
     return (
         <>
