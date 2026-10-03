@@ -93,8 +93,9 @@ function RouteLoadingFallback() {
  */
 
 function AppContent() {
-    const [loading, setLoading] =
-        useState(true);
+    const [loading, setLoading] = useState(() => {
+        return !document.documentElement.hasAttribute("data-astratra-prerendered");
+    });
 
     const location =
         useLocation();
