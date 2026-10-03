@@ -113,13 +113,14 @@ export function Preloader({ onComplete }) {
     /*
      * Bloqueia o scroll enquanto o preloader estiver ativo.
      */
-    useEffect(() => {
-        const previousOverflow = document.body.style.overflow;
+    const previousOverflowRef = useRef("");
 
+    useEffect(() => {
+        previousOverflowRef.current = document.body.style.overflow;
         document.body.style.overflow = "hidden";
 
         return () => {
-            document.body.style.overflow = previousOverflow;
+            document.body.style.overflow = previousOverflowRef.current;
         };
     }, []);
 
@@ -451,7 +452,8 @@ export function Preloader({ onComplete }) {
                 duration: 0.7,
                 ease: "power3.inOut",
                 onComplete: () => {
-                    onComplete?.();
+                    document.body.style.overflow = previousOverflowRef.current;
+                onComplete?.();
                 },
             });
         },
