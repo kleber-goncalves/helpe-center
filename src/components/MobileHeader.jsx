@@ -220,11 +220,12 @@ export function MobileHeader() {
                         LOGO
                     ================================= */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
-                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
+                        <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
+                            <img src="/logo.svg" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
+                            <span className="text-[11px] text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
                             <span className="text-base font-bold text-ink">Hauy Conecta</span>
 
                             <span className="text-[11px] text-muted-ink">Central de Ajuda Digital</span>

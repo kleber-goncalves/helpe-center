@@ -175,14 +175,15 @@ export function DesktopNavbar() {
         <>
             {/* Navbar */}
             <header ref={headerRef} className={cn("fixed left-0 top-0 z-[60]", "border-b border-line", "bg-paper/95", "backdrop-blur-sm", "will-change-[top,left,width,transform,border-radius,background-color,backdrop-filter,box-shadow]")}>
-                <div className={cn("mx-auto flex h-18 max-w-6xl", "items-center justify-between", "px-5 lg:px-8")}>
+                <div className={cn("mx-auto flex h-21 max-w-6xl", "items-center justify-between", "px-5 lg:px-8")}>
                     {/* Logo */}
                     <Link to="/" className={cn("flex items-center gap-2", "rounded-lg", "text-sm font-bold text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2")}>
-                        <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
+                        <div className="grid h-18 w-18 shrink-0 place-items-center rounded-lg bg-white/30">
+                            <img src="/logo.svg" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
+                            <span className=" font-bold text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
                             <span className="text-lg font-bold text-ink">Hauy Conecta</span>
 
                             <span className="text-xs text-muted-ink">Central de Ajuda Digital</span>
@@ -196,8 +197,6 @@ export function DesktopNavbar() {
                                 {label}
                             </NavLink>
                         ))}
-
-                       
 
                         {/* Tema */}
                         <ThemeToggle />

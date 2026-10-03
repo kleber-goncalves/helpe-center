@@ -94,14 +94,17 @@ export function Footer() {
                     {/* Identidade */}
                     <div className="max-w-md">
                         <Link to="/" className="group inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/40 focus-visible:ring-offset-2">
-                            <div className="grid h-11 w-11 shrink-0 place-items-center">
-                                <img src="/logo.png" className="h-full w-full object-contain" />
+                            <div className="grid h-18 w-18 shrink-0 place-items-center bg-white/30 rounded-lg">
+                                <img src="/logo.svg" alt="Hauy Conecta" className="h-full w-full object-contain" />
                             </div>
 
                             <div className="flex flex-col leading-none">
-                                <span className="font-display text-lg font-bold text-foreground">Hauy Conecta</span>
+                                <div className="flex  flex-col items-start ">
+                                    <span className="font-display text-lg font-black text-foreground leading-none">Hauy</span>
+                                    <span className="leading-none font-display text-lg font-black text-foreground">Conecta</span>
+                                </div>
 
-                                <span className="mt-1 text-xs text-muted-ink">Central de Ajuda Digital</span>
+                                <span className="leading-none mt-1 text-xs text-muted-ink font-extrabold">Central de Ajuda Digital</span>
                             </div>
                         </Link>
 

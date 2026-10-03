@@ -168,7 +168,7 @@ export function Home() {
                             />
 
                             <img
-                                src="/hero.png"
+                                src={heroImg}
                                 alt="Mulher mexendo no notebook"
                                 fetchPriority="high"
                                 decoding="async"
