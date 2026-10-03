@@ -81,6 +81,7 @@ const INITIAL_PRELOADER_STYLE = `
         0% {
             transform: translateX(-140%);
         }
+
         100% {
             transform: translateX(320%);
         }
@@ -108,37 +109,53 @@ const INITIAL_PRELOADER_MARKUP = `
 </div>
 `;
 
-function addBootShell(html) {
-    let output = html;
+function addHtmlBootAttribute(html) {
+    const start = html.indexOf("<html");
 
-    output = output.replace(
-        /<html\\b([^>]*)>/i,
-        (match, attributes) => {
-            const cleanAttributes = attributes
-                .replace(/\\sdata-hauy-boot="[^"]*"/i, "");
+    if (start === -1) {
+        return html;
+    }
 
-            return `<html${cleanAttributes} data-hauy-boot="pending">`;
-        },
+    const end = html.indexOf(">", start);
+
+    if (end === -1) {
+        return html;
+    }
+
+    const openingTag = html.slice(start, end + 1);
+
+    if (openingTag.includes('data-hauy-boot="pending"')) {
+        return html;
+    }
+
+    const updatedTag = openingTag.replace(
+        "<html",
+        '<html data-hauy-boot="pending"',
     );
+
+    return html.slice(0, start) + updatedTag + html.slice(end + 1);
+}
+
+function addBootShell(html) {
+    let output = addHtmlBootAttribute(html);
 
     if (!output.includes('id="initial-preloader-style"')) {
         output = output.replace(
-            /<\\/head>/i,
-            `${INITIAL_PRELOADER_STYLE}</head>`,
+            "</head>",
+            INITIAL_PRELOADER_STYLE + "</head>",
         );
     }
 
     if (!output.includes('id="initial-preloader-shell"')) {
         output = output.replace(
             /<body([^>]*)>/i,
-            (match) => `${match}${INITIAL_PRELOADER_MARKUP}`,
+            (match) => match + INITIAL_PRELOADER_MARKUP,
         );
     }
 
-    output = output.replace(
-        / data-hauy-preloader-ready="true"/g,
-        "",
-    );
+    output = output
+        .split(' data-hauy-preloader-ready="true"')
+        .join("");
 
     return output;
 }
