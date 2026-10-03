@@ -162,19 +162,21 @@ export function Category() {
                     {category.name}
                 </span>
             </nav>
-            <div className="mt-7 flex items-start gap-4">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-coral-soft)] text-[var(--color-coral)]">
-                    <Icon className="h-6 w-6" />
-                </span>
-                <div>
-                    <h1 className="text-4xl font-bold tracking-tight text-ink">{category.name}</h1>
-                    <p className="mt-2 text-muted-ink">{category.description}</p>
+            <div data-reader-content>
+                <div className="mt-7 flex items-start gap-4">
+                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-coral-soft)] text-[var(--color-coral)]">
+                        <Icon className="h-6 w-6" />
+                    </span>
+                    <div>
+                        <h1 className="text-4xl font-bold tracking-tight text-ink">{category.name}</h1>
+                        <p className="mt-2 text-muted-ink">{category.description}</p>
+                    </div>
                 </div>
-            </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {results.map((tutorial) => (
-                    <TutorialCard key={tutorial.id} tutorial={tutorial} />
-                ))}
+                <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {results.map((tutorial) => (
+                        <TutorialCard key={tutorial.id} tutorial={tutorial} />
+                    ))}
+                </div>
             </div>
         </main>
     );

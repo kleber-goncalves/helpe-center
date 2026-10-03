@@ -298,7 +298,7 @@ export function Tutorial() {
                      * ==================================================
                      */}
 
-                    <article className="min-w-0">
+                    <article data-reader-content  className="min-w-0">
                         {activeStep === 0 && (
                             <>
                                 {/*

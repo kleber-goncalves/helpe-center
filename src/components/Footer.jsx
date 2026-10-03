@@ -108,7 +108,7 @@ export function Footer() {
                             </div>
                         </Link>
 
-                        <p className="mt-5 max-w-sm text-[15px] leading-7 text-muted-foreground">Tutoriais simples para alunos, professores e funcionários resolverem suas dúvidas digitais no dia a dia da escola.</p>
+                        <p className="mt-5 max-w-sm text-[15px] leading-7 text-muted-foreground"> Tutoriais simples para alunos, professores e funcionários resolverem suas dúvidas digitais no dia a dia da E.E.Hauy Petruceli Mayrink.</p>
                     </div>
 
                     {/* Navegação */}
@@ -145,11 +145,11 @@ export function Footer() {
                 {/* Rodapé inferior */}
                 <div className="flex flex-col gap-3 md:flex-row items-center justify-between mt-12 border-t border-line pt-6">
                     <div className="flex flex-col gap-3 text-xs text-muted-ink sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto Escolar de Tecnologia e Informática</p>
+                        <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto desenvolvido por alunos do Curso Técnico em Informática da E.E.Hauy Petruceli Mayrink</p>
                     </div>
 
                     <div className="flex flex-col items-center md:flex-row  md:gap-1 text-xs text-muted-ink ">
-                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido em equipe, integrantes -</p>
+                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido por -</p>
                         <p className="text-xs leading-5 text-muted-ink">Kleber | Cirlene | Divina | Robertin | Carlos</p>
                     </div>
                 </div>

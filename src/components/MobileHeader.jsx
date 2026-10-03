@@ -215,7 +215,7 @@ export function MobileHeader() {
             <header className={["fixed inset-x-0 top-0 z-[60]", "border-b", "transition-[background-color,border-color,box-shadow]", "duration-300 ease-out", open ? "border-line bg-paper backdrop-blur-none shadow-none" : "border-line/70 bg-paper/65 backdrop-blur-sm backdrop-saturate-150 shadow-[0_8px_32px_rgb(0_0_0_/_0.08)]"].join(" ")}>
                 <div className={["pointer-events-none absolute inset-x-0 bottom-0 h-px", "transition-opacity duration-300", open ? "opacity-0" : "opacity-60", "bg-foreground/10"].join(" ")} />
 
-                <div className="mx-auto flex h-16 items-center justify-between px-5">
+                <div className="mx-auto flex h-20 items-center justify-between px-5">
                     {/* =================================
                         LOGO
                     ================================= */}
@@ -264,7 +264,7 @@ export function MobileHeader() {
                                     {/* =================================
                                         CABEÇALHO
                                     ================================= */}
-                                    <div className="shrink-0 border-b border-line px-4 py-4">
+                                    <div className="shrink-0 border-b border-line px-4 py-4 mt-7">
                                         <div className="flex min-h-8 items-center justify-between gap-3">
                                             <div className="flex  flex-row w-full items-center  gap-2">
                                                 {menuView === "accessibility" && (

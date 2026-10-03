@@ -178,15 +178,17 @@ export function DesktopNavbar() {
                 <div className={cn("mx-auto flex h-21 max-w-6xl", "items-center justify-between", "px-5 lg:px-8")}>
                     {/* Logo */}
                     <Link to="/" className={cn("flex items-center gap-2", "rounded-lg", "text-sm font-bold text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2")}>
-                        <div className="grid h-18 w-18 shrink-0 place-items-center rounded-lg bg-white/30">
+                        <div className="grid h-17 w-17 shrink-0 place-items-center rounded-lg bg-white/30">
                             <img src="/logo.svg" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
                         </div>
 
-                        <div className="flex flex-col leading-tight">
+                        <div className="flex flex-col leading-none gap-y-2">
                             <span className=" font-bold text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
-                            <span className="text-lg font-bold text-ink">Hauy Conecta</span>
+                            <div className="flex flex-col gap-y-1">
+                                <span className="text-lg font-bold text-ink leading-none">Hauy Conecta</span>
 
-                            <span className="text-xs text-muted-ink">Central de Ajuda Digital</span>
+                                <span className="text-xs text-muted-ink leading-none">Central de Ajuda Digital</span>
+                            </div>
                         </div>
                     </Link>
 
