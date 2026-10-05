@@ -4,7 +4,7 @@ import {
     MessageCircleQuestion,
     Search,
     Send,
-    Youtube,
+    CirclePlay,
     X,
 } from "lucide-react";
 
@@ -537,7 +537,7 @@ export function HauyAssistant({
                                                         focus-visible:ring-offset-2
                                                     "
                                                 >
-                                                    <Youtube
+                                                    <CirclePlay
                                                         className="
                                                             size-5
                                                             shrink-0
