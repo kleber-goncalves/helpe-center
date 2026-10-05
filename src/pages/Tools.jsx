@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { FileText, Images } from "lucide-react";
 
 import { ToolCard } from "../components/ToolCard";
-import { Badge } from "../components/ui";
 import {
     SITE_NAME,
     SITE_URL,
@@ -98,7 +97,7 @@ export function Tools() {
 
                     <h1
                         id="tools-page-title"
-                        className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-ink sm:text-5xl"
+                        className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-ink "
                     >
                         Ferramentas para facilitar seu dia a dia
                     </h1>
@@ -108,13 +107,6 @@ export function Tools() {
                         imagens sem complicação.
                     </p>
 
-                    <div className="mt-7 flex flex-wrap items-center gap-2 text-sm text-muted-ink">
-                        <Badge>PDF</Badge>
-                        <Badge>Imagens</Badge>
-                        <span className="ml-1">
-                            As ferramentas abrem em sites externos.
-                        </span>
-                    </div>
                 </div>
             </section>
 
