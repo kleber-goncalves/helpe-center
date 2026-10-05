@@ -629,7 +629,9 @@ export function HauyAssistant({
                                                 />
 
                                                 <span>
-                                                    Tutoriais relacionados
+                                                    {item.source === "related"
+                                                        ? "Talvez estes tutoriais ajudem"
+                                                        : "Tutoriais relacionados"}
                                                 </span>
                                             </div>
 

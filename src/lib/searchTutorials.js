@@ -291,7 +291,44 @@ function isRelevantTutorial(relevance) {
     return false;
 }
 
-export function searchTutorials(query, tutorials, categories) {
+function getRelevanceLevel(relevance) {
+    if (isRelevantTutorial(relevance)) {
+        return "relevant";
+    }
+
+    if (!relevance.strongWordMatch || relevance.score < 18) {
+        return "none";
+    }
+
+    /*
+     * Uma correspondência parcial pode ser útil para sugerir
+     * um tutorial relacionado, mas não é suficiente para
+     * enviar o conteúdo para o Gemini como resposta principal.
+     */
+
+    if (relevance.significantWordCount === 1) {
+        return "related";
+    }
+
+    if (relevance.coverage >= 1 / 3) {
+        return "related";
+    }
+
+    if (
+        relevance.matchedWordCount >= 1 &&
+        relevance.score >= 25
+    ) {
+        return "related";
+    }
+
+    return "none";
+}
+
+export function searchTutorialsWithRelevance(
+    query,
+    tutorials,
+    categories,
+) {
     const normalizedQuery = normalizeText(query);
 
     if (!normalizedQuery) {
@@ -299,22 +336,37 @@ export function searchTutorials(query, tutorials, categories) {
     }
 
     return tutorials
-        .map((tutorial) => ({
-            tutorial,
-            relevance: getRelevanceInfo(
+        .map((tutorial) => {
+            const relevance = getRelevanceInfo(
                 tutorial,
                 normalizedQuery,
                 categories,
-            ),
-        }))
-        .filter(
-            (result) =>
-                result.relevance.score > 0 &&
-                isRelevantTutorial(result.relevance),
-        )
+            );
+
+            return {
+                tutorial,
+                relevance: {
+                    ...relevance,
+                    level: getRelevanceLevel(relevance),
+                },
+            };
+        })
+        .filter((result) => result.relevance.level !== "none")
         .sort(
             (a, b) =>
                 b.relevance.score - a.relevance.score,
+        );
+}
+
+export function searchTutorials(query, tutorials, categories) {
+    return searchTutorialsWithRelevance(
+        query,
+        tutorials,
+        categories,
+    )
+        .filter(
+            (result) =>
+                result.relevance.level === "relevant",
         )
         .map((result) => result.tutorial);
 }
