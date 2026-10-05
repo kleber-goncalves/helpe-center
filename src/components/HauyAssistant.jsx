@@ -238,10 +238,7 @@ export function HauyAssistant({
                                 focus-visible:ring-offset-2
                             "
                         >
-                            <X
-                                className="size-5"
-                                aria-hidden="true"
-                            />
+                            <X className="size-5" aria-hidden="true" />
                         </button>
                     )}
                 </div>
@@ -263,8 +260,7 @@ export function HauyAssistant({
                             `
                     }
                 >
-                    Pergunte sobre os assuntos disponíveis na Central de
-                    Ajuda.
+                    Pergunte sobre os assuntos disponíveis na Central de Ajuda.
                 </p>
             </header>
 
@@ -334,9 +330,7 @@ export function HauyAssistant({
                                 <button
                                     key={suggestion}
                                     type="button"
-                                    onClick={() =>
-                                        handleSuggestion(suggestion)
-                                    }
+                                    onClick={() => handleSuggestion(suggestion)}
                                     className="
                                         min-h-11
                                         cursor-pointer
@@ -372,14 +366,7 @@ export function HauyAssistant({
 
                 <div className="mt-5 space-y-5">
                     {messages.map((item, index) => (
-                        <div
-                            key={`${item.role}-${index}`}
-                            className={
-                                item.role === "user"
-                                    ? "flex justify-end"
-                                    : "flex justify-start"
-                            }
-                        >
+                        <div key={`${item.role}-${index}`} className={item.role === "user" ? "flex justify-end" : "flex justify-start"}>
                             <div
                                 className={
                                     item.role === "user"
@@ -416,11 +403,9 @@ export function HauyAssistant({
                                     ALTERNATIVAS EXTERNAS
                                 ================================= */}
 
-                                {item.role === "assistant" &&
-                                    item.source === "none" &&
-                                    item.query && (
-                                        <div
-                                            className="
+                                {item.role === "assistant" && item.source === "none" && item.query && (
+                                    <div
+                                        className="
                                                 mt-6
                                                 rounded-2xl
                                                 border
@@ -429,36 +414,36 @@ export function HauyAssistant({
                                                 p-4
                                                 sm:p-5
                                             "
-                                        >
-                                            <div
-                                                className="
+                                    >
+                                        <div
+                                            className="
                                                     flex
                                                     items-center
                                                     gap-2
                                                 "
-                                            >
-                                                <Search
-                                                    className="
+                                        >
+                                            <Search
+                                                className="
                                                         size-4
                                                         shrink-0
                                                         text-coral
                                                     "
-                                                    aria-hidden="true"
-                                                />
+                                                aria-hidden="true"
+                                            />
 
-                                                <p
-                                                    className="
+                                            <p
+                                                className="
                                                         text-sm
                                                         font-bold
                                                         text-ink
                                                     "
-                                                >
-                                                    Continue sua busca
-                                                </p>
-                                            </div>
+                                            >
+                                                Continue sua busca
+                                            </p>
+                                        </div>
 
-                                            <p
-                                                className="
+                                        <p
+                                            className="
                                                     mt-3
                                                     rounded-xl
                                                     border
@@ -470,27 +455,24 @@ export function HauyAssistant({
                                                     leading-6
                                                     text-muted-foreground
                                                 "
-                                            >
-                                                <span className="font-semibold text-ink">
-                                                    Sua busca:
-                                                </span>{" "}
-                                                “{item.query}”
-                                            </p>
+                                        >
+                                            <span className="font-semibold text-ink">Sua busca:</span> “{item.query}”
+                                        </p>
 
-                                            <div
-                                                className="
+                                        <div
+                                            className="
                                                     mt-3
                                                     flex
                                                     flex-col
                                                     gap-2
                                                 "
-                                            >
-                                                <a
-                                                    href={`https://www.google.com/search?q=${encodeURIComponent(item.query.trim())}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    title={`Pesquisar "${item.query}" no Google`}
-                                                    className="
+                                        >
+                                            <a
+                                                href={`https://www.google.com/search?q=${encodeURIComponent(item.query.trim())}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                title={`Pesquisar "${item.query}" no Google`}
+                                                className="
                                                         group
                                                         flex
                                                         min-h-11
@@ -512,18 +494,18 @@ export function HauyAssistant({
                                                         focus-visible:ring-coral
                                                         focus-visible:ring-offset-2
                                                     "
-                                                >
-                                                    <Search
-                                                        className="
+                                            >
+                                                <Search
+                                                    className="
                                                             size-5
                                                             shrink-0
                                                             text-coral
                                                         "
-                                                        aria-hidden="true"
-                                                    />
+                                                    aria-hidden="true"
+                                                />
 
-                                                    <span
-                                                        className="
+                                                <span
+                                                    className="
                                                             min-w-0
                                                             flex-1
                                                             min-w-0
@@ -532,30 +514,28 @@ export function HauyAssistant({
                                                             font-bold
                                                             text-ink
                                                         "
-                                                    >
-                                                        Pesquisar "
-                                                        {item.query}
-                                                        " no Google
-                                                    </span>
+                                                >
+                                                    Pesquisar "{item.query}" no Google
+                                                </span>
 
-                                                    <ArrowUpRight
-                                                        className="
+                                                <ArrowUpRight
+                                                    className="
                                                             size-4
                                                             shrink-0
                                                             text-muted-foreground
                                                             transition-colors
                                                             group-hover:text-coral
                                                         "
-                                                        aria-hidden="true"
-                                                    />
-                                                </a>
+                                                    aria-hidden="true"
+                                                />
+                                            </a>
 
-                                                <a
-                                                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(item.query.trim())}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    title={`Ver vídeos sobre "${item.query}" no YouTube`}
-                                                    className="
+                                            <a
+                                                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(item.query.trim())}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                title={`Ver vídeos sobre "${item.query}" no YouTube`}
+                                                className="
                                                         group
                                                         flex
                                                         min-h-11
@@ -577,18 +557,18 @@ export function HauyAssistant({
                                                         focus-visible:ring-coral
                                                         focus-visible:ring-offset-2
                                                     "
-                                                >
-                                                    <CirclePlay
-                                                        className="
+                                            >
+                                                <CirclePlay
+                                                    className="
                                                             size-5
                                                             shrink-0
                                                             text-coral
                                                         "
-                                                        aria-hidden="true"
-                                                    />
+                                                    aria-hidden="true"
+                                                />
 
-                                                    <span
-                                                        className="
+                                                <span
+                                                    className="
                                                             min-w-0
                                                             flex-1
                                                             truncate
@@ -596,27 +576,25 @@ export function HauyAssistant({
                                                             font-bold
                                                             text-ink
                                                         "
-                                                    >
-                                                        Ver vídeos sobre "
-                                                        {item.query}
-                                                        "
-                                                    </span>
+                                                >
+                                                    Ver vídeos sobre "{item.query}"
+                                                </span>
 
-                                                    <ArrowUpRight
-                                                        className="
+                                                <ArrowUpRight
+                                                    className="
                                                             size-4
                                                             shrink-0
                                                             text-muted-foreground
                                                             transition-colors
                                                             group-hover:text-coral
                                                         "
-                                                        aria-hidden="true"
-                                                    />
-                                                </a>
+                                                    aria-hidden="true"
+                                                />
+                                            </a>
 
-                                                <Link
-                                                    to="/enviar-duvida"
-                                                    className="
+                                            <Link
+                                                to="/enviar-duvida"
+                                                className="
                                                         inline-flex
                                                         min-h-11
                                                         items-center
@@ -635,35 +613,34 @@ export function HauyAssistant({
                                                         focus-visible:ring-coral
                                                         focus-visible:ring-offset-2
                                                     "
-                                                >
-                                                    Enviar essa dúvida para a equipe
-                                                </Link>
-                                            </div>
+                                            >
+                                                Enviar essa dúvida para a equipe
+                                            </Link>
                                         </div>
-                                    )}
+                                    </div>
+                                )}
 
                                 {/* =================================
                                     TUTORIAIS
                                 ================================= */}
 
-                                {item.role === "assistant" &&
-                                    item.tutorials?.length > 0 && (
-                                        <div
-                                            className="
+                                {item.role === "assistant" && item.tutorials?.length > 0 && (
+                                    <div
+                                        className="
                                                 mt-5
                                                 space-y-3
                                             "
-                                        >
-                                            <div
-                                                className="
+                                    >
+                                        <div
+                                            className="
                                                     flex
                                                     flex-wrap
                                                     items-center
                                                     gap-2
                                                 "
-                                            >
-                                                <div
-                                                    className="
+                                        >
+                                            <div
+                                                className="
                                                         flex
                                                         items-center
                                                         gap-2
@@ -671,22 +648,15 @@ export function HauyAssistant({
                                                         font-bold
                                                         text-ink
                                                     "
-                                                >
-                                                    <BookOpen
-                                                        className="size-4"
-                                                        aria-hidden="true"
-                                                    />
+                                            >
+                                                <BookOpen className="size-4" aria-hidden="true" />
 
-                                                    <span>
-                                                        {item.source === "related"
-                                                            ? "Talvez estes tutoriais ajudem"
-                                                            : "Tutoriais relacionados"}
-                                                    </span>
-                                                </div>
+                                                <span>{item.source === "related" ? "Talvez estes tutoriais ajudem" : "Tutoriais relacionados"}</span>
+                                            </div>
 
-                                                {item.source === "related" && (
-                                                    <span
-                                                        className="
+                                            {item.source === "related" && (
+                                                <span
+                                                    className="
                                                             rounded-full
                                                             bg-coral-soft
                                                             px-2.5
@@ -695,18 +665,17 @@ export function HauyAssistant({
                                                             font-bold
                                                             text-coral
                                                         "
-                                                    >
-                                                        Correspondência parcial
-                                                    </span>
-                                                )}
-                                            </div>
+                                                >
+                                                    Correspondência parcial
+                                                </span>
+                                            )}
+                                        </div>
 
-                                            {item.tutorials.map(
-                                                (tutorial) => (
-                                                    <Link
-                                                        key={tutorial.id}
-                                                        to={`/tutoriais/${tutorial.id}`}
-                                                        className="
+                                        {item.tutorials.map((tutorial) => (
+                                            <Link
+                                                key={tutorial.id}
+                                                to={`/tutoriais/${tutorial.id}`}
+                                                className="
                                                             group
                                                             flex
                                                             items-start
@@ -724,49 +693,44 @@ export function HauyAssistant({
                                                             focus-visible:ring-coral
                                                             focus-visible:ring-offset-2
                                                         "
-                                                    >
-                                                        <div>
-                                                            <p
-                                                                className="
+                                            >
+                                                <div>
+                                                    <p
+                                                        className="
                                                                     font-bold
                                                                     text-ink
                                                                     group-hover:text-coral
                                                                 "
-                                                            >
-                                                                {
-                                                                    tutorial.title
-                                                                }
-                                                            </p>
+                                                    >
+                                                        {tutorial.title}
+                                                    </p>
 
-                                                            <p
-                                                                className="
+                                                    <p
+                                                        className="
                                                                     mt-1
                                                                     text-sm
                                                                     leading-5
                                                                     text-muted-foreground
                                                                 "
-                                                            >
-                                                                {
-                                                                    tutorial.description
-                                                                }
-                                                            </p>
-                                                        </div>
+                                                    >
+                                                        {tutorial.description}
+                                                    </p>
+                                                </div>
 
-                                                        <ArrowUpRight
-                                                            className="
+                                                <ArrowUpRight
+                                                    className="
                                                                 mt-1
                                                                 size-4
                                                                 shrink-0
                                                                 text-muted-foreground
                                                                 group-hover:text-coral
                                                             "
-                                                            aria-hidden="true"
-                                                        />
-                                                    </Link>
-                                                ),
-                                            )}
-                                        </div>
-                                    )}
+                                                    aria-hidden="true"
+                                                />
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -776,11 +740,7 @@ export function HauyAssistant({
                     ================================================= */}
 
                     {loading && (
-                        <div
-                            className="flex justify-start"
-                            role="status"
-                            aria-live="polite"
-                        >
+                        <div className="flex justify-start" role="status" aria-live="polite">
                             <div
                                 className="
                                     rounded-2xl
@@ -794,8 +754,7 @@ export function HauyAssistant({
                                     text-muted-foreground
                                 "
                             >
-                                O Assistente Hauy está preparando uma
-                                resposta...
+                                O Assistente Hauy está preparando uma resposta...
                             </div>
                         </div>
                     )}
@@ -853,10 +812,7 @@ export function HauyAssistant({
                         focus-within:border-coral
                     "
                 >
-                    <label
-                        htmlFor="hauy-assistant-input"
-                        className="sr-only"
-                    >
+                    <label htmlFor="hauy-assistant-input" className="sr-only">
                         Digite sua dúvida
                     </label>
 
@@ -864,9 +820,16 @@ export function HauyAssistant({
                         ref={inputRef}
                         id="hauy-assistant-input"
                         value={message}
-                        onChange={(event) =>
-                            setMessage(event.target.value)
-                        }
+                        onChange={(event) => setMessage(event.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" && !event.shiftKey) {
+                                event.preventDefault();
+
+                                if (!loading && message.trim()) {
+                                    event.currentTarget.form?.requestSubmit();
+                                }
+                            }
+                        }}
                         placeholder="O que você precisa aprender?"
                         rows={2}
                         maxLength={MAX_MESSAGE_LENGTH}
@@ -891,9 +854,7 @@ export function HauyAssistant({
 
                     <button
                         type="submit"
-                        disabled={
-                            loading || !message.trim()
-                        }
+                        disabled={loading || !message.trim()}
                         aria-label="Enviar dúvida"
                         className="
                             flex
@@ -915,10 +876,7 @@ export function HauyAssistant({
                             focus-visible:ring-offset-2
                         "
                     >
-                        <Send
-                            className="size-5"
-                            aria-hidden="true"
-                        />
+                        <Send className="size-5" aria-hidden="true" />
                     </button>
                 </div>
 
@@ -938,8 +896,7 @@ export function HauyAssistant({
                             text-muted-foreground
                         "
                     >
-                        O Assistente utiliza os conteúdos disponíveis na
-                        Central.
+                        O Assistente utiliza os conteúdos disponíveis na Central.
                     </p>
 
                     <span
