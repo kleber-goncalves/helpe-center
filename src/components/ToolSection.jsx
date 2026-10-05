@@ -14,7 +14,7 @@ export function ToolSection({
             aria-labelledby={id}
             className={shaded ? "bg-mist3" : ""}
         >
-            <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
+            <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
                 <div className="flex items-start gap-3">
                     <span
                         className="
@@ -32,7 +32,7 @@ export function ToolSection({
                         <Icon className="size-5" strokeWidth={1.9} />
                     </span>
 
-                    <div className="min-w-0">
+                    <div className="min-w-0 border-b border-line pb-5">
                         <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
                             {label}
                         </p>
@@ -50,7 +50,7 @@ export function ToolSection({
                     </div>
                 </div>
 
-                <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {tools.map((tool) => (
                         <ToolCard key={tool.id} tool={tool} />
                     ))}

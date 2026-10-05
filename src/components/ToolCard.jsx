@@ -25,12 +25,14 @@ export function ToolCard({ tool }) {
             <Card
                 className="
                     h-full
+                    min-h-[220px]
                     p-5
                     transition-[border-color,background-color,transform]
                     duration-200
                     group-hover:-translate-y-0.5
                     group-hover:border-coral
                     group-hover:bg-mist
+                    group-hover:shadow-soft
                     motion-reduce:transform-none
                 "
             >
@@ -80,7 +82,7 @@ export function ToolCard({ tool }) {
 
                     <div className="mt-auto flex items-center justify-between gap-4 pt-6">
                         <span className="text-xs font-semibold text-muted-ink">
-                            Site externo · {tool.provider}
+                            {tool.provider} · site externo
                         </span>
 
                         <span className="inline-flex items-center gap-1 text-sm font-bold text-coral">

@@ -6,7 +6,7 @@ export function ToolProviderInfo({ provider }) {
     const Icon = provider.icon;
 
     return (
-        <Card className="h-full p-5">
+        <Card className="h-full p-5 shadow-none transition-shadow duration-200 hover:shadow-soft motion-reduce:transition-none">
             <div className="flex items-start gap-3">
                 <span
                     className="
@@ -78,6 +78,7 @@ export function ToolProviderInfo({ provider }) {
                             aria-label={`Informações de segurança do ${provider.name}. Abre em uma nova aba.`}
                             className="
                                 inline-flex
+                                min-h-11
                                 items-center
                                 gap-1.5
                                 text-coral

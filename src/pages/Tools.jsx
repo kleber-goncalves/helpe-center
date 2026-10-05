@@ -230,9 +230,15 @@ export function Tools() {
                     </p>
 
                     <p className="mt-3 flex max-w-3xl items-start gap-2 text-sm font-semibold text-muted-ink">
-                        <ShieldCheck className="size-4 text-coral" aria-hidden="true" />
+                        <ShieldCheck className="size-4 shrink-0 text-coral" aria-hidden="true" />
                         O processamento acontece no site do serviço externo, não no Hauy Conecta.
                     </p>
+
+                    <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-ink" aria-label="Resumo das ferramentas">
+                        <span className="font-semibold text-ink">{tools.length} ferramentas</span>
+                        <span className="h-1 w-1 rounded-full bg-line" aria-hidden="true" />
+                        <span>{providerOptions.length} serviços externos</span>
+                    </div>
 
                     <div role="search" aria-label="Pesquisar ferramentas" className="mt-7 max-w-2xl">
                         <label htmlFor="tools-search" className="mb-2 block text-sm font-bold text-ink">
@@ -242,7 +248,15 @@ export function Tools() {
                         <div className="relative">
                             <Search className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-ink" aria-hidden="true" />
 
-                            <Input id="tools-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Ex.: comprimir PDF" aria-describedby="tools-search-hint" className="h-12 pl-11 pr-12 text-base" />
+                            <Input
+                                id="tools-search"
+                                type="search"
+                                value={search}
+                                onChange={(event) => setSearch(event.target.value)}
+                                placeholder="Ex.: comprimir PDF"
+                                aria-describedby="tools-search-hint"
+                                className="h-12 pl-11 pr-12 text-base shadow-soft"
+                            />
 
                             {search && (
                                 <button
@@ -300,8 +314,8 @@ export function Tools() {
             </section>
 
             {!hasControls && (
-                <section aria-labelledby="featured-tools-title" className="border-b border-line bg-coral-soft/40">
-                    <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
+                <section aria-labelledby="featured-tools-title" className="border-b border-line bg-mist">
+                    <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                         <div className="flex items-start gap-3">
                             <span
                                 className="
@@ -330,7 +344,7 @@ export function Tools() {
                             </div>
                         </div>
 
-                        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             {featuredTools.map((tool) => (
                                 <ToolCard key={tool.id} tool={tool} />
                             ))}
@@ -358,7 +372,7 @@ export function Tools() {
 
             {hasControls && !hasResults && (
                 <section aria-labelledby="tools-search-empty-title" className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
-                    <div className="max-w-xl">
+                    <div className="max-w-2xl">
                         <span
                             className="
                                 flex
@@ -391,7 +405,7 @@ export function Tools() {
                                 setSearch("");
                                 clearFilters();
                             }}
-                            className="mt-6"
+                            className="mt-6 w-full sm:w-auto"
                         >
                             Limpar filtros e busca
                         </Button>

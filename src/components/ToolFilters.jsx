@@ -20,7 +20,7 @@ export function ToolFilters({
     hasActiveFilters,
 }) {
     return (
-        <fieldset className="mt-5 rounded-xl border border-line bg-background p-4">
+        <fieldset className="mt-5 rounded-xl border border-line bg-background p-4 shadow-soft">
             <legend className="sr-only">Filtros das ferramentas</legend>
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
@@ -43,7 +43,7 @@ export function ToolFilters({
                 )}
             </div>
 
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
                     <label
                         htmlFor="tools-category-filter"
