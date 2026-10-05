@@ -422,19 +422,59 @@ export function HauyAssistant({
                                         <div
                                             className="
                                                 mt-6
-                                                border-t
+                                                rounded-2xl
+                                                border
                                                 border-line
-                                                pt-5
+                                                bg-mist
+                                                p-4
+                                                sm:p-5
                                             "
                                         >
-                                            <p
+                                            <div
                                                 className="
-                                                    text-sm
-                                                    font-bold
-                                                    text-ink
+                                                    flex
+                                                    items-center
+                                                    gap-2
                                                 "
                                             >
-                                                Você pode continuar sua busca:
+                                                <Search
+                                                    className="
+                                                        size-4
+                                                        shrink-0
+                                                        text-coral
+                                                    "
+                                                    aria-hidden="true"
+                                                />
+
+                                                <p
+                                                    className="
+                                                        text-sm
+                                                        font-bold
+                                                        text-ink
+                                                    "
+                                                >
+                                                    Continue sua busca
+                                                </p>
+                                            </div>
+
+                                            <p
+                                                className="
+                                                    mt-3
+                                                    rounded-xl
+                                                    border
+                                                    border-line
+                                                    bg-background
+                                                    px-3
+                                                    py-2
+                                                    text-sm
+                                                    leading-6
+                                                    text-muted-foreground
+                                                "
+                                            >
+                                                <span className="font-semibold text-ink">
+                                                    Sua busca:
+                                                </span>{" "}
+                                                “{item.query}”
                                             </p>
 
                                             <div
@@ -460,13 +500,13 @@ export function HauyAssistant({
                                                         rounded-xl
                                                         border
                                                         border-line
-                                                        bg-mist
+                                                        bg-background
                                                         px-4
                                                         py-3
                                                         text-left
                                                         transition-colors
                                                         hover:border-coral
-                                                        hover:bg-background
+                                                        hover:bg-mist
                                                         focus-visible:outline-none
                                                         focus-visible:ring-2
                                                         focus-visible:ring-coral
@@ -486,8 +526,9 @@ export function HauyAssistant({
                                                         className="
                                                             min-w-0
                                                             flex-1
-                                                            truncate
+                                                            min-w-0
                                                             text-sm
+                                                            leading-5
                                                             font-bold
                                                             text-ink
                                                         "
@@ -616,23 +657,48 @@ export function HauyAssistant({
                                             <div
                                                 className="
                                                     flex
+                                                    flex-wrap
                                                     items-center
                                                     gap-2
-                                                    text-sm
-                                                    font-bold
-                                                    text-ink
                                                 "
                                             >
-                                                <BookOpen
-                                                    className="size-4"
-                                                    aria-hidden="true"
-                                                />
+                                                <div
+                                                    className="
+                                                        flex
+                                                        items-center
+                                                        gap-2
+                                                        text-sm
+                                                        font-bold
+                                                        text-ink
+                                                    "
+                                                >
+                                                    <BookOpen
+                                                        className="size-4"
+                                                        aria-hidden="true"
+                                                    />
 
-                                                <span>
-                                                    {item.source === "related"
-                                                        ? "Talvez estes tutoriais ajudem"
-                                                        : "Tutoriais relacionados"}
-                                                </span>
+                                                    <span>
+                                                        {item.source === "related"
+                                                            ? "Talvez estes tutoriais ajudem"
+                                                            : "Tutoriais relacionados"}
+                                                    </span>
+                                                </div>
+
+                                                {item.source === "related" && (
+                                                    <span
+                                                        className="
+                                                            rounded-full
+                                                            bg-coral-soft
+                                                            px-2.5
+                                                            py-1
+                                                            text-xs
+                                                            font-bold
+                                                            text-coral
+                                                        "
+                                                    >
+                                                        Correspondência parcial
+                                                    </span>
+                                                )}
                                             </div>
 
                                             {item.tutorials.map(
