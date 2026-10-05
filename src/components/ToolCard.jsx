@@ -19,6 +19,7 @@ export function ToolCard({ tool }) {
                 focus-visible:ring-2
                 focus-visible:ring-coral
                 focus-visible:ring-offset-2
+                focus-visible:ring-offset-background
             "
         >
             <Card
@@ -30,6 +31,7 @@ export function ToolCard({ tool }) {
                     group-hover:-translate-y-0.5
                     group-hover:border-coral
                     group-hover:bg-mist
+                    motion-reduce:transform-none
                 "
             >
                 <div className="flex h-full flex-col">

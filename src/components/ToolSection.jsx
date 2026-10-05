@@ -32,14 +32,14 @@ export function ToolSection({
                         <Icon className="size-5" strokeWidth={1.9} />
                     </span>
 
-                    <div>
+                    <div className="min-w-0">
                         <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
                             {label}
                         </p>
 
                         <h2
                             id={id}
-                            className="mt-1 text-2xl font-bold text-ink sm:text-3xl"
+                            className="mt-1 break-words text-2xl font-bold text-ink sm:text-3xl"
                         >
                             {title}
                         </h2>

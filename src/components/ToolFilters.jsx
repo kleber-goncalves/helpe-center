@@ -20,10 +20,11 @@ export function ToolFilters({
     hasActiveFilters,
 }) {
     return (
-        <div className="mt-5 rounded-xl border border-line bg-background p-4">
+        <fieldset className="mt-5 rounded-xl border border-line bg-background p-4">
+            <legend className="sr-only">Filtros das ferramentas</legend>
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <p className="text-sm font-bold text-ink">Filtrar ferramentas</p>
+                    <p className="text-sm font-bold text-ink" aria-hidden="true">Filtrar ferramentas</p>
                     <p className="mt-1 text-sm leading-6 text-muted-foreground">
                         Escolha um tipo de conteúdo ou serviço.
                     </p>
@@ -91,6 +92,6 @@ export function ToolFilters({
                     </Select>
                 </div>
             </div>
-        </div>
+        </fieldset>
     );
 }

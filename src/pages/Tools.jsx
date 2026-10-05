@@ -157,7 +157,7 @@ export function Tools() {
                 <div className="mx-auto max-w-6xl px-5 pb-14 pt-14 lg:px-8">
                     <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Recursos úteis</p>
 
-                    <h1 id="tools-page-title" className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-ink">
+                    <h1 id="tools-page-title" className="mt-3 max-w-3xl break-words text-3xl font-bold tracking-tight text-ink sm:text-4xl">
                         Ferramentas para facilitar seu dia a dia
                     </h1>
 
@@ -165,7 +165,7 @@ export function Tools() {
                         Encontre ferramentas online para trabalhar com PDFs e imagens sem complicação.
                     </p>
 
-                    <p className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-muted-ink">
+                    <p className="mt-3 flex max-w-3xl items-start gap-2 text-sm font-semibold text-muted-ink">
                         <ShieldCheck className="size-4 text-coral" aria-hidden="true" />
                         O processamento acontece no site do serviço externo, não no Hauy Conecta.
                     </p>
@@ -192,7 +192,7 @@ export function Tools() {
                                         top-1/2
                                         cursor-pointer
                                         inline-flex
-                                        size-8
+                                        size-10
                                         -translate-y-1/2
                                         items-center
                                         justify-center
@@ -206,7 +206,7 @@ export function Tools() {
                                         focus-visible:ring-coral
                                     "
                                 >
-                                    <X className="size-4" aria-hidden="true" aria-label="Limpar busca" title="Limpar busca" />
+                                    <X className="size-4" aria-hidden="true" />
                                 </button>
                             )}
                         </div>
@@ -310,11 +310,11 @@ export function Tools() {
                             <SearchX className="size-5" strokeWidth={1.9} />
                         </span>
 
-                        <h2 id="tools-search-empty-title" className="mt-5 text-2xl font-bold text-ink sm:text-3xl">
+                        <h2 id="tools-search-empty-title" className="mt-5 max-w-2xl break-words text-2xl font-bold text-ink sm:text-3xl">
                             Nenhuma ferramenta encontrada
                         </h2>
 
-                        <p className="mt-3 text-base leading-7 text-muted-foreground">
+                        <p className="mt-3 max-w-2xl break-words text-base leading-7 text-muted-foreground">
                             {hasSearch
                                 ? `Não encontramos uma ferramenta para “${search.trim()}”. Tente pesquisar por outra tarefa, arquivo ou serviço.`
                                 : "Nenhuma ferramenta corresponde aos filtros selecionados. Tente outra combinação de filtros."}

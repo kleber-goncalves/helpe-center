@@ -26,7 +26,7 @@ export function ToolProviderInfo({ provider }) {
 
                 <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                        <h3 className="font-display text-lg font-bold text-ink">
+                        <h3 className="break-words font-display text-lg font-bold text-ink">
                             {provider.name}
                         </h3>
 
@@ -49,8 +49,10 @@ export function ToolProviderInfo({ provider }) {
                             href={provider.privacyUrl}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Política de privacidade do ${provider.name}. Abre em uma nova aba.`}
                             className="
                                 inline-flex
+                                min-h-11
                                 items-center
                                 gap-1.5
                                 text-coral
@@ -73,6 +75,7 @@ export function ToolProviderInfo({ provider }) {
                             href={provider.securityUrl}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Informações de segurança do ${provider.name}. Abre em uma nova aba.`}
                             className="
                                 inline-flex
                                 items-center
