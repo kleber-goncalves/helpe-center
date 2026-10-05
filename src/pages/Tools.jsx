@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { FileText, Images } from "lucide-react";
+import { FileText, Images, Sparkles } from "lucide-react";
 
 import { ToolSection } from "../components/ToolSection";
+import { ToolCard } from "../components/ToolCard";
 import { tools } from "../data/tools";
 import {
     SITE_NAME,
@@ -18,6 +19,7 @@ import {
     setPageTitle,
 } from "../lib/seo";
 
+const featuredTools = tools.filter((entry) => entry.featured);
 const pdfTools = tools.filter((entry) => entry.category === "PDF");
 const imageTools = tools.filter((entry) => entry.category === "Imagens");
 
@@ -104,6 +106,55 @@ export function Tools() {
                         Encontre ferramentas online para trabalhar com PDFs e
                         imagens sem complicação.
                     </p>
+                </div>
+            </section>
+
+            <section
+                aria-labelledby="featured-tools-title"
+                className="border-b border-line bg-coral-soft/40"
+            >
+                <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
+                    <div className="flex items-start gap-3">
+                        <span
+                            className="
+                                flex
+                                size-10
+                                shrink-0
+                                items-center
+                                justify-center
+                                rounded-lg
+                                bg-coral-soft
+                                text-coral
+                            "
+                            aria-hidden="true"
+                        >
+                            <Sparkles className="size-5" strokeWidth={1.9} />
+                        </span>
+
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
+                                Acesso rápido
+                            </p>
+
+                            <h2
+                                id="featured-tools-title"
+                                className="mt-1 text-2xl font-bold text-ink sm:text-3xl"
+                            >
+                                Mais usadas
+                            </h2>
+
+                            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                                Atalhos para algumas das ferramentas mais úteis
+                                em tarefas comuns com PDFs e imagens.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {featuredTools.map((tool) => (
+                            <ToolCard key={tool.id} tool={tool} />
+                        ))}
+                    </div>
                 </div>
             </section>
 

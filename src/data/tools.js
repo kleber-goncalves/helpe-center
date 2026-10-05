@@ -17,6 +17,7 @@ export const tools = [
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/juntar_pdf",
         icon: Files,
+        featured: true,
     },
     {
         id: "dividir-pdf",
@@ -35,6 +36,7 @@ export const tools = [
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/PT/compress_pdf",
         icon: Minimize2,
+        featured: true,
     },
     {
         id: "pdf-para-jpg",
@@ -53,6 +55,7 @@ export const tools = [
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/comprimir-imagem",
         icon: Minimize2,
+        featured: true,
     },
     {
         id: "redimensionar-imagem",
@@ -62,6 +65,7 @@ export const tools = [
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/redimensionar-imagem",
         icon: Maximize2,
+        featured: true,
     },
     {
         id: "recortar-imagem",
