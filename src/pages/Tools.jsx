@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-
 import { FileText, Images } from "lucide-react";
 
-import { ToolCard } from "../components/ToolCard";
+import { ToolSection } from "../components/ToolSection";
+import { tools } from "../data/tools";
 import {
     SITE_NAME,
     SITE_URL,
@@ -17,8 +17,6 @@ import {
     setMetaTag,
     setPageTitle,
 } from "../lib/seo";
-
-import { tools } from "../data/tools";
 
 const pdfTools = tools.filter((entry) => entry.category === "PDF");
 const imageTools = tools.filter((entry) => entry.category === "Imagens");
@@ -97,7 +95,7 @@ export function Tools() {
 
                     <h1
                         id="tools-page-title"
-                        className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-ink "
+                        className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-ink"
                     >
                         Ferramentas para facilitar seu dia a dia
                     </h1>
@@ -106,95 +104,27 @@ export function Tools() {
                         Encontre ferramentas online para trabalhar com PDFs e
                         imagens sem complicação.
                     </p>
-
                 </div>
             </section>
 
-            <section
-                aria-labelledby="pdf-tools-title"
-                className="mx-auto max-w-6xl px-5 py-14 lg:px-8"
-            >
-                <div className="flex items-center gap-3">
-                    <span
-                        className="
-                            flex
-                            size-10
-                            shrink-0
-                            items-center
-                            justify-center
-                            rounded-lg
-                            bg-coral-soft
-                            text-coral
-                        "
-                        aria-hidden="true"
-                    >
-                        <FileText className="size-5" strokeWidth={1.9} />
-                    </span>
+            <ToolSection
+                id="pdf-tools-title"
+                label="PDF"
+                title="Disponíveis no iLovePDF"
+                description="Organize, converta e reduza arquivos PDF em poucos passos."
+                icon={FileText}
+                tools={pdfTools}
+            />
 
-                    <div>
-                        <h2
-                            id="pdf-tools-title"
-                            className="text-2xl font-bold text-ink sm:text-3xl"
-                        >
-                            Ferramentas para PDF
-                        </h2>
-
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Organize, converta e reduza arquivos PDF.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {pdfTools.map((entry) => (
-                        <ToolCard key={entry.id} tool={entry} />
-                    ))}
-                </div>
-            </section>
-
-            <section
-                aria-labelledby="image-tools-title"
-                className="bg-mist3"
-            >
-                <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
-                    <div className="flex items-center gap-3">
-                        <span
-                            className="
-                                flex
-                                size-10
-                                shrink-0
-                                items-center
-                                justify-center
-                                rounded-lg
-                                bg-coral-soft
-                                text-coral
-                            "
-                            aria-hidden="true"
-                        >
-                            <Images className="size-5" strokeWidth={1.9} />
-                        </span>
-
-                        <div>
-                            <h2
-                                id="image-tools-title"
-                                className="text-2xl font-bold text-ink sm:text-3xl"
-                            >
-                                Ferramentas para imagens
-                            </h2>
-
-                            <p className="mt-1 text-sm text-muted-foreground">
-                                Comprima, redimensione, recorte e converta imagens.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                        {imageTools.map((entry) => (
-                            <ToolCard key={entry.id} tool={entry} />
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <ToolSection
+                id="image-tools-title"
+                label="Imagens"
+                title="Disponíveis no iLoveIMG"
+                description="Comprima, redimensione, recorte e converta imagens de forma prática."
+                icon={Images}
+                shaded
+                tools={imageTools}
+            />
 
             <section
                 aria-labelledby="tools-note-title"
@@ -209,9 +139,9 @@ export function Tools() {
                     </h2>
 
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        O Hauy Conecta reúne ferramentas de outros serviços para
-                        facilitar o acesso. Ao abrir uma delas, você será levado
-                        para o site do serviço responsável pelo processamento.
+                        O Hauy Conecta reúne atalhos para ferramentas de serviços
+                        externos. Ao abrir uma delas, você será levado para o site
+                        do serviço responsável pelo processamento.
                     </p>
 
                     <p className="mt-3 text-sm leading-6 text-muted-ink">
