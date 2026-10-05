@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
+    ChevronRight,
     FileText,
     Filter,
     Images,
@@ -82,23 +85,38 @@ export function Tools() {
     }, [category, provider, searchQuery]);
 
     useEffect(() => {
-        const pageTitle = `Ferramentas | ${SITE_NAME}`;
+        const pageTitle =
+            `Ferramentas online para PDF e imagens | ${SITE_NAME}`;
         const description =
-            "Ferramentas online recomendadas pelo Hauy Conecta para trabalhar com PDFs e imagens de forma simples.";
+            "Encontre ferramentas online para juntar, dividir, comprimir e converter PDFs, além de editar, redimensionar e comprimir imagens.";
         const canonicalUrl = `${SITE_URL}/ferramentas`;
 
         setPageTitle(pageTitle);
         setMetaTag("description", description);
+        setMetaTag("robots", "index,follow");
         setCanonical(canonicalUrl);
 
         setMetaProperty("og:title", pageTitle);
         setMetaProperty("og:description", description);
         setMetaProperty("og:type", "website");
         setMetaProperty("og:url", canonicalUrl);
+        setMetaProperty(
+            "og:image",
+            `${SITE_URL}/preview.png`,
+        );
+        setMetaProperty(
+            "og:image:alt",
+            "Hauy Conecta — Central de Ajuda Digital",
+        );
 
-        setMetaProperty("twitter:card", "summary");
-        setMetaProperty("twitter:title", pageTitle);
-        setMetaProperty("twitter:description", description);
+        setMetaTag("twitter:card", "summary_large_image");
+        setMetaTag("twitter:title", pageTitle);
+        setMetaTag("twitter:description", description);
+        setMetaTag("twitter:image", `${SITE_URL}/preview.png`);
+        setMetaTag(
+            "twitter:image:alt",
+            "Hauy Conecta — Central de Ajuda Digital",
+        );
 
         setJsonLd({
             "@context": "https://schema.org",
@@ -114,27 +132,49 @@ export function Tools() {
             },
             mainEntity: {
                 "@type": "ItemList",
+                numberOfItems: tools.length,
                 itemListElement: tools.map((entry, index) => ({
                     "@type": "ListItem",
                     position: index + 1,
                     name: entry.name,
-                    url: entry.href,
                 })),
+            },
+            breadcrumb: {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    {
+                        "@type": "ListItem",
+                        position: 1,
+                        name: "Início",
+                        item: SITE_URL,
+                    },
+                    {
+                        "@type": "ListItem",
+                        position: 2,
+                        name: "Ferramentas",
+                        item: canonicalUrl,
+                    },
+                ],
             },
         });
 
         return () => {
             removePageTitle();
             removeMetaTag("description");
+            removeMetaTag("robots");
 
             removeMetaProperty("og:title");
             removeMetaProperty("og:description");
             removeMetaProperty("og:type");
             removeMetaProperty("og:url");
+            removeMetaProperty("og:image");
+            removeMetaProperty("og:image:alt");
 
-            removeMetaProperty("twitter:card");
-            removeMetaProperty("twitter:title");
-            removeMetaProperty("twitter:description");
+            removeMetaTag("twitter:card");
+            removeMetaTag("twitter:title");
+            removeMetaTag("twitter:description");
+            removeMetaTag("twitter:image");
+            removeMetaTag("twitter:image:alt");
 
             removeCanonical();
             removeJsonLd();
@@ -155,6 +195,30 @@ export function Tools() {
         <main className="bg-background">
             <section aria-labelledby="tools-page-title" className="bg-mist3">
                 <div className="mx-auto max-w-6xl px-5 pb-14 pt-14 lg:px-8">
+                    <nav
+                        aria-label="Navegação estrutural"
+                        className="mb-6 flex items-center gap-1.5 text-sm"
+                    >
+                        <Link
+                            to="/"
+                            className="font-semibold text-muted-ink underline-offset-4 hover:text-coral hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2"
+                        >
+                            Início
+                        </Link>
+
+                        <ChevronRight
+                            className="size-4 text-muted-ink"
+                            aria-hidden="true"
+                        />
+
+                        <span
+                            aria-current="page"
+                            className="font-semibold text-ink"
+                        >
+                            Ferramentas
+                        </span>
+                    </nav>
+
                     <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Recursos úteis</p>
 
                     <h1 id="tools-page-title" className="mt-3 max-w-3xl break-words text-3xl font-bold tracking-tight text-ink sm:text-4xl">
