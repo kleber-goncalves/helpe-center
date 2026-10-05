@@ -3,6 +3,7 @@ import {
     FileText,
     Filter,
     Images,
+    ShieldCheck,
     Search,
     SearchX,
     Sparkles,
@@ -12,8 +13,10 @@ import {
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
 import { ToolFilters } from "../components/ToolFilters";
+import { ToolProviderInfo } from "../components/ToolProviderInfo";
 import { Button, Input } from "../components/ui";
 import { tools } from "../data/tools";
+import { toolProviders } from "../data/toolProviders";
 import {
     SITE_NAME,
     SITE_URL,
@@ -158,7 +161,14 @@ export function Tools() {
                         Ferramentas para facilitar seu dia a dia
                     </h1>
 
-                    <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Encontre ferramentas online para trabalhar com PDFs e imagens sem complicação.</p>
+                    <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                        Encontre ferramentas online para trabalhar com PDFs e imagens sem complicação.
+                    </p>
+
+                    <p className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-muted-ink">
+                        <ShieldCheck className="size-4 text-coral" aria-hidden="true" />
+                        O processamento acontece no site do serviço externo, não no Hauy Conecta.
+                    </p>
 
                     <div role="search" aria-label="Pesquisar ferramentas" className="mt-7 max-w-2xl">
                         <label htmlFor="tools-search" className="mb-2 block text-sm font-bold text-ink">
@@ -333,15 +343,62 @@ export function Tools() {
                 </>
             )}
 
-            <section aria-labelledby="tools-note-title" className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
+            <section
+                aria-labelledby="privacy-title"
+                className="bg-mist3"
+            >
+                <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
+                    <div className="max-w-3xl">
+                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
+                            Antes de enviar um arquivo
+                        </p>
+
+                        <h2
+                            id="privacy-title"
+                            className="mt-2 text-2xl font-bold text-ink sm:text-3xl"
+                        >
+                            Privacidade e segurança
+                        </h2>
+
+                        <p className="mt-3 text-base leading-7 text-muted-foreground">
+                            O Hauy Conecta apenas direciona você para serviços
+                            externos. Seus arquivos são enviados diretamente ao
+                            serviço escolhido e não passam pelo Hauy Conecta.
+                        </p>
+
+                        <p className="mt-3 text-sm leading-6 text-muted-ink">
+                            Antes de usar uma ferramenta, confira as políticas
+                            atualizadas do serviço. Não envie documentos
+                            confidenciais ou dados pessoais sem verificar se o
+                            serviço atende à necessidade da situação.
+                        </p>
+                    </div>
+
+                    <div className="mt-7 grid gap-4 md:grid-cols-2">
+                        {toolProviders.map((provider) => (
+                            <ToolProviderInfo
+                                key={provider.id}
+                                provider={provider}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section
+                aria-labelledby="tools-note-title"
+                className="mx-auto max-w-6xl px-5 py-14 lg:px-8"
+            >
                 <div className="max-w-3xl">
                     <h2 id="tools-note-title" className="text-xl font-bold text-ink">
                         Sobre estas ferramentas
                     </h2>
 
-                    <p className="mt-3 text-base leading-7 text-muted-foreground">O Hauy Conecta reúne atalhos para ferramentas de serviços externos. Ao abrir uma delas, você será levado para o site do serviço responsável pelo processamento.</p>
-
-                    <p className="mt-3 text-sm leading-6 text-muted-ink">Antes de enviar um arquivo, confira as condições de uso e a política de privacidade do serviço escolhido.</p>
+                    <p className="mt-3 text-base leading-7 text-muted-foreground">
+                        O Hauy Conecta reúne atalhos para ferramentas de serviços
+                        externos. Ao abrir uma delas, você será levado para o site
+                        do serviço responsável pelo processamento.
+                    </p>
                 </div>
             </section>
         </main>

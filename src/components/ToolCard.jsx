@@ -78,7 +78,7 @@ export function ToolCard({ tool }) {
 
                     <div className="mt-auto flex items-center justify-between gap-4 pt-6">
                         <span className="text-xs font-semibold text-muted-ink">
-                            Disponível no {tool.provider}
+                            Site externo · {tool.provider}
                         </span>
 
                         <span className="inline-flex items-center gap-1 text-sm font-bold text-coral">
