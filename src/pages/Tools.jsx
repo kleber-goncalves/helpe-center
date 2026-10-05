@@ -128,13 +128,6 @@ export function Tools() {
     const hasSearch = Boolean(searchQuery);
     const hasResults = filteredTools.length > 0;
 
-    const filteredPdfTools = filteredTools.filter(
-        (entry) => entry.category === "PDF",
-    );
-    const filteredImageTools = filteredTools.filter(
-        (entry) => entry.category === "Imagens",
-    );
-
     return (
         <main className="bg-background">
             <section
