@@ -4,16 +4,16 @@ export function ToolSection({
     id,
     label,
     title,
+    restTitle,
+    alt,
+    logo,
     description,
     icon: Icon,
     tools,
     shaded = false,
 }) {
     return (
-        <section
-            aria-labelledby={id}
-            className={shaded ? "bg-mist3" : ""}
-        >
+        <section aria-labelledby={id} className={shaded ? "bg-mist3" : ""}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
                 <div className="flex items-start gap-3">
                     <span
@@ -32,21 +32,22 @@ export function ToolSection({
                         <Icon className="size-5" strokeWidth={1.9} />
                     </span>
 
-                    <div className="min-w-0 border-b border-line pb-5">
-                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
-                            {label}
-                        </p>
+                    <div className="min-w-0  pb-5">
+                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">{label}</p>
 
-                        <h2
-                            id={id}
-                            className="mt-1 break-words text-2xl font-bold text-ink sm:text-3xl"
-                        >
-                            {title}
-                        </h2>
+                        <div className="mt-1 flex items-center gap-2">
+                            <h2 id={id} className=" break-words text-2xl font-bold text-ink sm:text-3xl">
+                                {title}
+                            </h2>
+                            <div className="flex items-center gap-0.5">
+                                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg">
+                                    <img src={logo} alt={alt} className="" />
+                                </div>
+                                <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
+                            </div>
+                        </div>
 
-                        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                            {description}
-                        </p>
+                        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{description}</p>
                     </div>
                 </div>
 

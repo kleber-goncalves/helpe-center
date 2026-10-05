@@ -1,17 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 
-import {
-    ChevronRight,
-    FileText,
-    Filter,
-    Images,
-    ShieldCheck,
-    Search,
-    SearchX,
-    Sparkles,
-    X,
-} from "lucide-react";
+import { FileText, Filter, Images, ShieldCheck, Search, SearchX, TrendingUp, X } from "lucide-react";
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
@@ -195,43 +184,16 @@ export function Tools() {
         <main className="bg-background">
             <section aria-labelledby="tools-page-title" className="bg-mist3">
                 <div className="mx-auto max-w-6xl px-5 pb-14 pt-14 lg:px-8">
-                    <nav
-                        aria-label="Navegação estrutural"
-                        className="mb-6 flex items-center gap-1.5 text-sm"
-                    >
-                        <Link
-                            to="/"
-                            className="font-semibold text-muted-ink underline-offset-4 hover:text-coral hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2"
-                        >
-                            Início
-                        </Link>
-
-                        <ChevronRight
-                            className="size-4 text-muted-ink"
-                            aria-hidden="true"
-                        />
-
-                        <span
-                            aria-current="page"
-                            className="font-semibold text-ink"
-                        >
-                            Ferramentas
-                        </span>
-                    </nav>
-
                     <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Recursos úteis</p>
 
                     <h1 id="tools-page-title" className="mt-3 max-w-3xl break-words text-3xl font-bold tracking-tight text-ink sm:text-4xl">
                         Ferramentas para facilitar seu dia a dia
                     </h1>
 
-                    <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                        Encontre ferramentas online para trabalhar com PDFs e imagens sem complicação.
-                    </p>
+                    <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Encontre ferramentas online para trabalhar com PDFs e imagens sem complicação.</p>
 
                     <p className="mt-3 flex max-w-3xl items-start gap-2 text-sm font-semibold text-muted-ink">
-                        <ShieldCheck className="size-4 shrink-0 text-coral" aria-hidden="true" />
-                        O processamento acontece no site do serviço externo, não no Hauy Conecta.
+                        <ShieldCheck className="size-4 shrink-0 text-coral" aria-hidden="true" />O processamento acontece no site do serviço externo, não no Hauy Conecta.
                     </p>
 
                     <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-ink" aria-label="Resumo das ferramentas">
@@ -248,15 +210,7 @@ export function Tools() {
                         <div className="relative">
                             <Search className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-ink" aria-hidden="true" />
 
-                            <Input
-                                id="tools-search"
-                                type="search"
-                                value={search}
-                                onChange={(event) => setSearch(event.target.value)}
-                                placeholder="Ex.: comprimir PDF"
-                                aria-describedby="tools-search-hint"
-                                className="h-12 pl-11 pr-12 text-base shadow-soft"
-                            />
+                            <Input id="tools-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Ex.: comprimir PDF" aria-describedby="tools-search-hint" className="h-12 pl-11 pr-12 text-base shadow-soft" />
 
                             {search && (
                                 <button
@@ -293,16 +247,7 @@ export function Tools() {
                             Pesquise pelo nome, tipo de arquivo, tarefa ou serviço.
                         </p>
 
-                        <ToolFilters
-                            category={category}
-                            provider={provider}
-                            categoryOptions={categoryOptions}
-                            providerOptions={providerOptions}
-                            onCategoryChange={setCategory}
-                            onProviderChange={setProvider}
-                            onClear={clearFilters}
-                            hasActiveFilters={hasFilters}
-                        />
+                        <ToolFilters category={category} provider={provider} categoryOptions={categoryOptions} providerOptions={providerOptions} onCategoryChange={setCategory} onProviderChange={setProvider} onClear={clearFilters} hasActiveFilters={hasFilters} />
 
                         {hasControls && (
                             <p className="mt-2 text-sm font-semibold text-coral" role="status" aria-live="polite">
@@ -330,7 +275,7 @@ export function Tools() {
                                 "
                                 aria-hidden="true"
                             >
-                                <Sparkles className="size-5" strokeWidth={1.9} />
+                                <TrendingUp className="size-5" strokeWidth={1.9} />
                             </span>
 
                             <div>
@@ -353,22 +298,7 @@ export function Tools() {
                 </section>
             )}
 
-            {hasControls && hasResults && (
-                <ToolSection
-                    id="tools-search-results-title"
-                    label={hasSearch ? "Busca" : "Filtros"}
-                    title={
-                        hasSearch
-                            ? `Resultados para “${search.trim()}”`
-                            : "Ferramentas filtradas"
-                    }
-                    description={
-                        `Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem aos critérios selecionados.`
-                    }
-                    icon={hasSearch ? Search : Filter}
-                    tools={filteredTools}
-                />
-            )}
+            {hasControls && hasResults && <ToolSection id="tools-search-results-title" label={hasSearch ? "Busca" : "Filtros"} title={hasSearch ? `Resultados para “${search.trim()}”` : "Ferramentas filtradas"} description={`Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem aos critérios selecionados.`} icon={hasSearch ? Search : Filter} tools={filteredTools} />}
 
             {hasControls && !hasResults && (
                 <section aria-labelledby="tools-search-empty-title" className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
@@ -392,11 +322,7 @@ export function Tools() {
                             Nenhuma ferramenta encontrada
                         </h2>
 
-                        <p className="mt-3 max-w-2xl break-words text-base leading-7 text-muted-foreground">
-                            {hasSearch
-                                ? `Não encontramos uma ferramenta para “${search.trim()}”. Tente pesquisar por outra tarefa, arquivo ou serviço.`
-                                : "Nenhuma ferramenta corresponde aos filtros selecionados. Tente outra combinação de filtros."}
-                        </p>
+                        <p className="mt-3 max-w-2xl break-words text-base leading-7 text-muted-foreground">{hasSearch ? `Não encontramos uma ferramenta para “${search.trim()}”. Tente pesquisar por outra tarefa, arquivo ou serviço.` : "Nenhuma ferramenta corresponde aos filtros selecionados. Tente outra combinação de filtros."}</p>
 
                         <Button
                             type="button"
@@ -415,68 +341,41 @@ export function Tools() {
 
             {!hasControls && (
                 <>
-                    <ToolSection id="pdf-tools-title" label="PDF" title="Disponíveis no iLovePDF" description="Organize, converta e reduza arquivos PDF em poucos passos." icon={FileText} tools={pdfTools} />
+                    <ToolSection id="pdf-tools-title" label="PDF" title="Disponíveis no" restTitle="iLovePDF" logo="/ilovePDF.svg" alt="Logo do iLovePDF" description="Organize, converta e reduza arquivos PDF em poucos passos." icon={FileText} tools={pdfTools} />
 
-                    <ToolSection id="image-tools-title" label="Imagens" title="Disponíveis no iLoveIMG" description="Comprima, redimensione, recorte e converta imagens de forma prática." icon={Images} shaded tools={imageTools} />
+                    <ToolSection id="image-tools-title" label="Imagens" title="Disponíveis no" logo="/iloveIMG.svg" restTitle="iLoveIMG" alt="Logo do iLoveIMG" description="Comprima, redimensione, recorte e converta imagens de forma prática." icon={Images} shaded tools={imageTools} />
                 </>
             )}
 
-            <section
-                aria-labelledby="privacy-title"
-                className="bg-mist3"
-            >
+            <section aria-labelledby="privacy-title" className="bg-mist3">
                 <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                     <div className="max-w-3xl">
-                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
-                            Antes de enviar um arquivo
-                        </p>
+                        <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">Antes de enviar um arquivo</p>
 
-                        <h2
-                            id="privacy-title"
-                            className="mt-2 text-2xl font-bold text-ink sm:text-3xl"
-                        >
+                        <h2 id="privacy-title" className="mt-2 text-2xl font-bold text-ink sm:text-3xl">
                             Privacidade e segurança
                         </h2>
 
-                        <p className="mt-3 text-base leading-7 text-muted-foreground">
-                            O Hauy Conecta apenas direciona você para serviços
-                            externos. Seus arquivos são enviados diretamente ao
-                            serviço escolhido e não passam pelo Hauy Conecta.
-                        </p>
+                        <p className="mt-3 text-base leading-7 text-muted-foreground">O Hauy Conecta apenas direciona você para serviços externos. Seus arquivos são enviados diretamente ao serviço escolhido e não passam pelo Hauy Conecta.</p>
 
-                        <p className="mt-3 text-sm leading-6 text-muted-ink">
-                            Antes de usar uma ferramenta, confira as políticas
-                            atualizadas do serviço. Não envie documentos
-                            confidenciais ou dados pessoais sem verificar se o
-                            serviço atende à necessidade da situação.
-                        </p>
+                        <p className="mt-3 text-sm leading-6 text-muted-ink">Antes de usar uma ferramenta, confira as políticas atualizadas do serviço. Não envie documentos confidenciais ou dados pessoais sem verificar se o serviço atende à necessidade da situação.</p>
                     </div>
 
                     <div className="mt-7 grid gap-4 md:grid-cols-2">
                         {toolProviders.map((provider) => (
-                            <ToolProviderInfo
-                                key={provider.id}
-                                provider={provider}
-                            />
+                            <ToolProviderInfo key={provider.id} provider={provider} />
                         ))}
                     </div>
                 </div>
             </section>
 
-            <section
-                aria-labelledby="tools-note-title"
-                className="mx-auto max-w-6xl px-5 py-14 lg:px-8"
-            >
+            <section aria-labelledby="tools-note-title" className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                 <div className="max-w-3xl">
                     <h2 id="tools-note-title" className="text-xl font-bold text-ink">
                         Sobre estas ferramentas
                     </h2>
 
-                    <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        O Hauy Conecta reúne atalhos para ferramentas de serviços
-                        externos. Ao abrir uma delas, você será levado para o site
-                        do serviço responsável pelo processamento.
-                    </p>
+                    <p className="mt-3 text-base leading-7 text-muted-foreground">O Hauy Conecta reúne atalhos para ferramentas de serviços externos. Ao abrir uma delas, você será levado para o site do serviço responsável pelo processamento.</p>
                 </div>
             </section>
         </main>
