@@ -1,8 +1,16 @@
-import { useEffect } from "react";
-import { FileText, Images, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import {
+    FileText,
+    Images,
+    Search,
+    SearchX,
+    Sparkles,
+    X,
+} from "lucide-react";
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
+import { Button, Input } from "../components/ui";
 import { tools } from "../data/tools";
 import {
     SITE_NAME,
@@ -23,7 +31,40 @@ const featuredTools = tools.filter((entry) => entry.featured);
 const pdfTools = tools.filter((entry) => entry.category === "PDF");
 const imageTools = tools.filter((entry) => entry.category === "Imagens");
 
+function normalizeSearchText(value) {
+    return String(value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+}
+
 export function Tools() {
+    const [search, setSearch] = useState("");
+
+    const searchQuery = normalizeSearchText(search);
+
+    const filteredTools = useMemo(() => {
+        if (!searchQuery) {
+            return tools;
+        }
+
+        const terms = searchQuery.split(/\s+/).filter(Boolean);
+
+        return tools.filter((tool) => {
+            const searchableText = normalizeSearchText(
+                [
+                    tool.name,
+                    tool.description,
+                    tool.category,
+                    tool.provider,
+                ].join(" "),
+            );
+
+            return terms.every((term) => searchableText.includes(term));
+        });
+    }, [searchQuery]);
+
     useEffect(() => {
         const pageTitle = `Ferramentas | ${SITE_NAME}`;
         const description =
@@ -84,6 +125,16 @@ export function Tools() {
         };
     }, []);
 
+    const hasSearch = Boolean(searchQuery);
+    const hasResults = filteredTools.length > 0;
+
+    const filteredPdfTools = filteredTools.filter(
+        (entry) => entry.category === "PDF",
+    );
+    const filteredImageTools = filteredTools.filter(
+        (entry) => entry.category === "Imagens",
+    );
+
     return (
         <main className="bg-background">
             <section
@@ -106,20 +157,161 @@ export function Tools() {
                         Encontre ferramentas online para trabalhar com PDFs e
                         imagens sem complicação.
                     </p>
+
+                    <div
+                        role="search"
+                        aria-label="Pesquisar ferramentas"
+                        className="mt-7 max-w-2xl"
+                    >
+                        <label
+                            htmlFor="tools-search"
+                            className="mb-2 block text-sm font-bold text-ink"
+                        >
+                            Buscar uma ferramenta
+                        </label>
+
+                        <div className="relative">
+                            <Search
+                                className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-ink"
+                                aria-hidden="true"
+                            />
+
+                            <Input
+                                id="tools-search"
+                                type="search"
+                                value={search}
+                                onChange={(event) =>
+                                    setSearch(event.target.value)
+                                }
+                                placeholder="Ex.: comprimir PDF"
+                                aria-describedby="tools-search-hint"
+                                className="h-12 pl-11 pr-12 text-base"
+                            />
+
+                            {search && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearch("")}
+                                    aria-label="Limpar busca"
+                                    className="
+                                        absolute
+                                        right-2
+                                        top-1/2
+                                        inline-flex
+                                        size-8
+                                        -translate-y-1/2
+                                        items-center
+                                        justify-center
+                                        rounded-md
+                                        text-muted-ink
+                                        transition-colors
+                                        hover:bg-mist
+                                        hover:text-ink
+                                        focus-visible:outline-none
+                                        focus-visible:ring-2
+                                        focus-visible:ring-coral
+                                    "
+                                >
+                                    <X className="size-4" aria-hidden="true" />
+                                </button>
+                            )}
+                        </div>
+
+                        <p
+                            id="tools-search-hint"
+                            className="mt-2 text-sm text-muted-foreground"
+                        >
+                            Pesquise pelo nome, tipo de arquivo, tarefa ou
+                            serviço.
+                        </p>
+
+                        {hasSearch && (
+                            <p
+                                className="mt-2 text-sm font-semibold text-coral"
+                                role="status"
+                                aria-live="polite"
+                            >
+                                {filteredTools.length === 1
+                                    ? "1 ferramenta encontrada."
+                                    : `${filteredTools.length} ferramentas encontradas.`}
+                            </p>
+                        )}
+                    </div>
                 </div>
             </section>
 
-            <section
-                aria-labelledby="featured-tools-title"
-                className="border-b border-line bg-coral-soft/40"
-            >
-                <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
-                    <div className="flex items-start gap-3">
+            {!hasSearch && (
+                <section
+                    aria-labelledby="featured-tools-title"
+                    className="border-b border-line bg-coral-soft/40"
+                >
+                    <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
+                        <div className="flex items-start gap-3">
+                            <span
+                                className="
+                                    flex
+                                    size-10
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    rounded-lg
+                                    bg-coral-soft
+                                    text-coral
+                                "
+                                aria-hidden="true"
+                            >
+                                <Sparkles className="size-5" strokeWidth={1.9} />
+                            </span>
+
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
+                                    Acesso rápido
+                                </p>
+
+                                <h2
+                                    id="featured-tools-title"
+                                    className="mt-1 text-2xl font-bold text-ink sm:text-3xl"
+                                >
+                                    Mais usadas
+                                </h2>
+
+                                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                                    Atalhos para algumas das ferramentas mais
+                                    úteis em tarefas comuns com PDFs e imagens.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            {featuredTools.map((tool) => (
+                                <ToolCard key={tool.id} tool={tool} />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {hasSearch && hasResults && (
+                <ToolSection
+                    id="tools-search-results-title"
+                    label="Busca"
+                    title={`Resultados para “${search.trim()}”`}
+                    description={`Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem à sua busca.`}
+                    icon={Search}
+                    tools={filteredTools}
+                />
+            )}
+
+            {hasSearch && !hasResults && (
+                <section
+                    aria-labelledby="tools-search-empty-title"
+                    className="mx-auto max-w-6xl px-5 py-16 lg:px-8"
+                >
+                    <div className="max-w-xl">
                         <span
                             className="
                                 flex
-                                size-10
-                                shrink-0
+                                size-11
                                 items-center
                                 justify-center
                                 rounded-lg
@@ -128,54 +320,56 @@ export function Tools() {
                             "
                             aria-hidden="true"
                         >
-                            <Sparkles className="size-5" strokeWidth={1.9} />
+                            <SearchX className="size-5" strokeWidth={1.9} />
                         </span>
 
-                        <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">
-                                Acesso rápido
-                            </p>
+                        <h2
+                            id="tools-search-empty-title"
+                            className="mt-5 text-2xl font-bold text-ink sm:text-3xl"
+                        >
+                            Nenhuma ferramenta encontrada
+                        </h2>
 
-                            <h2
-                                id="featured-tools-title"
-                                className="mt-1 text-2xl font-bold text-ink sm:text-3xl"
-                            >
-                                Mais usadas
-                            </h2>
+                        <p className="mt-3 text-base leading-7 text-muted-foreground">
+                            Não encontramos uma ferramenta para “{search.trim()}”.
+                            Tente pesquisar por outra tarefa, arquivo ou
+                            serviço.
+                        </p>
 
-                            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
-                                Atalhos para algumas das ferramentas mais úteis
-                                em tarefas comuns com PDFs e imagens.
-                            </p>
-                        </div>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setSearch("")}
+                            className="mt-6"
+                        >
+                            Limpar busca
+                        </Button>
                     </div>
+                </section>
+            )}
 
-                    <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {featuredTools.map((tool) => (
-                            <ToolCard key={tool.id} tool={tool} />
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {!hasSearch && (
+                <>
+                    <ToolSection
+                        id="pdf-tools-title"
+                        label="PDF"
+                        title="Disponíveis no iLovePDF"
+                        description="Organize, converta e reduza arquivos PDF em poucos passos."
+                        icon={FileText}
+                        tools={pdfTools}
+                    />
 
-            <ToolSection
-                id="pdf-tools-title"
-                label="PDF"
-                title="Disponíveis no iLovePDF"
-                description="Organize, converta e reduza arquivos PDF em poucos passos."
-                icon={FileText}
-                tools={pdfTools}
-            />
-
-            <ToolSection
-                id="image-tools-title"
-                label="Imagens"
-                title="Disponíveis no iLoveIMG"
-                description="Comprima, redimensione, recorte e converta imagens de forma prática."
-                icon={Images}
-                shaded
-                tools={imageTools}
-            />
+                    <ToolSection
+                        id="image-tools-title"
+                        label="Imagens"
+                        title="Disponíveis no iLoveIMG"
+                        description="Comprima, redimensione, recorte e converta imagens de forma prática."
+                        icon={Images}
+                        shaded
+                        tools={imageTools}
+                    />
+                </>
+            )}
 
             <section
                 aria-labelledby="tools-note-title"
@@ -190,9 +384,9 @@ export function Tools() {
                     </h2>
 
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        O Hauy Conecta reúne atalhos para ferramentas de serviços
-                        externos. Ao abrir uma delas, você será levado para o site
-                        do serviço responsável pelo processamento.
+                        O Hauy Conecta reúne atalhos para ferramentas de
+                        serviços externos. Ao abrir uma delas, você será levado
+                        para o site do serviço responsável pelo processamento.
                     </p>
 
                     <p className="mt-3 text-sm leading-6 text-muted-ink">
