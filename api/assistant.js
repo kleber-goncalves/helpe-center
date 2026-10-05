@@ -451,7 +451,7 @@ export async function POST(request) {
         if (relevantTutorials.length === 0) {
             return jsonResponse({
                 ok: true,
-                answer: "Ainda não encontramos um tutorial da Central de Ajuda sobre essa dúvida. Você pode pesquisar no Google ou enviar uma dúvida para a equipe.",
+                answer: "Não encontramos essa dúvida na Central. Ainda não temos um tutorial sobre esse assunto. Você pode continuar a busca no Google, assistir a vídeos relacionados ou enviar essa dúvida para a equipe.",
                 tutorials: [],
                 source: "none",
             });
