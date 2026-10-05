@@ -23,6 +23,7 @@ import {
     setMetaTag,
     setPageTitle,
 } from "../lib/seo";
+import { SectionTransition } from "../components/SectionTransition";
 
 const featuredTools = tools.filter((entry) => entry.featured);
 const pdfTools = tools.filter((entry) => entry.category === "PDF");
@@ -202,7 +203,7 @@ export function Tools() {
                         <span>{providerOptions.length} serviços externos</span>
                     </div>
 
-                    <div role="search" aria-label="Pesquisar ferramentas" className="mt-7 max-w-2xl">
+                    <div role="search" aria-label="Pesquisar ferramentas" className="mt-15 max-w-2xl">
                         <label htmlFor="tools-search" className="mb-2 block text-sm font-bold text-ink">
                             Buscar uma ferramenta
                         </label>
@@ -256,10 +257,11 @@ export function Tools() {
                         )}
                     </div>
                 </div>
+                <SectionTransition variant="wide" from="mist" to="background" size="large" animation className="relative z-0" />
             </section>
 
             {!hasControls && (
-                <section aria-labelledby="featured-tools-title" className="border-b border-line bg-mist">
+                <section aria-labelledby="featured-tools-title" className=" bg-background">
                     <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                         <div className="flex items-start gap-3">
                             <span

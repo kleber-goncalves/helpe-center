@@ -13,7 +13,7 @@ export function ToolSection({
     shaded = false,
 }) {
     return (
-        <section aria-labelledby={id} className={shaded ? "bg-mist3" : ""}>
+        <section aria-labelledby={id} className={shaded ? "" : "bg-mist3"}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
                 <div className="flex items-start gap-3">
                     <span
@@ -57,6 +57,7 @@ export function ToolSection({
                     ))}
                 </div>
             </div>
+            
         </section>
     );
 }
