@@ -2,7 +2,9 @@ import {
     ArrowUpRight,
     BookOpen,
     MessageCircleQuestion,
+    Search,
     Send,
+    Youtube,
     X,
 } from "lucide-react";
 
@@ -79,6 +81,8 @@ export function HauyAssistant({
                     role: "assistant",
                     content: data.answer,
                     tutorials: data.tutorials ?? [],
+                    source: data.source ?? "tutorials",
+                    query: value,
                 },
             ]);
         } catch (requestError) {
@@ -407,6 +411,195 @@ export function HauyAssistant({
                                 >
                                     {item.content}
                                 </p>
+
+                                {/* =================================
+                                    ALTERNATIVAS EXTERNAS
+                                ================================= */}
+
+                                {item.role === "assistant" &&
+                                    item.source === "none" &&
+                                    item.query && (
+                                        <div
+                                            className="
+                                                mt-6
+                                                border-t
+                                                border-line
+                                                pt-5
+                                            "
+                                        >
+                                            <p
+                                                className="
+                                                    text-sm
+                                                    font-bold
+                                                    text-ink
+                                                "
+                                            >
+                                                Você pode continuar sua busca:
+                                            </p>
+
+                                            <div
+                                                className="
+                                                    mt-3
+                                                    flex
+                                                    flex-col
+                                                    gap-2
+                                                "
+                                            >
+                                                <a
+                                                    href={`https://www.google.com/search?q=${encodeURIComponent(item.query.trim())}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    title={`Pesquisar "${item.query}" no Google`}
+                                                    className="
+                                                        group
+                                                        flex
+                                                        min-h-11
+                                                        min-w-0
+                                                        items-center
+                                                        gap-3
+                                                        rounded-xl
+                                                        border
+                                                        border-line
+                                                        bg-mist
+                                                        px-4
+                                                        py-3
+                                                        text-left
+                                                        transition-colors
+                                                        hover:border-coral
+                                                        hover:bg-background
+                                                        focus-visible:outline-none
+                                                        focus-visible:ring-2
+                                                        focus-visible:ring-coral
+                                                        focus-visible:ring-offset-2
+                                                    "
+                                                >
+                                                    <Search
+                                                        className="
+                                                            size-5
+                                                            shrink-0
+                                                            text-coral
+                                                        "
+                                                        aria-hidden="true"
+                                                    />
+
+                                                    <span
+                                                        className="
+                                                            min-w-0
+                                                            flex-1
+                                                            truncate
+                                                            text-sm
+                                                            font-bold
+                                                            text-ink
+                                                        "
+                                                    >
+                                                        Pesquisar "
+                                                        {item.query}
+                                                        " no Google
+                                                    </span>
+
+                                                    <ArrowUpRight
+                                                        className="
+                                                            size-4
+                                                            shrink-0
+                                                            text-muted-foreground
+                                                            transition-colors
+                                                            group-hover:text-coral
+                                                        "
+                                                        aria-hidden="true"
+                                                    />
+                                                </a>
+
+                                                <a
+                                                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(item.query.trim())}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    title={`Ver vídeos sobre "${item.query}" no YouTube`}
+                                                    className="
+                                                        group
+                                                        flex
+                                                        min-h-11
+                                                        min-w-0
+                                                        items-center
+                                                        gap-3
+                                                        rounded-xl
+                                                        border
+                                                        border-line
+                                                        bg-mist
+                                                        px-4
+                                                        py-3
+                                                        text-left
+                                                        transition-colors
+                                                        hover:border-coral
+                                                        hover:bg-background
+                                                        focus-visible:outline-none
+                                                        focus-visible:ring-2
+                                                        focus-visible:ring-coral
+                                                        focus-visible:ring-offset-2
+                                                    "
+                                                >
+                                                    <Youtube
+                                                        className="
+                                                            size-5
+                                                            shrink-0
+                                                            text-coral
+                                                        "
+                                                        aria-hidden="true"
+                                                    />
+
+                                                    <span
+                                                        className="
+                                                            min-w-0
+                                                            flex-1
+                                                            truncate
+                                                            text-sm
+                                                            font-bold
+                                                            text-ink
+                                                        "
+                                                    >
+                                                        Ver vídeos sobre "
+                                                        {item.query}
+                                                        "
+                                                    </span>
+
+                                                    <ArrowUpRight
+                                                        className="
+                                                            size-4
+                                                            shrink-0
+                                                            text-muted-foreground
+                                                            transition-colors
+                                                            group-hover:text-coral
+                                                        "
+                                                        aria-hidden="true"
+                                                    />
+                                                </a>
+
+                                                <Link
+                                                    to="/enviar-duvida"
+                                                    className="
+                                                        inline-flex
+                                                        min-h-11
+                                                        items-center
+                                                        justify-center
+                                                        rounded-xl
+                                                        bg-coral-button
+                                                        px-4
+                                                        py-3
+                                                        text-sm
+                                                        font-bold
+                                                        text-white
+                                                        transition-colors
+                                                        hover:bg-coral-button-hover
+                                                        focus-visible:outline-none
+                                                        focus-visible:ring-2
+                                                        focus-visible:ring-coral
+                                                        focus-visible:ring-offset-2
+                                                    "
+                                                >
+                                                    Enviar essa dúvida para a equipe
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    )}
 
                                 {/* =================================
                                     TUTORIAIS
