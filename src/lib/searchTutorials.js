@@ -17,7 +17,6 @@ const STOP_WORDS = new Set([
     "esse",
     "essa",
     "este",
-    "esta",
     "eu",
     "fazer",
     "faco",
@@ -52,7 +51,6 @@ const STOP_WORDS = new Set([
     "ajuda",
     "ajudar",
     "ajude",
-    "saber",
     "saber",
     "gostaria",
     "gostaria",
@@ -98,8 +96,8 @@ function containsPhrase(text, phrase) {
     return (
         normalizedText === normalizedPhrase ||
         normalizedText.startsWith(\`\${normalizedPhrase} \`) ||
-        normalizedText.endsWith(\` \${normalizedPhrase}\`) ||
-        normalizedText.includes(\` \${normalizedPhrase} \`)
+        normalizedText.endsWith(" " + normalizedPhrase) ||
+        normalizedText.includes(" " + normalizedPhrase + " ")
     );
 }
 
