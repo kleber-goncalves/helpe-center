@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import {
     FileText,
-    Images,
     Filter,
+    FileText,
+    Images,
     Search,
     SearchX,
     Sparkles,
@@ -46,29 +47,37 @@ function normalizeSearchText(value) {
 
 export function Tools() {
     const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("all");
+    const [provider, setProvider] = useState("all");
 
     const searchQuery = normalizeSearchText(search);
 
     const filteredTools = useMemo(() => {
-        if (!searchQuery) {
-            return tools;
-        }
-
         const terms = searchQuery.split(/\s+/).filter(Boolean);
 
         return tools.filter((tool) => {
-            const searchableText = normalizeSearchText(
-                [
-                    tool.name,
-                    tool.description,
-                    tool.category,
-                    tool.provider,
-                ].join(" "),
-            );
+            const matchesSearch =
+                terms.length === 0 ||
+                terms.every((term) =>
+                    normalizeSearchText(
+                        [
+                            tool.name,
+                            tool.description,
+                            tool.category,
+                            tool.provider,
+                        ].join(" "),
+                    ).includes(term),
+                );
 
-            return terms.every((term) => searchableText.includes(term));
+            const matchesCategory =
+                category === "all" || tool.category === category;
+
+            const matchesProvider =
+                provider === "all" || tool.provider === provider;
+
+            return matchesSearch && matchesCategory && matchesProvider;
         });
-    }, [searchQuery]);
+    }, [category, provider, searchQuery]);
 
     useEffect(() => {
         const pageTitle = `Ferramentas | ${SITE_NAME}`;
@@ -296,10 +305,22 @@ export function Tools() {
                             Nenhuma ferramenta encontrada
                         </h2>
 
-                        <p className="mt-3 text-base leading-7 text-muted-foreground">Não encontramos uma ferramenta para “{search.trim()}”. Tente pesquisar por outra tarefa, arquivo ou serviço.</p>
+                        <p className="mt-3 text-base leading-7 text-muted-foreground">
+                            {hasSearch
+                                ? `Não encontramos uma ferramenta para “${search.trim()}”. Tente pesquisar por outra tarefa, arquivo ou serviço.`
+                                : "Nenhuma ferramenta corresponde aos filtros selecionados. Tente outra combinação de filtros."}
+                        </p>
 
-                        <Button type="button" variant="outline" onClick={() => setSearch("")} className="mt-6">
-                            Limpar busca
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                setSearch("");
+                                clearFilters();
+                            }}
+                            className="mt-6"
+                        >
+                            Limpar filtros e busca
                         </Button>
                     </div>
                 </section>
