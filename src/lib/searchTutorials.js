@@ -95,7 +95,7 @@ function containsPhrase(text, phrase) {
 
     return (
         normalizedText === normalizedPhrase ||
-        normalizedText.startsWith(\`\${normalizedPhrase} \`) ||
+        normalizedText.startsWith(normalizedPhrase + " ") ||
         normalizedText.endsWith(" " + normalizedPhrase) ||
         normalizedText.includes(" " + normalizedPhrase + " ")
     );
