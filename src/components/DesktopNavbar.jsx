@@ -16,6 +16,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 import { cn } from "../lib/utils";
+import { Wrench } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,6 +24,7 @@ const links = [
     ["Início", "/", House],
     ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
+    ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
     ["Assistente", "/assistente", MessageCircleQuestion],
     ["Sobre", "/sobre", Info],

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
-import { Accessibility, ChevronLeft, ChevronRight } from "lucide-react";
+import { Accessibility, ChevronLeft, ChevronRight, Wrench } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 // GSAP
@@ -17,6 +17,7 @@ const links = [
     ["Início", "/", House],
     ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
+    ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
     ["Assistente", "/assistente", MessageCircleQuestion],
     ["Sobre", "/sobre", Info],
