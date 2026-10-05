@@ -3,8 +3,6 @@ import {
     FileText,
     Images,
     Filter,
-    FileText,
-    Images,
     Search,
     SearchX,
     Sparkles,
