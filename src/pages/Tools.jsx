@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import {
     FileText,
     Images,
+    Filter,
+    FileText,
+    Images,
     Search,
     SearchX,
     Sparkles,
@@ -10,6 +13,7 @@ import {
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
+import { ToolFilters } from "../components/ToolFilters";
 import { Button, Input } from "../components/ui";
 import { tools } from "../data/tools";
 import {
@@ -30,6 +34,9 @@ import {
 const featuredTools = tools.filter((entry) => entry.featured);
 const pdfTools = tools.filter((entry) => entry.category === "PDF");
 const imageTools = tools.filter((entry) => entry.category === "Imagens");
+
+const categoryOptions = [...new Set(tools.map((entry) => entry.category))];
+const providerOptions = [...new Set(tools.map((entry) => entry.provider))];
 
 function normalizeSearchText(value) {
     return String(value)
@@ -126,7 +133,14 @@ export function Tools() {
     }, []);
 
     const hasSearch = Boolean(searchQuery);
+    const hasFilters = category !== "all" || provider !== "all";
+    const hasControls = hasSearch || hasFilters;
     const hasResults = filteredTools.length > 0;
+
+    const clearFilters = () => {
+        setCategory("all");
+        setProvider("all");
+    };
 
     return (
         <main className="bg-background">
@@ -185,7 +199,18 @@ export function Tools() {
                             Pesquise pelo nome, tipo de arquivo, tarefa ou serviço.
                         </p>
 
-                        {hasSearch && (
+                        <ToolFilters
+                            category={category}
+                            provider={provider}
+                            categoryOptions={categoryOptions}
+                            providerOptions={providerOptions}
+                            onCategoryChange={setCategory}
+                            onProviderChange={setProvider}
+                            onClear={clearFilters}
+                            hasActiveFilters={hasFilters}
+                        />
+
+                        {hasControls && (
                             <p className="mt-2 text-sm font-semibold text-coral" role="status" aria-live="polite">
                                 {filteredTools.length === 1 ? "1 ferramenta encontrada." : `${filteredTools.length} ferramentas encontradas.`}
                             </p>
@@ -194,7 +219,7 @@ export function Tools() {
                 </div>
             </section>
 
-            {!hasSearch && (
+            {!hasControls && (
                 <section aria-labelledby="featured-tools-title" className="border-b border-line bg-coral-soft/40">
                     <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
                         <div className="flex items-start gap-3">
@@ -234,9 +259,24 @@ export function Tools() {
                 </section>
             )}
 
-            {hasSearch && hasResults && <ToolSection id="tools-search-results-title" label="Busca" title={`Resultados para “${search.trim()}”`} description={`Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem à sua busca.`} icon={Search} tools={filteredTools} />}
+            {hasControls && hasResults && (
+                <ToolSection
+                    id="tools-search-results-title"
+                    label={hasSearch ? "Busca" : "Filtros"}
+                    title={
+                        hasSearch
+                            ? `Resultados para “${search.trim()}”`
+                            : "Ferramentas filtradas"
+                    }
+                    description={
+                        `Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem aos critérios selecionados.`
+                    }
+                    icon={hasSearch ? Search : Filter}
+                    tools={filteredTools}
+                />
+            )}
 
-            {hasSearch && !hasResults && (
+            {hasControls && !hasResults && (
                 <section aria-labelledby="tools-search-empty-title" className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
                     <div className="max-w-xl">
                         <span
@@ -267,7 +307,7 @@ export function Tools() {
                 </section>
             )}
 
-            {!hasSearch && (
+            {!hasControls && (
                 <>
                     <ToolSection id="pdf-tools-title" label="PDF" title="Disponíveis no iLovePDF" description="Organize, converta e reduza arquivos PDF em poucos passos." icon={FileText} tools={pdfTools} />
 
