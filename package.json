@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender",
+    "build": "node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predev": "node scripts/generate-image-metadata.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",

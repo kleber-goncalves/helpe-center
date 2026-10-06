@@ -1,0 +1,131 @@
+import { promises as fs } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const OUTPUT_DIR = path.join(ROOT, "src", "generated");
+const OUTPUT_FILE = path.join(OUTPUT_DIR, "imageMetadata.json");
+
+const RASTER_EXTENSIONS = new Set([
+    ".avif",
+    ".gif",
+    ".jpeg",
+    ".jpg",
+    ".png",
+    ".webp",
+]);
+
+async function walk(directory) {
+    const entries = await fs.readdir(directory, { withFileTypes: true });
+    const files = [];
+
+    for (const entry of entries) {
+        const absolutePath = path.join(directory, entry.name);
+
+        if (entry.isDirectory()) {
+            files.push(...(await walk(absolutePath)));
+            continue;
+        }
+
+        if (RASTER_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+            files.push(absolutePath);
+        }
+    }
+
+    return files;
+}
+
+function toPosix(value) {
+    return value.split(path.sep).join("/");
+}
+
+function getMetadataKey(filePath) {
+    const relative = toPosix(path.relative(ROOT, filePath));
+    return relative;
+}
+
+function getPublicUrl(filePath) {
+    const relative = toPosix(path.relative(path.join(ROOT, "public"), filePath));
+    return relative ? `/${relative}` : null;
+}
+
+async function readImageMetadata(filePath) {
+    const metadata = await sharp(filePath).metadata();
+
+    if (!metadata.width || !metadata.height) {
+        throw new Error(`Não foi possível obter dimensões: ${getMetadataKey(filePath)}`);
+    }
+
+    return {
+        width: metadata.width,
+        height: metadata.height,
+        format: metadata.format ?? path.extname(filePath).slice(1).toLowerCase(),
+        aspectRatio: Number((metadata.width / metadata.height).toFixed(6)),
+    };
+}
+
+async function main() {
+    const sourceDirectories = [
+        path.join(ROOT, "src", "assets"),
+        path.join(ROOT, "public"),
+    ];
+
+    const imageFiles = [];
+
+    for (const directory of sourceDirectories) {
+        try {
+            imageFiles.push(...(await walk(directory)));
+        } catch (error) {
+            if (error?.code === "ENOENT") {
+                continue;
+            }
+
+            throw error;
+        }
+    }
+
+    const uniqueFiles = [...new Set(imageFiles)].sort((a, b) =>
+        getMetadataKey(a).localeCompare(getMetadataKey(b)),
+    );
+
+    const entries = {};
+
+    for (const filePath of uniqueFiles) {
+        const key = getMetadataKey(filePath);
+        const metadata = await readImageMetadata(filePath);
+
+        entries[key] = {
+            ...metadata,
+            publicUrl: filePath.startsWith(path.join(ROOT, "public"))
+                ? getPublicUrl(filePath)
+                : null,
+        };
+    }
+
+    await fs.mkdir(OUTPUT_DIR, { recursive: true });
+
+    await fs.writeFile(
+        OUTPUT_FILE,
+        `${JSON.stringify(
+            {
+                version: 1,
+                images: entries,
+            },
+            null,
+            4,
+        )}\n`,
+        "utf8",
+    );
+
+    console.log(
+        `[image-metadata] ${Object.keys(entries).length} imagens catalogadas.`,
+    );
+    console.log(`[image-metadata] Saída: ${path.relative(ROOT, OUTPUT_FILE)}`);
+}
+
+main().catch((error) => {
+    console.error("[image-metadata] Falha ao gerar metadata.");
+    console.error(error);
+    process.exitCode = 1;
+});
