@@ -38,6 +38,7 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                                     loading="lazy"
                                     decoding="async"
                                     wrapperClassName="h-8 w-8 shrink-0 rounded-lg"
+                                    sizes="32px"
                                     className="object-contain"
                                 />
                                 <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
