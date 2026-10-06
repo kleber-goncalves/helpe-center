@@ -59,8 +59,8 @@ const navClass = ({ isActive }) =>
 
 const compactNavClass = ({ isActive }) =>
     cn(
-        "relative inline-block whitespace-nowrap pb-1.5 text-[13px] font-semibold",
-        "text-muted-ink transition-colors duration-200 hover:text-ink",
+        "relative inline-block whitespace-nowrap pb-1.5  text-[13px] font-semibold",
+        "!text-muted-ink transition-colors duration-200 hover:text-ink!",
 
         /* Linha inferior */
         "after:absolute after:bottom-0 after:left-0",
@@ -71,7 +71,7 @@ const compactNavClass = ({ isActive }) =>
         "after:ease-out",
 
         isActive
-            ? "text-coral hover:text-coral after:scale-x-100"
+            ? "!text-coral hover:text-coral! after:scale-x-100"
             : "after:scale-x-0 hover:after:scale-x-100",
 
         /* Acessibilidade */

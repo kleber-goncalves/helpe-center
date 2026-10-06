@@ -36,7 +36,7 @@ export function Home() {
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
-        const pageTitle = `Home | ${SITE_NAME}`;
+        const pageTitle = `${SITE_NAME} | Central de Ajuda Digital`;
         const description = DEFAULT_DESCRIPTION;
         const canonicalUrl = `${SITE_URL}/`;
 
