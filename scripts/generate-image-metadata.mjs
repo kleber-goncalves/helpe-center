@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,6 +7,9 @@ import sharp from "sharp";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT_DIR = path.join(ROOT, "src", "generated");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "imageMetadata.json");
+const PUBLIC_DIR = path.join(ROOT, "public");
+const RESPONSIVE_OUTPUT_DIR = path.join(PUBLIC_DIR, "_optimized");
+const RESPONSIVE_WIDTHS = [320, 480, 640, 768, 1024, 1440, 1920];
 
 const IMAGE_EXTENSIONS = new Set([
     ".avif",
@@ -25,6 +29,10 @@ async function walk(directory) {
         const absolutePath = path.join(directory, entry.name);
 
         if (entry.isDirectory()) {
+            if (absolutePath === RESPONSIVE_OUTPUT_DIR) {
+                continue;
+            }
+
             files.push(...(await walk(absolutePath)));
             continue;
         }
@@ -111,6 +119,58 @@ async function readSvgDimensions(filePath) {
         height: viewBoxHeight,
     };
 }
+
+function getResponsiveFileName(metadataKey, width) {
+    const hash = createHash("sha1")
+        .update(metadataKey)
+        .digest("hex")
+        .slice(0, 12);
+
+    return hash + "-" + width + ".webp";
+}
+
+function getResponsiveUrl(metadataKey, width) {
+    return "/_optimized/" + getResponsiveFileName(metadataKey, width);
+}
+
+async function generateResponsiveVariants(filePath, metadataKey, width) {
+    const extension = path.extname(filePath).toLowerCase();
+
+    if (extension === ".svg" || extension === ".gif") {
+        return [];
+    }
+
+    const responsiveWidths = RESPONSIVE_WIDTHS.filter(
+        (responsiveWidth) => responsiveWidth < width,
+    );
+
+    const variants = [];
+
+    for (const responsiveWidth of responsiveWidths) {
+        const fileName = getResponsiveFileName(metadataKey, responsiveWidth);
+        const outputPath = path.join(RESPONSIVE_OUTPUT_DIR, fileName);
+
+        await sharp(filePath)
+            .resize({
+                width: responsiveWidth,
+                withoutEnlargement: true,
+                fit: "inside",
+            })
+            .webp({
+                quality: 88,
+                effort: 4,
+            })
+            .toFile(outputPath);
+
+        variants.push({
+            width: responsiveWidth,
+            src: getResponsiveUrl(metadataKey, responsiveWidth),
+        });
+    }
+
+    return variants;
+}
+
 async function readImageMetadata(filePath) {
     const extension = path.extname(filePath).toLowerCase();
 
@@ -165,15 +225,24 @@ async function main() {
         const key = getMetadataKey(filePath);
         const metadata = await readImageMetadata(filePath);
 
+        const responsive = await generateResponsiveVariants(
+            filePath,
+            key,
+            metadata.width,
+        );
+
         entries[key] = {
             ...metadata,
+            responsive,
             publicUrl: filePath.startsWith(path.join(ROOT, "public"))
                 ? getPublicUrl(filePath)
                 : null,
         };
     }
 
+    await fs.rm(RESPONSIVE_OUTPUT_DIR, { recursive: true, force: true });
     await fs.mkdir(OUTPUT_DIR, { recursive: true });
+    await fs.mkdir(RESPONSIVE_OUTPUT_DIR, { recursive: true });
 
     await fs.writeFile(
         OUTPUT_FILE,
