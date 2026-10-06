@@ -48,6 +48,14 @@ export function FAQ() {
                     name: SITE_NAME,
                     url: SITE_URL,
                 },
+                mainEntity: faq.map((item) => ({
+                    "@type": "Question",
+                    name: item.question,
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: item.answer,
+                    },
+                })),
             };
     
             setJsonLd(structuredData);
