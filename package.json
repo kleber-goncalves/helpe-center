@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender",
+    "build": "node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs",
+    "audit:images": "node scripts/audit-images.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "predev": "node scripts/generate-image-metadata.mjs",
