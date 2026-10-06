@@ -133,6 +133,28 @@ function getResponsiveUrl(metadataKey, width) {
     return "/_optimized/" + getResponsiveFileName(metadataKey, width);
 }
 
+function generatePlaceholderDataUrl(filePath) {
+    const extension = path.extname(filePath).toLowerCase();
+
+    if (extension === ".svg" || extension === ".gif") {
+        return Promise.resolve(null);
+    }
+
+    return sharp(filePath)
+        .resize({
+            width: 24,
+            withoutEnlargement: true,
+            fit: "inside",
+        })
+        .blur(3)
+        .webp({
+            quality: 40,
+            effort: 4,
+        })
+        .toBuffer()
+        .then((buffer) => "data:image/webp;base64," + buffer.toString("base64"));
+}
+
 async function generateResponsiveVariants(filePath, metadataKey, width) {
     const extension = path.extname(filePath).toLowerCase();
 
@@ -234,10 +256,12 @@ async function main() {
             key,
             metadata.width,
         );
+        const placeholder = await generatePlaceholderDataUrl(filePath);
 
         entries[key] = {
             ...metadata,
             responsive,
+            placeholder,
             publicUrl: filePath.startsWith(path.join(ROOT, "public"))
                 ? getPublicUrl(filePath)
                 : null,
