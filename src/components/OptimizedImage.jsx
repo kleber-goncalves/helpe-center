@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import imageMetadata from "../generated/imageMetadata.json";
 
@@ -42,14 +42,11 @@ export function OptimizedImage({
     const resolvedWidth = width ?? resolvedMetadata?.width;
     const resolvedHeight = height ?? resolvedMetadata?.height;
 
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        setLoaded(false);
-    }, [src, placeholderSrc]);
+    const [loadedSrc, setLoadedSrc] = useState(null);
+    const loaded = loadedSrc === src;
 
     const handleLoad = (event) => {
-        setLoaded(true);
+        setLoadedSrc(src);
         onLoad?.(event);
     };
 

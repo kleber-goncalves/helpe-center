@@ -69,7 +69,7 @@ function parseSvgLength(value) {
 
 async function readSvgDimensions(filePath) {
     const content = await fs.readFile(filePath, "utf8");
-    const openingTag = content.match(/<svg\\b[^>]*>/i)?.[0] ?? "";
+    const openingTag = content.match(/<svg[^>]*>/i)?.[0] ?? "";
 
     const width = parseSvgLength(
         openingTag.match(/\\bwidth=["']([^"']+)["']/i)?.[1],
