@@ -1,11 +1,11 @@
 import { SectionTransition } from "./SectionTransition";
 import { ToolCard } from "./ToolCard";
 
-export function ToolSection({ id, label, title, restTitle, alt, logo, description, icon: Icon, tools, shaded = false, transition }) {
+export function ToolSection({ id, background, label, title, restTitle, alt, logo, description, icon: Icon, tools, transition }) {
     return (
-        <section aria-labelledby={id} className={shaded ? "bg-background" : "bg-mist3"}>
+        <section aria-labelledby={id} className={background}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
-                <div className="flex items-start gap-3">
+                <div className="flex  items-start gap-3">
                     <span
                         className="
                             flex
@@ -25,13 +25,13 @@ export function ToolSection({ id, label, title, restTitle, alt, logo, descriptio
                     <div className="min-w-0  pb-5">
                         <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">{label}</p>
 
-                        <div className="mt-1 flex items-center gap-2">
+                        <div className="mt-1 flex flex-row items-start md:flex-row gap-2 break-words">
                             <h2 id={id} className=" break-words text-2xl font-bold text-ink sm:text-3xl">
                                 {title}
                             </h2>
                             <div className="flex items-center gap-0.5">
                                 <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg">
-                                    <img src={logo} alt={alt} className="" />
+                                    <img src={logo} alt={alt} fetchPriority="low" loading="lazy" decoding="async" />
                                 </div>
                                 <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
                             </div>

@@ -42,7 +42,7 @@ function FilterToken({
                     "flex min-w-0 max-w-full shrink-0 items-center overflow-hidden rounded-md border transition-colors duration-200",
                     "min-h-9",
                     active
-                        ? "border-coral/30 bg-coral-soft/50 focus-within:border-coral/50 focus-within:bg-background"
+                        ? "border-coral/30 bg-coral-soft/50 focus-within:border-coral/50 "
                         : "border-line bg-mist/80 hover:border-line hover:bg-mist2 focus-within:border-coral/40 focus-within:bg-background",
                 ].join(" ")
             }

@@ -324,6 +324,7 @@ export function Tools() {
 
             {hasControls && hasResults && (
                 <ToolSection
+                    background="bg-background"
                     id="tools-search-results-title"
                     label={hasSearch ? "Busca" : "Filtros"}
                     title={hasSearch ? `Resultados para “${search.trim()}”` : "Ferramentas filtradas"}
@@ -382,6 +383,7 @@ export function Tools() {
             {!hasControls && (
                 <>
                     <ToolSection
+                        background="bg-mist3"
                         id="pdf-tools-title"
                         label="PDF"
                         title="Disponíveis no"
@@ -401,6 +403,7 @@ export function Tools() {
                     />
 
                     <ToolSection
+                        background="bg-background"
                         id="image-tools-title"
                         label="Imagens"
                         title="Disponíveis no"
