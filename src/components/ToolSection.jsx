@@ -9,7 +9,7 @@ export function ToolSection({ id, label, title, restTitle, alt, logo, descriptio
                     <span
                         className="
                             flex
-                            size-10
+                            size-20
                             shrink-0
                             items-center
                             justify-center
@@ -19,7 +19,7 @@ export function ToolSection({ id, label, title, restTitle, alt, logo, descriptio
                         "
                         aria-hidden="true"
                     >
-                        <Icon className="size-5" strokeWidth={1.9} />
+                        <Icon className="size-12" strokeWidth={1.9} />
                     </span>
 
                     <div className="min-w-0  pb-5">

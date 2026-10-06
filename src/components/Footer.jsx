@@ -6,6 +6,7 @@ const mainLinks = [
     ["Início", "/"],
     ["Categorias", "/categorias"],
     ["Tutoriais", "/tutoriais"],
+    ["Ferramentas", "/ferramentas"],
     ["FAQ", "/faq"],
 ];
 

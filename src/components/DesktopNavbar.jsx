@@ -22,21 +22,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const links = [
     ["Início", "/", House],
-    ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
+    ["Categorias", "/categorias", Folder],
+    ["Assistente", "/assistente", MessageCircleQuestion],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
-    ["Assistente", "/assistente", MessageCircleQuestion],
     ["Sobre", "/sobre", Info],
 ];
 
-const primaryLinks = links.slice(0, 4);
-const secondaryLinks = links.slice(4);
+const primaryLinks = links.slice(0, 5);
+const secondaryLinks = links.slice(5);
 
 const navClass = ({ isActive }) =>
     cn(
         "relative inline-block whitespace-nowrap pb-1.5 text-sm font-semibold",
-        "text-muted-ink transition-colors duration-200 hover:text-ink",
+        "!text-muted-ink transition-colors duration-200 hover:text-ink!",
 
         /* Linha inferior */
         "after:absolute after:bottom-0 after:left-0",
@@ -47,7 +47,7 @@ const navClass = ({ isActive }) =>
         "after:ease-out",
 
         isActive
-            ? "text-coral hover:text-coral after:scale-x-100"
+            ? "!text-coral hover:!text-coral after:scale-x-100"
             : "after:scale-x-0 hover:after:scale-x-100",
 
         /* Acessibilidade */
@@ -368,7 +368,7 @@ export function DesktopNavbar() {
                                     Hauy Conecta
                                 </span>
 
-                                <span className="hidden whitespace-nowrap text-[10px] leading-none text-muted-ink lg:block xl:text-xs">
+                                <span className=" whitespace-nowrap text-[10px] leading-none text-muted-ink xl:text-xs">
                                     Central de Ajuda Digital
                                 </span>
                             </div>
