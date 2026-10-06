@@ -181,6 +181,7 @@ export function Home() {
                                     w-full
                                 "
                                 className="object-contain"
+                                sizes="(min-width: 1024px) 460px, min(100vw, 390px)"
                             />
                         </div>
                     </Reveal>
