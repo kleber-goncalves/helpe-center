@@ -55,7 +55,11 @@ function FilterToken({
                 ·
             </span>
 
-            <Select value={value === "all" ? "" : value} onValueChange={onChange}>
+            <Select
+                value={value === "all" ? "" : value}
+                defaultOpen
+                onValueChange={onChange}
+            >
                 <SelectTrigger
                     id={selectId}
                     aria-label={label + ": " + (active ? value : placeholder)}
