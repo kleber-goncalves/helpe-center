@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { OptimizedImage } from "./OptimizedImage";
 
 const mainLinks = [
     ["Início", "/"],
@@ -96,7 +97,13 @@ export function Footer() {
                     <div className="max-w-md">
                         <Link to="/" className="group inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/40 focus-visible:ring-offset-2">
                             <div className="grid h-18 w-18 shrink-0 place-items-center bg-white/30 rounded-lg">
-                                <img src="/logo.svg" alt="Hauy Conecta" className="h-full w-full object-contain" />
+                                <OptimizedImage
+                                    src="/logo.svg"
+                                    alt="Hauy Conecta"
+                                    sizes="72px"
+                                    wrapperClassName="h-full w-full"
+                                    className="object-contain"
+                                />
                             </div>
 
                             <div className="flex flex-col leading-none">
