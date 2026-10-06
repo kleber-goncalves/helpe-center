@@ -219,6 +219,10 @@ async function main() {
         getMetadataKey(a).localeCompare(getMetadataKey(b)),
     );
 
+    await fs.rm(RESPONSIVE_OUTPUT_DIR, { recursive: true, force: true });
+    await fs.mkdir(RESPONSIVE_OUTPUT_DIR, { recursive: true });
+    await fs.mkdir(OUTPUT_DIR, { recursive: true });
+
     const entries = {};
 
     for (const filePath of uniqueFiles) {
@@ -239,10 +243,6 @@ async function main() {
                 : null,
         };
     }
-
-    await fs.rm(RESPONSIVE_OUTPUT_DIR, { recursive: true, force: true });
-    await fs.mkdir(OUTPUT_DIR, { recursive: true });
-    await fs.mkdir(RESPONSIVE_OUTPUT_DIR, { recursive: true });
 
     await fs.writeFile(
         OUTPUT_FILE,
