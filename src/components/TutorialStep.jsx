@@ -61,6 +61,7 @@ export function TutorialStep({ step, index }) {
                                         loading="eager"
                                         decoding="async"
                                         wrapperClassName="mx-auto w-full max-w-3xl rounded-lg"
+                                        sizes="(min-width: 1024px) 768px, calc(100vw - 2.5rem)"
                                         className="object-contain"
                                     />
                                 </div>
