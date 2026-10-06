@@ -20,25 +20,40 @@ function FilterToken({
     const active = value !== "all";
 
     return (
-        <div className="group inline-flex min-h-9 max-w-full items-center overflow-hidden rounded-md border border-line bg-mist/80 transition-colors duration-200 hover:bg-mist2">
+        <div
+            className={
+                [
+                    "group inline-flex min-h-9 max-w-full items-center overflow-hidden rounded-md border transition-colors duration-200",
+                    active
+                        ? "border-coral/30 bg-coral-soft/60"
+                        : "border-line bg-mist/80 hover:bg-mist2",
+                ].join(" ")
+            }
+        >
             <span className="shrink-0 pl-2.5 text-[13px] font-medium text-muted-ink">
                 {label}
+            </span>
+
+            <span className="px-1 text-[12px] text-muted-ink/70" aria-hidden="true">
+                ·
             </span>
 
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger
                     id={selectId}
                     aria-label={label + ": " + (active ? value : allLabel)}
-                    className="h-9 min-w-0 w-auto max-w-[12rem] border-0 bg-transparent px-1.5 py-0 text-[13px] font-semibold text-ink shadow-none focus:ring-0 focus:ring-offset-0 hover:bg-transparent"
+                    className="h-9 min-w-0 w-auto max-w-[12rem] gap-1 border-0 bg-transparent px-0.5 py-0 text-[13px] font-semibold text-ink shadow-none focus:ring-0 focus:ring-offset-0 hover:bg-transparent"
                 >
                     <SelectValue />
                 </SelectTrigger>
 
-                <SelectContent>
-                    <SelectItem value="all">{allLabel}</SelectItem>
+                <SelectContent className="min-w-[10rem] rounded-lg border-line bg-background shadow-lift">
+                    <SelectItem value="all" className="text-[13px]">
+                        {allLabel}
+                    </SelectItem>
 
                     {options.map((option) => (
-                        <SelectItem key={option} value={option}>
+                        <SelectItem key={option} value={option} className="text-[13px]">
                             {option}
                         </SelectItem>
                     ))}
@@ -51,7 +66,7 @@ function FilterToken({
                     onClick={onClear}
                     aria-label={"Limpar filtro de " + label.toLowerCase()}
                     title={"Limpar filtro de " + label.toLowerCase()}
-                    className="mr-0.5 inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-ink transition-colors hover:bg-mist2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
+                    className="mr-0.5 inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-ink transition-colors hover:bg-coral-soft hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
                 >
                     <X className="size-3.5" strokeWidth={1.9} aria-hidden="true" />
                 </button>
