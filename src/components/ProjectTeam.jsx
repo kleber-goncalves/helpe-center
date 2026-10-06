@@ -164,6 +164,7 @@ export function ProjectTeam() {
                                     fetchPriority="low"
                                     decoding="async"
                                     aspectRatio="4 / 5"
+                                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
                                     className={["object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")}
                                 />
                             </div>
