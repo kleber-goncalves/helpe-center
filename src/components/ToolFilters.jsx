@@ -1,4 +1,5 @@
-import { Filter, X } from "lucide-react";
+import { useState } from "react";
+import { Filter, Plus, X } from "lucide-react";
 
 import {
     Select,
@@ -7,6 +8,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui";
+
+const FILTER_FIELDS = {
+    category: "Categoria",
+    provider: "Serviço",
+};
 
 function FilterToken({
     label,
@@ -75,6 +81,40 @@ function FilterToken({
     );
 }
 
+function AddFilterControl({ availableFields, onAdd }) {
+    const [value, setValue] = useState("");
+
+    if (availableFields.length === 0) {
+        return null;
+    }
+
+    return (
+        <Select
+            value={value}
+            onValueChange={(nextValue) => {
+                onAdd(nextValue);
+                setValue("");
+            }}
+        >
+            <SelectTrigger
+                aria-label="Adicionar filtro"
+                className="h-9 min-h-9 w-auto gap-1.5 rounded-md border border-dashed border-line bg-transparent px-2.5 text-[13px] font-semibold text-muted-ink shadow-none transition-colors hover:border-coral/40 hover:bg-mist hover:text-ink focus:ring-2 focus:ring-coral/30 focus:ring-offset-0"
+            >
+                <Plus className="size-3.5 shrink-0" strokeWidth={1.9} aria-hidden="true" />
+                <SelectValue placeholder="Adicionar filtro" />
+            </SelectTrigger>
+
+            <SelectContent className="min-w-[10rem] rounded-lg border-line bg-background shadow-lift">
+                {availableFields.map((field) => (
+                    <SelectItem key={field} value={field} className="text-[13px]">
+                        {FILTER_FIELDS[field]}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
+    );
+}
+
 export function ToolFilters({
     category,
     provider,
@@ -85,6 +125,22 @@ export function ToolFilters({
     onClear,
     hasActiveFilters,
 }) {
+    const availableFields = [
+        category === "all" ? "category" : null,
+        provider === "all" ? "provider" : null,
+    ].filter(Boolean);
+
+    const addFilter = (field) => {
+        if (field === "category") {
+            onCategoryChange(categoryOptions[0] ?? "all");
+            return;
+        }
+
+        if (field === "provider") {
+            onProviderChange(providerOptions[0] ?? "all");
+        }
+    };
+
     return (
         <fieldset className="mt-5">
             <legend className="sr-only">Filtros das ferramentas</legend>
@@ -95,24 +151,33 @@ export function ToolFilters({
                     Filtros
                 </span>
 
-                <FilterToken
-                    label="Categoria"
-                    value={category}
-                    allLabel="Todas"
-                    options={categoryOptions}
-                    onChange={onCategoryChange}
-                    onClear={() => onCategoryChange("all")}
-                    selectId="tools-category-filter"
-                />
+                {category !== "all" && (
+                    <FilterToken
+                        label="Categoria"
+                        value={category}
+                        allLabel="Todas"
+                        options={categoryOptions}
+                        onChange={onCategoryChange}
+                        onClear={() => onCategoryChange("all")}
+                        selectId="tools-category-filter"
+                    />
+                )}
 
-                <FilterToken
-                    label="Serviço"
-                    value={provider}
-                    allLabel="Todos"
-                    options={providerOptions}
-                    onChange={onProviderChange}
-                    onClear={() => onProviderChange("all")}
-                    selectId="tools-provider-filter"
+                {provider !== "all" && (
+                    <FilterToken
+                        label="Serviço"
+                        value={provider}
+                        allLabel="Todos"
+                        options={providerOptions}
+                        onChange={onProviderChange}
+                        onClear={() => onProviderChange("all")}
+                        selectId="tools-provider-filter"
+                    />
+                )}
+
+                <AddFilterControl
+                    availableFields={availableFields}
+                    onAdd={addFilter}
                 />
 
                 {hasActiveFilters && (
