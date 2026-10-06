@@ -41,8 +41,8 @@ function FilterToken({
                     "flex min-w-0 max-w-full shrink-0 items-center overflow-hidden rounded-md border transition-colors duration-200",
                     "min-h-9",
                     active
-                        ? "border-coral/30 bg-coral-soft/60"
-                        : "border-line bg-mist/80 hover:bg-mist2",
+                        ? "border-coral/30 bg-coral-soft/50 focus-within:border-coral/50 focus-within:bg-background"
+                        : "border-line bg-mist/80 hover:border-line hover:bg-mist2 focus-within:border-coral/40 focus-within:bg-background",
                 ].join(" ")
             }
         >
@@ -158,7 +158,7 @@ export function ToolFilters({
     };
 
     return (
-        <fieldset className="mt-5 min-w-0">
+        <fieldset className="mt-6 min-w-0">
             <legend className="sr-only">Filtros das ferramentas</legend>
 
             <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2">
@@ -202,7 +202,7 @@ export function ToolFilters({
                         onClick={clearFilters}
                         aria-label="Limpar todos os filtros"
                         title="Limpar todos os filtros"
-                        className="inline-flex min-h-9 max-w-full shrink-0 cursor-pointer items-center rounded-md px-2 text-[13px] font-semibold text-muted-ink transition-colors hover:bg-mist hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
+                        className="inline-flex min-h-9 max-w-full shrink-0 cursor-pointer items-center rounded-md px-2 text-[13px] font-semibold text-muted-ink transition-colors hover:bg-mist hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50 sm:border-l sm:border-line sm:pl-3"
                     >
                         Limpar
                     </button>

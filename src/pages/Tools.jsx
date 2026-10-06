@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { FileText, Filter, Images, ShieldCheck, Search, SearchX, TrendingUp, X } from "lucide-react";
+import { FileText, Filter, Images, ShieldCheck, Search, SearchX, Star, X } from "lucide-react";
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
@@ -277,17 +277,17 @@ export function Tools() {
                                 "
                                 aria-hidden="true"
                             >
-                                <TrendingUp className="size-5" strokeWidth={1.9} />
+                                <Star className="size-5" strokeWidth={1.9} />
                             </span>
 
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">Acesso rápido</p>
 
                                 <h2 id="featured-tools-title" className="mt-1 text-2xl font-bold text-ink sm:text-3xl">
-                                    Mais usadas
+                                    Ferramentas em destaque
                                 </h2>
 
-                                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">Atalhos para algumas das ferramentas mais úteis em tarefas comuns com PDFs e imagens.</p>
+                                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">Atalhos para algumas das ferramentas selecionadas para acesso rápido em tarefas comuns com PDFs e imagens.</p>
                             </div>
                         </div>
 
