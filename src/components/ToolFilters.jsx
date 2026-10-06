@@ -22,15 +22,16 @@ function FilterToken({
     label,
     value,
     allLabel,
+    placeholder,
     options,
     onChange,
-    onClear,
+    onRemove,
     selectId,
 }) {
     const active = value !== "all";
 
-    const clearFilter = () => {
-        onClear();
+    const removeFilter = () => {
+        onRemove();
         focusAddFilter();
     };
 
@@ -54,13 +55,13 @@ function FilterToken({
                 ·
             </span>
 
-            <Select value={value} onValueChange={onChange}>
+            <Select value={value === "all" ? "" : value} onValueChange={onChange}>
                 <SelectTrigger
                     id={selectId}
-                    aria-label={label + ": " + (active ? value : allLabel)}
+                    aria-label={label + ": " + (active ? value : placeholder)}
                     className="h-9 min-w-0 max-w-[12rem] shrink gap-1 border-0 bg-transparent px-0.5 py-0 text-[13px] font-semibold text-ink shadow-none transition-colors hover:bg-transparent focus-visible:bg-mist2 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50 focus-visible:ring-offset-0 [&>span]:min-w-0 [&>span]:truncate"
                 >
-                    <SelectValue />
+                    <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
 
                 <SelectContent className="min-w-[10rem] max-w-[calc(100vw-1rem)] rounded-lg border-line bg-background shadow-lift">
@@ -76,17 +77,15 @@ function FilterToken({
                 </SelectContent>
             </Select>
 
-            {active && (
-                <button
-                    type="button"
-                    onClick={clearFilter}
-                    aria-label={"Remover filtro de " + label.toLowerCase() + ": " + value}
-                    title={"Remover filtro de " + label.toLowerCase()}
-                    className="mr-0.5 inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-ink transition-colors hover:bg-coral-soft hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
-                >
-                    <X className="size-3.5" strokeWidth={1.9} aria-hidden="true" />
-                </button>
-            )}
+            <button
+                type="button"
+                onClick={removeFilter}
+                aria-label={"Remover filtro de " + label.toLowerCase()}
+                title={"Remover filtro de " + label.toLowerCase()}
+                className="mr-0.5 inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-ink transition-colors hover:bg-coral-soft hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
+            >
+                <X className="size-3.5" strokeWidth={1.9} aria-hidden="true" />
+            </button>
         </div>
     );
 }
@@ -129,27 +128,22 @@ function AddFilterControl({ availableFields, onAdd }) {
 export function ToolFilters({
     category,
     provider,
+    filterOrder,
     categoryOptions,
     providerOptions,
     onCategoryChange,
     onProviderChange,
+    onAddFilter,
+    onRemoveFilter,
     onClear,
     hasActiveFilters,
 }) {
-    const availableFields = [
-        category === "all" ? "category" : null,
-        provider === "all" ? "provider" : null,
-    ].filter(Boolean);
+    const availableFields = ["category", "provider"].filter(
+        (field) => !filterOrder.includes(field),
+    );
 
-    const addFilter = (field) => {
-        if (field === "category") {
-            onCategoryChange(categoryOptions[0] ?? "all");
-            return;
-        }
-
-        if (field === "provider") {
-            onProviderChange(providerOptions[0] ?? "all");
-        }
+    const handleAddFilter = (field) => {
+        onAddFilter(field);
     };
 
     const clearFilters = () => {
@@ -167,33 +161,41 @@ export function ToolFilters({
                     Filtros
                 </span>
 
-                {category !== "all" && (
-                    <FilterToken
-                        label="Categoria"
-                        value={category}
-                        allLabel="Todas"
-                        options={categoryOptions}
-                        onChange={onCategoryChange}
-                        onClear={() => onCategoryChange("all")}
-                        selectId="tools-category-filter"
-                    />
-                )}
+                {filterOrder.map((field) => {
+                    if (field === "category") {
+                        return (
+                            <FilterToken
+                                key={field}
+                                label="Categoria"
+                                value={category}
+                                allLabel="Todas"
+                                placeholder="Selecionar categoria"
+                                options={categoryOptions}
+                                onChange={onCategoryChange}
+                                onRemove={() => onRemoveFilter(field)}
+                                selectId="tools-category-filter"
+                            />
+                        );
+                    }
 
-                {provider !== "all" && (
-                    <FilterToken
-                        label="Serviço"
-                        value={provider}
-                        allLabel="Todos"
-                        options={providerOptions}
-                        onChange={onProviderChange}
-                        onClear={() => onProviderChange("all")}
-                        selectId="tools-provider-filter"
-                    />
-                )}
+                    return (
+                        <FilterToken
+                            key={field}
+                            label="Serviço"
+                            value={provider}
+                            allLabel="Todos"
+                            placeholder="Selecionar serviço"
+                            options={providerOptions}
+                            onChange={onProviderChange}
+                            onRemove={() => onRemoveFilter(field)}
+                            selectId="tools-provider-filter"
+                        />
+                    );
+                })}
 
                 <AddFilterControl
                     availableFields={availableFields}
-                    onAdd={addFilter}
+                    onAdd={handleAddFilter}
                 />
 
                 {hasActiveFilters && (

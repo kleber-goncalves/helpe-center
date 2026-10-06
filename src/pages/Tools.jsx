@@ -44,6 +44,7 @@ export function Tools() {
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
     const [provider, setProvider] = useState("all");
+    const [filterOrder, setFilterOrder] = useState([]);
 
     const searchQuery = normalizeSearchText(search);
 
@@ -176,9 +177,29 @@ export function Tools() {
     const hasControls = hasSearch || hasFilters;
     const hasResults = filteredTools.length > 0;
 
+    const addFilter = (field) => {
+        setFilterOrder((current) =>
+            current.includes(field) ? current : [...current, field],
+        );
+    };
+
+    const removeFilter = (field) => {
+        setFilterOrder((current) => current.filter((item) => item !== field));
+
+        if (field === "category") {
+            setCategory("all");
+            return;
+        }
+
+        if (field === "provider") {
+            setProvider("all");
+        }
+    };
+
     const clearFilters = () => {
         setCategory("all");
         setProvider("all");
+        setFilterOrder([]);
     };
 
     return (
@@ -248,7 +269,19 @@ export function Tools() {
                             Pesquise pelo nome, tipo de arquivo, tarefa ou serviço.
                         </p>
 
-                        <ToolFilters category={category} provider={provider} categoryOptions={categoryOptions} providerOptions={providerOptions} onCategoryChange={setCategory} onProviderChange={setProvider} onClear={clearFilters} hasActiveFilters={hasFilters} />
+                        <ToolFilters
+                            category={category}
+                            provider={provider}
+                            filterOrder={filterOrder}
+                            categoryOptions={categoryOptions}
+                            providerOptions={providerOptions}
+                            onCategoryChange={setCategory}
+                            onProviderChange={setProvider}
+                            onAddFilter={addFilter}
+                            onRemoveFilter={removeFilter}
+                            onClear={clearFilters}
+                            hasActiveFilters={hasFilters}
+                        />
 
                         {hasControls && (
                             <p className="mt-2 text-sm font-semibold text-coral" role="status" aria-live="polite">
