@@ -12,6 +12,7 @@ import { gsap } from "gsap";
 import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AccessibilityPanel } from "./AccessibilityMenu";
+import { OptimizedImage } from "./OptimizedImage";
 
 const links = [
     ["Início", "/", House],
@@ -222,7 +223,16 @@ export function MobileHeader() {
                     ================================= */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                         <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
-                            <img src="/logo.svg" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
+                            <OptimizedImage
+                                src="/logo.svg"
+                                alt="Hauy Conecta"
+                                loading="eager"
+                                fetchPriority="high"
+                                decoding="async"
+                                wrapperClassName="h-full w-full"
+                                sizes="52px"
+                                className="object-contain"
+                            />
                         </div>
 
                         <div className="flex flex-col leading-tight">
