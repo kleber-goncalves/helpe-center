@@ -195,7 +195,7 @@ export function About() {
         { scope: cardRef },
     );
     return (
-        <main className="bg-baground">
+        <main className="bg-background">
             <div data-reader-content>
                 <section className="">
                     <div className="bg-mist3">
