@@ -1,6 +1,7 @@
 import { ExternalLink, ShieldCheck } from "lucide-react";
 
 import { Card } from "./ui";
+import { OptimizedImage } from "./OptimizedImage";
 
 export function ToolProviderInfo({ provider }) {
 
@@ -10,7 +11,15 @@ export function ToolProviderInfo({ provider }) {
                 <div className="flex items-center gap-3">
                     <div className="flex min-w-0 flex-wrap items-center gap-0.5">
                         <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg">
-                            <img src={provider.logo} alt={provider.alt} srcset="" loading="lazy" decoding="async" draggable="false" className="h-full w-full object-contain" />
+                            <OptimizedImage
+                                src={provider.logo}
+                                alt={provider.alt}
+                                loading="lazy"
+                                decoding="async"
+                                sizes="28px"
+                                wrapperClassName="h-full w-full"
+                                className="object-contain"
+                            />
                         </div>
                         <h3 className="break-words font-display text-lg font-bold text-ink">{provider.name}</h3>
                     </div>
