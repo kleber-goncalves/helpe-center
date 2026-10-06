@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Componetes
 import { HelpCTA } from "../components/HelpCTA2";
 import { SectionTransition } from "../components/SectionTransition";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { Reveal } from "../components/Reveal";
 import { ProjectTeam } from "../components/ProjectTeam";
 
@@ -245,7 +246,16 @@ export function About() {
 
                             <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                                 <Reveal y={18} duration={0.6}>
-                                    <img src={aboutImg} fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                    <OptimizedImage
+                                        src={aboutImg}
+                                        alt="Grupo de pessoas planejando um projeto"
+                                        metadataKey="src/assets/about.webp"
+                                        loading="eager"
+                                        fetchPriority="high"
+                                        decoding="async"
+                                        wrapperClassName="w-full"
+                                        className="object-contain"
+                                    />
                                 </Reveal>
                             </div>
                         </div>
