@@ -15,7 +15,7 @@ export function Categories() {
         useEffect(() => {
             const pageTitle = `Categorias | ${SITE_NAME}`;
     
-            const description = "Todas as categorias de ferramentas para facilidade a procura.";
+            const description = "Encontre categorias de ajuda digital para localizar tutoriais com mais facilidade.";
     
             const canonicalUrl = `${SITE_URL}/categorias`;
     
@@ -36,7 +36,7 @@ export function Categories() {
     
             const structuredData = {
                 "@context": "https://schema.org",
-                "@type": "AboutPage",
+                "@type": "CollectionPage",
                 name: pageTitle,
                 description,
                 url: canonicalUrl,
