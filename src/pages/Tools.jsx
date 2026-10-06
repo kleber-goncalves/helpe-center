@@ -269,19 +269,7 @@ export function Tools() {
                             Pesquise pelo nome, tipo de arquivo, tarefa ou serviço.
                         </p>
 
-                        <ToolFilters
-                            category={category}
-                            provider={provider}
-                            filterOrder={filterOrder}
-                            categoryOptions={categoryOptions}
-                            providerOptions={providerOptions}
-                            onCategoryChange={setCategory}
-                            onProviderChange={setProvider}
-                            onAddFilter={addFilter}
-                            onRemoveFilter={removeFilter}
-                            onClear={clearFilters}
-                            hasActiveFilters={hasFilters}
-                        />
+                        <ToolFilters category={category} provider={provider} filterOrder={filterOrder} categoryOptions={categoryOptions} providerOptions={providerOptions} onCategoryChange={setCategory} onProviderChange={setProvider} onAddFilter={addFilter} onRemoveFilter={removeFilter} onClear={clearFilters} hasActiveFilters={hasFilters} />
 
                         {hasControls && (
                             <p className="mt-2 text-sm font-semibold text-coral" role="status" aria-live="polite">
@@ -334,7 +322,23 @@ export function Tools() {
                 </section>
             )}
 
-            {hasControls && hasResults && <ToolSection id="tools-search-results-title" label={hasSearch ? "Busca" : "Filtros"} title={hasSearch ? `Resultados para “${search.trim()}”` : "Ferramentas filtradas"} description={`Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem aos critérios selecionados.`} icon={hasSearch ? Search : Filter} tools={filteredTools} />}
+            {hasControls && hasResults && (
+                <ToolSection
+                    id="tools-search-results-title"
+                    label={hasSearch ? "Busca" : "Filtros"}
+                    title={hasSearch ? `Resultados para “${search.trim()}”` : "Ferramentas filtradas"}
+                    description={`Encontramos ${filteredTools.length} ${filteredTools.length === 1 ? "ferramenta" : "ferramentas"} que correspondem aos critérios selecionados.`}
+                    icon={hasSearch ? Search : Filter}
+                    tools={filteredTools}
+                    transition={{
+                        variant: "fold",
+                        from: "background",
+                        to: "mist",
+                        size: "large",
+                        animation: true,
+                    }}
+                />
+            )}
 
             {hasControls && !hasResults && (
                 <section aria-labelledby="tools-search-empty-title" className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
