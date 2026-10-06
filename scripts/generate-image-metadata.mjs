@@ -72,28 +72,33 @@ async function readSvgDimensions(filePath) {
     const openingTag = content.match(/<svg[^>]*>/i)?.[0] ?? "";
 
     const width = parseSvgLength(
-        openingTag.match(/\\bwidth=["']([^"']+)["']/i)?.[1],
+        openingTag.match(/width=["']([^"']+)["']/i)?.[1],
     );
     const height = parseSvgLength(
-        openingTag.match(/\\bheight=["']([^"']+)["']/i)?.[1],
+        openingTag.match(/height=["']([^"']+)["']/i)?.[1],
     );
 
     if (width && height) {
         return { width, height };
     }
 
-    const viewBox = openingTag.match(
-        /\\bviewBox=["']\\s*([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s*["']/i,
-    );
+    const viewBoxValue = openingTag.match(
+        /viewBox=["']([^"']+)["']/i,
+    )?.[1];
 
-    if (!viewBox) {
+    const viewBox = viewBoxValue
+        ?.trim()
+        .split(/\s+/)
+        .map(Number);
+
+    if (!viewBox || viewBox.length !== 4) {
         throw new Error(
             `Não foi possível obter dimensões SVG: ${getMetadataKey(filePath)}`,
         );
     }
 
-    const viewBoxWidth = Number.parseFloat(viewBox[3]);
-    const viewBoxHeight = Number.parseFloat(viewBox[4]);
+    const viewBoxWidth = viewBox[2];
+    const viewBoxHeight = viewBox[3];
 
     if (!(viewBoxWidth > 0) || !(viewBoxHeight > 0)) {
         throw new Error(
@@ -106,7 +111,6 @@ async function readSvgDimensions(filePath) {
         height: viewBoxHeight,
     };
 }
-
 async function readImageMetadata(filePath) {
     const extension = path.extname(filePath).toLowerCase();
 
