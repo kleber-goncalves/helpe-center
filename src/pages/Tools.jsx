@@ -297,6 +297,7 @@ export function Tools() {
                             ))}
                         </div>
                     </div>
+                    <SectionTransition variant="fold" from="background" to="mist" size="large" />
                 </section>
             )}
 
@@ -343,9 +344,44 @@ export function Tools() {
 
             {!hasControls && (
                 <>
-                    <ToolSection id="pdf-tools-title" label="PDF" title="Disponíveis no" restTitle="iLovePDF" logo="/ilovePDF.svg" alt="Logo do iLovePDF" description="Organize, converta e reduza arquivos PDF em poucos passos." icon={FileText} tools={pdfTools} />
+                    <ToolSection
+                        id="pdf-tools-title"
+                        label="PDF"
+                        title="Disponíveis no"
+                        restTitle="iLovePDF"
+                        logo="/ilovePDF.svg"
+                        alt="Logo do iLovePDF"
+                        description="Organize, converta e reduza arquivos PDF em poucos passos."
+                        icon={FileText}
+                        tools={pdfTools}
+                        transition={{
+                            variant: "ribbon2",
+                            from: "mist",
+                            to: "background",
+                            size: "large",
+                            animation: true,
+                        }}
+                    />
 
-                    <ToolSection id="image-tools-title" label="Imagens" title="Disponíveis no" logo="/iloveIMG.svg" restTitle="iLoveIMG" alt="Logo do iLoveIMG" description="Comprima, redimensione, recorte e converta imagens de forma prática." icon={Images} shaded tools={imageTools} />
+                    <ToolSection
+                        id="image-tools-title"
+                        label="Imagens"
+                        title="Disponíveis no"
+                        logo="/iloveIMG.svg"
+                        restTitle="iLoveIMG"
+                        alt="Logo do iLoveIMG"
+                        description="Comprima, redimensione, recorte e converta imagens de forma prática."
+                        icon={Images}
+                        shaded
+                        tools={imageTools}
+                        transition={{
+                            variant: "fold",
+                            from: "background",
+                            to: "mist",
+                            size: "large",
+                            animation: true,
+                        }}
+                    />
                 </>
             )}
 
