@@ -15,7 +15,7 @@ export function Assistente() {
         useEffect(() => {
             const pageTitle = `Assistente | ${SITE_NAME}`;
     
-            const description = "Assistente Hauy para resolver suas dúvidas.";
+            const description = "Use o Assistente Hauy para encontrar orientações e resolver dúvidas sobre ferramentas digitais.";
     
             const canonicalUrl = `${SITE_URL}/assistente`;
     
@@ -36,7 +36,7 @@ export function Assistente() {
     
             const structuredData = {
                 "@context": "https://schema.org",
-                "@type": "AboutPage",
+                "@type": "WebPage",
                 name: pageTitle,
                 description,
                 url: canonicalUrl,
