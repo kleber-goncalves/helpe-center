@@ -14,6 +14,10 @@ const FILTER_FIELDS = {
     provider: "Serviço",
 };
 
+function focusAddFilter() {
+    window.setTimeout(() => document.getElementById("tools-add-filter")?.focus(), 0);
+}
+
 function FilterToken({
     label,
     value,
@@ -24,6 +28,11 @@ function FilterToken({
     selectId,
 }) {
     const active = value !== "all";
+
+    const clearFilter = () => {
+        onClear();
+        focusAddFilter();
+    };
 
     return (
         <div
@@ -49,7 +58,7 @@ function FilterToken({
                 <SelectTrigger
                     id={selectId}
                     aria-label={label + ": " + (active ? value : allLabel)}
-                    className="h-9 min-w-0 max-w-[12rem] shrink gap-1 border-0 bg-transparent px-0.5 py-0 text-[13px] font-semibold text-ink shadow-none focus:ring-0 focus:ring-offset-0 hover:bg-transparent [&>span]:min-w-0 [&>span]:truncate"
+                    className="h-9 min-w-0 max-w-[12rem] shrink gap-1 border-0 bg-transparent px-0.5 py-0 text-[13px] font-semibold text-ink shadow-none transition-colors hover:bg-transparent focus-visible:bg-mist2 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50 focus-visible:ring-offset-0 [&>span]:min-w-0 [&>span]:truncate"
                 >
                     <SelectValue />
                 </SelectTrigger>
@@ -70,9 +79,9 @@ function FilterToken({
             {active && (
                 <button
                     type="button"
-                    onClick={onClear}
-                    aria-label={"Limpar filtro de " + label.toLowerCase()}
-                    title={"Limpar filtro de " + label.toLowerCase()}
+                    onClick={clearFilter}
+                    aria-label={"Remover filtro de " + label.toLowerCase() + ": " + value}
+                    title={"Remover filtro de " + label.toLowerCase()}
                     className="mr-0.5 inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-ink transition-colors hover:bg-coral-soft hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
                 >
                     <X className="size-3.5" strokeWidth={1.9} aria-hidden="true" />
@@ -98,8 +107,9 @@ function AddFilterControl({ availableFields, onAdd }) {
             }}
         >
             <SelectTrigger
+                id="tools-add-filter"
                 aria-label="Adicionar filtro"
-                className="h-9 min-h-9 w-auto max-w-full shrink-0 gap-1.5 rounded-md border border-dashed border-line bg-transparent px-2.5 text-[13px] font-semibold text-muted-ink shadow-none transition-colors hover:border-coral/40 hover:bg-mist hover:text-ink focus:ring-2 focus:ring-coral/30 focus:ring-offset-0 [&>span]:truncate"
+                className="h-9 min-h-9 w-auto max-w-full shrink-0 gap-1.5 rounded-md border border-dashed border-line bg-transparent px-2.5 text-[13px] font-semibold text-muted-ink shadow-none transition-colors hover:border-coral/40 hover:bg-mist hover:text-ink focus-visible:border-coral/50 focus-visible:ring-2 focus-visible:ring-coral/30 focus-visible:ring-offset-0 [&>span]:truncate"
             >
                 <Plus className="size-3.5 shrink-0" strokeWidth={1.9} aria-hidden="true" />
                 <SelectValue placeholder="Adicionar filtro" />
@@ -140,6 +150,11 @@ export function ToolFilters({
         if (field === "provider") {
             onProviderChange(providerOptions[0] ?? "all");
         }
+    };
+
+    const clearFilters = () => {
+        onClear();
+        focusAddFilter();
     };
 
     return (
@@ -184,7 +199,9 @@ export function ToolFilters({
                 {hasActiveFilters && (
                     <button
                         type="button"
-                        onClick={onClear}
+                        onClick={clearFilters}
+                        aria-label="Limpar todos os filtros"
+                        title="Limpar todos os filtros"
                         className="inline-flex min-h-9 max-w-full shrink-0 cursor-pointer items-center rounded-md px-2 text-[13px] font-semibold text-muted-ink transition-colors hover:bg-mist hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-coral/50"
                     >
                         Limpar
