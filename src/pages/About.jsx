@@ -254,6 +254,7 @@ export function About() {
                                         fetchPriority="high"
                                         decoding="async"
                                         wrapperClassName="w-full"
+                                        sizes="(min-width: 1024px) 448px, min(100vw, 448px)"
                                         className="object-contain"
                                     />
                                 </Reveal>
