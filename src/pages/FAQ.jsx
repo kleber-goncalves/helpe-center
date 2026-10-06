@@ -38,7 +38,7 @@ export function FAQ() {
     
             const structuredData = {
                 "@context": "https://schema.org",
-                "@type": "AboutPage",
+                "@type": "FAQPage",
                 name: pageTitle,
                 description,
                 url: canonicalUrl,
