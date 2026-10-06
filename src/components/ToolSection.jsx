@@ -1,5 +1,6 @@
 import { SectionTransition } from "./SectionTransition";
 import { ToolCard } from "./ToolCard";
+import { OptimizedImage } from "./OptimizedImage";
 
 export function ToolSection({ id, background, label, title, restTitle, alt, logo, description, icon: Icon, tools, transition }) {
     return (
@@ -30,9 +31,15 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                                 {title}
                             </h2>
                             <div className="flex items-center gap-0.5">
-                                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg">
-                                    <img src={logo} alt={alt} fetchPriority="low" loading="lazy" decoding="async" />
-                                </div>
+                                <OptimizedImage
+                                    src={logo}
+                                    alt={alt}
+                                    fetchPriority="low"
+                                    loading="lazy"
+                                    decoding="async"
+                                    wrapperClassName="h-8 w-8 shrink-0 rounded-lg"
+                                    className="object-contain"
+                                />
                                 <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
                             </div>
                         </div>
