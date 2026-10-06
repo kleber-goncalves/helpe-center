@@ -28,6 +28,7 @@ export function OptimizedImage({
     wrapperClassName = "",
     className = "",
     width,
+    aspectRatio: aspectRatioOverride,
     height,
     loading = "lazy",
     fetchPriority = "auto",
@@ -51,9 +52,10 @@ export function OptimizedImage({
     };
 
     const aspectRatio =
-        resolvedWidth && resolvedHeight
+        aspectRatioOverride ??
+        (resolvedWidth && resolvedHeight
             ? `${resolvedWidth} / ${resolvedHeight}`
-            : undefined;
+            : undefined);
 
     return (
         <div
