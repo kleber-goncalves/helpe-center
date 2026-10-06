@@ -7,12 +7,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT_DIR = path.join(ROOT, "src", "generated");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "imageMetadata.json");
 
-const RASTER_EXTENSIONS = new Set([
+const IMAGE_EXTENSIONS = new Set([
     ".avif",
     ".gif",
     ".jpeg",
     ".jpg",
     ".png",
+    ".svg",
     ".webp",
 ]);
 
@@ -28,7 +29,7 @@ async function walk(directory) {
             continue;
         }
 
-        if (RASTER_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+        if (IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
             files.push(absolutePath);
         }
     }
@@ -50,18 +51,83 @@ function getPublicUrl(filePath) {
     return relative ? `/${relative}` : null;
 }
 
-async function readImageMetadata(filePath) {
-    const metadata = await sharp(filePath).metadata();
+function parseSvgLength(value) {
+    if (!value) {
+        return null;
+    }
 
-    if (!metadata.width || !metadata.height) {
+    const normalized = value.trim();
+
+    if (!normalized || normalized.endsWith("%")) {
+        return null;
+    }
+
+    const numeric = Number.parseFloat(normalized);
+
+    return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
+}
+
+async function readSvgDimensions(filePath) {
+    const content = await fs.readFile(filePath, "utf8");
+    const openingTag = content.match(/<svg\\b[^>]*>/i)?.[0] ?? "";
+
+    const width = parseSvgLength(
+        openingTag.match(/\\bwidth=["']([^"']+)["']/i)?.[1],
+    );
+    const height = parseSvgLength(
+        openingTag.match(/\\bheight=["']([^"']+)["']/i)?.[1],
+    );
+
+    if (width && height) {
+        return { width, height };
+    }
+
+    const viewBox = openingTag.match(
+        /\\bviewBox=["']\\s*([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s+([+-]?(?:\\d*\\.)?\\d+)\\s*["']/i,
+    );
+
+    if (!viewBox) {
+        throw new Error(
+            `Não foi possível obter dimensões SVG: ${getMetadataKey(filePath)}`,
+        );
+    }
+
+    const viewBoxWidth = Number.parseFloat(viewBox[3]);
+    const viewBoxHeight = Number.parseFloat(viewBox[4]);
+
+    if (!(viewBoxWidth > 0) || !(viewBoxHeight > 0)) {
+        throw new Error(
+            `ViewBox SVG inválido: ${getMetadataKey(filePath)}`,
+        );
+    }
+
+    return {
+        width: viewBoxWidth,
+        height: viewBoxHeight,
+    };
+}
+
+async function readImageMetadata(filePath) {
+    const extension = path.extname(filePath).toLowerCase();
+
+    const dimensions =
+        extension === ".svg"
+            ? await readSvgDimensions(filePath)
+            : await sharp(filePath).metadata();
+
+    if (!dimensions.width || !dimensions.height) {
         throw new Error(`Não foi possível obter dimensões: ${getMetadataKey(filePath)}`);
     }
 
     return {
-        width: metadata.width,
-        height: metadata.height,
-        format: metadata.format ?? path.extname(filePath).slice(1).toLowerCase(),
-        aspectRatio: Number((metadata.width / metadata.height).toFixed(6)),
+        width: dimensions.width,
+        height: dimensions.height,
+        format: extension === ".svg"
+            ? "svg"
+            : dimensions.format ?? extension.slice(1),
+        aspectRatio: Number(
+            (dimensions.width / dimensions.height).toFixed(6),
+        ),
     };
 }
 
