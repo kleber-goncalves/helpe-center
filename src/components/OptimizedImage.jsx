@@ -30,6 +30,7 @@ export function OptimizedImage({
     width,
     aspectRatio: aspectRatioOverride,
     height,
+    sizes,
     loading = "lazy",
     fetchPriority = "auto",
     decoding = "async",
@@ -56,6 +57,21 @@ export function OptimizedImage({
         (resolvedWidth && resolvedHeight
             ? `${resolvedWidth} / ${resolvedHeight}`
             : undefined);
+
+    const responsiveCandidates =
+        resolvedMetadata?.responsive?.map(
+            ({ src: responsiveSrc, width: responsiveWidth }) =>
+                `${responsiveSrc} ${responsiveWidth}w`,
+        ) ?? [];
+
+    if (resolvedWidth) {
+        responsiveCandidates.push(`${src} ${resolvedWidth}w`);
+    }
+
+    const resolvedSrcSet =
+        responsiveCandidates.length > 1
+            ? responsiveCandidates.join(", ")
+            : undefined;
 
     return (
         <div
@@ -85,6 +101,8 @@ export function OptimizedImage({
                 loading={loading}
                 fetchPriority={fetchPriority}
                 decoding={decoding}
+                sizes={sizes}
+                srcSet={resolvedSrcSet}
                 draggable="false"
                 onLoad={handleLoad}
                 onError={onError}
