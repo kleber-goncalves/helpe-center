@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { TeamOption } from "./TeamOption";
+import { OptimizedImage } from "./OptimizedImage";
 
 // Assets alunos
 import testeAlunos from "../assets/equipe/alunos/testeAlunos.jpg";
@@ -21,26 +22,31 @@ const team = {
                 name: "Cirlene",
                 role: "Aluna",
                 image: cirlena,
+                metadataKey: "src/assets/equipe/alunos/cirlena.png",
             },
             {
                 name: "Carlos",
                 role: "Aluno",
                 image: carlos,
+                metadataKey: "src/assets/equipe/alunos/carlos.png",
             },
             {
                 name: "Divina",
                 role: "Aluna",
                 image: divina,
+                metadataKey: "src/assets/equipe/alunos/divina.png",
             },
             {
                 name: "José Roberto",
                 role: "Aluno",
                 image: joseRoberto,
+                metadataKey: "src/assets/equipe/alunos/jose-roberto.png",
             },
             {
                 name: "Kleber",
                 role: "Aluno",
                 image: testeAlunos,
+                metadataKey: "src/assets/equipe/alunos/testeAlunos.jpg",
             },
         ],
     },
@@ -53,16 +59,19 @@ const team = {
                 name: "Fabio",
                 role: "Professor",
                 image: testeProf,
+                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
             },
             {
                 name: "Felipe Cordeiro",
                 role: "Professor",
                 image: testeProf,
+                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
             },
             {
                 name: "Auro",
                 role: "Professor",
                 image: testeProf,
+                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
             },
         ],
     },
@@ -147,7 +156,16 @@ export function ProjectTeam() {
                         <article key={`${activeGroup}-${member.name}`} className="group min-w-0">
                             {/* Foto */}
                             <div className={["relative overflow-hidden", "rounded-lg border border-line", "bg-mist3"].join(" ")}>
-                                <img src={member.image} alt={`Foto de ${member.name}`} loading="lazy" fetchPriority="low" decoding="async" draggable="false" className={["aspect-[4/5] w-full", "object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")} />
+                                <OptimizedImage
+                                    src={member.image}
+                                    alt={`Foto de ${member.name}`}
+                                    metadataKey={member.metadataKey}
+                                    loading="lazy"
+                                    fetchPriority="low"
+                                    decoding="async"
+                                    aspectRatio="4 / 5"
+                                    className={["object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")}
+                                />
                             </div>
 
                             {/* Informação */}
