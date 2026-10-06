@@ -11,6 +11,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Componentes
 import { Button } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
+import { OptimizedImage } from "./OptimizedImage";
 
 // Hooks
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -348,13 +349,15 @@ export function DesktopNavbar() {
                         )}
                     >
                         <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-white/30 xl:h-17 xl:w-17">
-                            <img
+                            <OptimizedImage
                                 src="/logo.svg"
                                 alt="Hauy Conecta"
+                                loading="eager"
                                 fetchPriority="high"
-                                draggable="false"
                                 decoding="async"
-                                className="h-full w-full object-contain"
+                                wrapperClassName="h-full w-full"
+                                sizes="(min-width: 1280px) 68px, 56px"
+                                className="object-contain"
                             />
                         </div>
 
