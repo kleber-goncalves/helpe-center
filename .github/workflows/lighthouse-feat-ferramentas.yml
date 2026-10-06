@@ -1,0 +1,44 @@
+name: Lighthouse feat/ferramentas
+
+concurrency:
+  group: lighthouse-feat-ferramentas
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - feat/ferramentas
+    paths-ignore:
+      - "dist/**"
+      - "public/sitemap.xml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and prerender
+        run: npm run build
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
