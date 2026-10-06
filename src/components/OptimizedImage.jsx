@@ -43,6 +43,8 @@ export function OptimizedImage({
 
     const resolvedWidth = width ?? resolvedMetadata?.width;
     const resolvedHeight = height ?? resolvedMetadata?.height;
+    const resolvedPlaceholderSrc =
+        placeholderSrc ?? resolvedMetadata?.placeholder ?? null;
 
     const [loadedSrc, setLoadedSrc] = useState(null);
     const loaded = loadedSrc === src;
@@ -78,9 +80,9 @@ export function OptimizedImage({
             className={["relative overflow-hidden", wrapperClassName].filter(Boolean).join(" ")}
             style={{ aspectRatio }}
         >
-            {placeholderSrc && (
+            {resolvedPlaceholderSrc && (
                 <img
-                    src={placeholderSrc}
+                    src={resolvedPlaceholderSrc}
                     alt=""
                     aria-hidden="true"
                     decoding="async"
@@ -108,7 +110,7 @@ export function OptimizedImage({
                 onError={onError}
                 className={[
                     "relative block h-full w-full transition-opacity duration-300 motion-reduce:transition-none",
-                    loaded || !placeholderSrc ? "opacity-100" : "opacity-0",
+                    loaded || !resolvedPlaceholderSrc ? "opacity-100" : "opacity-0",
                     className,
                 ].join(" ")}
                 {...props}
