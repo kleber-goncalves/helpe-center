@@ -23,7 +23,6 @@ export function OptimizedVideo({
     wrapperClassName = "",
     width,
     height,
-    aspectRatio: aspectRatioOverride,
     preload = "metadata",
     ...props
 }) {
@@ -31,11 +30,7 @@ export function OptimizedVideo({
 
     const resolvedWidth = width ?? posterMetadata?.width;
     const resolvedHeight = height ?? posterMetadata?.height;
-    const aspectRatio =
-        aspectRatioOverride ??
-        (resolvedWidth && resolvedHeight
-            ? `${resolvedWidth} / ${resolvedHeight}`
-            : undefined);
+
 
     return (
         <video
@@ -53,7 +48,6 @@ export function OptimizedVideo({
             playsInline
             poster={poster}
             aria-label={title}
-            style={{ aspectRatio }}
             {...props}
         >
             <source src={src} type="video/mp4" />
