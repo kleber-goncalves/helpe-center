@@ -87,7 +87,9 @@ export function ImageLightbox({ src, alt, children }) {
 
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-[100] grid place-items-center bg-ink/90 p-4 sm:p-6"
+                    onClick={closeLightbox}
+                    ref={closeButtonRef}
+                    className="fixed cursor-zoom-out inset-0 z-[200] grid place-items-center bg-black/56 p-4 sm:p-6"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby={dialogTitleId}
@@ -102,34 +104,31 @@ export function ImageLightbox({ src, alt, children }) {
                     </div>
 
                     <div className="relative flex max-h-[92vh] max-w-[96vw] items-center justify-center">
-                        <img
-                            src={src}
-                            alt={alt}
-                            className="max-h-[88vh] max-w-[92vw] object-contain"
-                            draggable="false"
-                        />
+                        <img src={src} alt={alt} className="max-h-[88vh] max-w-[92vw] object-contain" draggable="false" />
 
                         <button
                             ref={closeButtonRef}
                             type="button"
                             onClick={closeLightbox}
                             aria-label="Fechar imagem ampliada"
+                            title="Fechar imagem ampliada"
                             className="
                                 absolute
                                 right-2
                                 top-2
                                 flex
+                                cursor-pointer
                                 size-10
                                 items-center
                                 justify-center
                                 rounded-full
-                                bg-ink/80
+                                bg-black/80
                                 text-white
                                 shadow-soft
                                 transition-[background-color,transform]
                                 duration-200
                                 hover:scale-105
-                                hover:bg-ink
+                                hover:bg-black/90
                                 focus-visible:outline-none
                                 focus-visible:ring-2
                                 focus-visible:ring-white
@@ -142,9 +141,7 @@ export function ImageLightbox({ src, alt, children }) {
                         </button>
                     </div>
 
-                    <p className="sr-only">
-                        Pressione Esc ou use o botão fechar para sair da imagem ampliada.
-                    </p>
+                    <p className="sr-only">Pressione Esc ou use o botão fechar para sair da imagem ampliada.</p>
                 </div>
             )}
         </>
