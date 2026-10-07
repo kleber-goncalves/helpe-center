@@ -26,7 +26,13 @@ export function ImageLightbox({ src, alt, children }) {
 
         const handleKeyDown = (event) => {
             if (event.key === "Escape") {
-                closeLightbox();
+                setIsOpen(false);
+                return;
+            }
+
+            if (event.key === "Tab") {
+                event.preventDefault();
+                closeButtonRef.current?.focus();
             }
         };
 
