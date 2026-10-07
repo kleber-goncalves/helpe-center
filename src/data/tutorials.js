@@ -15,12 +15,15 @@ export const tutorials = [
         duration: "6 minutos",
 
         description: "Aprenda os primeiros passos para criar, preencher, organizar e salvar uma planilha no Excel.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Curso Básico de Excel — Aula 1",
-                      "description": "Continue aprendendo Excel com uma aula para iniciantes.",
-                      "url": "https://www.youtube.com/watch?v=q5CSEx44Crc"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Curso Básico de Excel — Aula 1",
+                description: "Continue aprendendo Excel com uma aula para iniciantes.",
+                url: "https://www.youtube.com/watch?v=q5CSEx44Crc",
+            },
+        ],
         keywords: ["excel", "planilha", "tabela", "dados", "célula", "linha", "coluna", "pasta de trabalho", "formatação", "salvar"],
 
         learning: ["Abrir o Excel e criar uma planilha", "Entender células, linhas e colunas", "Inserir informações na planilha", "Criar títulos para organizar os dados", "Aplicar uma formatação básica", "Salvar a planilha no computador"],
@@ -316,12 +319,15 @@ export const tutorials = [
         duration: "5 minutos",
 
         description: "Aprenda a formatar um trabalho no Word, ajustando fonte, tamanho do texto, alinhamento, espaçamento, parágrafos e organização do documento.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como formatar texto no Word",
-                      "description": "Aprofunde a formatação de textos, fontes, parágrafos e espaçamento no Word.",
-                      "url": "https://www.youtube.com/watch?v=vDMVSAgylg0"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como formatar texto no Word",
+                description: "Aprofunde a formatação de textos, fontes, parágrafos e espaçamento no Word.",
+                url: "https://www.youtube.com/watch?v=vDMVSAgylg0",
+            },
+        ],
         keywords: ["word", "organizar", "trabalho", "formatação", "fonte", "tamanho", "alinhamento", "espaçamento", "parágrafo", "margens"],
 
         learning: ["Abrir um documento no Microsoft Word", "Selecionar o texto do trabalho", "Ajustar a fonte e o tamanho", "Alinhar o texto corretamente", "Configurar o espaçamento entre linhas", "Organizar os parágrafos", "Revisar e salvar o trabalho"],
@@ -525,12 +531,15 @@ export const tutorials = [
         duration: "4 minutos",
 
         description: "Aprenda a aplicar estilos aos títulos e inserir um sumário automático no Word.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como criar um sumário automático no Word",
-                      "description": "Veja como configurar títulos e criar um sumário automático no Word.",
-                      "url": "https://www.youtube.com/watch?v=BzWnW_jA5cI"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como criar um sumário automático no Word",
+                description: "Veja como configurar títulos e criar um sumário automático no Word.",
+                url: "https://www.youtube.com/watch?v=BzWnW_jA5cI",
+            },
+        ],
         keywords: ["word", "sumário", "índice", "títulos", "subtítulos", "estilos", "referências", "sumário automático"],
 
         learning: ["Aplicar estilos aos títulos e subtítulos", "Inserir um sumário automático", "Organizar a estrutura do documento"],
@@ -616,12 +625,15 @@ export const tutorials = [
         duration: "3 minutos",
 
         description: "Aprenda a localizar um arquivo no Google Drive, escolher quem pode acessá-lo, definir permissões e compartilhar o acesso com segurança.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como compartilhar um arquivo no Google Drive",
-                      "description": "Aprenda a compartilhar arquivos e configurar as permissões de acesso.",
-                      "url": "https://www.youtube.com/watch?v=58LZddqK_8M"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como compartilhar um arquivo no Google Drive",
+                description: "Aprenda a compartilhar arquivos e configurar as permissões de acesso.",
+                url: "https://www.youtube.com/watch?v=58LZddqK_8M",
+            },
+        ],
         keywords: ["compartilhar", "arquivo", "link", "drive", "google drive", "permissão", "visualizar", "comentar", "editar", "acesso"],
 
         learning: ["Localizar um arquivo no Google Drive", "Abrir as opções de compartilhamento", "Escolher quem poderá acessar o arquivo", "Definir as permissões de acesso", "Copiar o link do arquivo", "Enviar o acesso para outras pessoas"],
@@ -813,12 +825,15 @@ export const tutorials = [
         duration: "3 minutos",
 
         description: "Aprenda a salvar ou exportar um documento em PDF, escolher onde guardar o arquivo e conferir o resultado antes de compartilhar ou imprimir.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como converter Word para PDF",
-                      "description": "Veja outras formas de transformar um documento do Word em PDF.",
-                      "url": "https://www.youtube.com/watch?v=v9tzPBrRkzU"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como converter Word para PDF",
+                description: "Veja outras formas de transformar um documento do Word em PDF.",
+                url: "https://www.youtube.com/watch?v=v9tzPBrRkzU",
+            },
+        ],
         keywords: ["pdf", "converter", "documento", "salvar", "exportar", "formato pdf", "baixar", "arquivo digital"],
 
         learning: ["Abrir um documento para conversão", "Acessar as opções de salvar ou exportar", "Selecionar o formato PDF", "Escolher o local para salvar o arquivo", "Confirmar a conversão", "Conferir o PDF criado"],
@@ -996,12 +1011,15 @@ export const tutorials = [
         duration: "3 minutos",
 
         description: "Aprenda a criar uma mensagem, adicionar documentos ou imagens como anexo, conferir o arquivo e enviar o e-mail.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como anexar arquivo no Gmail",
-                      "description": "Aprofunde o envio de arquivos anexados em mensagens do Gmail.",
-                      "url": "https://www.youtube.com/watch?v=kTvdQTca0Es"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como anexar arquivo no Gmail",
+                description: "Aprofunde o envio de arquivos anexados em mensagens do Gmail.",
+                url: "https://www.youtube.com/watch?v=kTvdQTca0Es",
+            },
+        ],
         keywords: ["email", "e-mail", "anexo", "arquivo", "gmail", "enviar", "anexar", "documento", "imagem", "mensagem"],
 
         learning: ["Abrir o serviço de e-mail", "Criar uma nova mensagem", "Preencher destinatário e assunto", "Adicionar um arquivo como anexo", "Conferir o arquivo anexado", "Enviar a mensagem"],
@@ -1205,12 +1223,15 @@ export const tutorials = [
         duration: "4 minutos",
 
         description: "Aprenda a enviar um arquivo para o Google Drive, escolher a pasta de destino, acompanhar o upload e localizar o arquivo depois.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como usar o Google Drive",
-                      "description": "Aprenda mais sobre pastas, upload, organização e compartilhamento no Google Drive.",
-                      "url": "https://www.youtube.com/watch?v=q4WB69uioXc"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como usar o Google Drive",
+                description: "Aprenda mais sobre pastas, upload, organização e compartilhamento no Google Drive.",
+                url: "https://www.youtube.com/watch?v=q4WB69uioXc",
+            },
+        ],
         keywords: ["google drive", "drive", "salvar", "arquivo", "nuvem", "upload", "enviar arquivo", "pasta", "armazenamento"],
 
         learning: ["Abrir o Google Drive", "Escolher a pasta de destino", "Iniciar o envio de um arquivo", "Selecionar um arquivo no computador", "Acompanhar o upload", "Localizar o arquivo depois no Google Drive"],
@@ -1346,12 +1367,15 @@ export const tutorials = [
         duration: "7 minutos",
 
         description: "Aprenda a criar uma apresentação no Canva, escolher um modelo, editar conteúdos, adicionar páginas, inserir elementos e apresentar ou baixar o arquivo.",
-\n        externalLearning: [\n                        {
-                      "type": "video",
-                      "title": "Como criar uma apresentação no Canva",
-                      "description": "Continue aprendendo a criar apresentações para trabalhos escolares e acadêmicos.",
-                      "url": "https://www.youtube.com/watch?v=ghHvS6Z8tMU"
-            }\n        ],
+
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como criar uma apresentação no Canva",
+                description: "Continue aprendendo a criar apresentações para trabalhos escolares e acadêmicos.",
+                url: "https://www.youtube.com/watch?v=ghHvS6Z8tMU",
+            },
+        ],
         keywords: ["canva", "apresentação", "slides", "design", "apresentar", "modelo", "páginas", "imagens", "elementos", "baixar"],
 
         learning: ["Acessar o Canva e criar uma apresentação", "Escolher um modelo de apresentação", "Editar títulos e textos", "Adicionar e remover páginas", "Inserir imagens e elementos", "Revisar os slides", "Apresentar ou baixar a apresentação"],
