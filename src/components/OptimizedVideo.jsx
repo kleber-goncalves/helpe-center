@@ -38,40 +38,35 @@ export function OptimizedVideo({
             : undefined);
 
     return (
-        <div
-            className={["relative overflow-hidden", wrapperClassName]
+        <video
+            className={[
+                "mx-auto block h-auto w-full rounded-lg border border-line",
+                wrapperClassName,
+                className,
+            ]
                 .filter(Boolean)
                 .join(" ")}
+            width={resolvedWidth}
+            height={resolvedHeight}
+            controls
+            preload={preload}
+            playsInline
+            poster={poster}
+            aria-label={title}
             style={{ aspectRatio }}
+            {...props}
         >
-            <video
-                className={[
-                    "mx-auto block h-auto w-full rounded-lg border border-line",
-                    className,
-                ]
-                    .filter(Boolean)
-                    .join(" ")}
-                width={resolvedWidth}
-                height={resolvedHeight}
-                controls
-                preload={preload}
-                playsInline
-                poster={poster}
-                aria-label={title}
-                {...props}
-            >
-                <source src={src} type="video/mp4" />
-                {captions && (
-                    <track
-                        kind="captions"
-                        src={captions}
-                        srcLang="pt-BR"
-                        label="Português"
-                        default
-                    />
-                )}
-                Seu navegador não suporta a reprodução deste vídeo.
-            </video>
-        </div>
+            <source src={src} type="video/mp4" />
+            {captions && (
+                <track
+                    kind="captions"
+                    src={captions}
+                    srcLang="pt-BR"
+                    label="Português"
+                    default
+                />
+            )}
+            Seu navegador não suporta a reprodução deste vídeo.
+        </video>
     );
 }
