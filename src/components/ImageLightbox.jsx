@@ -69,8 +69,6 @@ export function ImageLightbox({ src, alt, children }) {
             );
     };
 
-    closeLightboxRef.current = closeLightbox;
-
     useEffect(() => {
         if (!isOpen) {
             return undefined;
@@ -83,7 +81,7 @@ export function ImageLightbox({ src, alt, children }) {
 
         const handleKeyDown = (event) => {
             if (event.key === "Escape") {
-                closeLightboxRef.current?.();
+                closeLightbox();
                 return;
             }
 
