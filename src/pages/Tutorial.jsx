@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 // components
 import { Badge, Button } from "../components/ui";
 import { TutorialStep } from "../components/TutorialStep";
+import { TutorialCompletion } from "../components/TutorialCompletion";
 import { TutorialStepNav } from "../components/TutorialStepNav";
 
 // data
@@ -468,49 +469,9 @@ export function Tutorial() {
                          */}
 
                         {activeStep === steps.length - 1 && (
-                            <section
-                                className="
-                                    mt-8
-                                    max-w-4xl
-                                    rounded-xl
-                                    border
-                                    border-line
-                                    bg-mist
-                                    p-6
-                                "
-                            >
-                                <p
-                                    className="
-                                        text-xs
-                                        font-bold
-                                        tracking-[0.16em]
-                                        text-muted-foreground
-                                    "
-                                >
-                                    PRONTO!
-                                </p>
-
-                                <h2
-                                    className="
-                                        mt-2
-                                        text-2xl
-                                        font-bold
-                                        text-ink
-                                    "
-                                >
-                                    Você concluiu este tutorial.
-                                </h2>
-
-                                <p
-                                    className="
-                                        mt-2
-                                        text-sm
-                                        text-muted-ink
-                                    "
-                                >
-                                    Se precisar, volte aos passos e faça com calma.
-                                </p>
-                            </section>
+                            <TutorialCompletion
+                                externalLearning={tutorial.externalLearning}
+                            />
                         )}
 
                         {/*
