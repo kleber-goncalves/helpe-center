@@ -1,8 +1,5 @@
 import { useEffect } from "react";
 
-import { ArrowLeft } from "lucide-react";
-
-import { Link } from "react-router-dom";
 
 // Components
 import { HauyAssistant } from "../components/HauyAssistant";
@@ -97,33 +94,7 @@ export function Assistente() {
                     VOLTAR
                 ========================================= */}
 
-                <div className="shrink-0">
-                    <Link
-                        to="/"
-                        className="
-                            inline-flex
-                            items-center
-                            gap-2
-
-                            rounded-lg
-
-                            text-sm
-                            font-semibold
-                            text-muted-foreground
-
-                            transition-colors
-                            hover:text-coral
-
-                            focus-visible:outline-none
-                            focus-visible:ring-2
-                            focus-visible:ring-coral
-                            focus-visible:ring-offset-2
-                        "
-                    >
-                        <ArrowLeft className="size-4" aria-hidden="true" />
-                        Voltar para o início
-                    </Link>
-                </div>
+                
 
                 {/* =========================================
                     ASSISTENTE

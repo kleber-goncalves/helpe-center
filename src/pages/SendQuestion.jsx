@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowLeft, MessageCircleQuestion, ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import {  MessageCircleQuestion, ShieldCheck } from "lucide-react";
 
 // GSAP
 import { useGSAP } from "@gsap/react";
@@ -160,10 +159,7 @@ export function SendQuestion() {
             {/* Cabeçalho */}
             <section ref={headerRef} className="bg-mist3">
                 <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8 lg:py-16">
-                    <Link to="/" className={["inline-flex min-h-11 items-center gap-2", "text-sm font-semibold", "text-muted-ink", "transition-colors", "hover:text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/50", "focus-visible:ring-offset-2"].join(" ")}>
-                        <ArrowLeft className="size-4" aria-hidden="true" />
-                        Voltar para o início
-                    </Link>
+
 
                     <div className="mt-8 max-w-3xl">
                         <p className="text-sm font-bold uppercase tracking-[0.16em] text-coral">Precisa de ajuda?</p>

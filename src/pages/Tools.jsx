@@ -205,7 +205,7 @@ export function Tools() {
     return (
         <main className="bg-background">
             <section aria-labelledby="tools-page-title" className="bg-mist3">
-                <div className="mx-auto max-w-6xl px-5 pb-14 pt-14 lg:px-8">
+                <div className="mx-auto max-w-6xl px-5  pt-14 lg:px-8">
                     <p className="text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">Recursos úteis</p>
 
                     <h1 id="tools-page-title" className="mt-3 max-w-3xl break-words text-3xl font-bold tracking-tight text-ink sm:text-4xl">

@@ -191,14 +191,10 @@ export function ImageLightbox({ src, alt, children }) {
 
     return (
         <>
-            <div
-                className="group relative cursor-zoom-in"
-                onClick={openLightbox}
-            >
+            <div className="group relative cursor-zoom-in" onClick={openLightbox}>
                 {trigger}
 
                 <span
-                   
                     className="
                         
                         absolute
@@ -230,6 +226,7 @@ export function ImageLightbox({ src, alt, children }) {
 
             {isOpen && (
                 <div
+                    onClick={closeLightbox}
                     ref={dialogRef}
                     className="fixed cursor-zoom-out inset-0 z-[200] grid place-items-center bg-black p-4 sm:p-6"
                     role="dialog"

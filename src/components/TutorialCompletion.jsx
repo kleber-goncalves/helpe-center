@@ -71,7 +71,10 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                     className="
                                         group
                                         flex
-                                        items-center
+                                        flex-col
+                                        md:flex-row
+                                        items-start
+                                        md:items-center
                                         gap-4
                                         rounded-xl
                                         border
