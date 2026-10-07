@@ -13,6 +13,7 @@ export function ImageLightbox({ src, alt, children }) {
     const dialogRef = useRef(null);
     const imageRef = useRef(null);
     const closeButtonRef = useRef(null);
+    const closeLightboxRef = useRef(null);
     const dialogTitleId = useId();
 
     const openLightbox = () => {
@@ -68,6 +69,8 @@ export function ImageLightbox({ src, alt, children }) {
             );
     };
 
+    closeLightboxRef.current = closeLightbox;
+
     useEffect(() => {
         if (!isOpen) {
             return undefined;
@@ -80,7 +83,7 @@ export function ImageLightbox({ src, alt, children }) {
 
         const handleKeyDown = (event) => {
             if (event.key === "Escape") {
-                closeLightbox();
+                closeLightboxRef.current?.();
                 return;
             }
 
@@ -162,7 +165,7 @@ export function ImageLightbox({ src, alt, children }) {
                 previousActiveElement.focus();
             }
         };
-    }, [isOpen, reduceMotion, isClosing]);
+    }, [isOpen, reduceMotion]);
 
     const child = Children.only(children);
 
