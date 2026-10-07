@@ -50,6 +50,7 @@ export function OptimizedImage({ src, alt, metadataKey, placeholderSrc, wrapperC
             {resolvedPlaceholderSrc && <img src={resolvedPlaceholderSrc} alt={alt} width={resolvedWidth} height={resolvedHeight} aria-hidden="true" decoding="async" draggable="false" className={["absolute inset-0 h-full w-full scale-[0.76] object-cover blur-sm", "transition-normal duration-300", loaded ? "opacity-0" : "opacity-0"].join(" ")} />}
 
             <img src={src} alt={alt} width={resolvedWidth} height={resolvedHeight} loading={loading} fetchPriority={fetchPriority} decoding={decoding} sizes={sizes} srcSet={resolvedSrcSet} draggable="false" onLoad={handleLoad} onError={onError} className={["relative block h-full w-full transition-opacity duration-300 motion-reduce:transition-none", loaded || !resolvedPlaceholderSrc ? "opacity-100" : "opacity-100", className].join(" ")} {...props} />
+            
         </div>
     );
 }

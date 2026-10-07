@@ -13,7 +13,6 @@ export function ImageLightbox({ src, alt, children }) {
     const dialogRef = useRef(null);
     const imageRef = useRef(null);
     const closeButtonRef = useRef(null);
-    const closeLightboxRef = useRef(null);
     const dialogTitleId = useId();
 
     const openLightbox = () => {
@@ -128,11 +127,11 @@ export function ImageLightbox({ src, alt, children }) {
                     closeButtonRef.current,
                     {
                         autoAlpha: 0,
-                        x: 12,
+                        
                     },
                     {
                         autoAlpha: 1,
-                        x: 0,
+                        
                         duration: 0.32,
                         ease: "power2.out",
                         delay: 0.16,
@@ -196,12 +195,13 @@ export function ImageLightbox({ src, alt, children }) {
 
     return (
         <>
-            <div className="group relative">
+            <div className="group relative ">
                 {trigger}
 
                 <span
+                   
                     className="
-                        pointer-events-none
+                        
                         absolute
                         right-3
                         top-3
@@ -209,16 +209,17 @@ export function ImageLightbox({ src, alt, children }) {
                         flex
                         size-9
                         items-center
+                        cursor-zoom-in
                         justify-center
                         rounded-lg
-                        bg-ink/75
+                        bg-mist
                         text-white
                         opacity-90
                         shadow-soft
                         transition-[opacity,background-color,transform]
-                        duration-200
+                        duration-400
                         group-hover:scale-105
-                        group-hover:bg-ink/90
+                        group-hover:bg-coral/80
                         sm:size-10
                         motion-reduce:transition-none
                     "
@@ -230,8 +231,10 @@ export function ImageLightbox({ src, alt, children }) {
 
             {isOpen && (
                 <div
+                    onClick={closeLightbox}
+                    ref={closeButtonRef}
                     ref={dialogRef}
-                    className="fixed inset-0 z-[200] grid place-items-center bg-black/56 p-4 sm:p-6"
+                    className="fixed cursor-zoom-out inset-0 z-[200] grid place-items-center bg-black p-4 sm:p-6"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby={dialogTitleId}
@@ -250,7 +253,7 @@ export function ImageLightbox({ src, alt, children }) {
                             flex
                             max-h-[92vh]
                             max-w-[96vw]
-                            items-center
+                            
                             justify-center
                             gap-3
                             sm:gap-4
@@ -283,6 +286,8 @@ export function ImageLightbox({ src, alt, children }) {
                                 items-center
                                 justify-center
                                 rounded-lg
+                                border
+                                border-line
                                 bg-black/80
                                 text-white
                                 shadow-soft
@@ -290,6 +295,7 @@ export function ImageLightbox({ src, alt, children }) {
                                 duration-200
                                 hover:scale-105
                                 hover:bg-black/90
+                                hover:border-coral
                                 focus-visible:outline-none
                                 focus-visible:ring-2
                                 focus-visible:ring-white
@@ -302,9 +308,7 @@ export function ImageLightbox({ src, alt, children }) {
                         </button>
                     </div>
 
-                    <p className="sr-only">
-                        Pressione Esc ou use o botão fechar para sair da imagem ampliada.
-                    </p>
+                    <p className="sr-only">Pressione Esc ou use o botão fechar para sair da imagem ampliada.</p>
                 </div>
             )}
         </>

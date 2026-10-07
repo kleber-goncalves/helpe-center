@@ -56,19 +56,10 @@ export function TutorialStep({ step, index }) {
 
                             {example.image && (
                                 <div className="bg-background p-3 sm:p-5">
-                                    <ImageLightbox
-                                        src={example.image}
-                                        alt={example.alt ?? `Exemplo do passo ${index + 1}: ${example.title}`}
-                                    >
-                                        <OptimizedImage
-                                            src={example.image}
-                                            alt={example.alt ?? `Exemplo do passo ${index + 1}: ${example.title}`}
-                                            loading="eager"
-                                            decoding="async"
-                                            wrapperClassName="mx-auto w-full max-w-3xl cursor-zoom-in rounded-lg"
-                                            sizes="(min-width: 1024px) 768px, calc(100vw - 2.5rem)"
-                                            className="object-contain"
-                                        />
+                                    <ImageLightbox src={example.image} alt={example.alt ?? `Exemplo do passo ${index + 1}: ${example.title}`}>
+                                        <OptimizedImage src={example.image} alt={example.alt ?? `Exemplo do passo ${index + 1}: ${example.title}`} loading="eager" decoding="async" wrapperClassName="mx-auto w-full max-w-3xl cursor-zoom-in rounded-lg" sizes="(min-width: 1024px) 768px, calc(100vw - 2.5rem)" className="object-contain" />
+
+                                        
                                     </ImageLightbox>
                                 </div>
                             )}
