@@ -44,6 +44,7 @@ async function main() {
             "/sobre",
             "/categorias",
             "/tutoriais",
+            "/ferramentas",
             "/faq",
             "/enviar-duvida",
             "/assistente",

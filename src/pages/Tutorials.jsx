@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react";
 // Componetes
 import { HelpCTA } from "../components/HelpCTA2";
 import { Reveal } from "../components/Reveal";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { SearchBar } from "../components/SearchBar";
 import { SectionTransition } from "../components/SectionTransition";
 import { TutorialCard } from "../components/TutorialCard";
@@ -332,7 +333,17 @@ export function Tutorials() {
 
                     <div className="flex flex-col items-center rounded-xl px-6 text-center">
                         <div className="mx-auto mt-6 w-full max-w-[220px] sm:max-w-[370px]">
-                            <img src={searchImg} fetchPriority="low" loading="lazy" decoding="async" alt="Mulher com uma lupa de pesquisa" />
+                            <OptimizedImage
+                                src={searchImg}
+                                alt="Mulher com uma lupa de pesquisa"
+                                metadataKey="src/assets/search.webp"
+                                loading="lazy"
+                                fetchPriority="low"
+                                decoding="async"
+                                sizes="(min-width: 640px) 370px, min(100vw, 220px)"
+                                wrapperClassName="w-full"
+                                className="object-contain"
+                            />
                         </div>
 
                         <h2 className="mt-6 text-xl font-bold text-foreground">Não encontramos nenhum tutorial para essa dúvida.</h2>

@@ -1,4 +1,4 @@
-import { MessageCircleQuestion } from "lucide-react";
+import { BotMessageSquare } from "lucide-react";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -333,12 +333,7 @@ export function HauyAssistantWidget() {
                         ref={dialogRef}
                         id="hauy-assistant-dialog"
                         role="dialog"
-                        aria-modal={
-                            window.matchMedia("(max-width: 767px)")
-                                .matches
-                                ? "true"
-                                : "false"
-                        }
+                        aria-modal={window.matchMedia("(max-width: 767px)").matches ? "true" : "false"}
                         aria-labelledby="hauy-assistant-title"
                         className="
                             fixed
@@ -366,18 +361,11 @@ export function HauyAssistantWidget() {
                             md:shadow-[0_18px_60px_rgb(0_0_0_/_0.18)]
                         "
                     >
-                        <span
-                            id="hauy-assistant-title"
-                            className="sr-only"
-                        >
+                        <span id="hauy-assistant-title" className="sr-only">
                             Assistente Hauy
                         </span>
 
-                        <HauyAssistant
-                            compact
-                            onClose={closeAssistant}
-                            inputRef={inputRef}
-                        />
+                        <HauyAssistant compact onClose={closeAssistant} inputRef={inputRef} />
                     </div>
                 </>
             )}
@@ -442,9 +430,9 @@ export function HauyAssistantWidget() {
                         md:right-auto
                     "
                 >
-                    <MessageCircleQuestion
+                    <BotMessageSquare
                         className="
-                            size-5
+                            size-7
                             text-coral
                         "
                         aria-hidden="true"

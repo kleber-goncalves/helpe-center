@@ -1,5 +1,6 @@
 import { Button } from "./ui";
 import { SectionTransition } from "./SectionTransition";
+import { OptimizedImage } from "./OptimizedImage";
 import { Link } from "react-router-dom";
 import helpCTAImg from "../assets/helpCTA.webp";
 
@@ -18,7 +19,17 @@ export function HelpCTA({ from = "background" }) {
                         </Link>
                     </div>
                     <div className="mx-auto w-full max-w-[370px] sm:max-w-[260px] md:max-w-[330px] md:justify-self-end">
-                        <img src={helpCTAImg} fetchPriority="low" loading="lazy" decoding="async" draggable="false" alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia" />
+                        <OptimizedImage
+                            src={helpCTAImg}
+                            alt="ilustração relacionada a dúvida, ajuda, conversa, suporte ou tecnologia"
+                            metadataKey="src/assets/helpCTA.webp"
+                            loading="lazy"
+                            fetchPriority="low"
+                            decoding="async"
+                            sizes="(min-width: 768px) 330px, (min-width: 640px) 260px, min(100vw, 370px)"
+                            wrapperClassName="w-full"
+                            className="object-contain"
+                        />
                     </div>
                 </div>
             </div>

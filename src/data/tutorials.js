@@ -16,6 +16,14 @@ export const tutorials = [
 
         description: "Aprenda os primeiros passos para criar, preencher, organizar e salvar uma planilha no Excel.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Curso Básico de Excel — Aula 1",
+                description: "Continue aprendendo Excel com uma aula para iniciantes.",
+                url: "https://www.youtube.com/watch?v=q5CSEx44Crc",
+            },
+        ],
         keywords: ["excel", "planilha", "tabela", "dados", "célula", "linha", "coluna", "pasta de trabalho", "formatação", "salvar"],
 
         learning: ["Abrir o Excel e criar uma planilha", "Entender células, linhas e colunas", "Inserir informações na planilha", "Criar títulos para organizar os dados", "Aplicar uma formatação básica", "Salvar a planilha no computador"],
@@ -270,7 +278,9 @@ export const tutorials = [
 
                         description: "Abra o menu Arquivo e escolha Salvar Como para definir onde o arquivo será guardado.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-7-salvar.webp",
+                        img: null,
+
+                        // image: "/tutoriais/excel/como-comecar-usar-excel/passo-7-salvar.webp",
 
                         alt: "Menu Arquivo do Excel mostrando a opção Salvar Como.",
                     },
@@ -280,7 +290,9 @@ export const tutorials = [
 
                         description: "Digite um nome fácil de reconhecer, como 'Notas da Turma 2026'.",
 
-                        image: "/tutoriais/excel/como-comecar-usar-excel/passo-7-nome.webp",
+                        img: null,
+
+                        // image: "/tutoriais/excel/como-comecar-usar-excel/passo-7-nome.webp",
 
                         alt: "Tela de salvamento do Excel com um nome de arquivo preenchido.",
                     },
@@ -308,6 +320,14 @@ export const tutorials = [
 
         description: "Aprenda a formatar um trabalho no Word, ajustando fonte, tamanho do texto, alinhamento, espaçamento, parágrafos e organização do documento.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como formatar texto no Word",
+                description: "Aprofunde a formatação de textos, fontes, parágrafos e espaçamento no Word.",
+                url: "https://www.youtube.com/watch?v=vDMVSAgylg0",
+            },
+        ],
         keywords: ["word", "organizar", "trabalho", "formatação", "fonte", "tamanho", "alinhamento", "espaçamento", "parágrafo", "margens"],
 
         learning: ["Abrir um documento no Microsoft Word", "Selecionar o texto do trabalho", "Ajustar a fonte e o tamanho", "Alinhar o texto corretamente", "Configurar o espaçamento entre linhas", "Organizar os parágrafos", "Revisar e salvar o trabalho"],
@@ -512,6 +532,14 @@ export const tutorials = [
 
         description: "Aprenda a aplicar estilos aos títulos e inserir um sumário automático no Word.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como criar um sumário automático no Word",
+                description: "Veja como configurar títulos e criar um sumário automático no Word.",
+                url: "https://www.youtube.com/watch?v=BzWnW_jA5cI",
+            },
+        ],
         keywords: ["word", "sumário", "índice", "títulos", "subtítulos", "estilos", "referências", "sumário automático"],
 
         learning: ["Aplicar estilos aos títulos e subtítulos", "Inserir um sumário automático", "Organizar a estrutura do documento"],
@@ -584,454 +612,6 @@ export const tutorials = [
     },
 
     {
-        id: "imprimir-documento",
-
-        title: "Como imprimir um documento...",
-
-        category: "informatica-basica",
-
-        difficulty: "Intermediário",
-
-        icon: SignalMedium,
-
-        duration: "3 minutos",
-
-        description: "Aprenda a escolher a impressora, selecionar as páginas, definir o número de cópias e imprimir um documento com segurança.",
-
-        keywords: ["imprimir", "impressão", "documento", "impressora", "papel", "páginas", "cópias", "configurações de impressão", "visualização de impressão"],
-
-        learning: ["Abrir um documento para impressão", "Abrir a tela de impressão", "Escolher a impressora", "Selecionar as páginas que serão impressas", "Definir o número de cópias", "Conferir as configurações de impressão", "Iniciar a impressão"],
-
-        steps: [
-            {
-                title: "Abra o documento que deseja imprimir",
-
-                description: "Abra o arquivo no programa em que ele foi criado, como Word, PDF ou outro aplicativo compatível.",
-
-                examples: [
-                    {
-                        title: "Documento do Word",
-
-                        description: "Abra o documento no Microsoft Word e confira se o conteúdo está pronto para ser impresso.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-1-word.webp",
-
-                        alt: "Documento aberto no Microsoft Word antes de iniciar a impressão.",
-                    },
-
-                    {
-                        title: "Arquivo PDF",
-
-                        description: "Abra o arquivo PDF em um leitor compatível e confira o conteúdo antes de imprimir.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-1-pdf.webp",
-
-                        alt: "Arquivo PDF aberto em um leitor de documentos antes da impressão.",
-                    },
-                ],
-
-                tip: "Antes de imprimir, confira se o documento está completo e se não há páginas ou informações que precisam ser corrigidas.",
-
-                video: null,
-            },
-
-            {
-                title: "Abra a tela de impressão",
-
-                description: "Use o atalho Ctrl + P ou acesse a opção Arquivo > Imprimir para abrir as configurações de impressão.",
-
-                examples: [
-                    {
-                        title: "Atalho Ctrl + P",
-
-                        description: "Pressione as teclas Ctrl e P ao mesmo tempo para abrir diretamente a tela de impressão.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-2-atalho.webp",
-
-                        alt: "Tela do computador mostrando o uso do atalho Ctrl + P para abrir a impressão.",
-                    },
-
-                    {
-                        title: "Arquivo > Imprimir",
-
-                        description: "Abra o menu Arquivo e selecione a opção Imprimir para acessar as configurações.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-2-arquivo.webp",
-
-                        alt: "Menu Arquivo mostrando a opção Imprimir.",
-                    },
-                ],
-
-                tip: "O atalho Ctrl + P costuma ser a maneira mais rápida de abrir a tela de impressão na maioria dos programas.",
-
-                video: null,
-            },
-
-            {
-                title: "Escolha a impressora",
-
-                description: "Na lista de impressoras disponíveis, selecione a impressora que deseja utilizar. Confira se ela está ligada e conectada ao computador.",
-
-                examples: [
-                    {
-                        title: "Lista de impressoras",
-
-                        description: "Verifique as opções disponíveis e selecione a impressora que será usada para imprimir o documento.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-3-impressora.webp",
-
-                        alt: "Tela de impressão mostrando uma lista de impressoras disponíveis.",
-                    },
-
-                    {
-                        title: "Impressora conectada",
-
-                        description: "Confira se a impressora está ligada e se aparece como disponível ou pronta para imprimir.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-3-conectada.webp",
-
-                        alt: "Tela de impressão mostrando uma impressora conectada e disponível.",
-                    },
-                ],
-
-                tip: "Se a impressora não aparecer na lista, verifique se ela está ligada, conectada ao computador e configurada corretamente.",
-
-                video: null,
-            },
-
-            {
-                title: "Defina as páginas e as cópias",
-
-                description: "Escolha se deseja imprimir todas as páginas ou somente um intervalo específico. Depois, informe quantas cópias deseja imprimir.",
-
-                examples: [
-                    {
-                        title: "Todas as páginas",
-
-                        description: "Selecione a opção de imprimir todas as páginas quando quiser imprimir o documento inteiro.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-4-todas-paginas.webp",
-
-                        alt: "Tela de impressão mostrando a opção de imprimir todas as páginas.",
-                    },
-
-                    {
-                        title: "Intervalo de páginas",
-
-                        description: "Informe um intervalo, como 2-5, para imprimir somente as páginas desejadas.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-4-intervalo.webp",
-
-                        alt: "Tela de impressão mostrando um intervalo específico de páginas.",
-                    },
-
-                    {
-                        title: "Número de cópias",
-
-                        description: "Informe a quantidade de cópias que deseja imprimir, como 1, 2 ou 3 exemplares.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-4-copias.webp",
-
-                        alt: "Tela de impressão mostrando o campo para definir o número de cópias.",
-                    },
-                ],
-
-                tip: "Antes de confirmar, confira se selecionou as páginas corretas e se o número de cópias está de acordo com o que você precisa.",
-
-                video: null,
-            },
-
-            {
-                title: "Confira as configurações",
-
-                description: "Antes de imprimir, confira orientação da página, tamanho do papel e outras opções disponíveis. Use a visualização de impressão quando ela estiver disponível.",
-
-                examples: [
-                    {
-                        title: "Orientação da página",
-
-                        description: "Escolha entre orientação retrato ou paisagem de acordo com o formato do documento.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-5-orientacao.webp",
-
-                        alt: "Tela de impressão mostrando as opções de orientação retrato e paisagem.",
-                    },
-
-                    {
-                        title: "Tamanho do papel",
-
-                        description: "Confira se o tamanho do papel está correto, como A4, antes de iniciar a impressão.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-5-papel.webp",
-
-                        alt: "Tela de impressão mostrando a configuração do tamanho do papel A4.",
-                    },
-
-                    {
-                        title: "Visualização de impressão",
-
-                        description: "Observe a prévia do documento para conferir como as páginas serão impressas.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-5-visualizacao.webp",
-
-                        alt: "Visualização de impressão mostrando como o documento ficará no papel.",
-                    },
-                ],
-
-                tip: "A visualização de impressão ajuda a identificar problemas de formatação antes de gastar papel e tinta.",
-
-                video: null,
-            },
-
-            {
-                title: "Clique em Imprimir",
-
-                description: "Depois de conferir todas as opções, clique em Imprimir e aguarde a conclusão do trabalho.",
-
-                examples: [
-                    {
-                        title: "Botão Imprimir",
-
-                        description: "Clique no botão Imprimir para enviar o documento para a impressora selecionada.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-6-imprimir.webp",
-
-                        alt: "Tela de impressão mostrando o botão Imprimir.",
-                    },
-
-                    {
-                        title: "Acompanhe a impressão",
-
-                        description: "Depois de iniciar o trabalho, aguarde a impressora concluir a impressão. Evite desligá-la durante o processo.",
-
-                        image: "/tutoriais/informatica-basica/imprimir-documento/passo-6-conclusao.webp",
-
-                        alt: "Impressora realizando a impressão de um documento.",
-                    },
-                ],
-
-                tip: "Se nada for impresso, verifique se há papel, tinta ou toner e se a impressora não apresenta nenhuma mensagem de erro.",
-
-                video: null,
-            },
-        ],
-    },
-
-    {
-        id: "digitalizar-documento",
-
-        title: "Como digitalizar um documento...",
-
-        category: "informatica-basica",
-
-        difficulty: "Intermediário",
-
-        icon: SignalMedium,
-
-        duration: "4 minutos",
-
-        description: "Aprenda a posicionar um documento, escolher o scanner, definir o formato e salvar o arquivo digitalizado no computador.",
-
-        keywords: ["digitalizar", "scanner", "documento", "pdf", "escaneamento", "digitalização", "arquivo digital", "impressora multifuncional"],
-
-        learning: ["Preparar e posicionar o documento", "Abrir a ferramenta de digitalização", "Escolher o scanner", "Selecionar o formato do arquivo", "Iniciar a digitalização", "Conferir e salvar o documento digitalizado"],
-
-        steps: [
-            {
-                title: "Prepare o documento",
-
-                description: "Coloque o documento sobre o vidro do scanner ou no alimentador automático, conforme o modelo da impressora ou scanner. Verifique se a página está alinhada corretamente.",
-
-                examples: [
-                    {
-                        title: "Vidro do scanner",
-
-                        description: "Coloque a folha sobre o vidro do scanner, normalmente com o conteúdo voltado para baixo, e alinhe o documento conforme as marcações do equipamento.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-1-vidro.webp",
-
-                        alt: "Documento posicionado sobre o vidro de um scanner para digitalização.",
-                    },
-
-                    {
-                        title: "Alimentador automático",
-
-                        description: "Quando o equipamento possuir alimentador automático, coloque as folhas na bandeja seguindo a orientação indicada pelo próprio dispositivo.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-1-alimentador.webp",
-
-                        alt: "Documento colocado no alimentador automático de uma impressora multifuncional.",
-                    },
-                ],
-
-                tip: "Retire grampos, clipes e outros objetos que possam atrapalhar a digitalização ou danificar o equipamento.",
-
-                video: null,
-            },
-
-            {
-                title: "Abra o aplicativo de digitalização",
-
-                description: "No computador, abra o aplicativo fornecido pela impressora ou a ferramenta de digitalização disponível no sistema operacional.",
-
-                examples: [
-                    {
-                        title: "Aplicativo do scanner",
-
-                        description: "Abra o programa de digitalização instalado junto com a impressora ou scanner para acessar as opções do dispositivo.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-2-aplicativo.webp",
-
-                        alt: "Aplicativo de digitalização aberto no computador.",
-                    },
-
-                    {
-                        title: "Ferramenta do sistema",
-
-                        description: "Você também pode utilizar uma ferramenta de digitalização disponível no próprio sistema do computador, quando houver.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-2-sistema.webp",
-
-                        alt: "Ferramenta de digitalização do sistema operacional aberta no computador.",
-                    },
-                ],
-
-                tip: "Se o scanner não aparecer no aplicativo, verifique se ele está ligado e conectado corretamente ao computador.",
-
-                video: null,
-            },
-
-            {
-                title: "Selecione o scanner",
-
-                description: "Caso o computador tenha mais de um dispositivo disponível, escolha a impressora ou scanner que será utilizado para digitalizar o documento.",
-
-                examples: [
-                    {
-                        title: "Lista de dispositivos",
-
-                        description: "Abra a lista de dispositivos disponíveis e localize o scanner ou a impressora multifuncional que deseja utilizar.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-3-lista.webp",
-
-                        alt: "Lista de scanners e impressoras disponíveis para digitalização.",
-                    },
-
-                    {
-                        title: "Scanner selecionado",
-
-                        description: "Selecione o dispositivo correto antes de iniciar a digitalização para garantir que o documento seja enviado ao equipamento desejado.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-3-selecao.webp",
-
-                        alt: "Tela de digitalização mostrando um scanner selecionado.",
-                    },
-                ],
-
-                tip: "Quando houver vários dispositivos na lista, confira o nome ou modelo da impressora para selecionar o equipamento correto.",
-
-                video: null,
-            },
-
-            {
-                title: "Escolha o formato do arquivo",
-
-                description: "Selecione o formato desejado para o documento digitalizado. Para documentos com várias páginas ou que serão compartilhados, o formato PDF costuma ser uma opção adequada.",
-
-                examples: [
-                    {
-                        title: "Formato PDF",
-
-                        description: "Selecione PDF quando quiser criar um arquivo adequado para compartilhar, enviar por e-mail ou guardar documentos com várias páginas.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-4-pdf.webp",
-
-                        alt: "Tela de digitalização mostrando a opção de salvar o documento no formato PDF.",
-                    },
-
-                    {
-                        title: "Formato de imagem",
-
-                        description: "Escolha um formato de imagem, como JPG, quando o objetivo for digitalizar uma página como imagem.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-4-imagem.webp",
-
-                        alt: "Tela de digitalização mostrando opções de formatos de imagem.",
-                    },
-                ],
-
-                tip: "Para documentos de texto, formulários e conjuntos de páginas, o PDF geralmente facilita o compartilhamento e a organização.",
-
-                video: null,
-            },
-
-            {
-                title: "Inicie a digitalização",
-
-                description: "Clique em Digitalizar ou em uma opção equivalente e aguarde o dispositivo concluir a leitura do documento.",
-
-                examples: [
-                    {
-                        title: "Botão Digitalizar",
-
-                        description: "Clique no botão Digitalizar para iniciar a leitura da página colocada no scanner.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-5-digitalizar.webp",
-
-                        alt: "Aplicativo de digitalização mostrando o botão Digitalizar.",
-                    },
-
-                    {
-                        title: "Processo de leitura",
-
-                        description: "Aguarde enquanto o scanner movimenta o mecanismo e realiza a leitura do documento.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-5-processo.webp",
-
-                        alt: "Scanner realizando a leitura de um documento durante o processo de digitalização.",
-                    },
-                ],
-
-                tip: "Não retire o documento do scanner enquanto a digitalização estiver em andamento.",
-
-                video: null,
-            },
-
-            {
-                title: "Confira e salve o arquivo",
-
-                description: "Visualize o resultado para verificar se a página ficou completa e legível. Depois, escolha uma pasta e salve o arquivo com um nome fácil de identificar.",
-
-                examples: [
-                    {
-                        title: "Confira a digitalização",
-
-                        description: "Observe a prévia ou o arquivo gerado e verifique se todo o conteúdo da página está visível, sem cortes ou áreas ilegíveis.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-6-conferir.webp",
-
-                        alt: "Pré-visualização de um documento digitalizado no computador.",
-                    },
-
-                    {
-                        title: "Nome do arquivo",
-
-                        description: "Escolha uma pasta e informe um nome fácil de reconhecer, como 'Documento_Identidade.pdf' ou 'Contrato_2026.pdf'.",
-
-                        image: "/tutoriais/informatica-basica/digitalizar-documento/passo-6-salvar.webp",
-
-                        alt: "Tela de salvamento mostrando um arquivo digitalizado com nome definido.",
-                    },
-                ],
-
-                tip: "Use nomes descritivos e mantenha os documentos digitalizados em pastas organizadas para encontrá-los com facilidade depois.",
-
-                video: null,
-            },
-        ],
-    },
-
-    {
         id: "compartilhar-arquivo",
 
         title: "Como compartilhar um arquivo",
@@ -1046,6 +626,14 @@ export const tutorials = [
 
         description: "Aprenda a localizar um arquivo no Google Drive, escolher quem pode acessá-lo, definir permissões e compartilhar o acesso com segurança.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como compartilhar um arquivo no Google Drive",
+                description: "Aprenda a compartilhar arquivos e configurar as permissões de acesso.",
+                url: "https://www.youtube.com/watch?v=58LZddqK_8M",
+            },
+        ],
         keywords: ["compartilhar", "arquivo", "link", "drive", "google drive", "permissão", "visualizar", "comentar", "editar", "acesso"],
 
         learning: ["Localizar um arquivo no Google Drive", "Abrir as opções de compartilhamento", "Escolher quem poderá acessar o arquivo", "Definir as permissões de acesso", "Copiar o link do arquivo", "Enviar o acesso para outras pessoas"],
@@ -1238,6 +826,14 @@ export const tutorials = [
 
         description: "Aprenda a salvar ou exportar um documento em PDF, escolher onde guardar o arquivo e conferir o resultado antes de compartilhar ou imprimir.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como converter Word para PDF",
+                description: "Veja outras formas de transformar um documento do Word em PDF.",
+                url: "https://www.youtube.com/watch?v=v9tzPBrRkzU",
+            },
+        ],
         keywords: ["pdf", "converter", "documento", "salvar", "exportar", "formato pdf", "baixar", "arquivo digital"],
 
         learning: ["Abrir um documento para conversão", "Acessar as opções de salvar ou exportar", "Selecionar o formato PDF", "Escolher o local para salvar o arquivo", "Confirmar a conversão", "Conferir o PDF criado"],
@@ -1276,7 +872,9 @@ export const tutorials = [
 
                         description: "Abra o menu Arquivo e selecione Salvar Como quando o programa permitir escolher um novo formato para o documento.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-salvar-como.webp",
+                        img: null,
+
+                        // image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-salvar-como.webp",
 
                         alt: "Menu Arquivo mostrando a opção Salvar Como.",
                     },
@@ -1296,7 +894,9 @@ export const tutorials = [
 
                         description: "Em editores ou serviços online, procure a opção Baixar para escolher o formato em que o arquivo será salvo.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-baixar.webp",
+                        img: null,
+
+                        // image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-baixar.webp",
 
                         alt: "Tela de um editor online mostrando a opção de baixar o documento.",
                     },
@@ -1318,7 +918,9 @@ export const tutorials = [
 
                         description: "Abra a lista de formatos e selecione PDF como o tipo de arquivo que será criado.",
 
-                        image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-formato-pdf.webp",
+                        img: null,
+
+                        // image: "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-formato-pdf.webp",
 
                         alt: "Janela de salvamento mostrando PDF selecionado como formato do arquivo.",
                     },
@@ -1410,6 +1012,14 @@ export const tutorials = [
 
         description: "Aprenda a criar uma mensagem, adicionar documentos ou imagens como anexo, conferir o arquivo e enviar o e-mail.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como anexar arquivo no Gmail",
+                description: "Aprofunde o envio de arquivos anexados em mensagens do Gmail.",
+                url: "https://www.youtube.com/watch?v=kTvdQTca0Es",
+            },
+        ],
         keywords: ["email", "e-mail", "anexo", "arquivo", "gmail", "enviar", "anexar", "documento", "imagem", "mensagem"],
 
         learning: ["Abrir o serviço de e-mail", "Criar uma nova mensagem", "Preencher destinatário e assunto", "Adicionar um arquivo como anexo", "Conferir o arquivo anexado", "Enviar a mensagem"],
@@ -1614,6 +1224,14 @@ export const tutorials = [
 
         description: "Aprenda a enviar um arquivo para o Google Drive, escolher a pasta de destino, acompanhar o upload e localizar o arquivo depois.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como usar o Google Drive",
+                description: "Aprenda mais sobre pastas, upload, organização e compartilhamento no Google Drive.",
+                url: "https://www.youtube.com/watch?v=q4WB69uioXc",
+            },
+        ],
         keywords: ["google drive", "drive", "salvar", "arquivo", "nuvem", "upload", "enviar arquivo", "pasta", "armazenamento"],
 
         learning: ["Abrir o Google Drive", "Escolher a pasta de destino", "Iniciar o envio de um arquivo", "Selecionar um arquivo no computador", "Acompanhar o upload", "Localizar o arquivo depois no Google Drive"],
@@ -1750,6 +1368,14 @@ export const tutorials = [
 
         description: "Aprenda a criar uma apresentação no Canva, escolher um modelo, editar conteúdos, adicionar páginas, inserir elementos e apresentar ou baixar o arquivo.",
 
+        externalLearning: [
+            {
+                type: "video",
+                title: "Como criar uma apresentação no Canva",
+                description: "Continue aprendendo a criar apresentações para trabalhos escolares e acadêmicos.",
+                url: "https://www.youtube.com/watch?v=ghHvS6Z8tMU",
+            },
+        ],
         keywords: ["canva", "apresentação", "slides", "design", "apresentar", "modelo", "páginas", "imagens", "elementos", "baixar"],
 
         learning: ["Acessar o Canva e criar uma apresentação", "Escolher um modelo de apresentação", "Editar títulos e textos", "Adicionar e remover páginas", "Inserir imagens e elementos", "Revisar os slides", "Apresentar ou baixar a apresentação"],
@@ -1978,47 +1604,6 @@ export const tutorials = [
                 video: null,
             },
 
-            {
-                title: "Revise a apresentação",
-
-                description: "Passe por todos os slides e verifique erros de escrita, tamanho dos textos, alinhamento e organização dos elementos.",
-
-                examples: [
-                    {
-                        title: "Revisão do texto",
-
-                        description: "Leia todos os títulos e textos para identificar erros de digitação, informações repetidas ou trechos que precisam ser corrigidos.",
-
-                        image: "/tutoriais/canva/apresentacao-canva/passo-6-texto.webp",
-
-                        alt: "Slide do Canva sendo revisado para verificar os textos da apresentação.",
-                    },
-
-                    {
-                        title: "Alinhamento",
-
-                        description: "Confira se os textos, imagens e outros elementos estão alinhados e distribuídos de forma organizada.",
-
-                        image: "/tutoriais/canva/apresentacao-canva/passo-6-alinhamento.webp",
-
-                        alt: "Slide do Canva mostrando elementos alinhados e organizados.",
-                    },
-
-                    {
-                        title: "Tamanho dos textos",
-
-                        description: "Verifique se os textos possuem tamanho suficiente para serem lidos com facilidade durante a apresentação.",
-
-                        image: "/tutoriais/canva/apresentacao-canva/passo-6-tamanho.webp",
-
-                        alt: "Slide do Canva mostrando textos com tamanho adequado para apresentação.",
-                    },
-                ],
-
-                tip: "Revise a apresentação do começo ao fim antes de apresentar. Uma revisão final ajuda a encontrar erros que podem passar despercebidos durante a edição.",
-
-                video: null,
-            },
 
             {
                 title: "Apresente ou baixe o arquivo",

@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Componetes
 import { HelpCTA } from "../components/HelpCTA2";
 import { SectionTransition } from "../components/SectionTransition";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { Reveal } from "../components/Reveal";
 import { ProjectTeam } from "../components/ProjectTeam";
 
@@ -194,7 +195,7 @@ export function About() {
         { scope: cardRef },
     );
     return (
-        <main className="bg-baground">
+        <main className="bg-background">
             <div data-reader-content>
                 <section className="">
                     <div className="bg-mist3">
@@ -228,7 +229,17 @@ export function About() {
                                             {!isLast && <span className={["pointer-events-none", "absolute left-[21px] top-[22px]", "z-0 w-px", "h-[calc(100%+1.5rem)]", "bg-line"].join(" ")} aria-hidden="true" />}
 
                                             {/* Ícone / Logo */}
-                                            <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? <img src={step.logo} alt="logo do Hauy Conecta" className="h-8 w-8 object-contain" draggable="false" /> : <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />}</span>
+                                            <span className={["relative z-10", "flex size-11 shrink-0", "items-center justify-center", "rounded-full", "border border-line", "bg-mist3", "text-petrol"].join(" ")}>{step.logo ? (
+                                                <OptimizedImage
+                                                    src={step.logo}
+                                                    alt="logo do Hauy Conecta"
+                                                    sizes="32px"
+                                                    wrapperClassName="h-8 w-8"
+                                                    className="object-contain"
+                                                />
+                                            ) : (
+                                                <step.icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                            )}</span>
 
                                             {/* Conteúdo */}
                                             <div>
@@ -245,7 +256,17 @@ export function About() {
 
                             <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
                                 <Reveal y={18} duration={0.6}>
-                                    <img src={aboutImg} fetchPriority="high" decoding="async" draggable="false" alt="Grupo de pessoas planejando um projeto" />
+                                    <OptimizedImage
+                                        src={aboutImg}
+                                        alt="Grupo de pessoas planejando um projeto"
+                                        metadataKey="src/assets/about.webp"
+                                        loading="eager"
+                                        fetchPriority="high"
+                                        decoding="async"
+                                        wrapperClassName="w-full"
+                                        sizes="(min-width: 1024px) 448px, min(100vw, 448px)"
+                                        className="object-contain"
+                                    />
                                 </Reveal>
                             </div>
                         </div>

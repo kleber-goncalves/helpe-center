@@ -29,7 +29,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
 ========================================================= */
 
 export function Card({ className, ...props }) {
-    return <div className={cn("min-w-0 rounded-xl border border-line bg-card", className)} {...props} />;
+    return <div className={cn("min-w-0 rounded-xl border border-line bg-card dark:bg-paper", className)} {...props} />;
 }
 
 /* =========================================================

@@ -1,10 +1,9 @@
 import {
     ArrowUpRight,
     BookOpen,
-    MessageCircleQuestion,
+    BotMessageSquare,
     Search,
     Send,
-    CirclePlay,
     X,
 } from "lucide-react";
 
@@ -13,6 +12,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { askAssistant } from "../lib/assistant";
+import { Google, Youtube } from "@thesvg/react";
 
 const MAX_MESSAGE_LENGTH = 1000;
 
@@ -176,7 +176,7 @@ export function HauyAssistant({
                         "
                         aria-hidden="true"
                     >
-                        <MessageCircleQuestion className="size-5" />
+                        <BotMessageSquare className="size-7" />
                     </div>
 
                     {/* Título */}
@@ -217,6 +217,7 @@ export function HauyAssistant({
                         <button
                             type="button"
                             onClick={onClose}
+                            title="Fechar Assistente Hauy"
                             aria-label="Fechar Assistente Hauy"
                             className="
                                 flex
@@ -495,7 +496,7 @@ export function HauyAssistant({
                                                         focus-visible:ring-offset-2
                                                     "
                                             >
-                                                <Search
+                                                <Google
                                                     className="
                                                             size-5
                                                             shrink-0
@@ -558,11 +559,10 @@ export function HauyAssistant({
                                                         focus-visible:ring-offset-2
                                                     "
                                             >
-                                                <CirclePlay
+                                                <Youtube
                                                     className="
                                                             size-5
                                                             shrink-0
-                                                            text-coral
                                                         "
                                                     aria-hidden="true"
                                                 />
@@ -855,7 +855,8 @@ export function HauyAssistant({
                     <button
                         type="submit"
                         disabled={loading || !message.trim()}
-                        aria-label="Enviar dúvida"
+                        title="Enviar dúvida para o Assistente"
+                        aria-label="Enviar dúvida para o Assistente"
                         className="
                             flex
                             size-11

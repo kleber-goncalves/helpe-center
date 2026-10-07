@@ -51,6 +51,12 @@ const Tutorials = lazy(() =>
     })),
 );
 
+const Tools = lazy(() =>
+    import("./pages/Tools").then((module) => ({
+        default: module.Tools,
+    })),
+);
+
 const TutorialRoute = lazy(() =>
     import("./pages/Tutorial").then((module) => ({
         default: module.TutorialRoute,
@@ -203,6 +209,12 @@ function AppContent() {
                         ================================= */}
 
                         <Route path="/tutoriais" element={<Tutorials />} />
+
+                        {/* ================================
+                            FERRAMENTAS
+                        ================================= */}
+
+                        <Route path="/ferramentas" element={<Tools />} />
 
                         <Route path="/tutoriais/:tutorialId" element={<TutorialRoute />} />
 

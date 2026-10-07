@@ -8,6 +8,7 @@ import { HelpCTA } from "../components/HelpCTA2";
 import { SearchBar } from "../components/SearchBar";
 import { TutorialCard } from "../components/TutorialCard";
 import { SectionTransition } from "../components/SectionTransition";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { Reveal } from "../components/Reveal";
 
 // Data
@@ -36,7 +37,7 @@ export function Home() {
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
-        const pageTitle = `Home | ${SITE_NAME}`;
+        const pageTitle = `${SITE_NAME} | Central de Ajuda Digital`;
         const description = DEFAULT_DESCRIPTION;
         const canonicalUrl = `${SITE_URL}/`;
 
@@ -166,21 +167,21 @@ export function Home() {
                                 dark:bg-coral-soft
                             "
                             />
-
-                            <img
+                            <OptimizedImage
                                 src={heroImg}
                                 alt="Mulher mexendo no notebook"
+                                metadataKey="src/assets/hero.webp"
+                                loading="eager"
                                 fetchPriority="high"
                                 decoding="async"
-                                draggable="false"
-                                className="
-                                relative
-                                z-10
-                                block
-                                h-auto
-                                w-full
-                                object-contain
-                            "
+                                wrapperClassName="
+                                    relative
+                                    z-10
+                                    block
+                                    w-full
+                                "
+                                className="object-contain"
+                                sizes="(min-width: 1024px) 460px, min(100vw, 390px)"
                             />
                         </div>
                     </Reveal>
