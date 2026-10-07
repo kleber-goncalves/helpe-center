@@ -169,10 +169,6 @@ export function ImageLightbox({ src, alt, children }) {
     const trigger = cloneElement(child, {
         onClick: (event) => {
             child.props.onClick?.(event);
-
-            if (!event.defaultPrevented) {
-                openLightbox();
-            }
         },
         onKeyDown: (event) => {
             child.props.onKeyDown?.(event);
@@ -195,7 +191,10 @@ export function ImageLightbox({ src, alt, children }) {
 
     return (
         <>
-            <div className="group relative ">
+            <div
+                className="group relative cursor-zoom-in"
+                onClick={openLightbox}
+            >
                 {trigger}
 
                 <span
@@ -231,8 +230,6 @@ export function ImageLightbox({ src, alt, children }) {
 
             {isOpen && (
                 <div
-                    onClick={closeLightbox}
-                    ref={closeButtonRef}
                     ref={dialogRef}
                     className="fixed cursor-zoom-out inset-0 z-[200] grid place-items-center bg-black p-4 sm:p-6"
                     role="dialog"
