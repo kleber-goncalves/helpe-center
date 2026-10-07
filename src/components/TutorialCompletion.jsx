@@ -55,6 +55,10 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                 ? "Playlist completa"
                                 : "Videoaula completa";
 
+                            const actionLabel = isPlaylist
+                                ? "Abrir playlist"
+                                : "Assistir videoaula";
+
                             return (
                                 <a
                                     key={`${item.type}-${item.url}`}
@@ -117,19 +121,23 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                         )}
                                     </span>
 
-                                    <ExternalLink
-                                        className="
-                                            size-4
-                                            shrink-0
-                                            text-muted-foreground
-                                            transition-transform
-                                            duration-200
-                                            group-hover:translate-x-0.5
-                                            group-hover:text-coral
-                                            motion-reduce:transition-none
-                                        "
-                                        aria-hidden="true"
-                                    />
+                                    <span className="hidden shrink-0 text-xs font-bold text-muted-foreground sm:inline">
+                                    {actionLabel}
+                                </span>
+
+                                <ExternalLink
+                                    className="
+                                        size-4
+                                        shrink-0
+                                        text-muted-foreground
+                                        transition-transform
+                                        duration-200
+                                        group-hover:translate-x-0.5
+                                        group-hover:text-coral
+                                        motion-reduce:transition-none
+                                    "
+                                    aria-hidden="true"
+                                />
                                 </a>
                             );
                         })}
