@@ -31,7 +31,7 @@ async function walk(directory) {
 
 function getAttribute(tag, name) {
     const match = tag.match(
-        new RegExp(name + '=["\\']([^"\\']*)["\\']', "i"),
+        new RegExp(`\${name}=["']([^"']*)["']`, "i"),
     );
 
     return match?.[1] ?? null;
