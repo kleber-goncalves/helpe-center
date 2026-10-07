@@ -1,4 +1,6 @@
-import { ExternalLink, ListVideo, PlayCircle } from "lucide-react";
+import { ExternalLink, ListVideo } from "lucide-react";
+
+import { Youtube } from "@thesvg/react";
 
 export function TutorialCompletion({ externalLearning = [] }) {
     return (
@@ -50,7 +52,7 @@ export function TutorialCompletion({ externalLearning = [] }) {
                     <div className="mt-5 grid gap-3">
                         {externalLearning.map((item) => {
                             const isPlaylist = item.type === "playlist";
-                            const Icon = isPlaylist ? ListVideo : PlayCircle;
+                            const Icon = isPlaylist ? ListVideo : Youtube;
                             const typeLabel = isPlaylist
                                 ? "Playlist completa"
                                 : "Videoaula completa";
@@ -74,13 +76,11 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                         rounded-xl
                                         border
                                         border-line
-                                        bg-background
+                                        !bg-background
                                         p-4
                                         transition-[border-color,background-color,transform]
                                         duration-200
-                                        hover:-translate-y-0.5
-                                        hover:border-coral/40
-                                        hover:bg-white
+                                        hover:border-coral/40!
                                         focus-visible:outline-none
                                         focus-visible:ring-2
                                         focus-visible:ring-coral
@@ -97,36 +97,33 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                             items-center
                                             justify-center
                                             rounded-lg
-                                            bg-coral-soft
                                             text-coral
                                         "
                                         aria-hidden="true"
                                     >
-                                        <Icon className="size-5" />
+                                        <Icon className="size-11" />
                                     </span>
 
                                     <span className="min-w-0 flex-1">
-                                        <span className="block text-xs font-bold tracking-[0.12em] text-muted-foreground">
-                                            {typeLabel}
-                                        </span>
+                                        <span className="block text-xs font-bold tracking-[0.12em] text-muted-foreground">{typeLabel}</span>
 
-                                        <span className="mt-1 block text-sm font-bold text-ink">
-                                            {item.title}
-                                        </span>
+                                        <span className="mt-1 block text-sm font-bold text-ink">{item.title}</span>
 
-                                        {item.description && (
-                                            <span className="mt-1 block text-sm leading-5 text-muted-ink">
-                                                {item.description}
-                                            </span>
-                                        )}
+                                        {item.description && <span className="mt-1 block text-sm leading-5 text-muted-ink">{item.description}</span>}
                                     </span>
 
-                                    <span className="hidden shrink-0 text-xs font-bold text-muted-foreground sm:inline">
-                                    {actionLabel}
-                                </span>
+                                    <span
+                                        className="transition-transform
+                                        duration-200
+                                        group-hover:translate-x-0.5
+                                        group-hover:text-coral
+                                        motion-reduce:transition-none hidden shrink-0 text-xs font-bold text-muted-foreground sm:inline"
+                                    >
+                                        {actionLabel}
+                                    </span>
 
-                                <ExternalLink
-                                    className="
+                                    <ExternalLink
+                                        className="
                                         size-4
                                         shrink-0
                                         text-muted-foreground
@@ -136,8 +133,8 @@ export function TutorialCompletion({ externalLearning = [] }) {
                                         group-hover:text-coral
                                         motion-reduce:transition-none
                                     "
-                                    aria-hidden="true"
-                                />
+                                        aria-hidden="true"
+                                    />
                                 </a>
                             );
                         })}

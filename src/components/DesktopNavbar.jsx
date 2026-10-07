@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
-import { ChevronDown } from "lucide-react";
+import { BookOpen, CircleHelp, Folder, House, Info } from "@sketchyicons/react";
+import { BotMessageSquare, ChevronDown } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 // GSAP
@@ -25,7 +25,7 @@ const links = [
     ["Início", "/", House],
     ["Tutoriais", "/tutoriais", BookOpen],
     ["Categorias", "/categorias", Folder],
-    ["Assistente", "/assistente", MessageCircleQuestion],
+    ["Assistente", "/assistente", BotMessageSquare],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
     ["Sobre", "/sobre", Info],

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
+import { BookOpen, CircleHelp, Folder, House, Info, BotMessageSquare } from "@sketchyicons/react";
 import { Accessibility, ChevronLeft, ChevronRight, Wrench } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const links = [
     ["Tutoriais", "/tutoriais", BookOpen],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
-    ["Assistente", "/assistente", MessageCircleQuestion],
+    ["Assistente", "/assistente", BotMessageSquare],
     ["Sobre", "/sobre", Info],
 ];
 
