@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { FileText, Filter, Images, ShieldCheck, Search, SearchX, Star, X } from "lucide-react";
+import { FileText, Filter, Images, ShieldCheck, Search, SearchX, TrendingUp, X } from "lucide-react";
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
@@ -298,7 +298,7 @@ export function Tools() {
                                 "
                                 aria-hidden="true"
                             >
-                                <Star className="size-5" strokeWidth={1.9} />
+                                <TrendingUp className="size-5" strokeWidth={1.9} />
                             </span>
 
                             <div>

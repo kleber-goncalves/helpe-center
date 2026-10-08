@@ -26,7 +26,7 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                     <div className="min-w-0  pb-5">
                         <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-ink">{label}</p>
 
-                        <div className="mt-1 flex flex-row items-start md:flex-row gap-2 break-words">
+                        <div className="mt-1 flex flex-col items-start md:flex-row gap-2 break-words">
                             <h2 id={id} className=" break-words text-2xl font-bold text-ink sm:text-3xl">
                                 {title}
                             </h2>
