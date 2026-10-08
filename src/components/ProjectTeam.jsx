@@ -4,7 +4,7 @@ import { TeamOption } from "./TeamOption";
 import { OptimizedImage } from "./OptimizedImage";
 
 // Assets alunos
-import testeAlunos from "../assets/equipe/alunos/testeAlunos.jpg";
+import kleber from "../assets/equipe/alunos/kleber.png";
 import cirlena from "../assets/equipe/alunos/cirlena.png";
 import divina from "../assets/equipe/alunos/divina.png";
 import carlos from "../assets/equipe/alunos/carlos.png";
@@ -45,8 +45,8 @@ const team = {
             {
                 name: "Kleber",
                 role: "Aluno",
-                image: testeAlunos,
-                metadataKey: "src/assets/equipe/alunos/testeAlunos.jpg",
+                image: kleber,
+                metadataKey: "src/assets/equipe/alunos/kleber.png",
             },
         ],
     },
