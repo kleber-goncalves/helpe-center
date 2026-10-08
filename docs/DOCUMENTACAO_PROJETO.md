@@ -1,7 +1,5 @@
 # Hauy Conecta — Documentação completa do projeto
 
-> Guia de entendimento e manutenção do projeto, escrito para iniciantes e para quem ainda está aprendendo desenvolvimento web.
-
 **Fonte desta documentação:** código atual da branch **feat/ferramentas**, complementado pelo README.md e pelos documentos técnicos existentes em src/docs/.
 
 **Estado verificado:** commit 8905370698041b8d8a38e186aa39cb03ca6b985c
@@ -2334,9 +2332,6 @@ próximo passo
       ↓
 conclusão
 ~~~
-
-O Hauy Conecta foi organizado para que um iniciante consiga aprender a aplicação por camadas, sem precisar entender todo o sistema de uma vez.
-
 ---
 
 ## Hauy Conecta
