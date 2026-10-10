@@ -332,7 +332,7 @@ export function DesktopNavbar() {
                 <div
                     className={cn(
                         "mx-auto flex h-21 max-w-6xl items-center justify-between gap-4",
-                        "px-5 lg:px-8",
+                        "px-5 lg:px-5",
                     )}
                 >
                     {/* Identidade */}

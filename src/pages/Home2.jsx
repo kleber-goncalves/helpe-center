@@ -122,7 +122,7 @@ export function Home() {
             <section className=" bg-mist3 px-0 lg:px-0 ">
                 <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
                 <div className="relative z-10 mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
-                    <div className="mx-auto max-w-xl px-5 pt-18 text-start lg:px-0 lg:py-23">
+                    <div className=" max-w-xl px-5 pt-18 text-start  lg:py-23">
                         <Reveal duration={1} y={32} ease="sine.out">
                             <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-[3.4rem]">Olá, como podemos ajudar?</h1>
                         </Reveal>
