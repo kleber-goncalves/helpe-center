@@ -1,6 +1,8 @@
 const STOP_WORDS = new Set([
     "a",
     "c",
+    "com",
+    "como",
     "ao",
     "aos",
     "as",
