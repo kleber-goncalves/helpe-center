@@ -303,7 +303,7 @@ function scoreIndexedTutorial(indexedTutorial, normalizedQuery, queryWords) {
     for (const word of queryWords) {
         let wordMatched = false;
 
-        for (const [fieldName, field] of Object.entries(fields)) {
+        for (const field of Object.values(fields)) {
             const match = bestTokenMatch(word, field.tokens);
 
             if (!match) {
