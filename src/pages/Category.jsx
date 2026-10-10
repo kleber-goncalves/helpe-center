@@ -4,6 +4,7 @@ import { ChevronRight, MessageCircleQuestion } from "lucide-react";
 
 // Components
 import { TutorialCard } from "../components/TutorialCard";
+import { OptimizedImage } from "../components/OptimizedImage";
 
 // Data
 import { categories } from "../data/categories";
@@ -184,15 +185,15 @@ export function Category() {
                             className="flex flex-col items-center px-5 py-10 text-center sm:py-14"
                             aria-labelledby="empty-category-title"
                         >
-                            <img
+                            <OptimizedImage
                                 src="/illustrations/empty-category.svg"
                                 alt=""
                                 aria-hidden="true"
-                                width="220"
-                                height="180"
+                                metadataKey="public/illustrations/empty-category.svg"
                                 loading="lazy"
                                 decoding="async"
-                                className="mb-6 h-36 w-44 object-contain"
+                                wrapperClassName="mb-6 h-36 w-44"
+                                className="object-contain"
                             />
 
                             <h2
