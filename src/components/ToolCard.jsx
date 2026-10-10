@@ -3,6 +3,9 @@ import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { Badge, Card } from "./ui";
 
 export function ToolCard({ tool }) {
+    const providerLogo =
+        tool.provider === "iLovePDF" ? "/ilovePDF.svg" : "/iloveIMG.svg";
+
     return (
         <a
             href={tool.href}
@@ -44,19 +47,28 @@ export function ToolCard({ tool }) {
                                 items-center
                                 justify-center
                                 rounded-lg
-                                bg-mist3
-                                text-coral
+                                border
+                                border-slate-200
+                                bg-white
                             "
                             aria-hidden="true"
                         >
-                            <svg
-                                className="size-9"
-                                viewBox="0 0 64 64"
-                                aria-hidden="true"
-                                focusable="false"
-                            >
-                                <use href={`${tool.icon.sprite}#${tool.icon.symbol}`} />
-                            </svg>
+                            <img
+                                src={tool.icon.src}
+                                alt=""
+                                width="36"
+                                height="36"
+                                loading="lazy"
+                                decoding="async"
+                                className="size-9 object-contain"
+                                onError={(event) => {
+                                    const image = event.currentTarget;
+
+                                    if (image.getAttribute("src") !== providerLogo) {
+                                        image.setAttribute("src", providerLogo);
+                                    }
+                                }}
+                            />
                         </span>
 
                         <ExternalLink

@@ -1,18 +1,18 @@
-const sprite = "/tool-icons/ilovepdf.svg";
+const baseUrl = "https://www.ilovepdf.com/img/tools/small";
 
 export const ilovePdfIcons = Object.freeze({
-    "juntar-pdf": { sprite, symbol: "juntar-pdf" },
-    "dividir-pdf": { sprite, symbol: "dividir-pdf" },
-    "comprimir-pdf": { sprite, symbol: "comprimir-pdf" },
-    "pdf-para-jpg": { sprite, symbol: "pdf-para-jpg" },
-    "pdf-para-word": { sprite, symbol: "pdf-para-word" },
-    "pdf-para-excel": { sprite, symbol: "pdf-para-excel" },
-    "word-para-pdf": { sprite, symbol: "word-para-pdf" },
-    "powerpoint-para-pdf": { sprite, symbol: "powerpoint-para-pdf" },
-    "excel-para-pdf": { sprite, symbol: "excel-para-pdf" },
-    "jpg-para-pdf": { sprite, symbol: "jpg-para-pdf" },
-    "editar-pdf": { sprite, symbol: "editar-pdf" },
-    "assinar-pdf": { sprite, symbol: "assinar-pdf" },
-    "rodar-pdf": { sprite, symbol: "rodar-pdf" },
-    "desbloquear-pdf": { sprite, symbol: "desbloquear-pdf" },
+    "juntar-pdf": { src: `${baseUrl}/merge.svg` },
+    "dividir-pdf": { src: `${baseUrl}/split.svg` },
+    "comprimir-pdf": { src: `${baseUrl}/compress.svg` },
+    "pdf-para-jpg": { src: `${baseUrl}/pdfjpg.svg` },
+    "pdf-para-word": { src: `${baseUrl}/pdfword.svg` },
+    "pdf-para-excel": { src: `${baseUrl}/pdfexcel.svg` },
+    "word-para-pdf": { src: `${baseUrl}/wordpdf.svg` },
+    "powerpoint-para-pdf": { src: `${baseUrl}/powerpointpdf.svg` },
+    "excel-para-pdf": { src: `${baseUrl}/excelpdf.svg` },
+    "jpg-para-pdf": { src: `${baseUrl}/imagepdf.svg` },
+    "editar-pdf": { src: `${baseUrl}/edit.svg` },
+    "assinar-pdf": { src: `${baseUrl}/sign.svg` },
+    "rodar-pdf": { src: `${baseUrl}/rotate.svg` },
+    "desbloquear-pdf": { src: `${baseUrl}/unlock.svg` },
 });

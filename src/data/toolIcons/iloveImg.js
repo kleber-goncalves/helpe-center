@@ -1,13 +1,13 @@
-const sprite = "/tool-icons/iloveimg.svg";
+const baseUrl = "https://www.iloveimg.com/img/tools/small";
 
 export const iloveImgIcons = Object.freeze({
-    "comprimir-imagem": { sprite, symbol: "comprimir-imagem" },
-    "redimensionar-imagem": { sprite, symbol: "redimensionar-imagem" },
-    "recortar-imagem": { sprite, symbol: "recortar-imagem" },
-    "converter-para-jpg": { sprite, symbol: "converter-para-jpg" },
-    "girar-imagem": { sprite, symbol: "girar-imagem" },
-    "remover-fundo": { sprite, symbol: "remover-fundo" },
-    "marcar-imagem": { sprite, symbol: "marcar-imagem" },
-    "melhorar-imagem": { sprite, symbol: "melhorar-imagem" },
-    "desfocar-cara": { sprite, symbol: "desfocar-cara" },
+    "comprimir-imagem": { src: `${baseUrl}/compressimage.svg` },
+    "redimensionar-imagem": { src: `${baseUrl}/resizeimage.svg` },
+    "recortar-imagem": { src: `${baseUrl}/cropimage.svg` },
+    "converter-para-jpg": { src: `${baseUrl}/converttojpg.svg` },
+    "girar-imagem": { src: `${baseUrl}/rotateimage.svg` },
+    "remover-fundo": { src: `${baseUrl}/removebackground.svg` },
+    "marcar-imagem": { src: `${baseUrl}/watermarkimage.svg` },
+    "melhorar-imagem": { src: `${baseUrl}/upscaleimage.svg` },
+    "desfocar-cara": { src: `${baseUrl}/blurface.svg` },
 });
