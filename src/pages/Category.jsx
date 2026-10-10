@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams, } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, MessageCircleQuestion } from "lucide-react";
 
 // Components
 import { TutorialCard } from "../components/TutorialCard";
@@ -172,10 +172,49 @@ export function Category() {
                         <p className="mt-2 text-muted-ink">{category.description}</p>
                     </div>
                 </div>
-                <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {results.map((tutorial) => (
-                        <TutorialCard key={tutorial.id} tutorial={tutorial} />
-                    ))}
+                <div className="mt-10">
+                    {results.length > 0 ? (
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {results.map((tutorial) => (
+                                <TutorialCard key={tutorial.id} tutorial={tutorial} />
+                            ))}
+                        </div>
+                    ) : (
+                        <section
+                            className="flex flex-col items-center px-5 py-10 text-center sm:py-14"
+                            aria-labelledby="empty-category-title"
+                        >
+                            <img
+                                src="/illustrations/empty-category.svg"
+                                alt=""
+                                aria-hidden="true"
+                                width="220"
+                                height="180"
+                                loading="lazy"
+                                decoding="async"
+                                className="mb-6 h-36 w-44 object-contain"
+                            />
+
+                            <h2
+                                id="empty-category-title"
+                                className="max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl"
+                            >
+                                Ainda não temos tutoriais para esta categoria.
+                            </h2>
+
+                            <p className="mt-4 max-w-xl text-base leading-7 text-muted-ink">
+                                Pode nos enviar sua dúvida. Vamos analisar sua mensagem e, quando possível, orientar você.
+                            </p>
+
+                            <Link
+                                to="/enviar-duvida"
+                                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral/90 hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2"
+                            >
+                                <MessageCircleQuestion className="size-4" aria-hidden="true" />
+                                Enviar uma dúvida
+                            </Link>
+                        </section>
+                    )}
                 </div>
             </div>
         </main>
