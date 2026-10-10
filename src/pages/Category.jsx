@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { Link, useParams, } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ChevronRight, MessageCircleQuestion } from "lucide-react";
+import categoryImg from "../assets/category.webp";
+
 
 // Components
 import { TutorialCard } from "../components/TutorialCard";
@@ -11,6 +13,7 @@ import { tutorials } from "../data/tutorials";
 
 // SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+import { OptimizedImage } from "../components/OptimizedImage";
 export function Category() {
     const { categoryId } = useParams();
     const category = categories.find((item) => item.id === categoryId);
@@ -180,36 +183,32 @@ export function Category() {
                             ))}
                         </div>
                     ) : (
-                        <section
-                            className="flex flex-col items-center px-5 py-10 text-center sm:py-14"
-                            aria-labelledby="empty-category-title"
-                        >
-                            <img
-                                src="/illustrations/empty-category.svg"
-                                alt=""
-                                aria-hidden="true"
-                                width="220"
-                                height="180"
-                                loading="lazy"
+                        <section className="flex flex-col items-center px-5 py-10 text-center sm:py-14" aria-labelledby="empty-category-title">
+                            <img src="/illustrations/empty-category.svg" alt="" aria-hidden="true" width="220" height="180" loading="lazy" decoding="async" className="mb-6 h-36 w-44 object-contain" />
+                            <OptimizedImage
+                                src={categoryImg}
+                                alt="Mulher procurando conteudo em uma caixa de arquivos"
+                                metadataKey="src/assets/category.webp"
+                                loading="eager"
+                                fetchPriority="high"
                                 decoding="async"
-                                className="mb-6 h-36 w-44 object-contain"
+                                wrapperClassName="
+                                    relative
+                                    z-10
+                                    block
+                                    w-full
+                                "
+                                className="object-contain"
+                                sizes="(min-width: 1024px) 460px, min(100vw, 390px)"
                             />
 
-                            <h2
-                                id="empty-category-title"
-                                className="max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl"
-                            >
+                            <h2 id="empty-category-title" className="max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                                 Ainda não temos tutoriais para esta categoria.
                             </h2>
 
-                            <p className="mt-4 max-w-xl text-base leading-7 text-muted-ink">
-                                Pode nos enviar sua dúvida. Vamos analisar sua mensagem e, quando possível, orientar você.
-                            </p>
+                            <p className="mt-4 max-w-xl text-base leading-7 text-muted-ink">Pode nos enviar sua dúvida. Vamos analisar sua mensagem e, quando possível, orientar você.</p>
 
-                            <Link
-                                to="/enviar-duvida"
-                                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral/90 hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2"
-                            >
+                            <Link to="/enviar-duvida" className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral/90 hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2">
                                 <MessageCircleQuestion className="size-4" aria-hidden="true" />
                                 Enviar uma dúvida
                             </Link>
