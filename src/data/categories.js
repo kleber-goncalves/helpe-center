@@ -1,12 +1,13 @@
-import { FileText, FolderOpen, GraduationCap, Mail, Palette, Printer, Table2, FileType, HardDrive } from "@sketchyicons/react";
+import {  GraduationCap, Palette, Printer, Table2, FileType, HardDrive } from "@sketchyicons/react";
+import { MicrosoftWord, MicrosoftExcel, Gmail2026, Pdf, GoogleDrive2026, Canva   } from "@thesvg/react";
 
 export const categories = [
-    { id: "word", name: "Word", description: "Formatação, documentos e trabalhos escolares.", icon: FileText },
-    { id: "excel", name: "Excel", description: "Planilhas, fórmulas e organização de dados.", icon: Table2 },
-    { id: "email", name: "E-mail", description: "Mensagens, anexos e compartilhamento.", icon: Mail },
-    { id: "arquivos-pdf", name: "Arquivos e PDF", description: "Conversão, organização e documentos.", icon: FolderOpen },
-    { id: "google-drive", name: "Google Drive", description: "Salvar, organizar e compartilhar arquivos.", icon: FolderOpen },
-    { id: "canva", name: "Canva", description: "Apresentações e materiais visuais.", icon: Palette },
+    { id: "word", name: "Word", description: "Formatação, documentos e trabalhos escolares.", icon: MicrosoftWord },
+    { id: "excel", name: "Excel", description: "Planilhas, fórmulas e organização de dados.", icon: MicrosoftExcel },
+    { id: "email", name: "E-mail", description: "Mensagens, anexos e compartilhamento.", icon: Gmail2026 },
+    { id: "arquivos-pdf", name: "Arquivos e PDF", description: "Conversão, organização e documentos.", icon: Pdf },
+    { id: "google-drive", name: "Google Drive", description: "Salvar, organizar e compartilhar arquivos.", icon: GoogleDrive2026 },
+    { id: "canva", name: "Canva", description: "Apresentações e materiais visuais.", icon: Canva },
     { id: "plataformas-escola", name: "Plataformas da Escola", description: "Sistemas utilizados pela escola.", icon: GraduationCap },
     { id: "informatica-basica", name: "Informática Básica", description: "Computador, digitação, impressão e digitalização.", icon: Printer },
 ];

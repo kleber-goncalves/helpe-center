@@ -123,7 +123,7 @@ function MoreMenu({ isActive }) {
                 aria-haspopup="true"
                 onClick={() => setOpen((current) => !current)}
                 className={cn(
-                    "inline-flex min-h-10 items-center gap-1",
+                    "inline-flex cursor-pointer min-h-10 items-center gap-1",
                     "whitespace-nowrap rounded-lg px-2",
                     "text-[13px] font-semibold",
                     "transition-colors duration-200",
