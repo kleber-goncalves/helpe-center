@@ -184,22 +184,16 @@ export function Category() {
                         </div>
                     ) : (
                         <section className="flex flex-col items-center px-5 py-10 text-center sm:py-14" aria-labelledby="empty-category-title">
-                            <img src="/illustrations/empty-category.svg" alt="" aria-hidden="true" width="220" height="180" loading="lazy" decoding="async" className="mb-6 h-36 w-44 object-contain" />
+                            
                             <OptimizedImage
                                 src={categoryImg}
-                                alt="Mulher procurando conteudo em uma caixa de arquivos"
+                                alt="Mulher procurando conteúdo em uma caixa de arquivos"
                                 metadataKey="src/assets/category.webp"
-                                loading="eager"
-                                fetchPriority="high"
+                                loading="lazy"
                                 decoding="async"
-                                wrapperClassName="
-                                    relative
-                                    z-10
-                                    block
-                                    w-full
-                                "
+                                wrapperClassName="relative z-10 mb-6 block w-full max-w-[360px]"
                                 className="object-contain"
-                                sizes="(min-width: 1024px) 460px, min(100vw, 390px)"
+                                sizes="(min-width: 640px) 360px, calc(100vw - 2.5rem)"
                             />
 
                             <h2 id="empty-category-title" className="max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
