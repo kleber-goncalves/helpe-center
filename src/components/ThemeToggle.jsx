@@ -141,7 +141,7 @@ export function ThemeToggle({ iconClassName = "h-4 w-4", iconStrokeWidth = 1.8, 
                     <Sun className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-coral")} strokeWidth={iconStrokeWidth} />
 
                     {/* Lua */}
-                    <Moon className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-0 scale-100 opacity-100 text-muted-ink" : "-rotate-90 scale-0 opacity-0")} strokeWidth={iconStrokeWidth} />
+                    <Moon className={cn("absolute transition-all duration-300 ease-out", iconClassName, isDark ? "rotate-0 scale-100 opacity-100 text-[#0280ff]" : "-rotate-90 scale-0 opacity-0")} strokeWidth={iconStrokeWidth} />
                 </span>
             </Button>
 

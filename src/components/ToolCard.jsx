@@ -46,7 +46,7 @@ export function ToolCard({ tool }) {
                                 items-center
                                 justify-center
                                 rounded-lg
-                                bg-coral-soft
+                                bg-mist3
                                 text-coral
                             "
                             aria-hidden="true"

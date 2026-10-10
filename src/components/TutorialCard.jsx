@@ -22,11 +22,11 @@ focus-visible:ring-coral ease-in-out"
                             </span>
                             {category?.name}
                         </Badge>
-                        <Badge className="bg-coral-soft text-coral">
-                            <span className="flex mb-1">
+                        <Badge className={` ${tutorial.cor_difficulty} text-xs font-semibold`}>
+                            <span className="flex mb-2">
                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                             </span>
-                            {tutorial.difficulty}
+                            <span>{tutorial.difficulty}</span>
                         </Badge>
                     </div>
 
@@ -41,7 +41,7 @@ focus-visible:ring-coral ease-in-out"
                 </div>
 
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4 text-coral">
-                    <span  className="inline-flex items-center gap-1 text-sm font-bold text-coral hover:text-coral">
+                    <span className="inline-flex items-center gap-1 text-sm font-bold text-coral hover:text-coral">
                         Ver tutorial <ArrowRight className="h-4 w-4 text-coral group-hover:translate-x-0.75 transition-transform duration-200" />
                     </span>
                 </div>

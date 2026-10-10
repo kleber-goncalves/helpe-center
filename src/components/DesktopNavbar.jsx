@@ -36,11 +36,11 @@ const secondaryLinks = links.slice(5);
 
 const navClass = ({ isActive }) =>
     cn(
-        "relative inline-block whitespace-nowrap pb-1.5 text-sm font-semibold",
+        "relative inline-block whitespace-nowrap pb-0.5  text-sm font-semibold",
         "!text-muted-ink transition-colors duration-200 hover:text-ink!",
 
         /* Linha inferior */
-        "after:absolute after:bottom-0 after:left-0",
+        "after:absolute after:-bottom-1 after:left-0",
         "after:h-[2px] after:w-full",
         "after:origin-left",
         "after:bg-coral",
@@ -60,11 +60,11 @@ const navClass = ({ isActive }) =>
 
 const compactNavClass = ({ isActive }) =>
     cn(
-        "relative inline-block whitespace-nowrap pb-1.5  text-[13px] font-semibold",
+        "relative inline-block whitespace-nowrap pb-0.5 text-[13px] font-semibold",
         "!text-muted-ink transition-colors duration-200 hover:text-ink!",
 
         /* Linha inferior */
-        "after:absolute after:bottom-0 after:left-0",
+        "after:absolute after:-bottom-1 after:left-0",
         "after:h-[2px] after:w-full",
         "after:origin-left",
         "after:bg-coral",
@@ -116,69 +116,18 @@ function MoreMenu({ isActive }) {
 
     return (
         <div ref={rootRef} className="relative">
-            <button
-                ref={triggerRef}
-                type="button"
-                aria-expanded={open}
-                aria-haspopup="true"
-                onClick={() => setOpen((current) => !current)}
-                className={cn(
-                    "inline-flex cursor-pointer min-h-10 items-center gap-1",
-                    "whitespace-nowrap rounded-lg px-2",
-                    "text-[13px] font-semibold",
-                    "transition-colors duration-200",
-                    "hover:bg-mist hover:text-ink",
-                    "focus-visible:outline-none",
-                    "focus-visible:ring-2",
-                    "focus-visible:ring-coral/40",
-                    "focus-visible:ring-offset-2",
-                    isActive ? "text-coral" : "text-muted-ink",
-                )}
-            >
+            <button ref={triggerRef} type="button" aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((current) => !current)} className={cn("inline-flex border border-transparent cursor-pointer min-h-10 items-center gap-1", "whitespace-nowrap rounded-lg px-2", "text-[13px] font-semibold", "transition-colors duration-200", "hover:bg-mist hover:border hover:border-coral  hover:text-ink", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2", isActive ? "text-coral hover:text-coral  border-coral" : "text-muted-ink")}>
                 <span>Mais</span>
-                <ChevronDown
-                    className={cn(
-                        "size-4 transition-transform duration-200",
-                        open && "rotate-180",
-                    )}
-                    strokeWidth={1.9}
-                    aria-hidden="true"
-                />
+                <ChevronDown className={cn("size-4 transition-transform duration-200", open && "rotate-180")} strokeWidth={1.9} aria-hidden="true" />
             </button>
 
             {open && (
                 <div className="absolute right-0 top-full z-[80] mt-2 w-52 rounded-xl border border-line bg-paper p-1.5 shadow-lift">
                     {secondaryLinks.map(([label, to, Icon]) => (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            end={to === "/"}
-                            onClick={() => setOpen(false)}
-                            className={({ isActive: itemActive }) =>
-                                cn(
-                                    "flex min-h-10 items-center gap-3 rounded-lg px-3 py-2",
-                                    "text-sm font-semibold",
-                                    "transition-colors duration-200",
-                                    "focus-visible:outline-none",
-                                    "focus-visible:ring-2",
-                                    "focus-visible:ring-coral/40",
-                                    "focus-visible:ring-inset",
-                                    itemActive
-                                        ? "bg-mist3 text-ink"
-                                        : "text-muted-ink hover:bg-mist hover:text-ink",
-                                )
-                            }
-                        >
+                        <NavLink key={to} to={to} end={to === "/"} onClick={() => setOpen(false)} className={({ isActive: itemActive }) => cn("flex min-h-10 items-center gap-2 rounded-lg px-3 py-2", "text-sm font-semibold", "transition-colors duration-200", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-inset", itemActive ? "bg-mist3 text-ink" : "text-muted-ink hover:bg-mist hover:text-ink")}>
                             {({ isActive: itemActive }) => (
                                 <>
-                                    <Icon
-                                        className={cn(
-                                            "size-4 shrink-0",
-                                            itemActive ? "text-coral" : "text-muted-ink",
-                                        )}
-                                        strokeWidth={1.8}
-                                        aria-hidden="true"
-                                    />
+                                    <Icon className={cn("size-4 shrink-0", itemActive ? "text-coral" : "text-muted-ink")} strokeWidth={1.8} aria-hidden="true" />
                                     <span>{label}</span>
                                 </>
                             )}
@@ -406,7 +355,7 @@ export function DesktopNavbar() {
                     {/* Navegação compacta: tablets / notebooks menores */}
                     <nav
                         aria-label="Navegação principal compacta"
-                        className="flex min-w-0 shrink-0 items-center gap-1.5 md:gap-2 xl:hidden"
+                        className="flex min-w-0 shrink-0 items-center gap-1.5 md:gap-3 xl:hidden"
                     >
                         {primaryLinks.map(([label, to]) => (
                             <NavLink

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { FileText, Filter, Images, ShieldCheck, Search, SearchX, TrendingUp, X } from "lucide-react";
+import { Filter, Images, ShieldCheck, Search, SearchX, TrendingUp, X } from "lucide-react";
+
+import { Pdf   } from "@thesvg/react";
+
 
 import { ToolSection } from "../components/ToolSection";
 import { ToolCard } from "../components/ToolCard";
@@ -386,12 +389,13 @@ export function Tools() {
                         background="bg-mist3"
                         id="pdf-tools-title"
                         label="PDF"
+                        bgColor="bg-background"
                         title="Disponíveis no"
                         restTitle="iLovePDF"
                         logo="/ilovePDF.svg"
                         alt="Logo do iLovePDF"
                         description="Organize, converta e reduza arquivos PDF em poucos passos."
-                        icon={FileText}
+                        icon={Pdf}
                         tools={pdfTools}
                         transition={{
                             variant: "ribbon2",
@@ -406,6 +410,7 @@ export function Tools() {
                         background="bg-background"
                         id="image-tools-title"
                         label="Imagens"
+                        bgColor="bg-mist3"
                         title="Disponíveis no"
                         logo="/iloveIMG.svg"
                         restTitle="iLoveIMG"

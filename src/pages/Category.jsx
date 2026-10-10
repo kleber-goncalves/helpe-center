@@ -202,7 +202,7 @@ export function Category() {
 
                             <p className="mt-4 max-w-xl text-base leading-7 text-muted-ink">Pode nos enviar sua dúvida. Vamos analisar sua mensagem e, quando possível, orientar você.</p>
 
-                            <Link to="/enviar-duvida" className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral/90 hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2">
+                            <Link to="/enviar-duvida" className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-coral-button px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral-button-hover hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2">
                                 <MessageCircleQuestion className="size-4" aria-hidden="true" />
                                 Enviar uma dúvida
                             </Link>
