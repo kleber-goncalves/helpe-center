@@ -1,5 +1,7 @@
 const baseUrl = "https://www.ilovepdf.com/img/tools/small";
 
+// O SvgIcon aceita URLs (src) ou SVGs colados diretamente no código (svg).
+// Exemplo: "juntar-pdf": { svg: String.raw`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">...</svg>` },
 export const ilovePdfIcons = Object.freeze({
     "juntar-pdf": { src: `${baseUrl}/merge.svg` },
     "dividir-pdf": { src: `${baseUrl}/split.svg` },

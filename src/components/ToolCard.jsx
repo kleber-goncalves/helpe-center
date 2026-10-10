@@ -1,6 +1,7 @@
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 
 import { Badge, Card } from "./ui";
+import { SvgIcon } from "./SvgIcon";
 
 export function ToolCard({ tool }) {
     const providerLogo =
@@ -53,21 +54,10 @@ export function ToolCard({ tool }) {
                             "
                             aria-hidden="true"
                         >
-                            <img
-                                src={tool.icon.src}
-                                alt=""
-                                width="36"
-                                height="36"
-                                loading="lazy"
-                                decoding="async"
-                                className="size-9 object-contain"
-                                onError={(event) => {
-                                    const image = event.currentTarget;
-
-                                    if (image.getAttribute("src") !== providerLogo) {
-                                        image.setAttribute("src", providerLogo);
-                                    }
-                                }}
+                            <SvgIcon
+                                icon={tool.icon}
+                                fallbackSrc={providerLogo}
+                                className="size-9"
                             />
                         </span>
 
