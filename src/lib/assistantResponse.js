@@ -17,7 +17,7 @@ const INSUFFICIENT_ANSWER_PATTERNS = [
 export function isInsufficientAssistantAnswer(answer) {
     const normalizedAnswer = String(answer ?? "")
         .normalize("NFD")
-        .replace(/[\\u0300-\\u036f]/g, "")
+        .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase();
 
     return INSUFFICIENT_ANSWER_PATTERNS.some((pattern) =>
