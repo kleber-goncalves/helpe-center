@@ -53,8 +53,24 @@ const STOP_WORDS = new Set([
     "ajude",
     "saber",
     "gostaria",
-    "gostaria",
 ]);
+
+const MIN_PREFIX_LENGTH = 3;
+const MIN_FUZZY_LENGTH = 4;
+const searchIndexCache = new WeakMap();
+
+const FIELD_CONFIG = {
+    title: { phrase: 100, exact: 30, prefix: 22, fuzzy: 15, strong: true },
+    keywords: { phrase: 70, exact: 23, prefix: 18, fuzzy: 13, strong: true },
+    learning: { phrase: 35, exact: 18, prefix: 14, fuzzy: 10, strong: true },
+    stepTitles: { phrase: 35, exact: 18, prefix: 14, fuzzy: 10, strong: true },
+    description: { phrase: 40, exact: 12, prefix: 9, fuzzy: 6, strong: false },
+    category: { phrase: 30, exact: 10, prefix: 8, fuzzy: 5, strong: false },
+    stepDescriptions: { phrase: 20, exact: 10, prefix: 8, fuzzy: 6, strong: false },
+    examples: { phrase: 15, exact: 8, prefix: 6, fuzzy: 4, strong: false },
+    tips: { phrase: 12, exact: 7, prefix: 5, fuzzy: 4, strong: false },
+    externalLearning: { phrase: 10, exact: 7, prefix: 5, fuzzy: 4, strong: false },
+};
 
 function normalizeText(text = "") {
     return String(text)
@@ -73,250 +89,277 @@ function getCategoryName(categoryId, categories) {
     );
 }
 
+function toTextArray(value) {
+    if (typeof value === "string") {
+        return [value];
+    }
+
+    if (!Array.isArray(value)) {
+        return [];
+    }
+
+    return value.filter((item) => typeof item === "string");
+}
+
+function buildSearchFields(tutorial, categories) {
+    const steps = Array.isArray(tutorial.steps) ? tutorial.steps : [];
+    const examples = steps.flatMap((step) =>
+        Array.isArray(step.examples) ? step.examples : [],
+    );
+    const externalLearning = Array.isArray(tutorial.externalLearning)
+        ? tutorial.externalLearning
+        : [];
+
+    return {
+        title: toTextArray(tutorial.title),
+        keywords: toTextArray(tutorial.keywords),
+        learning: toTextArray(tutorial.learning),
+        stepTitles: steps.map((step) => step.title).filter(Boolean),
+        description: toTextArray(tutorial.description),
+        category: toTextArray(getCategoryName(tutorial.category, categories)),
+        stepDescriptions: steps.map((step) => step.description).filter(Boolean),
+        examples: examples.flatMap((example) => [
+            example.title,
+            example.description,
+            example.alt,
+        ]).filter(Boolean),
+        tips: steps.map((step) => step.tip).filter(Boolean),
+        externalLearning: externalLearning.flatMap((item) => [
+            item.title,
+            item.description,
+            item.query,
+        ]).filter(Boolean),
+    };
+}
+
+function createSearchIndex(tutorials, categories) {
+    return tutorials.map((tutorial) => {
+        const rawFields = buildSearchFields(tutorial, categories);
+        const fields = {};
+
+        for (const [fieldName, values] of Object.entries(rawFields)) {
+            const texts = values.map(normalizeText).filter(Boolean);
+
+            fields[fieldName] = {
+                texts,
+                tokens: [...new Set(texts.flatMap((text) => text.split(/\s+/)))],
+                config: FIELD_CONFIG[fieldName],
+            };
+        }
+
+        return {
+            tutorial,
+            fields,
+        };
+    });
+}
+
+function getSearchIndex(tutorials, categories) {
+    let categoryCache = searchIndexCache.get(tutorials);
+
+    if (!categoryCache) {
+        categoryCache = new WeakMap();
+        searchIndexCache.set(tutorials, categoryCache);
+    }
+
+    let index = categoryCache.get(categories);
+
+    if (!index) {
+        index = createSearchIndex(tutorials, categories);
+        categoryCache.set(categories, index);
+    }
+
+    return index;
+}
+
 function getSignificantWords(query) {
     return [...new Set(
         normalizeText(query)
             .split(/\s+/)
-            .filter(
-                (word) =>
-                    word &&
-                    !STOP_WORDS.has(word),
-            ),
+            .filter((word) => word && !STOP_WORDS.has(word)),
     )];
 }
 
 function containsPhrase(text, phrase) {
-    const normalizedText = normalizeText(text);
-    const normalizedPhrase = normalizeText(phrase);
-
-    if (!normalizedText || !normalizedPhrase) {
+    if (!text || !phrase) {
         return false;
     }
 
     return (
-        normalizedText === normalizedPhrase ||
-        normalizedText.startsWith(normalizedPhrase + " ") ||
-        normalizedText.endsWith(" " + normalizedPhrase) ||
-        normalizedText.includes(" " + normalizedPhrase + " ")
+        text === phrase ||
+        text.startsWith(phrase + " ") ||
+        text.endsWith(" " + phrase) ||
+        text.includes(" " + phrase + " ")
     );
 }
 
-function containsWord(text, word) {
-    return containsPhrase(text, word);
+function isOneEditApart(first, second) {
+    if (first === second || Math.abs(first.length - second.length) > 1) {
+        return false;
+    }
+
+    let firstIndex = 0;
+    let secondIndex = 0;
+    let edits = 0;
+
+    while (firstIndex < first.length && secondIndex < second.length) {
+        if (first[firstIndex] === second[secondIndex]) {
+            firstIndex += 1;
+            secondIndex += 1;
+            continue;
+        }
+
+        edits += 1;
+
+        if (edits > 1) {
+            return false;
+        }
+
+        if (first.length === second.length) {
+            firstIndex += 1;
+            secondIndex += 1;
+        } else if (first.length < second.length) {
+            secondIndex += 1;
+        } else {
+            firstIndex += 1;
+        }
+    }
+
+    if (firstIndex < first.length || secondIndex < second.length) {
+        edits += 1;
+    }
+
+    return edits === 1;
 }
 
-function scoreTutorial(tutorial, query, categories) {
-    const normalizedQuery = normalizeText(query);
-    const queryWords = normalizedQuery
-        .split(/\s+/)
-        .filter(Boolean);
-
-    const title = normalizeText(tutorial.title);
-    const description = normalizeText(tutorial.description);
-    const category = normalizeText(
-        getCategoryName(tutorial.category, categories),
-    );
-
-    const keywords = (tutorial.keywords ?? []).map(normalizeText);
-
-    let score = 0;
-
-    /*
-     * ==================================================
-     * FRASE COMPLETA
-     * ==================================================
-     */
-
-    if (containsPhrase(title, normalizedQuery)) {
-        score += 100;
+function getTokenMatch(queryWord, candidateWord) {
+    if (queryWord === candidateWord) {
+        return "exact";
     }
 
     if (
-        keywords.some((keyword) =>
-            containsPhrase(keyword, normalizedQuery),
-        )
+        queryWord.length >= MIN_PREFIX_LENGTH &&
+        candidateWord.startsWith(queryWord)
     ) {
-        score += 70;
+        return "prefix";
     }
 
-    if (containsPhrase(description, normalizedQuery)) {
-        score += 40;
+    if (
+        queryWord.length >= MIN_FUZZY_LENGTH &&
+        candidateWord.length >= MIN_FUZZY_LENGTH &&
+        isOneEditApart(queryWord, candidateWord)
+    ) {
+        return "fuzzy";
     }
 
-    if (containsPhrase(category, normalizedQuery)) {
-        score += 30;
-    }
-
-    /*
-     * ==================================================
-     * PALAVRAS INDIVIDUAIS
-     * ==================================================
-     */
-
-    for (const word of queryWords) {
-        if (containsWord(title, word)) {
-            score += 25;
-        }
-
-        if (
-            keywords.some((keyword) =>
-                containsWord(keyword, word),
-            )
-        ) {
-            score += 18;
-        }
-
-        if (containsWord(description, word)) {
-            score += 8;
-        }
-
-        if (containsWord(category, word)) {
-            score += 6;
-        }
-    }
-
-    return score;
+    return null;
 }
 
-function getRelevanceInfo(tutorial, query, categories) {
-    const normalizedQuery = normalizeText(query);
+function bestTokenMatch(queryWord, tokens) {
+    let bestMatch = null;
+    const priority = { exact: 3, prefix: 2, fuzzy: 1 };
 
-    const title = normalizeText(tutorial.title);
-    const description = normalizeText(tutorial.description);
-    const category = normalizeText(
-        getCategoryName(tutorial.category, categories),
-    );
-    const keywords = (tutorial.keywords ?? []).map(normalizeText);
+    for (const candidateWord of tokens) {
+        const match = getTokenMatch(queryWord, candidateWord);
 
-    const significantWords = getSignificantWords(normalizedQuery);
+        if (match && (!bestMatch || priority[match] > priority[bestMatch])) {
+            bestMatch = match;
+        }
 
-    const exactTitleMatch = containsPhrase(title, normalizedQuery);
+        if (bestMatch === "exact") {
+            break;
+        }
+    }
 
-    const exactKeywordMatch = keywords.some((keyword) =>
-        containsPhrase(keyword, normalizedQuery),
-    );
+    return bestMatch;
+}
 
-    const matchedWords = significantWords.filter(
-        (word) =>
-            containsWord(title, word) ||
-            keywords.some((keyword) => containsWord(keyword, word)) ||
-            containsWord(description, word) ||
-            containsWord(category, word),
-    );
+function scoreIndexedTutorial(indexedTutorial, normalizedQuery, queryWords) {
+    const { fields, tutorial } = indexedTutorial;
+    let score = 0;
+    let strongWordMatch = false;
+    const matchedWords = new Set();
+    let exactTitleMatch = false;
+    let exactKeywordMatch = false;
 
-    const coverage =
-        significantWords.length > 0
-            ? matchedWords.length / significantWords.length
-            : 0;
-
-    const score = scoreTutorial(
-        tutorial,
-        normalizedQuery,
-        categories,
-    );
-
-    const strongWordMatch =
-        significantWords.some(
-            (word) =>
-                containsWord(title, word) ||
-                keywords.some((keyword) =>
-                    containsWord(keyword, word),
-                ),
+    for (const [fieldName, field] of Object.entries(fields)) {
+        const phraseMatch = field.texts.some((text) =>
+            containsPhrase(text, normalizedQuery),
         );
 
+        if (phraseMatch && queryWords.length > 0) {
+            score += field.config.phrase;
+
+            if (fieldName === "title") {
+                exactTitleMatch = true;
+            }
+
+            if (fieldName === "keywords") {
+                exactKeywordMatch = true;
+            }
+        }
+    }
+
+    for (const word of queryWords) {
+        let wordMatched = false;
+
+        for (const [fieldName, field] of Object.entries(fields)) {
+            const match = bestTokenMatch(word, field.tokens);
+
+            if (!match) {
+                continue;
+            }
+
+            score += field.config[match];
+            wordMatched = true;
+
+            if (field.config.strong) {
+                strongWordMatch = true;
+            }
+        }
+
+        if (wordMatched) {
+            matchedWords.add(word);
+        }
+    }
+
     return {
+        tutorial,
         score,
         exactTitleMatch,
         exactKeywordMatch,
-        significantWordCount: significantWords.length,
-        matchedWordCount: matchedWords.length,
-        coverage,
+        significantWordCount: queryWords.length,
+        matchedWordCount: matchedWords.size,
+        coverage: queryWords.length > 0 ? matchedWords.size / queryWords.length : 0,
         strongWordMatch,
     };
 }
 
-function isRelevantTutorial(relevance) {
-    /*
-     * Uma correspondência exata no título ou em uma palavra-chave
-     * é forte o suficiente para considerar o tutorial relevante.
-     */
-
-    if (
-        relevance.exactTitleMatch ||
-        relevance.exactKeywordMatch
-    ) {
-        return true;
-    }
-
-    /*
-     * Para buscas de uma única palavra, exigimos uma correspondência
-     * forte no título, palavra-chave ou categoria. Isso evita que uma
-     * palavra genérica encontrada apenas na descrição provoque um
-     * falso positivo.
-     */
-
-    if (relevance.significantWordCount === 1) {
-        return (
-            relevance.matchedWordCount === 1 &&
-            relevance.strongWordMatch &&
-            relevance.score >= 18
-        );
-    }
-
-    /*
-     * Para perguntas maiores, exigimos que pelo menos metade dos termos
-     * relevantes apareça no conteúdo e que haja uma pontuação mínima.
-     *
-     * Quando dois terços ou mais dos termos estão presentes, aceitamos
-     * uma pontuação um pouco menor porque a cobertura já indica boa
-     * correspondência semântica.
-     */
-
-    if (
-        relevance.significantWordCount >= 2 &&
-        relevance.coverage >= 2 / 3 &&
-        relevance.score >= 30
-    ) {
-        return true;
-    }
-
-    if (
-        relevance.significantWordCount >= 2 &&
-        relevance.coverage >= 0.5 &&
-        relevance.score >= 45
-    ) {
-        return true;
-    }
-
-    return false;
-}
-
 function getRelevanceLevel(relevance) {
-    if (isRelevantTutorial(relevance)) {
-        return "relevant";
-    }
-
-    if (!relevance.strongWordMatch || relevance.score < 18) {
+    if (relevance.significantWordCount === 0 || relevance.matchedWordCount === 0) {
         return "none";
     }
 
-    /*
-     * Uma correspondência parcial pode ser útil para sugerir
-     * um tutorial relacionado, mas não é suficiente para
-     * enviar o conteúdo para o Gemini como resposta principal.
-     */
-
-    if (relevance.significantWordCount === 1) {
-        return "related";
+    if (relevance.exactTitleMatch || relevance.exactKeywordMatch) {
+        return "relevant";
     }
 
-    if (relevance.coverage >= 1 / 3) {
-        return "related";
+    if (relevance.significantWordCount === 1) {
+        return relevance.score >= 8 ? "relevant" : "none";
+    }
+
+    if (relevance.coverage >= 2 / 3 && relevance.score >= 24) {
+        return "relevant";
+    }
+
+    if (relevance.coverage >= 0.5 && relevance.score >= 36) {
+        return "relevant";
     }
 
     if (
-        relevance.matchedWordCount >= 1 &&
-        relevance.score >= 25
+        relevance.strongWordMatch &&
+        relevance.score >= 10 &&
+        relevance.coverage >= 1 / 3
     ) {
         return "related";
     }
@@ -324,49 +367,42 @@ function getRelevanceLevel(relevance) {
     return "none";
 }
 
-export function searchTutorialsWithRelevance(
-    query,
-    tutorials,
-    categories,
-) {
+export function searchTutorialsWithRelevance(query, tutorials, categories) {
     const normalizedQuery = normalizeText(query);
+    const queryWords = getSignificantWords(normalizedQuery);
 
-    if (!normalizedQuery) {
+    if (!normalizedQuery || queryWords.length === 0) {
         return [];
     }
 
-    return tutorials
-        .map((tutorial) => {
-            const relevance = getRelevanceInfo(
-                tutorial,
+    return getSearchIndex(tutorials, categories)
+        .map((indexedTutorial) => {
+            const relevance = scoreIndexedTutorial(
+                indexedTutorial,
                 normalizedQuery,
-                categories,
+                queryWords,
             );
 
             return {
-                tutorial,
+                tutorial: indexedTutorial.tutorial,
                 relevance: {
-                    ...relevance,
+                    score: relevance.score,
+                    exactTitleMatch: relevance.exactTitleMatch,
+                    exactKeywordMatch: relevance.exactKeywordMatch,
+                    significantWordCount: relevance.significantWordCount,
+                    matchedWordCount: relevance.matchedWordCount,
+                    coverage: relevance.coverage,
+                    strongWordMatch: relevance.strongWordMatch,
                     level: getRelevanceLevel(relevance),
                 },
             };
         })
         .filter((result) => result.relevance.level !== "none")
-        .sort(
-            (a, b) =>
-                b.relevance.score - a.relevance.score,
-        );
+        .sort((first, second) => second.relevance.score - first.relevance.score);
 }
 
 export function searchTutorials(query, tutorials, categories) {
-    return searchTutorialsWithRelevance(
-        query,
-        tutorials,
-        categories,
-    )
-        .filter(
-            (result) =>
-                result.relevance.level === "relevant",
-        )
+    return searchTutorialsWithRelevance(query, tutorials, categories)
+        .filter((result) => result.relevance.level === "relevant")
         .map((result) => result.tutorial);
 }
