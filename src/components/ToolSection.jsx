@@ -2,7 +2,7 @@ import { SectionTransition } from "./SectionTransition";
 import { ToolCard } from "./ToolCard";
 import { OptimizedImage } from "./OptimizedImage";
 
-export function ToolSection({ id, background, label, title, restTitle, alt, logo, description, icon: Icon, tools, transition }) {
+export function ToolSection({ id, background, label, title, restTitle, alt, logo, showImage = true, description, icon: Icon, tools, transition }) {
     return (
         <section aria-labelledby={id} className={background}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
@@ -31,16 +31,18 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                                 {title}
                             </h2>
                             <div className="flex items-center gap-0.5">
-                                <OptimizedImage
-                                    src={logo}
-                                    alt={alt}
-                                    fetchPriority="low"
-                                    loading="lazy"
-                                    decoding="async"
-                                    wrapperClassName="h-8 w-8 shrink-0 rounded-lg"
-                                    sizes="32px"
-                                    className="object-contain"
-                                />
+{showImage && logo && (
+                                    <OptimizedImage
+                                        src={logo}
+                                        alt={alt}
+                                        fetchPriority="low"
+                                        loading="lazy"
+                                        decoding="async"
+                                        wrapperClassName="h-8 w-8 shrink-0 rounded-lg"
+                                        sizes="32px"
+                                        className="object-contain"
+                                    />
+                                )}
                                 <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
                             </div>
                         </div>
