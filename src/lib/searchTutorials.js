@@ -172,12 +172,41 @@ function getSearchIndex(tutorials, categories) {
     return index;
 }
 
-function getSignificantWords(query) {
-    return [...new Set(
+function getSignificantWords(query, index) {
+    const words = [...new Set(
         normalizeText(query)
             .split(/\s+/)
-            .filter((word) => word && !STOP_WORDS.has(word)),
+            .filter(Boolean),
     )];
+
+    const strongVocabulary = index
+        .flatMap(({ fields }) =>
+            Object.values(fields)
+                .filter((field) => field.config.strong)
+                .flatMap((field) => field.tokens),
+        )
+        .filter((word) => !STOP_WORDS.has(word));
+
+    return words.filter((word) => {
+        if (!STOP_WORDS.has(word)) {
+            return true;
+        }
+
+        /*
+         * Uma stop word pode funcionar como prefixo apenas quando
+         * aponta para um termo significativo de título, palavra-chave,
+         * objetivo ou título de etapa. Isso permite "com" -> "compartilhar"
+         * sem fazer "como" retornar todos os títulos que começam com "Como".
+         */
+        return (
+            word.length >= MIN_PREFIX_LENGTH &&
+            strongVocabulary.some(
+                (candidate) =>
+                    candidate.length > word.length &&
+                    candidate.startsWith(word),
+            )
+        );
+    });
 }
 
 function containsPhrase(text, phrase) {
@@ -233,6 +262,19 @@ function isOneEditApart(first, second) {
 }
 
 function getTokenMatch(queryWord, candidateWord) {
+    if (STOP_WORDS.has(queryWord)) {
+        if (
+            queryWord.length >= MIN_PREFIX_LENGTH &&
+            candidateWord !== queryWord &&
+            !STOP_WORDS.has(candidateWord) &&
+            candidateWord.startsWith(queryWord)
+        ) {
+            return "prefix";
+        }
+
+        return null;
+    }
+
     if (queryWord === candidateWord) {
         return "exact";
     }
@@ -281,13 +323,20 @@ function scoreIndexedTutorial(indexedTutorial, normalizedQuery, queryWords) {
     const matchedWords = new Set();
     let exactTitleMatch = false;
     let exactKeywordMatch = false;
+    const isStopWordOnlyQuery = normalizedQuery
+        .split(/\s+/)
+        .every((word) => STOP_WORDS.has(word));
 
     for (const [fieldName, field] of Object.entries(fields)) {
         const phraseMatch = field.texts.some((text) =>
             containsPhrase(text, normalizedQuery),
         );
 
-        if (phraseMatch && queryWords.length > 0) {
+        if (
+            phraseMatch &&
+            queryWords.length > 0 &&
+            !isStopWordOnlyQuery
+        ) {
             score += field.config.phrase;
 
             if (fieldName === "title") {
@@ -304,6 +353,10 @@ function scoreIndexedTutorial(indexedTutorial, normalizedQuery, queryWords) {
         let wordMatched = false;
 
         for (const field of Object.values(fields)) {
+            if (STOP_WORDS.has(word) && !field.config.strong) {
+                continue;
+            }
+
             const match = bestTokenMatch(word, field.tokens);
 
             if (!match) {
@@ -369,13 +422,19 @@ function getRelevanceLevel(relevance) {
 
 export function searchTutorialsWithRelevance(query, tutorials, categories) {
     const normalizedQuery = normalizeText(query);
-    const queryWords = getSignificantWords(normalizedQuery);
 
-    if (!normalizedQuery || queryWords.length === 0) {
+    if (!normalizedQuery) {
         return [];
     }
 
-    return getSearchIndex(tutorials, categories)
+    const index = getSearchIndex(tutorials, categories);
+    const queryWords = getSignificantWords(normalizedQuery, index);
+
+    if (queryWords.length === 0) {
+        return [];
+    }
+
+    return index
         .map((indexedTutorial) => {
             const relevance = scoreIndexedTutorial(
                 indexedTutorial,
