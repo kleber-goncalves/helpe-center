@@ -5,6 +5,7 @@ import { GoogleGenAI } from "@google/genai";
 import { categories } from "../src/data/categories.js";
 import { tutorials } from "../src/data/tutorials.js";
 import { searchTutorialsWithRelevance } from "../src/lib/searchTutorials.js";
+import { isInsufficientAssistantAnswer } from "../src/lib/assistantResponse.js";
 
 /*
  * =========================================================
@@ -503,7 +504,17 @@ export async function POST(request) {
          * ==================================================
          */
 
-        const answer = await generateAssistantResponse(message, tutorialContext);
+        const generatedAnswer = await generateAssistantResponse(message, tutorialContext);
+        const needsExternalSearch = isInsufficientAssistantAnswer(generatedAnswer);
+
+        /*
+         * Quando a IA informa que os conteúdos não bastam para responder,
+         * os tutoriais continuam visíveis como relacionados e a interface
+         * também oferece pesquisa externa para a pergunta original.
+         */
+        const answer = needsExternalSearch
+            ? "Não encontrei um tutorial que responda exatamente à sua dúvida. Os conteúdos abaixo são relacionados, mas talvez não ensinem o procedimento que você procura. Você também pode pesquisar o que digitou no Google ou no YouTube para encontrar outras explicações:"
+            : generatedAnswer;
 
         /*
          * ==================================================
@@ -519,7 +530,7 @@ export async function POST(request) {
                 title: tutorial.title,
                 description: tutorial.description,
             })),
-            source: "tutorials",
+            source: needsExternalSearch ? "related" : "tutorials",
         });
     } catch (error) {
         console.error("[Hauy Assistente]", error);
