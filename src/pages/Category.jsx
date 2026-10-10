@@ -164,8 +164,8 @@ export function Category() {
             </nav>
             <div data-reader-content>
                 <div className="mt-7 flex items-start gap-4">
-                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-coral-soft)] text-[var(--color-coral)]">
-                        <Icon className="h-6 w-6" />
+                    <span className="grid h-17 w-17 place-items-center rounded-xl bg-mist3 text-[var(--color-coral)]">
+                        <Icon className="h-12 w-12" />
                     </span>
                     <div>
                         <h1 className="text-4xl font-bold tracking-tight text-ink">{category.name}</h1>
