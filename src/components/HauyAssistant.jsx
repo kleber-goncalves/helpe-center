@@ -404,7 +404,7 @@ export function HauyAssistant({
                                     ALTERNATIVAS EXTERNAS
                                 ================================= */}
 
-                                {item.role === "assistant" && item.source === "none" && item.query && (
+                                {item.role === "assistant" && ["none", "related"].includes(item.source) && item.query && (
                                     <div
                                         className="
                                                 mt-6
@@ -439,7 +439,7 @@ export function HauyAssistant({
                                                         text-ink
                                                     "
                                             >
-                                                Continue sua busca
+{item.source === "related" ? "Pesquise também" : "Continue sua busca"}
                                             </p>
                                         </div>
 
@@ -592,30 +592,32 @@ export function HauyAssistant({
                                                 />
                                             </a>
 
+                                            {item.source === "none" && (
                                             <Link
-                                                to="/enviar-duvida"
-                                                className="
-                                                        inline-flex
-                                                        min-h-11
-                                                        items-center
-                                                        justify-center
-                                                        rounded-xl
-                                                        bg-coral-button
-                                                        px-4
-                                                        py-3
-                                                        text-sm
-                                                        font-bold
-                                                        text-white
-                                                        transition-colors
-                                                        hover:bg-coral-button-hover
-                                                        focus-visible:outline-none
-                                                        focus-visible:ring-2
-                                                        focus-visible:ring-coral
-                                                        focus-visible:ring-offset-2
-                                                    "
-                                            >
-                                                Enviar essa dúvida para a equipe
-                                            </Link>
+                                                                                            to="/enviar-duvida"
+                                                                                            className="
+                                                                                                    inline-flex
+                                                                                                    min-h-11
+                                                                                                    items-center
+                                                                                                    justify-center
+                                                                                                    rounded-xl
+                                                                                                    bg-coral-button
+                                                                                                    px-4
+                                                                                                    py-3
+                                                                                                    text-sm
+                                                                                                    font-bold
+                                                                                                    text-white
+                                                                                                    transition-colors
+                                                                                                    hover:bg-coral-button-hover
+                                                                                                    focus-visible:outline-none
+                                                                                                    focus-visible:ring-2
+                                                                                                    focus-visible:ring-coral
+                                                                                                    focus-visible:ring-offset-2
+                                                                                                "
+                                                                                        >
+                                                                                            Enviar essa dúvida para a equipe
+                                                                                        </Link>
+                                            )}
                                         </div>
                                     </div>
                                 )}

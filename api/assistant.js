@@ -471,7 +471,7 @@ export async function POST(request) {
             if (relatedTutorials.length > 0) {
                 return jsonResponse({
                     ok: true,
-                    answer: "Não encontramos exatamente essa dúvida na Central, mas encontramos conteúdos que podem ser úteis. Confira estes tutoriais relacionados:",
+                    answer: "Não encontramos um tutorial que responda exatamente à sua dúvida. Estes conteúdos podem ajudar, mas você também pode pesquisar o que digitou no Google ou no YouTube para encontrar outras explicações:",
                     tutorials: relatedTutorials.map((tutorial) => ({
                         id: tutorial.id,
                         title: tutorial.title,
