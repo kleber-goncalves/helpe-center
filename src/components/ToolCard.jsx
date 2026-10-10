@@ -3,8 +3,6 @@ import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { Badge, Card } from "./ui";
 
 export function ToolCard({ tool }) {
-    const Icon = tool.icon;
-
     return (
         <a
             href={tool.href}
@@ -51,7 +49,14 @@ export function ToolCard({ tool }) {
                             "
                             aria-hidden="true"
                         >
-                            <Icon className="size-5" strokeWidth={1.9} />
+                            <svg
+                                className="size-9"
+                                viewBox="0 0 64 64"
+                                aria-hidden="true"
+                                focusable="false"
+                            >
+                                <use href={`${tool.icon.sprite}#${tool.icon.symbol}`} />
+                            </svg>
                         </span>
 
                         <ExternalLink

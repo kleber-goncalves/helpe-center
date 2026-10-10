@@ -1,17 +1,5 @@
-import {
-    Crop,
-    FileOutput,
-    FilePenLine,
-    FileSignature,
-    Files,
-    Images,
-    Maximize2,
-    Minimize2,
-    Pencil,
-    RotateCw,
-    Scissors,
-    Unlock,
-} from "lucide-react";
+import { ilovePdfIcons } from "./toolIcons/ilovePdf";
+import { iloveImgIcons } from "./toolIcons/iloveImg";
 
 export const tools = [
     {
@@ -21,7 +9,7 @@ export const tools = [
         description: "Combine vários arquivos PDF em um único documento.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/juntar_pdf",
-        icon: Files,
+        icon: ilovePdfIcons["juntar-pdf"],
         featured: true,
     },
     {
@@ -31,7 +19,7 @@ export const tools = [
         description: "Separe páginas ou intervalos de um PDF em arquivos diferentes.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/dividir_pdf",
-        icon: Scissors,
+        icon: ilovePdfIcons["dividir-pdf"],
     },
     {
         id: "comprimir-pdf",
@@ -40,7 +28,7 @@ export const tools = [
         description: "Reduza o tamanho de um PDF para facilitar o envio e o compartilhamento.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/PT/compress_pdf",
-        icon: Minimize2,
+        icon: ilovePdfIcons["comprimir-pdf"],
         featured: true,
     },
     {
@@ -50,7 +38,7 @@ export const tools = [
         description: "Converta páginas de um PDF em imagens JPG.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/pdf_para_jpg",
-        icon: Images,
+        icon: ilovePdfIcons["pdf-para-jpg"],
     },
     {
         id: "pdf-para-word",
@@ -59,7 +47,7 @@ export const tools = [
         description: "Converta um PDF em um documento Word editável.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/pdf_para_word",
-        icon: FileOutput,
+        icon: ilovePdfIcons["pdf-para-word"],
     },
     {
         id: "pdf-para-excel",
@@ -68,7 +56,7 @@ export const tools = [
         description: "Converta dados de um PDF em uma planilha Excel editável.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/pdf_para_excel",
-        icon: FileOutput,
+        icon: ilovePdfIcons["pdf-para-excel"],
     },
     {
         id: "word-para-pdf",
@@ -77,7 +65,7 @@ export const tools = [
         description: "Converta documentos DOC ou DOCX em PDF.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/word_para_pdf",
-        icon: FileOutput,
+        icon: ilovePdfIcons["word-para-pdf"],
     },
     {
         id: "powerpoint-para-pdf",
@@ -86,7 +74,7 @@ export const tools = [
         description: "Converta apresentações PPT ou PPTX em PDF.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/powerpoint_para_pdf",
-        icon: FileOutput,
+        icon: ilovePdfIcons["powerpoint-para-pdf"],
     },
     {
         id: "excel-para-pdf",
@@ -95,7 +83,7 @@ export const tools = [
         description: "Converta planilhas Excel em documentos PDF.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/excel_para_pdf",
-        icon: FileOutput,
+        icon: ilovePdfIcons["excel-para-pdf"],
     },
     {
         id: "jpg-para-pdf",
@@ -104,7 +92,7 @@ export const tools = [
         description: "Converta imagens JPG em um arquivo PDF.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/jpg_para_pdf",
-        icon: Images,
+        icon: ilovePdfIcons["jpg-para-pdf"],
     },
     {
         id: "editar-pdf",
@@ -113,7 +101,7 @@ export const tools = [
         description: "Adicione texto, formas, comentários e destaques ao seu PDF.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/editar-pdf",
-        icon: FilePenLine,
+        icon: ilovePdfIcons["editar-pdf"],
     },
     {
         id: "assinar-pdf",
@@ -122,7 +110,7 @@ export const tools = [
         description: "Adicione sua assinatura a um documento PDF ou solicite assinaturas.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/assinar-pdf",
-        icon: FileSignature,
+        icon: ilovePdfIcons["assinar-pdf"],
     },
     {
         id: "rodar-pdf",
@@ -131,7 +119,7 @@ export const tools = [
         description: "Gire páginas de arquivos PDF para corrigir sua orientação.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/rodar_pdf",
-        icon: RotateCw,
+        icon: ilovePdfIcons["rodar-pdf"],
     },
     {
         id: "desbloquear-pdf",
@@ -140,7 +128,7 @@ export const tools = [
         description: "Remova restrições de acesso de arquivos PDF compatíveis.",
         provider: "iLovePDF",
         href: "https://www.ilovepdf.com/pt/desbloquear_pdf",
-        icon: Unlock,
+        icon: ilovePdfIcons["desbloquear-pdf"],
     },
     {
         id: "comprimir-imagem",
@@ -149,7 +137,7 @@ export const tools = [
         description: "Diminua o tamanho de arquivos JPG, PNG, SVG ou GIF.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/comprimir-imagem",
-        icon: Minimize2,
+        icon: iloveImgIcons["comprimir-imagem"],
         featured: true,
     },
     {
@@ -159,7 +147,7 @@ export const tools = [
         description: "Altere a largura e a altura de uma imagem em pixels ou porcentagem.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/redimensionar-imagem",
-        icon: Maximize2,
+        icon: iloveImgIcons["redimensionar-imagem"],
         featured: true,
     },
     {
@@ -169,7 +157,7 @@ export const tools = [
         description: "Recorte uma imagem definindo a área que deseja manter.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/recortar-imagem",
-        icon: Crop,
+        icon: iloveImgIcons["recortar-imagem"],
     },
     {
         id: "converter-para-jpg",
@@ -178,7 +166,7 @@ export const tools = [
         description: "Converta PNG, GIF, TIF, PSD, SVG, WEBP, HEIC ou RAW para JPG.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/converter-para-jpg",
-        icon: FileOutput,
+        icon: iloveImgIcons["converter-para-jpg"],
     },
     {
         id: "girar-imagem",
@@ -187,7 +175,7 @@ export const tools = [
         description: "Gire várias imagens JPG, PNG ou GIF de uma só vez.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/rodar-imagem",
-        icon: RotateCw,
+        icon: iloveImgIcons["girar-imagem"],
     },
     {
         id: "remover-fundo",
@@ -196,7 +184,7 @@ export const tools = [
         description: "Remova o fundo de imagens JPG e PNG.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/remover-fundo",
-        icon: Scissors,
+        icon: iloveImgIcons["remover-fundo"],
     },
     {
         id: "marcar-imagem",
@@ -205,7 +193,7 @@ export const tools = [
         description: "Adicione uma imagem ou texto por cima de suas fotos.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/marcar-imagem",
-        icon: Pencil,
+        icon: iloveImgIcons["marcar-imagem"],
     },
     {
         id: "melhorar-imagem",
@@ -214,7 +202,7 @@ export const tools = [
         description: "Aumente a resolução de imagens JPG e PNG.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/ampliar-imagem",
-        icon: Maximize2,
+        icon: iloveImgIcons["melhorar-imagem"],
     },
     {
         id: "desfocar-cara",
@@ -223,6 +211,6 @@ export const tools = [
         description: "Desfoque rostos ou áreas específicas de uma imagem.",
         provider: "iLoveIMG",
         href: "https://www.iloveimg.com/pt/desfocar-cara",
-        icon: Images,
+        icon: iloveImgIcons["desfocar-cara"],
     },
 ];
