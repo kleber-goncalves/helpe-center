@@ -11,15 +11,7 @@ export function ToolProviderInfo({ provider }) {
                 <div className="flex items-center gap-3">
                     <div className="flex min-w-0 flex-wrap items-center gap-0.5">
                         <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg">
-                            <OptimizedImage
-                                src={provider.logo}
-                                alt={provider.alt}
-                                loading="lazy"
-                                decoding="async"
-                                sizes="28px"
-                                wrapperClassName="h-full w-full"
-                                className="object-contain"
-                            />
+                            <OptimizedImage src={provider.logo} alt={provider.alt} loading="lazy" decoding="async" sizes="28px" wrapperClassName="h-full w-full" className="object-contain" />
                         </div>
                         <h3 className="break-words font-display text-lg font-bold text-ink">{provider.name}</h3>
                     </div>
@@ -43,7 +35,10 @@ export function ToolProviderInfo({ provider }) {
                                 min-h-11
                                 items-center
                                 gap-1.5
-                                text-coral
+                                transition-colors
+                                duration-300
+                                ease-in-out
+                                hover:text-coral!
                                 underline-offset-4
                                 hover:underline
                                 focus-visible:outline-none
@@ -53,7 +48,7 @@ export function ToolProviderInfo({ provider }) {
                             "
                         >
                             Política de privacidade
-                            <ExternalLink className="size-3.5" aria-hidden="true" />
+                            <ExternalLink className=" size-3.5" aria-hidden="true" />
                         </a>
 
                         <a
@@ -66,7 +61,10 @@ export function ToolProviderInfo({ provider }) {
                                 min-h-11
                                 items-center
                                 gap-1.5
-                                text-coral
+                                transition-colors
+                                duration-200
+                                ease-in-out
+                                hover:text-coral!
                                 underline-offset-4
                                 hover:underline
                                 focus-visible:outline-none

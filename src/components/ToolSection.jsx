@@ -2,7 +2,7 @@ import { SectionTransition } from "./SectionTransition";
 import { ToolCard } from "./ToolCard";
 import { OptimizedImage } from "./OptimizedImage";
 
-export function ToolSection({ id, background, label, title, restTitle, alt, logo, showImage = true, description, icon: Icon, tools, transition, bgColor }) {
+export function ToolSection({ id, background, label, title, restTitle, alt, logo, showImage = true, description, icon: Icon, tools, transition, sizeIcon, bgColor }) {
     return (
         <section aria-labelledby={id} className={background}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
@@ -18,7 +18,7 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                             ${bgColor}`}
                         aria-hidden="true"
                     >
-                        <Icon className="size-16" strokeWidth={1.9} />
+                        <Icon className={`${sizeIcon}`} strokeWidth={1.9} />
                     </span>
 
                     <div className="min-w-0  pb-5">

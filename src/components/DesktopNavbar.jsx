@@ -25,7 +25,7 @@ const links = [
     ["Início", "/", House],
     ["Tutoriais", "/tutoriais", BookOpen],
     ["Categorias", "/categorias", Folder],
-    ["Assistente", "/assistente", BotMessageSquare],
+    ["Assistente Hauy", "/assistente", BotMessageSquare],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
     ["Sobre", "/sobre", Info],
