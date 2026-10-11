@@ -43,9 +43,9 @@ export function CategoryCard({ category }) {
         <Link ref={cardRef} to={`/categorias/${category.id}`} className={["group relative block h-full", "pt-12", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/50", "focus-visible:ring-offset-2"].join(" ")}>
             {/* Ícone destacado */}
 
-            <span className={["absolute left-1/2 top-0 z-20", "-translate-x-1/2", "grid size-20 place-items-center", "rounded-full border-4 border-background", "bg-mist3 text-petrol", "transition-all duration-300 ease-out", "group-hover:scale-105"].join(" ")} aria-hidden="true">
+            <span className={["absolute left-1/2 top-0 z-20", "-translate-x-1/2", "grid size-20 place-items-center", "rounded-full border-5 border-background", "bg-mist3 text-petrol", "transition-all duration-300 ease-out", "group-hover:scale-105"].join(" ")} aria-hidden="true">
                 {/* Borda interna: aparece quando o card recebe hover */}
-                <span className={["pointer-events-none absolute  inset-1", "rounded-full border border-coral", "scale-105 opacity-0", "transition-all duration-300 ease-out", "group-hover:scale-110 group-hover:opacity-100"].join(" ")} />
+                <span className={["pointer-events-none absolute  inset-1", "rounded-full border border-coral", "scale-105 opacity-0", "transition-all duration-200 ease-in-out", "group-hover:scale-112 group-hover:opacity-100"].join(" ")} />
 
                 <Icon className="relative z-10 size-9" strokeWidth={1.35} />
             </span>
