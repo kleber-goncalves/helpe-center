@@ -1,6 +1,6 @@
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // components
 import { Badge, Button } from "../components/ui";
@@ -15,6 +15,23 @@ import { findTutorial, tutorials } from "../data/tutorials";
 // SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
 
+function trackTutorialEvent(eventName, tutorial) {
+    if (
+        !import.meta.env.PROD ||
+        typeof window === "undefined" ||
+        typeof window.gtag !== "function"
+    ) {
+        return false;
+    }
+
+    window.gtag("event", eventName, {
+        tutorial_id: tutorial.id,
+        tutorial_category: tutorial.category,
+    });
+
+    return true;
+}
+
 /*
  * =========================================================
  * COMPONENTE
@@ -27,6 +44,20 @@ export function Tutorial() {
     const tutorial = findTutorial(tutorialId);
 
     const [activeStep, setActiveStep] = useState(0);
+
+    const beginEventSent = useRef(false);
+    const completionEventSent = useRef(false);
+
+    useEffect(() => {
+        if (!tutorial || beginEventSent.current) {
+            return;
+        }
+
+        beginEventSent.current = trackTutorialEvent(
+            "tutorial_begin",
+            tutorial
+        );
+    }, [tutorial]);
 
     /*
      * ==================================================
@@ -222,7 +253,19 @@ export function Tutorial() {
             return;
         }
 
-        handleStepNavigation(activeStep + 1);
+        const nextStep = activeStep + 1;
+
+        if (
+            nextStep === steps.length - 1 &&
+            !completionEventSent.current
+        ) {
+            completionEventSent.current = trackTutorialEvent(
+                "tutorial_complete",
+                tutorial
+            );
+        }
+
+        handleStepNavigation(nextStep);
     }
 
     function goToPreviousStep() {
