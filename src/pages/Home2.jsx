@@ -215,7 +215,7 @@ export function Home() {
                                     const Icon = topic.icon;
                                     return (
                                         <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
-                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-white">
+                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-searchPesq ">
                                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                             </span>
                                             <div className="min-w-0 flex-1 text-left pr-18">
