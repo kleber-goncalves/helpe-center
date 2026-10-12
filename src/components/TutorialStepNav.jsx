@@ -37,7 +37,7 @@ export function TutorialStepNav({ steps, activeStep, onNavigate }) {
                         return (
                             <li key={`${step.title}-${index}`}>
                                 <button type="button" onClick={() => onNavigate(index)} aria-current={isActive ? "step" : undefined} className={cn("group relative flex w-full cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 text-left", "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-background", !reduceMotion && "transition-[background-color,color,transform] duration-200", isActive ? "bg-coral-soft text-ink" : "text-muted-foreground hover:bg-mist hover:text-ink")}>
-                                    <span className={cn("absolute -left-[21px] top-1/2 flex size-3 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background", !reduceMotion && "transition-transform duration-300", isActive ? "scale-125 bg-coral ring-4 ring-coral/15" : isPrevious ? "bg-coral" : "bg-line")} aria-hidden="true" />
+                                    <span className={cn("absolute -left-[21px] top-1/2 flex  size-3 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background", !reduceMotion && "transition-transform duration-300", isActive ? "scale-125 bg-coral ring-4 ring-coral/15" : isPrevious ? "bg-coral" : "bg-line")} aria-hidden="true" />
 
                                     <span className={cn("mt-0.5 shrink-0 text-xs font-bold tabular-nums", isActive ? "text-coral" : "text-muted-foreground")}>{String(index + 1).padStart(2, "0")}</span>
 
@@ -66,7 +66,7 @@ export function TutorialStepNav({ steps, activeStep, onNavigate }) {
 
                             return (
                                 <li key={`${step.title}-${index}`}>
-                                    <button type="button" onClick={() => onNavigate(index)} aria-current={isActive ? "step" : undefined} aria-label={`Passo ${index + 1}: ${step.title}`} className={cn("whitespace-nowrap rounded-full border px-3.5 py-2 text-xs font-bold", "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-background", !reduceMotion && "transition-[background-color,border-color,color,transform] duration-200", isActive ? "border-coral bg-coral text-white" : "border-line bg-background text-muted-foreground hover:border-coral/50 hover:text-ink")}>
+                                    <button type="button" onClick={() => onNavigate(index)} aria-current={isActive ? "step" : undefined} aria-label={`Passo ${index + 1}: ${step.title}`} className={cn("whitespace-nowrap rounded-full border px-3.5 py-2 text-xs font-bold", "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2 focus-visible:ring-offset-background", !reduceMotion && "transition-[background-color,border-color,color,transform] duration-200", isActive ? "border-coral cursor-default bg-coral text-white" : "border-line cursor-pointer bg-background text-muted-foreground hover:border-coral/50 hover:text-ink")}>
                                         {String(index + 1).padStart(2, "0")}
                                     </button>
                                 </li>

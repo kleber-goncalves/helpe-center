@@ -6,8 +6,6 @@ import { Link, NavLink } from "react-router-dom";
 // GSAP
 import { gsap } from "gsap";
 
-
-
 // Componetes
 import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
@@ -20,7 +18,7 @@ const links = [
     ["Tutoriais", "/tutoriais", BookOpen],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
-    ["Assistente", "/assistente", BotMessageSquare],
+    ["Assistente Hauy", "/assistente-hauy", BotMessageSquare],
     ["Sobre", "/sobre", Info],
 ];
 
@@ -223,16 +221,7 @@ export function MobileHeader() {
                     ================================= */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                         <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
-                            <OptimizedImage
-                                src="/logo.svg"
-                                alt="Hauy Conecta"
-                                loading="eager"
-                                fetchPriority="high"
-                                decoding="async"
-                                wrapperClassName="h-full w-full"
-                                sizes="52px"
-                                className="object-contain"
-                            />
+                            <OptimizedImage src="/logo.svg" alt="Hauy Conecta" loading="eager" fetchPriority="high" decoding="async" wrapperClassName="h-full w-full" sizes="52px" className="object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
@@ -253,7 +242,7 @@ export function MobileHeader() {
                         ================================= */}
                         <Sheet open={open} onOpenChange={handleSheetOpenChange}>
                             <SheetTrigger asChild>
-                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                                     <span className="relative flex h-[18px] w-[18px]" aria-hidden="true">
                                         {/* Top */}
                                         <span ref={topBarRef} className={["absolute left-0 top-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
@@ -262,7 +251,7 @@ export function MobileHeader() {
                                         <span ref={middleBarRef} className={["absolute left-0 top-1/2", "h-[1.75px] w-full", "-translate-y-1/2", "rounded-full bg-current", "will-change-transform"].join(" ")} />
 
                                         {/* Bottom */}
-                                        <span ref={bottomBarRef} className={["absolute bottom-0 left-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
+                                        <span ref={bottomBarRef} className={["absolute  bottom-0 left-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
                                     </span>
                                 </button>
                             </SheetTrigger>

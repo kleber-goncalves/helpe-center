@@ -8,6 +8,8 @@ export const tutorials = [
 
         category: "excel",
 
+        cor_difficulty: "bg-green-700 text-white",
+
         difficulty: "Fácil",
 
         icon: SignalLow,
@@ -312,6 +314,8 @@ export const tutorials = [
 
         category: "word",
 
+        cor_difficulty: "bg-green-700 text-white",
+
         difficulty: "Fácil",
 
         icon: SignalLow,
@@ -524,6 +528,8 @@ export const tutorials = [
 
         category: "word",
 
+        cor_difficulty: "bg-yellow-300 text-black",
+
         difficulty: "Intermediário",
 
         icon: SignalMedium,
@@ -617,6 +623,8 @@ export const tutorials = [
         title: "Como compartilhar um arquivo",
 
         category: "google-drive",
+
+        cor_difficulty: "bg-green-700 text-white",
 
         difficulty: "Fácil",
 
@@ -818,6 +826,8 @@ export const tutorials = [
 
         category: "arquivos-pdf",
 
+        cor_difficulty: "bg-green-700 text-white",
+
         difficulty: "Fácil",
 
         icon: SignalLow,
@@ -1003,6 +1013,8 @@ export const tutorials = [
         title: "Como anexar um arquivo no e-mail",
 
         category: "email",
+
+        cor_difficulty: "bg-green-700 text-white",
 
         difficulty: "Fácil",
 
@@ -1216,6 +1228,8 @@ export const tutorials = [
 
         category: "google-drive",
 
+        cor_difficulty: "bg-green-700 text-white",
+
         difficulty: "Fácil",
 
         icon: SignalLow,
@@ -1359,6 +1373,8 @@ export const tutorials = [
         title: "Como criar uma apresentação no Canva",
 
         category: "canva",
+
+        cor_difficulty: "bg-yellow-300 text-black",
 
         difficulty: "Intermediário",
 
@@ -1603,7 +1619,6 @@ export const tutorials = [
 
                 video: null,
             },
-
 
             {
                 title: "Apresente ou baixe o arquivo",

@@ -21,9 +21,9 @@ O projeto foi criado para transformar dúvidas tecnológicas do cotidiano escola
 
 A ideia central é:
 
-~~~text
+```text
 PESQUISAR → ENCONTRAR → APRENDER → RESOLVER
-~~~
+```
 
 O portal não foi pensado apenas como um site institucional. Ele funciona como uma pequena plataforma de apoio educacional.
 
@@ -49,7 +49,7 @@ Não é necessário criar uma conta para navegar pelos conteúdos.
 
 Para entender o projeto, pense nele como quatro grupos.
 
-~~~text
+```text
 FRONTEND
 React + componentes + páginas
         ↓
@@ -61,7 +61,7 @@ api/assistant.js + api/support.js
         ↓
 ENTREGA
 GitHub Actions + pré-render + Vercel
-~~~
+```
 
 ## Frontend
 
@@ -69,9 +69,9 @@ GitHub Actions + pré-render + Vercel
 
 Fica principalmente em:
 
-~~~text
+```text
 src/
-~~~
+```
 
 ## Dados
 
@@ -79,12 +79,12 @@ O conteúdo fica separado da interface.
 
 Exemplos:
 
-~~~text
+```text
 src/data/tutorials.js
 src/data/categories.js
 src/data/faq.js
 src/data/tools.js
-~~~
+```
 
 ## Backend
 
@@ -92,9 +92,9 @@ São funções executadas no servidor.
 
 Ficam em:
 
-~~~text
+```text
 api/
-~~~
+```
 
 ## Entrega
 
@@ -102,9 +102,9 @@ api/
 
 Inclui:
 
-~~~text
+```text
 lint → build → pré-render → auditoria → dist → Vercel
-~~~
+```
 
 ---
 
@@ -138,9 +138,9 @@ Responsável pelas animações.
 
 Também existe a integração:
 
-~~~text
+```text
 @gsap/react
-~~~
+```
 
 ## Lucide React
 
@@ -192,7 +192,7 @@ Publica o conteúdo final.
 
 A estrutura importante do projeto é:
 
-~~~text
+```text
 helpe-center/
 │
 ├── api/
@@ -249,7 +249,7 @@ helpe-center/
 ├── vercel.json
 ├── vite.config.js
 └── README.md
-~~~
+```
 
 ---
 
@@ -296,7 +296,7 @@ Se você quiser alterar um tutorial, normalmente começa aqui.
 
 A estrutura geral é:
 
-~~~text
+```text
 App
 └── BrowserRouter
     └── AppContent
@@ -308,7 +308,7 @@ App
         ├── HauyAssistantWidget
         ├── Routes
         └── Footer
-~~~
+```
 
 A ideia é separar a estrutura global da página específica.
 
@@ -318,33 +318,33 @@ A ideia é separar a estrutura global da página específica.
 
 As rotas declaradas em src/App.jsx são:
 
-| Rota | Função |
-| --- | --- |
-| / | Página inicial |
-| /categorias | Lista de categorias |
-| /categorias/:categoryId | Categoria específica |
-| /tutoriais | Biblioteca de tutoriais |
-| /tutoriais/:tutorialId | Tutorial específico |
-| /ferramentas | Ferramentas externas |
-| /faq | Perguntas frequentes |
-| /sobre | Sobre o projeto |
-| /enviar-duvida | Envio de dúvida |
-| /assistente | Assistente Hauy |
-| * | Página 404 |
+| Rota                    | Função                  |
+| ----------------------- | ----------------------- |
+| /                       | Página inicial          |
+| /categorias             | Lista de categorias     |
+| /categorias/:categoryId | Categoria específica    |
+| /tutoriais              | Biblioteca de tutoriais |
+| /tutoriais/:tutorialId  | Tutorial específico     |
+| /ferramentas            | Ferramentas externas    |
+| /faq                    | Perguntas frequentes    |
+| /sobre                  | Sobre o projeto         |
+| /enviar-duvida          | Envio de dúvida         |
+| /assistente-hauy        | Assistente Hauy         |
+| \*                      | Página 404              |
 
 A parte :categoryId e :tutorialId significa que o valor muda conforme a URL.
 
 Exemplo:
 
-~~~text
+```text
 /tutoriais/comecar-usar-excel
-~~~
+```
 
 Nesse caso o tutorialId é:
 
-~~~text
+```text
 comecar-usar-excel
-~~~
+```
 
 ---
 
@@ -356,7 +356,7 @@ Isso significa que o código da página é baixado quando necessário.
 
 Exemplo conceitual:
 
-~~~text
+```text
 usuário entra no site
         ↓
 App carrega
@@ -364,13 +364,13 @@ App carrega
 usuário abre Tutoriais
         ↓
 código de Tutoriais é carregado
-~~~
+```
 
 Enquanto a página está sendo baixada aparece um fallback:
 
-~~~text
+```text
 Carregando...
-~~~
+```
 
 Isso evita mandar todo o código de todas as páginas para o navegador logo no início.
 
@@ -392,9 +392,9 @@ Mostra:
 
 Título atual:
 
-~~~text
+```text
 Olá, como podemos ajudar?
-~~~
+```
 
 ## Categories.jsx
 
@@ -441,10 +441,10 @@ Página de ferramentas externas.
 
 Atualmente possui 23 ferramentas e dois provedores principais:
 
-~~~text
+```text
 iLovePDF
 iLoveIMG
-~~~
+```
 
 Permite pesquisar e filtrar as ferramentas.
 
@@ -474,13 +474,13 @@ Página 404 personalizada.
 
 Arquivo:
 
-~~~text
+```text
 src/data/categories.js
-~~~
+```
 
 Existem atualmente oito categorias:
 
-~~~text
+```text
 Word
 Excel
 E-mail
@@ -489,7 +489,7 @@ Google Drive
 Canva
 Plataformas da Escola
 Informática Básica
-~~~
+```
 
 O mesmo arquivo possui priorityTopics, que representa assuntos que merecem destaque.
 
@@ -499,22 +499,22 @@ O mesmo arquivo possui priorityTopics, que representa assuntos que merecem desta
 
 Arquivo:
 
-~~~text
+```text
 src/data/tutorials.js
-~~~
+```
 
 Existem oito tutoriais ativos:
 
-| ID | Título |
-| --- | --- |
-| comecar-usar-excel | Como começar a usar o Excel |
-| formatar-trabalho-word | Como formatar um trabalho no Word |
+| ID                      | Título                                   |
+| ----------------------- | ---------------------------------------- |
+| comecar-usar-excel      | Como começar a usar o Excel              |
+| formatar-trabalho-word  | Como formatar um trabalho no Word        |
 | sumario-automatico-word | Como criar um sumário automático no Word |
-| compartilhar-arquivo | Como compartilhar um arquivo |
-| converter-documento-pdf | Como converter um documento para PDF |
-| anexar-arquivo-email | Como anexar um arquivo no e-mail |
-| salvar-google-drive | Como salvar um arquivo no Google Drive |
-| apresentacao-canva | Como criar uma apresentação no Canva |
+| compartilhar-arquivo    | Como compartilhar um arquivo             |
+| converter-documento-pdf | Como converter um documento para PDF     |
+| anexar-arquivo-email    | Como anexar um arquivo no e-mail         |
+| salvar-google-drive     | Como salvar um arquivo no Google Drive   |
+| apresentacao-canva      | Como criar uma apresentação no Canva     |
 
 ---
 
@@ -522,7 +522,7 @@ Existem oito tutoriais ativos:
 
 Um tutorial tem uma estrutura parecida com:
 
-~~~js
+```js
 {
     id: "exemplo",
     title: "Título",
@@ -535,7 +535,7 @@ Um tutorial tem uma estrutura parecida com:
     learning: [],
     steps: []
 }
-~~~
+```
 
 ## id
 
@@ -583,7 +583,7 @@ Passos detalhados.
 
 Cada step pode possuir:
 
-~~~js
+```js
 {
     title: "Abra o programa",
     description: "Explicação...",
@@ -592,22 +592,22 @@ Cada step pode possuir:
     video: null,
     poster: null
 }
-~~~
+```
 
 Um exemplo pode possuir imagem:
 
-~~~js
+```js
 {
     title: "Tela inicial",
     description: "Escolha esta opção.",
     image: "/tutoriais/exemplo/passo-1.webp",
     alt: "Tela inicial do programa."
 }
-~~~
+```
 
 Ou vídeo:
 
-~~~js
+```js
 {
     title: "Selecionar opção",
     description: "Clique na opção.",
@@ -615,7 +615,7 @@ Ou vídeo:
     video: "/tutoriais/exemplo/passo-2.mp4",
     poster: "/tutoriais/exemplo/passo-2-poster.webp"
 }
-~~~
+```
 
 ---
 
@@ -623,9 +623,9 @@ Ou vídeo:
 
 Arquivo:
 
-~~~text
+```text
 src/components/TutorialStep.jsx
-~~~
+```
 
 Esse componente:
 
@@ -643,18 +643,18 @@ O importante é que o componente mostra **o passo atual**, e não uma página gi
 
 Arquivo:
 
-~~~text
+```text
 src/hooks/useTutorialStepMedia.js
-~~~
+```
 
 Esse hook carrega somente as mídias do passo atual.
 
 Ele usa:
 
-~~~text
+```text
 completedMedia
 pendingMedia
-~~~
+```
 
 completedMedia guarda mídias que já terminaram.
 
@@ -664,9 +664,9 @@ Isso permite reutilizar mídia quando o usuário volta para um passo.
 
 Existe também:
 
-~~~text
+```text
 MIN_LOADING_TIME = 1500
-~~~
+```
 
 O preloader do passo permanece por pelo menos aproximadamente 1,5 segundo.
 
@@ -680,9 +680,9 @@ A arquitetura foi feita justamente para evitar esse custo.
 
 Arquivo:
 
-~~~text
+```text
 src/components/OptimizedImage.jsx
-~~~
+```
 
 Ele utiliza metadata gerada automaticamente.
 
@@ -703,27 +703,27 @@ Isso ajuda a reduzir mudanças de layout e entregar uma imagem adequada ao taman
 
 Arquivo:
 
-~~~text
+```text
 scripts/generate-image-metadata.mjs
-~~~
+```
 
 Ele analisa imagens de src/assets e public.
 
 Gera:
 
-~~~text
+```text
 src/generated/imageMetadata.json
-~~~
+```
 
 e versões responsivas em:
 
-~~~text
+```text
 public/_optimized/
-~~~
+```
 
 As larguras consideradas pelo script são:
 
-~~~text
+```text
 320
 480
 640
@@ -731,11 +731,11 @@ As larguras consideradas pelo script são:
 1024
 1440
 1920
-~~~
+```
 
 quando cabível.
 
-Os diretórios generated e public/_optimized estão no .gitignore.
+Os diretórios generated e public/\_optimized estão no .gitignore.
 
 Não edite os arquivos gerados manualmente.
 
@@ -745,19 +745,19 @@ Não edite os arquivos gerados manualmente.
 
 Arquivo:
 
-~~~text
+```text
 scripts/audit-images.mjs
-~~~
+```
 
 Depois do build, o script examina o HTML em dist.
 
 Em condições normais, ele exige:
 
-~~~text
+```text
 width
 height
 alt
-~~~
+```
 
 Essa verificação ajuda a manter:
 
@@ -771,13 +771,13 @@ Essa verificação ajuda a manter:
 
 Arquivo:
 
-~~~text
+```text
 src/components/ImageLightbox.jsx
-~~~
+```
 
 É responsável pelo comportamento:
 
-~~~text
+```text
 imagem normal
       ↓
 clique
@@ -785,7 +785,7 @@ clique
 imagem ampliada
       ↓
 botão X ao lado
-~~~
+```
 
 O usuário pode clicar na imagem ou no restante da área do container que envolve a imagem.
 
@@ -799,19 +799,19 @@ O Lightbox usa GSAP.
 
 Ao abrir:
 
-~~~text
+```text
 opacidade baixa + escala menor
            ↓
 opacidade normal + escala 1
-~~~
+```
 
 Ao fechar:
 
-~~~text
+```text
 escala 1
    ↓
 escala menor + desaparecimento
-~~~
+```
 
 O botão de fechar participa da animação.
 
@@ -823,10 +823,10 @@ O componente também usa useReducedMotion para reduzir ou evitar a animação qu
 
 Arquivos importantes:
 
-~~~text
+```text
 src/components/TutorialVideo.jsx
 src/components/OptimizedVideo.jsx
-~~~
+```
 
 O vídeo utiliza:
 
@@ -846,13 +846,13 @@ O poster também pode fornecer dimensões ao componente.
 
 Arquivo principal:
 
-~~~text
+```text
 src/components/ui.jsx
-~~~
+```
 
 Componentes disponíveis incluem:
 
-~~~text
+```text
 Button
 Card
 Badge
@@ -879,7 +879,7 @@ SheetTitle
 SheetDescription
 SheetClose
 SheetContent
-~~~
+```
 
 A ideia é não criar estilos totalmente diferentes para o mesmo tipo de controle em cada página.
 
@@ -889,16 +889,16 @@ A ideia é não criar estilos totalmente diferentes para o mesmo tipo de control
 
 O componente:
 
-~~~text
+```text
 src/components/Header.jsx
-~~~
+```
 
 decide entre:
 
-~~~text
+```text
 DesktopNavbar
 MobileHeader
-~~~
+```
 
 com base no tamanho da tela.
 
@@ -933,9 +933,9 @@ O ícone do menu também usa GSAP.
 
 Arquivo principal:
 
-~~~text
+```text
 src/lib/searchTutorials.js
-~~~
+```
 
 A busca não compara apenas uma igualdade simples.
 
@@ -943,24 +943,24 @@ Ela normaliza o texto e calcula uma pontuação.
 
 A prioridade atual inclui:
 
-| Correspondência | Pontos |
-| --- | ---: |
-| frase no título | 100 |
-| frase em keyword | 70 |
-| frase na descrição | 40 |
-| frase na categoria | 30 |
-| palavra no título | 25 |
-| palavra em keyword | 18 |
-| palavra na descrição | 8 |
-| palavra na categoria | 6 |
+| Correspondência      | Pontos |
+| -------------------- | -----: |
+| frase no título      |    100 |
+| frase em keyword     |     70 |
+| frase na descrição   |     40 |
+| frase na categoria   |     30 |
+| palavra no título    |     25 |
+| palavra em keyword   |     18 |
+| palavra na descrição |      8 |
+| palavra na categoria |      6 |
 
 O sistema separa resultados em:
 
-~~~text
+```text
 relevant
 related
 none
-~~~
+```
 
 relevant significa correspondência forte.
 
@@ -976,15 +976,15 @@ Quando não há um tutorial útil, a página de Tutoriais pode registrar a busca
 
 O frontend utiliza:
 
-~~~text
+```text
 /api/support
-~~~
+```
 
 com:
 
-~~~text
+```text
 type=search-no-result
-~~~
+```
 
 O objetivo é descobrir novas necessidades da comunidade escolar.
 
@@ -994,26 +994,26 @@ O objetivo é descobrir novas necessidades da comunidade escolar.
 
 Componentes:
 
-~~~text
+```text
 src/components/HauyAssistant.jsx
 src/components/HauyAssistantWidget.jsx
-~~~
+```
 
 Backend:
 
-~~~text
+```text
 api/assistant.js
-~~~
+```
 
 A busca usada pelo Assistente vem de:
 
-~~~text
+```text
 src/lib/searchTutorials.js
-~~~
+```
 
 O fluxo é:
 
-~~~text
+```text
 usuário
    ↓
 HauyAssistant
@@ -1031,7 +1031,7 @@ contexto
 Gemini
    ↓
 resposta
-~~~
+```
 
 ---
 
@@ -1056,19 +1056,19 @@ O prompt do servidor orienta o modelo a:
 
 A API possui atualmente:
 
-~~~text
+```text
 body máximo: 10.000 bytes
 mensagem máxima: 1.000 caracteres
 contexto: até 3 tutoriais
 rate limit: 20 solicitações / 10 minutos / IP
-~~~
+```
 
 As respostas usam:
 
-~~~text
+```text
 Cache-Control: no-store
 X-Content-Type-Options: nosniff
-~~~
+```
 
 ---
 
@@ -1092,21 +1092,21 @@ Para uma aplicação de escala maior, seria necessário um mecanismo compartilha
 
 Os arquivos mais importantes são:
 
-~~~text
+```text
 src/components/QuestionForm.jsx
 src/schemas/questionSchema.js
 api/support.js
-~~~
+```
 
 O formulário possui os campos principais:
 
-~~~text
+```text
 category
 message
 name
 contact
 device
-~~~
+```
 
 ---
 
@@ -1124,12 +1124,12 @@ O schema valida:
 
 Dispositivos aceitos:
 
-~~~text
+```text
 Computador
 Celular
 Tablet
 Não sei informar
-~~~
+```
 
 ---
 
@@ -1141,17 +1141,17 @@ Mas o backend não pode confiar apenas no navegador.
 
 Por isso o servidor também executa:
 
-~~~js
+```js
 questionSchema.safeParse(...)
-~~~
+```
 
 A ideia é:
 
-~~~text
+```text
 frontend valida para o usuário
         +
 backend valida para segurança/consistência
-~~~
+```
 
 ---
 
@@ -1159,17 +1159,17 @@ backend valida para segurança/consistência
 
 O endpoint support encaminha os dados para o:
 
-~~~text
+```text
 SUPPORT_APPS_SCRIPT_ENDPOINT
-~~~
+```
 
 O Apps Script pode então registrar as informações no sistema utilizado pelo projeto, incluindo Google Sheets.
 
 Existe documentação mais detalhada sobre esse fluxo em:
 
-~~~text
+```text
 src/docs/hauy_conecta_arquitetura_validacao.md
-~~~
+```
 
 ---
 
@@ -1177,9 +1177,9 @@ src/docs/hauy_conecta_arquitetura_validacao.md
 
 O formulário possui o campo:
 
-~~~text
+```text
 website
-~~~
+```
 
 Esse campo fica escondido.
 
@@ -1203,15 +1203,15 @@ Principais recursos:
 
 Arquivo de inicialização:
 
-~~~text
+```text
 src/lib/accessibility.js
-~~~
+```
 
 Arquivo de movimento:
 
-~~~text
+```text
 src/lib/accessibilityMotion.js
-~~~
+```
 
 ---
 
@@ -1219,17 +1219,17 @@ src/lib/accessibilityMotion.js
 
 As escalas atuais são:
 
-~~~text
+```text
 small  → 1
 medium → 1.15
 large  → 1.3
-~~~
+```
 
 A preferência é aplicada na variável:
 
-~~~text
+```text
 --accessibility-font-scale
-~~~
+```
 
 e armazenada no localStorage.
 
@@ -1244,17 +1244,17 @@ A aplicação considera:
 
 A função:
 
-~~~text
+```text
 shouldReduceMotion()
-~~~
+```
 
 combina as duas.
 
 Componentes com animação utilizam:
 
-~~~js
-useReducedMotion()
-~~~
+```js
+useReducedMotion();
+```
 
 para decidir como se comportar.
 
@@ -1266,7 +1266,7 @@ O AccessibilityMenu utiliza a API de síntese de voz do navegador.
 
 O fluxo é:
 
-~~~text
+```text
 texto
  ↓
 preparação
@@ -1278,7 +1278,7 @@ voz do navegador
 SpeechSynthesisUtterance
  ↓
 leitura
-~~~
+```
 
 ---
 
@@ -1286,21 +1286,21 @@ leitura
 
 O componente principal é:
 
-~~~text
+```text
 src/components/ThemeToggle.jsx
-~~~
+```
 
 A escolha fica no localStorage usando a chave:
 
-~~~text
+```text
 theme
-~~~
+```
 
 O tema é aplicado por meio da classe:
 
-~~~html
-<html class="dark">
-~~~
+```html
+<html class="dark"></html>
+```
 
 O estado inicial também pode considerar a preferência do sistema.
 
@@ -1310,13 +1310,13 @@ O estado inicial também pode considerar a preferência do sistema.
 
 O arquivo principal é:
 
-~~~text
+```text
 src/App.css
-~~~
+```
 
 A paleta utiliza tokens como:
 
-~~~text
+```text
 ink
 muted-ink
 paper
@@ -1328,14 +1328,14 @@ coral
 coral-soft
 background
 foreground
-~~~
+```
 
 As fontes principais são:
 
-~~~text
+```text
 Nunito
 Source Sans 3
-~~~
+```
 
 A interface procura manter uma estética:
 
@@ -1351,9 +1351,9 @@ A interface procura manter uma estética:
 
 Arquivo:
 
-~~~text
+```text
 src/lib/seo.js
-~~~
+```
 
 Centraliza operações de:
 
@@ -1372,24 +1372,24 @@ Cada página pode configurar seus próprios metadados.
 
 O projeto usa:
 
-~~~text
+```text
 Astratra + Playwright
-~~~
+```
 
 para gerar HTML das rotas.
 
 O script que cria a lista de rotas é:
 
-~~~text
+```text
 scripts/generate-prerender-routes.mjs
-~~~
+```
 
 Ele consulta os dados de:
 
-~~~text
+```text
 src/data/categories.js
 src/data/tutorials.js
-~~~
+```
 
 e gera rotas de categorias e tutoriais.
 
@@ -1399,9 +1399,9 @@ e gera rotas de categorias e tutoriais.
 
 O arquivo:
 
-~~~text
+```text
 astratra.prerender.config.cjs
-~~~
+```
 
 adiciona um shell de carregamento ao HTML.
 
@@ -1417,13 +1417,13 @@ Existe também um fallback para impedir que o site fique permanentemente bloquea
 
 O comando:
 
-~~~bash
+```bash
 npm run build
-~~~
+```
 
 executa:
 
-~~~text
+```text
 generate-image-metadata.mjs
         ↓
 generate-prerender-routes.mjs
@@ -1433,7 +1433,7 @@ vite build
 astratra-prerender
         ↓
 audit-images.mjs
-~~~
+```
 
 Cada etapa tem uma responsabilidade específica.
 
@@ -1441,15 +1441,15 @@ Cada etapa tem uma responsabilidade específica.
 
 # 45. Scripts npm
 
-| Comando | Finalidade |
-| --- | --- |
-| npm run dev | ambiente de desenvolvimento |
-| npm run build | build completo |
-| npm run lint | ESLint |
-| npm run preview | testa a build localmente |
-| npm run audit:images | auditoria de imagens |
-| npm run predev | metadata antes do dev |
-| npm run prelint | metadata antes do lint |
+| Comando              | Finalidade                  |
+| -------------------- | --------------------------- |
+| npm run dev          | ambiente de desenvolvimento |
+| npm run build        | build completo              |
+| npm run lint         | ESLint                      |
+| npm run preview      | testa a build localmente    |
+| npm run audit:images | auditoria de imagens        |
+| npm run predev       | metadata antes do dev       |
+| npm run prelint      | metadata antes do lint      |
 
 ---
 
@@ -1457,36 +1457,36 @@ Cada etapa tem uma responsabilidade específica.
 
 ## 1. Clonar
 
-~~~bash
+```bash
 git clone https://github.com/kleber-goncalves/helpe-center.git
 cd helpe-center
-~~~
+```
 
 ## 2. Instalar
 
-~~~bash
+```bash
 npm install
-~~~
+```
 
 ## 3. Configurar ambiente
 
 Crie:
 
-~~~text
+```text
 .env.local
-~~~
+```
 
 ## 4. Iniciar
 
-~~~bash
+```bash
 npm run dev
-~~~
+```
 
 ## 5. Abrir
 
-~~~text
+```text
 http://localhost:5173
-~~~
+```
 
 ---
 
@@ -1494,20 +1494,20 @@ http://localhost:5173
 
 O .env.example atual contém:
 
-~~~env
+```env
 SUPPORT_APPS_SCRIPT_ENDPOINT=
 VERCEL_OIDC_TOKEN=
 GEMINI_API_KEY=
 GEMINI_MODEL=
-~~~
+```
 
 Nunca coloque uma chave real diretamente no código.
 
 Em especial:
 
-~~~text
+```text
 GEMINI_API_KEY
-~~~
+```
 
 deve existir somente no ambiente do servidor.
 
@@ -1521,9 +1521,9 @@ Há três workflows.
 
 Executa na branch:
 
-~~~text
+```text
 feat/ferramentas
-~~~
+```
 
 Faz:
 
@@ -1548,18 +1548,18 @@ Executa na main e gera a versão pré-renderizada de produção.
 
 Os workflows utilizam:
 
-~~~yaml
+```yaml
 cancel-in-progress: true
-~~~
+```
 
 Portanto uma sequência como esta é normal:
 
-~~~text
+```text
 commit A → Action inicia
 commit B → Action novo inicia
 commit A → pode ser cancelado
 commit B → continua
-~~~
+```
 
 Por isso, quando um run aparece como cancelled, sempre confira primeiro o commit mais recente.
 
@@ -1569,9 +1569,9 @@ Por isso, quando um run aparece como cancelled, sempre confira primeiro o commit
 
 Arquivo:
 
-~~~text
+```text
 lighthouserc.json
-~~~
+```
 
 Hoje ele analisa pelo menos:
 
@@ -1591,9 +1591,9 @@ Algumas regras estruturais usam error.
 
 Portanto:
 
-~~~text
+```text
 warning ≠ necessariamente falha
-~~~
+```
 
 ---
 
@@ -1601,15 +1601,15 @@ warning ≠ necessariamente falha
 
 Arquivo:
 
-~~~text
+```text
 vercel.json
-~~~
+```
 
 A configuração indica que a Vercel publica:
 
-~~~text
+```text
 dist/
-~~~
+```
 
 e usa um build command simplificado porque a geração pesada já foi feita pelo processo do projeto.
 
@@ -1621,7 +1621,7 @@ A ideia é evitar repetir o pré-render com Playwright na etapa de publicação.
 
 O ciclo pode ser visualizado assim:
 
-~~~text
+```text
 alteração no código
        ↓
 git push
@@ -1639,7 +1639,7 @@ dist/
 produção
        ↓
 Vercel
-~~~
+```
 
 ---
 
@@ -1658,7 +1658,7 @@ Vercel
 
 Exemplo mínimo:
 
-~~~js
+```js
 {
     id: "como-usar-powerpoint",
     title: "Como usar o PowerPoint",
@@ -1683,7 +1683,7 @@ Exemplo mínimo:
         }
     ]
 }
-~~~
+```
 
 ---
 
@@ -1691,21 +1691,21 @@ Exemplo mínimo:
 
 Coloque o arquivo em:
 
-~~~text
+```text
 public/tutoriais/
-~~~
+```
 
 Depois use:
 
-~~~js
-image: "/tutoriais/powerpoint/passo-1.webp"
-~~~
+```js
+image: "/tutoriais/powerpoint/passo-1.webp";
+```
 
 Sempre adicione:
 
-~~~js
-alt: "Descrição clara do que a imagem mostra."
-~~~
+```js
+alt: "Descrição clara do que a imagem mostra.";
+```
 
 Não edite imageMetadata.json manualmente.
 
@@ -1715,10 +1715,10 @@ Não edite imageMetadata.json manualmente.
 
 Exemplo:
 
-~~~js
+```js
 video: "/tutoriais/powerpoint/passo-1.mp4",
 poster: "/tutoriais/powerpoint/passo-1-poster.webp"
-~~~
+```
 
 O poster deve existir e preferencialmente ter dimensões corretas para a mídia.
 
@@ -1728,22 +1728,22 @@ O poster deve existir e preferencialmente ter dimensões corretas para a mídia.
 
 Exemplo:
 
-~~~js
+```js
 externalLearning: [
     {
         type: "video",
         title: "Nome da videoaula",
         description: "Descrição curta.",
-        url: "https://www.youtube.com/watch?v=..."
-    }
-]
-~~~
+        url: "https://www.youtube.com/watch?v=...",
+    },
+];
+```
 
 Também existe:
 
-~~~text
+```text
 type: "playlist"
-~~~
+```
 
 A interface de conclusão usa esses dados para criar a recomendação.
 
@@ -1753,13 +1753,13 @@ A interface de conclusão usa esses dados para criar a recomendação.
 
 Arquivo:
 
-~~~text
+```text
 src/data/tools.js
-~~~
+```
 
 Estrutura:
 
-~~~js
+```js
 {
     id: "exemplo",
     name: "Nome",
@@ -1770,13 +1770,13 @@ Estrutura:
     icon: FileOutput,
     featured: false
 }
-~~~
+```
 
 Se o provedor ainda não existir, confira:
 
-~~~text
+```text
 src/data/toolProviders.js
-~~~
+```
 
 ---
 
@@ -1784,18 +1784,18 @@ src/data/toolProviders.js
 
 Arquivo:
 
-~~~text
+```text
 src/data/faq.js
-~~~
+```
 
 Formato:
 
-~~~js
+```js
 {
     question: "Pergunta?",
     answer: "Resposta."
 }
-~~~
+```
 
 ---
 
@@ -1803,9 +1803,9 @@ Formato:
 
 Arquivo:
 
-~~~text
+```text
 src/data/categories.js
-~~~
+```
 
 Depois de criar uma categoria, confira:
 
@@ -1852,11 +1852,11 @@ Automação de build e processamento deve ficar em scripts/.
 
 Evite editar diretamente:
 
-~~~text
+```text
 src/generated/
 public/_optimized/
 dist/
-~~~
+```
 
 Esses itens são derivados do código-fonte ou do processo de build.
 
@@ -1870,9 +1870,9 @@ Se uma informação em imageMetadata.json estiver errada, não corrija o JSON ma
 
 Corrija a origem ou o script:
 
-~~~text
+```text
 scripts/generate-image-metadata.mjs
-~~~
+```
 
 e gere novamente.
 
@@ -1902,9 +1902,9 @@ O sistema atual foi desenhado para trabalhar por passo.
 
 Qualquer nova animação em GSAP ou CSS deve considerar:
 
-~~~text
+```text
 useReducedMotion()
-~~~
+```
 
 ou os mecanismos de reduced motion existentes no projeto.
 
@@ -1931,7 +1931,7 @@ teste também em largura pequena.
 
 A imagem segue esta cadeia:
 
-~~~text
+```text
 tutorials.js
       ↓
 TutorialStep
@@ -1943,7 +1943,7 @@ OptimizedImage
 imageMetadata
       ↓
 arquivo public/
-~~~
+```
 
 Isso explica por que uma alteração na forma de renderizar imagem pode afetar:
 
@@ -1957,7 +1957,7 @@ Isso explica por que uma alteração na forma de renderizar imagem pode afetar:
 
 # 68. Formulário: arquitetura completa
 
-~~~text
+```text
 QuestionForm
       ↓
 api/support.js
@@ -1967,7 +1967,7 @@ questionSchema
 Apps Script
       ↓
 Google Sheets
-~~~
+```
 
 O frontend melhora a experiência.
 
@@ -1977,7 +1977,7 @@ O backend garante a validação do lado do servidor.
 
 # 69. Assistente: arquitetura completa
 
-~~~text
+```text
 HauyAssistant
       ↓
 api/assistant.js
@@ -1989,13 +1989,13 @@ top 3 tutoriais relevantes
 Gemini
       ↓
 resposta
-~~~
+```
 
 ---
 
 # 70. SEO: arquitetura completa
 
-~~~text
+```text
 dados
  ↓
 página React
@@ -2007,13 +2007,13 @@ metadados
 pré-render
  ↓
 HTML final
-~~~
+```
 
 ---
 
 # 71. Imagens: arquitetura de performance
 
-~~~text
+```text
 imagem original
       ↓
 Sharp
@@ -2027,7 +2027,7 @@ variantes responsivas
 OptimizedImage
       ↓
 navegador
-~~~
+```
 
 ---
 
@@ -2035,14 +2035,14 @@ navegador
 
 A análise da branch atual encontrou aproximadamente:
 
-~~~text
+```text
 8 tutoriais ativos
 61 referências de imagens locais nos dados
 18 referências de vídeo local nos dados
 23 ferramentas externas
 8 categorias
 8 recomendações externalLearning
-~~~
+```
 
 Esses números podem mudar naturalmente quando novos conteúdos forem adicionados.
 
@@ -2068,10 +2068,10 @@ Por isso esta documentação usa o código atual como referência principal.
 
 O arquivo atualmente versionado ainda apresenta referências a:
 
-~~~text
+```text
 /tutoriais/digitalizar-documento
 /tutoriais/imprimir-documento
-~~~
+```
 
 Esses tutoriais não estão entre os oito tutoriais ativos de src/data/tutorials.js.
 
@@ -2081,9 +2081,9 @@ Portanto, não use prerender-routes.json como fonte oficial da lista de tutoriai
 
 A fonte oficial é:
 
-~~~text
+```text
 src/data/tutorials.js
-~~~
+```
 
 ---
 
@@ -2091,17 +2091,17 @@ src/data/tutorials.js
 
 Existe:
 
-~~~text
+```text
 src/data/outres.js
-~~~
+```
 
 Ele atualmente contém grandes trechos comentados e não funciona como a coleção principal usada pelo runtime.
 
 Os tutoriais atuais estão em:
 
-~~~text
+```text
 src/data/tutorials.js
-~~~
+```
 
 ---
 
@@ -2109,13 +2109,13 @@ src/data/tutorials.js
 
 Além desta documentação, existem:
 
-~~~text
+```text
 src/docs/appScrips.md
 src/docs/appScriptV2.md
 src/docs/assintenty-ia.md
 src/docs/hauy_conecta_arquitetura_validacao.md
 src/docs/validaçãoFormFront.md
-~~~
+```
 
 Esses documentos entram em mais detalhe em assuntos específicos.
 
@@ -2127,7 +2127,7 @@ Este documento deve funcionar como porta de entrada geral.
 
 Uma ordem amigável para iniciante é:
 
-~~~text
+```text
 1. main.jsx
 2. App.jsx
 3. pages/
@@ -2140,13 +2140,13 @@ Uma ordem amigável para iniciante é:
 10. scripts/
 11. GitHub Actions
 12. Vercel
-~~~
+```
 
 Não tente entender tudo de uma vez.
 
 Primeiro entenda o fluxo:
 
-~~~text
+```text
 rota
  ↓
 página
@@ -2154,11 +2154,11 @@ página
 componente
  ↓
 dados
-~~~
+```
 
 Depois avance para:
 
-~~~text
+```text
 hooks
  ↓
 libs
@@ -2166,7 +2166,7 @@ libs
 backend
  ↓
 build
-~~~
+```
 
 ---
 
@@ -2174,7 +2174,7 @@ build
 
 Para navegar por este código com menos dificuldade, vale dominar:
 
-~~~text
+```text
 const
 let
 if
@@ -2190,7 +2190,7 @@ async/await
 destructuring
 template strings
 import/export
-~~~
+```
 
 ---
 
@@ -2198,7 +2198,7 @@ import/export
 
 A sequência recomendada:
 
-~~~text
+```text
 componentes
  ↓
 props
@@ -2220,13 +2220,13 @@ lazy
 Suspense
  ↓
 React Router
-~~~
+```
 
 ---
 
 # 80. Checklist antes de fazer commit
 
-~~~text
+```text
 [ ] O arquivo está no lugar correto?
 [ ] O conteúdo ficou em src/data quando deveria?
 [ ] Acessibilidade foi considerada?
@@ -2238,13 +2238,13 @@ React Router
 [ ] npm run build passou?
 [ ] Validate passou?
 [ ] Lighthouse passou?
-~~~
+```
 
 ---
 
 # 81. Checklist para adicionar tutorial
 
-~~~text
+```text
 [ ] ID único
 [ ] título
 [ ] categoria existente
@@ -2261,7 +2261,7 @@ React Router
 [ ] lint
 [ ] build
 [ ] Actions
-~~~
+```
 
 ---
 
@@ -2271,7 +2271,7 @@ O projeto não deve crescer apenas porque uma tecnologia nova parece interessant
 
 O ciclo recomendado é:
 
-~~~text
+```text
 problema real
    ↓
 necessidade real
@@ -2285,7 +2285,7 @@ acessibilidade
 validação
    ↓
 publicação
-~~~
+```
 
 O melhor recurso é aquele que resolve uma necessidade real da comunidade escolar e continua fácil de manter depois.
 
@@ -2295,7 +2295,7 @@ O melhor recurso é aquele que resolve uma necessidade real da comunidade escola
 
 Se você guardar somente uma ideia sobre este projeto, guarde esta:
 
-~~~text
+```text
 PÁGINAS
    ↓
 usam COMPONENTES
@@ -2311,11 +2311,11 @@ passam pelo BUILD
 são VALIDADAS
    ↓
 chegam à VERCEL
-~~~
+```
 
 E para os tutoriais:
 
-~~~text
+```text
 dados do tutorial
       ↓
 Tutorial
@@ -2331,13 +2331,14 @@ Lightbox ou player
 próximo passo
       ↓
 conclusão
-~~~
+```
+
 ---
 
 ## Hauy Conecta
 
 Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mairync.
 
-~~~text
+```text
 PESQUISAR → ENCONTRAR → APRENDER → RESOLVER
-~~~
+```

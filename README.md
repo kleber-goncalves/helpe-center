@@ -27,7 +27,7 @@
   &nbsp;•&nbsp;
   <a href="https://hauy-conecta.vercel.app/categorias" target="_blank">🗂️ Categorias</a>
   &nbsp;•&nbsp;
-  <a href="https://hauy-conecta.vercel.app/assistente" target="_blank">🤖 Assistente</a>
+  <a href="https://hauy-conecta.vercel.app/assistente-hauy" target="_blank">🤖 Assistente</a>
   &nbsp;•&nbsp;
   <a href="https://hauy-conecta.vercel.app/faq" target="_blank">❓ FAQ</a>
 </p>
@@ -123,10 +123,10 @@ Como parte da etapa de diagnóstico, uma pesquisa reuniu **19 respostas**. Os re
 
 ### Prioridades de conteúdo
 
-| Prioridade | Assuntos |
-| --- | --- |
-| Maior prioridade | Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos, sumário automático e Canva |
-| Também importantes | PDF, e-mail, plataformas da escola, acesso a contas e Google Drive |
+| Prioridade          | Assuntos                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Maior prioridade    | Excel, formatação de trabalhos, impressão, digitalização, compartilhamento de arquivos, sumário automático e Canva          |
+| Também importantes  | PDF, e-mail, plataformas da escola, acesso a contas e Google Drive                                                          |
 | Outras necessidades | PowerPoint, LibreOffice, digitação, informática básica, Data Show, edição de imagens e vídeos, banco de dados e programação |
 
 O objetivo não é criar uma enorme biblioteca de tecnologia.
@@ -151,7 +151,7 @@ O Hauy Conecta busca:
 
 ## Como a solução funciona
 
-~~~mermaid
+```mermaid
 flowchart LR
     A[Pessoa com uma dúvida] --> B[PESQUISAR]
     B --> C{Encontrou o conteúdo?}
@@ -163,7 +163,7 @@ flowchart LR
     H -->|Sim| E
     H -->|Não| I[Enviar uma dúvida]
     I --> J[Nova necessidade para a equipe]
-~~~
+```
 
 A experiência é organizada em torno de uma sequência simples:
 
@@ -283,7 +283,7 @@ O projeto suporta tema claro e escuro, com adaptação à preferência salva do 
 
 A estrutura pública da aplicação é intencionalmente simples:
 
-~~~text
+```text
 Hauy Conecta
 ├── Início
 ├── Categorias
@@ -294,7 +294,7 @@ Hauy Conecta
 ├── Sobre o projeto
 ├── Enviar uma dúvida
 └── Assistente
-~~~
+```
 
 Isso mantém a arquitetura de navegação alinhada ao objetivo educacional: **menos camadas, menos fricção e mais previsibilidade**.
 
@@ -304,36 +304,36 @@ Isso mantém a arquitetura de navegação alinhada ao objetivo educacional: **me
 
 ### Front-end
 
-| Tecnologia | Função |
-| --- | --- |
-| [React](https://react.dev/) | Construção da interface |
-| [React Router](https://reactrouter.com/) | Roteamento e navegação |
-| [Vite](https://vite.dev/) | Desenvolvimento e build |
-| [Tailwind CSS](https://tailwindcss.com/) | Estilização utilitária |
-| [GSAP](https://gsap.com/) | Animações e transições |
-| [@gsap/react](https://gsap.com/resources/react-basics/) | Integração do GSAP com React |
-| [Lucide React](https://lucide.dev/) | Ícones |
-| [Radix UI](https://www.radix-ui.com/) | Primitivas acessíveis de interface |
+| Tecnologia                                                               | Função                                            |
+| ------------------------------------------------------------------------ | ------------------------------------------------- |
+| [React](https://react.dev/)                                              | Construção da interface                           |
+| [React Router](https://reactrouter.com/)                                 | Roteamento e navegação                            |
+| [Vite](https://vite.dev/)                                                | Desenvolvimento e build                           |
+| [Tailwind CSS](https://tailwindcss.com/)                                 | Estilização utilitária                            |
+| [GSAP](https://gsap.com/)                                                | Animações e transições                            |
+| [@gsap/react](https://gsap.com/resources/react-basics/)                  | Integração do GSAP com React                      |
+| [Lucide React](https://lucide.dev/)                                      | Ícones                                            |
+| [Radix UI](https://www.radix-ui.com/)                                    | Primitivas acessíveis de interface                |
 | [@sketchyicons/react](https://www.npmjs.com/package/@sketchyicons/react) | Ícones ilustrativos usados em partes da interface |
-| [@thesvg/react](https://www.npmjs.com/package/@thesvg/react) | Elementos SVG usados nas transições visuais |
+| [@thesvg/react](https://www.npmjs.com/package/@thesvg/react)             | Elementos SVG usados nas transições visuais       |
 
 ### Dados, IA e validação
 
-| Tecnologia | Função |
-| --- | --- |
-| [Google GenAI](https://ai.google.dev/) | Integração do Assistente Hauy com o modelo Gemini |
-| [Zod](https://zod.dev/) | Biblioteca disponível para validação e modelagem |
-| Busca local de tutoriais | Seleção de conteúdo relevante antes da resposta do assistente |
+| Tecnologia                             | Função                                                        |
+| -------------------------------------- | ------------------------------------------------------------- |
+| [Google GenAI](https://ai.google.dev/) | Integração do Assistente Hauy com o modelo Gemini             |
+| [Zod](https://zod.dev/)                | Biblioteca disponível para validação e modelagem              |
+| Busca local de tutoriais               | Seleção de conteúdo relevante antes da resposta do assistente |
 
 ### Build e entrega
 
-| Tecnologia | Função |
-| --- | --- |
-| [Playwright](https://playwright.dev/) | Navegação automatizada durante o pré-render |
-| [Astratra Prerender](https://www.npmjs.com/package/@astratra/prerender) | Geração das páginas HTML pré-renderizadas |
-| [Sharp](https://sharp.pixelplumbing.com/) | Processamento/conversão de imagens |
-| [GitHub Actions](https://docs.github.com/actions) | Automação de build e pré-render |
-| [Vercel](https://vercel.com/) | Hospedagem e entrega do site |
+| Tecnologia                                                              | Função                                      |
+| ----------------------------------------------------------------------- | ------------------------------------------- |
+| [Playwright](https://playwright.dev/)                                   | Navegação automatizada durante o pré-render |
+| [Astratra Prerender](https://www.npmjs.com/package/@astratra/prerender) | Geração das páginas HTML pré-renderizadas   |
+| [Sharp](https://sharp.pixelplumbing.com/)                               | Processamento/conversão de imagens          |
+| [GitHub Actions](https://docs.github.com/actions)                       | Automação de build e pré-render             |
+| [Vercel](https://vercel.com/)                                           | Hospedagem e entrega do site                |
 
 ---
 
@@ -341,7 +341,7 @@ Isso mantém a arquitetura de navegação alinhada ao objetivo educacional: **me
 
 A aplicação usa uma arquitetura client-side com páginas carregadas sob demanda.
 
-~~~mermaid
+```mermaid
 flowchart TB
     U[Browser]
 
@@ -372,7 +372,7 @@ flowchart TB
     D --> GH[GitHub]
     GH --> VC[Vercel]
     VC --> U
-~~~
+```
 
 ### Code splitting
 
@@ -382,13 +382,13 @@ Isso permite que cada rota carregue seu módulo quando necessário, em vez de en
 
 Exemplo conceitual:
 
-~~~jsx
+```jsx
 const Tutorials = lazy(() =>
     import("./pages/Tutorials").then((module) => ({
         default: module.Tutorials,
     })),
 );
-~~~
+```
 
 ### Componentização
 
@@ -418,7 +418,7 @@ Para o Hauy Conecta, cada rota pública relevante é pré-renderizada para que o
 
 ### O pipeline
 
-~~~text
+```text
 src/data/categories.js
         +
 src/data/tutorials.js
@@ -439,7 +439,7 @@ dist/
 └── tutoriais/
     ├── index.html
     └── <tutorial>/index.html
-~~~
+```
 
 A lista de rotas é gerada automaticamente a partir dos dados da aplicação.
 
@@ -462,9 +462,9 @@ As páginas usam essas funções para definir metadados específicos.
 
 Um tutorial pode gerar:
 
-~~~html
+```html
 <title>Como criar um sumário automático no Word | Hauy Conecta</title>
-~~~
+```
 
 em vez de depender somente do título genérico definido no <code>index.html</code>.
 
@@ -478,9 +478,9 @@ A acessibilidade foi tratada como uma camada transversal da aplicação.
 
 O projeto considera:
 
-~~~css
-@media (prefers-reduced-motion: reduce)
-~~~
+```css
+@media (prefers-reduced-motion: reduce);
+```
 
 e também possui uma preferência explícita salva pelo usuário.
 
@@ -498,9 +498,9 @@ com escalas pré-definidas para diferentes necessidades de leitura.
 
 O estado de contraste elevado aplica uma paleta alternativa por meio de:
 
-~~~html
-<html data-accessibility-contrast="high">
-~~~
+```html
+<html data-accessibility-contrast="high"></html>
+```
 
 ### Foco visível
 
@@ -516,15 +516,15 @@ A interface utiliza elementos semânticos, <code>aria-label</code>, <code>aria-l
 
 O Assistente Hauy possui uma camada própria em:
 
-~~~text
+```text
 src/components/HauyAssistant.jsx
 src/lib/assistant.js
 api/assistant.js
-~~~
+```
 
 ### Fluxo da pergunta
 
-~~~mermaid
+```mermaid
 sequenceDiagram
     participant U as Usuário
     participant UI as HauyAssistant
@@ -541,7 +541,7 @@ sequenceDiagram
     G-->>API: Resposta
     API-->>UI: Resposta + tutoriais relacionados
     UI-->>U: Orientação
-~~~
+```
 
 ### Limites implementados
 
@@ -596,7 +596,7 @@ Responsável por armazenar o conteúdo passo a passo.
 
 A estrutura permite representar recursos como:
 
-~~~js
+```js
 {
     id: "exemplo",
     title: "Título do tutorial",
@@ -615,7 +615,7 @@ A estrutura permite representar recursos como:
         }
     ]
 }
-~~~
+```
 
 Isso permite que a interface, a busca e o Assistente Hauy utilizem a mesma fonte de conteúdo.
 
@@ -652,10 +652,10 @@ A função <code>/api/assistant</code> implementa validações de:
 
 Também envia:
 
-~~~http
+```http
 Cache-Control: no-store
 X-Content-Type-Options: nosniff
-~~~
+```
 
 nas respostas JSON.
 
@@ -667,7 +667,7 @@ nas respostas JSON.
 
 Uma visão simplificada do repositório:
 
-~~~text
+```text
 helpe-center/
 ├── api/
 │   └── assistant.js
@@ -731,7 +731,7 @@ helpe-center/
 ├── package.json
 ├── vercel.json
 └── README.md
-~~~
+```
 
 ---
 
@@ -747,16 +747,16 @@ Recomenda-se ter instalado:
 
 ### 1. Clonar o repositório
 
-~~~bash
+```bash
 git clone https://github.com/kleber-goncalves/helpe-center.git
 cd helpe-center
-~~~
+```
 
 ### 2. Instalar dependências
 
-~~~bash
+```bash
 npm install
-~~~
+```
 
 ### 3. Configurar variáveis de ambiente
 
@@ -768,17 +768,17 @@ com as variáveis descritas na seção de ambiente.
 
 ### 4. Iniciar o servidor de desenvolvimento
 
-~~~bash
+```bash
 npm run dev
-~~~
+```
 
 Por padrão, o Vite executa o ambiente local na porta <code>5173</code>.
 
 ### 5. Abrir no navegador
 
-~~~text
+```text
 http://localhost:5173
-~~~
+```
 
 ---
 
@@ -788,15 +788,15 @@ O Assistente Hauy utiliza variáveis de ambiente no lado do servidor.
 
 ### Obrigatória
 
-~~~env
+```env
 GEMINI_API_KEY=sua_chave_aqui
-~~~
+```
 
 ### Opcional
 
-~~~env
+```env
 GEMINI_MODEL=gemini-3.5-flash-lite
-~~~
+```
 
 Quando <code>GEMINI_MODEL</code> não é definida, a API utiliza o modelo indicado no código como padrão.
 
@@ -806,30 +806,30 @@ Quando <code>GEMINI_MODEL</code> não é definida, a API utiliza o modelo indica
 
 ## Scripts disponíveis
 
-| Comando | Finalidade |
-| --- | --- |
-| <code>npm run dev</code> | Inicia o servidor de desenvolvimento do Vite |
-| <code>npm run build</code> | Gera as rotas de pré-renderização, compila a aplicação e executa o pré-render |
-| <code>npm run preview</code> | Serve localmente a build produzida |
-| <code>npm run lint</code> | Executa o ESLint |
+| Comando                      | Finalidade                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| <code>npm run dev</code>     | Inicia o servidor de desenvolvimento do Vite                                  |
+| <code>npm run build</code>   | Gera as rotas de pré-renderização, compila a aplicação e executa o pré-render |
+| <code>npm run preview</code> | Serve localmente a build produzida                                            |
+| <code>npm run lint</code>    | Executa o ESLint                                                              |
 
 ### Build completo
 
 O comando:
 
-~~~bash
+```bash
 npm run build
-~~~
+```
 
 executa, em sequência:
 
-~~~text
+```text
 generate-prerender-routes.mjs
         ↓
 vite build
         ↓
 astratra-prerender
-~~~
+```
 
 ---
 
@@ -861,19 +861,19 @@ A Vercel recebe o estado versionado do repositório e publica a pasta:
 
 A configuração atual de <code>vercel.json</code> utiliza:
 
-~~~json
+```json
 {
-  "cleanUrls": true,
-  "buildCommand": "echo \"Using pre-rendered dist generated by GitHub Actions\"",
-  "outputDirectory": "dist"
+    "cleanUrls": true,
+    "buildCommand": "echo \"Using pre-rendered dist generated by GitHub Actions\"",
+    "outputDirectory": "dist"
 }
-~~~
+```
 
 A escolha existe para evitar que a Vercel tenha de executar localmente o processo de pré-renderização com Playwright.
 
 ### Pipeline completo
 
-~~~text
+```text
 git push
    ↓
 GitHub Actions
@@ -893,24 +893,24 @@ commit automático
 Vercel
    ↓
 deploy
-~~~
+```
 
 ---
 
 ## Rotas
 
-| Rota | Finalidade |
-| --- | --- |
-| <code>/</code> | Página inicial |
-| <code>/categorias</code> | Lista de categorias |
-| <code>/categorias/:categoryId</code> | Categoria específica |
-| <code>/tutoriais</code> | Biblioteca de tutoriais |
-| <code>/tutoriais/:tutorialId</code> | Tutorial específico |
-| <code>/faq</code> | Perguntas frequentes |
-| <code>/sobre</code> | Informações sobre o projeto |
-| <code>/enviar-duvida</code> | Canal para enviar uma nova dúvida |
-| <code>/assistente</code> | Assistente Hauy |
-| <code>*</code> | Página personalizada de não encontrado |
+| Rota                                 | Finalidade                             |
+| ------------------------------------ | -------------------------------------- |
+| <code>/</code>                       | Página inicial                         |
+| <code>/categorias</code>             | Lista de categorias                    |
+| <code>/categorias/:categoryId</code> | Categoria específica                   |
+| <code>/tutoriais</code>              | Biblioteca de tutoriais                |
+| <code>/tutoriais/:tutorialId</code>  | Tutorial específico                    |
+| <code>/faq</code>                    | Perguntas frequentes                   |
+| <code>/sobre</code>                  | Informações sobre o projeto            |
+| <code>/enviar-duvida</code>          | Canal para enviar uma nova dúvida      |
+| <code>/assistente-hauy</code>        | Assistente Hauy                        |
+| <code>\*</code>                      | Página personalizada de não encontrado |
 
 ### Links principais
 
@@ -919,7 +919,7 @@ deploy
 - [Tutoriais](https://hauy-conecta.vercel.app/tutoriais)
 - [FAQ](https://hauy-conecta.vercel.app/faq)
 - [Sobre o projeto](https://hauy-conecta.vercel.app/sobre)
-- [Assistente Hauy](https://hauy-conecta.vercel.app/assistente)
+- [Assistente Hauy](https://hauy-conecta.vercel.app/assistente-hauy)
 - [Enviar uma dúvida](https://hauy-conecta.vercel.app/enviar-duvida)
 
 ---
@@ -978,7 +978,7 @@ A proposta combina:
 
 Mais do que demonstrar uma interface, o projeto busca demonstrar um ciclo completo de produto:
 
-~~~text
+```text
 Problema real
     ↓
 Pesquisa
@@ -997,7 +997,7 @@ Uso real
     ↓
 Novas dúvidas
     ↺
-~~~
+```
 
 ---
 

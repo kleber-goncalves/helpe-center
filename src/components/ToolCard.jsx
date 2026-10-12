@@ -1,9 +1,11 @@
-import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 import { Badge, Card } from "./ui";
+import { SvgIcon } from "./SvgIcon";
 
 export function ToolCard({ tool }) {
-    const Icon = tool.icon;
+    const providerLogo =
+        tool.provider === "iLovePDF" ? "/ilovePDF.svg" : "/iloveIMG.svg";
 
     return (
         <a
@@ -11,6 +13,7 @@ export function ToolCard({ tool }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Abrir a ferramenta ${tool.name} no ${tool.provider}. Abre em uma nova aba.`}
+            title={`Abrir a ferramenta ${tool.name} no ${tool.provider}. Abre em uma nova aba.`}
             className="
                 group
                 block
@@ -27,12 +30,15 @@ export function ToolCard({ tool }) {
                     h-full
                     min-h-[220px]
                     p-5
-                    transition-[border-color,background-color,transform]
-                    duration-200
+                    transition-all
+                    duration-300
+                    ease-in-out
+                    shadow-soft
+                    bg-card
+                    dark:bg-paper
                     group-hover:-translate-y-0.5
-                    group-hover:border-coral
-                    group-hover:bg-mist
-                    group-hover:shadow-soft
+                    group-hover:border-coral/60
+                    group-hover:shadow-lifted
                     motion-reduce:transform-none
                 "
             >
@@ -46,49 +52,43 @@ export function ToolCard({ tool }) {
                                 items-center
                                 justify-center
                                 rounded-lg
-                                bg-coral-soft
-                                text-coral
+                                transition-transform
+                                duration-200
+                                ease-in-out
+                                group-hover:scale-111
+                      
                             "
                             aria-hidden="true"
                         >
-                            <Icon className="size-5" strokeWidth={1.9} />
+                            <SvgIcon icon={tool.icon} fallbackSrc={providerLogo} className="size-9 " />
                         </span>
-
-                        <ExternalLink
-                            className="
+                        <span className="inline-flex items-center gap-2 text-sm font-bold text-muted-ink group-hover:text-coral">
+                            Abrir
+                            <ExternalLink
+                                className="
                                 size-4
                                 shrink-0
                                 text-muted-ink
                                 transition-colors
                                 group-hover:text-coral
                             "
-                            aria-hidden="true"
-                        />
+                                aria-hidden="true"
+                            />
+                        </span>
                     </div>
 
                     <div className="mt-5">
                         <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="font-display text-lg font-bold text-ink">
-                                {tool.name}
-                            </h3>
+                            <h3 className="font-display text-lg font-bold text-ink">{tool.name}</h3>
 
                             <Badge>{tool.category}</Badge>
                         </div>
 
-                        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                            {tool.description}
-                        </p>
+                        <p className="mt-2 text-sm leading-6 text-muted-foreground">{tool.description}</p>
                     </div>
 
                     <div className="mt-auto flex items-center justify-between gap-4 pt-6">
-                        <span className="text-xs font-semibold text-muted-ink">
-                            {tool.provider} · site externo
-                        </span>
-
-                        <span className="inline-flex items-center gap-1 text-sm font-bold text-coral">
-                            Abrir
-                            <ArrowUpRight className="size-4" aria-hidden="true" />
-                        </span>
+                        <span className="text-xs font-semibold text-muted-ink">{tool.provider} · site externo</span>
                     </div>
                 </div>
             </Card>

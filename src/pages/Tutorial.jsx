@@ -1,4 +1,4 @@
-import { ArrowLeft, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -162,6 +162,10 @@ export function Tutorial() {
 
     const category = categories.find((item) => item.id === tutorial.category);
 
+    const Icon = tutorial.icon;
+
+    const IconCategory = category.icon;
+
     const related = tutorials.filter((item) => item.category === tutorial.category && item.id !== tutorial.id).slice(0, 2);
 
     const steps = tutorial.steps ?? createSteps(tutorial);
@@ -299,7 +303,7 @@ export function Tutorial() {
                      * ==================================================
                      */}
 
-                    <article data-reader-content  className="min-w-0">
+                    <article data-reader-content className="min-w-0">
                         {activeStep === 0 && (
                             <>
                                 {/*
@@ -309,7 +313,13 @@ export function Tutorial() {
                                  */}
 
                                 <header>
-                                    <Badge>{category?.name ?? tutorial.category}</Badge>
+                                    <Badge className="py-1 flex w-fit items-center gap-1.5 ">
+                                        <span className="flex ">
+                                            <IconCategory className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                        </span>
+                                        {category?.name ?? tutorial.category}
+                                    </Badge>
+                                   
 
                                     <h1
                                         className="
@@ -338,9 +348,17 @@ export function Tutorial() {
                                     </p>
 
                                     <div className="mt-5 flex flex-wrap gap-2">
-                                        <Badge>{tutorial.difficulty}</Badge>
+                                        <Badge className={` ${tutorial.cor_difficulty} text-xs font-semibold`}>
+                                            <span className="flex mb-2 ">
+                                                <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                            </span>
+                                            <span>{tutorial.difficulty}</span>
+                                        </Badge>
 
-                                        <Badge>{tutorial.duration}</Badge>
+                                        <Badge className="flex gap-1 shrink-0 items-center text-xs leading-6 text-muted-ink">
+                                            <Clock className="h-3.5 w-3.5" />
+                                            {tutorial.duration}
+                                        </Badge>
                                     </div>
                                 </header>
 
@@ -468,11 +486,7 @@ export function Tutorial() {
                          * ==================================================
                          */}
 
-                        {activeStep === steps.length - 1 && (
-                            <TutorialCompletion
-                                externalLearning={tutorial.externalLearning}
-                            />
-                        )}
+                        {activeStep === steps.length - 1 && <TutorialCompletion externalLearning={tutorial.externalLearning} />}
 
                         {/*
                          * ==================================================

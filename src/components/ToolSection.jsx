@@ -2,25 +2,23 @@ import { SectionTransition } from "./SectionTransition";
 import { ToolCard } from "./ToolCard";
 import { OptimizedImage } from "./OptimizedImage";
 
-export function ToolSection({ id, background, label, title, restTitle, alt, logo, description, icon: Icon, tools, transition }) {
+export function ToolSection({ id, background, label, title, restTitle, alt, logo, showImage = true, description, icon: Icon, tools, transition, sizeIcon, bgColor }) {
     return (
         <section aria-labelledby={id} className={background}>
             <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
                 <div className="flex  items-start gap-3">
                     <span
-                        className="
-                            flex
+                        className={`flex
                             size-20
                             shrink-0
                             items-center
                             justify-center
                             rounded-lg
-                            bg-coral-soft
-                            text-coral
-                        "
+                            text-ink/90
+                            ${bgColor}`}
                         aria-hidden="true"
                     >
-                        <Icon className="size-12" strokeWidth={1.9} />
+                        <Icon className={`${sizeIcon}`} strokeWidth={1.9} />
                     </span>
 
                     <div className="min-w-0  pb-5">
@@ -31,16 +29,7 @@ export function ToolSection({ id, background, label, title, restTitle, alt, logo
                                 {title}
                             </h2>
                             <div className="flex items-center gap-0.5">
-                                <OptimizedImage
-                                    src={logo}
-                                    alt={alt}
-                                    fetchPriority="low"
-                                    loading="lazy"
-                                    decoding="async"
-                                    wrapperClassName="h-8 w-8 shrink-0 rounded-lg"
-                                    sizes="32px"
-                                    className="object-contain"
-                                />
+                                {showImage && logo && <OptimizedImage src={logo} alt={alt} fetchPriority="low" loading="lazy" decoding="async" wrapperClassName="h-8 w-8 shrink-0 rounded-lg" sizes="32px" className="object-contain" />}
                                 <h2 className=" break-words text-2xl font-bold text-ink sm:text-3xl">{restTitle}</h2>
                             </div>
                         </div>
