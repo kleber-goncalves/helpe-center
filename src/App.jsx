@@ -101,18 +101,13 @@ function RouteLoadingFallback() {
 function AppContent() {
     const [loading, setLoading] = useState(true);
 
-    const location =
-        useLocation();
+    const location = useLocation();
 
-    const handlePreloaderComplete =
-        useCallback(() => {
-            document.documentElement.setAttribute(
-                "data-hauy-preloader-ready",
-                "true",
-            );
+    const handlePreloaderComplete = useCallback(() => {
+        document.documentElement.setAttribute("data-hauy-preloader-ready", "true");
 
-            setLoading(false);
-        }, []);
+        setLoading(false);
+    }, []);
 
     return (
         <>
@@ -182,7 +177,7 @@ function AppContent() {
                     setOpen() dentro de useEffect.
                 */}
 
-                {location.pathname !== "/assistente" && <HauyAssistantWidget key={location.pathname} />}
+                {location.pathname !== "/assistente-hauy" && <HauyAssistantWidget key={location.pathname} />}
 
                 {/* ==========================================
                     ROTAS
@@ -240,7 +235,7 @@ function AppContent() {
                             ASSISTENTE
                         ================================= */}
 
-                        <Route path="/assistente" element={<Assistente />} />
+                        <Route path="/assistente-hauy" element={<Assistente />} />
 
                         {/* ================================
                             404

@@ -6,8 +6,6 @@ import { Link, NavLink } from "react-router-dom";
 // GSAP
 import { gsap } from "gsap";
 
-
-
 // Componetes
 import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
@@ -20,7 +18,7 @@ const links = [
     ["Tutoriais", "/tutoriais", BookOpen],
     ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
-    ["Assistente Hauy", "/assistente", BotMessageSquare],
+    ["Assistente Hauy", "/assistente-hauy", BotMessageSquare],
     ["Sobre", "/sobre", Info],
 ];
 
@@ -223,16 +221,7 @@ export function MobileHeader() {
                     ================================= */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                         <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
-                            <OptimizedImage
-                                src="/logo.svg"
-                                alt="Hauy Conecta"
-                                loading="eager"
-                                fetchPriority="high"
-                                decoding="async"
-                                wrapperClassName="h-full w-full"
-                                sizes="52px"
-                                className="object-contain"
-                            />
+                            <OptimizedImage src="/logo.svg" alt="Hauy Conecta" loading="eager" fetchPriority="high" decoding="async" wrapperClassName="h-full w-full" sizes="52px" className="object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">

@@ -7,18 +7,11 @@ const SITEMAP_FILE = path.resolve("public/sitemap.xml");
 const SITE_URL = "https://hauy-conecta.vercel.app";
 
 function escapeXml(value) {
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&apos;");
+    return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;");
 }
 
 function createSitemapXml(routes) {
-    const urls = routes
-        .map((route) => `  <url>\n    <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>\n  </url>`)
-        .join("\n");
+    const urls = routes.map((route) => `  <url>\n    <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>\n  </url>`).join("\n");
 
     return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
@@ -39,36 +32,17 @@ async function main() {
         const categories = categoriesModule.categories ?? [];
         const tutorials = tutorialsModule.tutorials ?? [];
 
-        const routes = [
-            "/",
-            "/sobre",
-            "/categorias",
-            "/tutoriais",
-            "/ferramentas",
-            "/faq",
-            "/enviar-duvida",
-            "/assistente",
-            ...categories.map((category) => `/categorias/${category.id}`),
-            ...tutorials.map((tutorial) => `/tutoriais/${tutorial.id}`),
-        ];
+        const routes = ["/", "/sobre", "/categorias", "/tutoriais", "/ferramentas", "/faq", "/enviar-duvida", "/assistente-hauy", ...categories.map((category) => `/categorias/${category.id}`), ...tutorials.map((tutorial) => `/tutoriais/${tutorial.id}`)];
 
         const uniqueRoutes = [...new Set(routes)];
 
-        await fs.writeFile(
-            OUTPUT_FILE,
-            JSON.stringify(uniqueRoutes.sort(), null, 2),
-            "utf8",
-        );
+        await fs.writeFile(OUTPUT_FILE, JSON.stringify(uniqueRoutes.sort(), null, 2), "utf8");
 
         await fs.mkdir(path.dirname(SITEMAP_FILE), {
             recursive: true,
         });
 
-        await fs.writeFile(
-            SITEMAP_FILE,
-            createSitemapXml(uniqueRoutes),
-            "utf8",
-        );
+        await fs.writeFile(SITEMAP_FILE, createSitemapXml(uniqueRoutes), "utf8");
 
         console.log(`✓ ${uniqueRoutes.length} rotas encontradas.`);
         console.log(`✓ Arquivo de rotas criado: ${path.relative(process.cwd(), OUTPUT_FILE)}`);
