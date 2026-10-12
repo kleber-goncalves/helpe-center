@@ -1,12 +1,13 @@
-name: Validate ferramentas branch
+name: Validate Hauy Conecta
 
 concurrency:
-  group: validate-feat-ferramentas
+  group: validate-${{ github.ref }}
   cancel-in-progress: true
 
 on:
   push:
     branches:
+      - main
       - feat/ferramentas
     paths-ignore:
       - "dist/**"
