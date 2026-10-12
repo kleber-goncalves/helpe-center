@@ -665,7 +665,7 @@ export function HauyAssistant({
                                                             py-1
                                                             text-xs
                                                             font-bold
-                                                            text-coral
+                                                            text-white
                                                         "
                                                 >
                                                     Correspondência parcial

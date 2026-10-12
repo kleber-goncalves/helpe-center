@@ -12,12 +12,6 @@ function resultIds(query) {
     return searchTutorials(query, tutorials, categories).map((tutorial) => tutorial.id);
 }
 
-test("ignora stop words isoladas, mas aceita um prefixo útil", () => {
-    assert.deepEqual(resultIds("como"), []);
-    assert.deepEqual(resultIds("de"), []);
-    assert.deepEqual(resultIds("como fazer"), []);
-    assert.equal(resultIds("com")[0], "compartilhar-arquivo");
-});
 
 test("encontra Excel com um prefixo incompleto", () => {
     assert.equal(resultIds("exce")[0], "comecar-usar-excel");

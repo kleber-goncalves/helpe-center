@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { Check, ChevronDown, X } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -152,7 +152,15 @@ export const SelectContent = forwardRef(function SelectContent({ className, posi
     return (
         <SelectPrimitive.Portal>
             <SelectPrimitive.Content ref={ref} position={position} sideOffset={4} className={cn(["relative", "z-[100]", "max-h-72", "min-w-[8rem]", "overflow-hidden", "rounded-lg", "border border-line", "bg-background", "p-1", "text-foreground", "shadow-lift"].join(" "), className)} {...props}>
-                <SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
+                <SelectPrimitive.ScrollUpButton className="flex h-5 items-center justify-center text-muted-foreground hover:text-coral hover:bg-coral/40">
+                    <ChevronUp size={16} aria-hidden="true" />
+                </SelectPrimitive.ScrollUpButton>
+
+                <SelectPrimitive.Viewport className={["max-h-60", "overflow-y-auto overflow-x-hidden", "p-1 pr-2", "[scrollbar-width:thin]", "duration-900 [scrollbar-color:var(--color-line)_transparent]", "[&::-webkit-scrollbar]:w-2", "[&::-webkit-scrollbar-track]:bg-transparent", "[&::-webkit-scrollbar-thumb]:rounded-full", "[&::-webkit-scrollbar-thumb]:bg-line"].join(" ")}>{children}</SelectPrimitive.Viewport>
+
+                <SelectPrimitive.ScrollDownButton className="flex h-5 items-center justify-center border-t border-line text-muted-foreground hover:text-coral hover:bg-coral/40">
+                    <ChevronDown size={16} aria-hidden="true" />
+                </SelectPrimitive.ScrollDownButton>
             </SelectPrimitive.Content>
         </SelectPrimitive.Portal>
     );
