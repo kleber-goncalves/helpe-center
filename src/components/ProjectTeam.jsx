@@ -12,6 +12,7 @@ import joseRoberto from "../assets/equipe/alunos/jose-roberto.png";
 
 // Assets professores
 import testeProf from "../assets/equipe/professores/testeProf.jpg";
+import auroProf from "../assets/equipe/professores/auro.png";
 
 const team = {
     alunos: {
@@ -70,8 +71,8 @@ const team = {
             {
                 name: "Auro",
                 role: "Professor",
-                image: testeProf,
-                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
+                image: auroProf,
+                metadataKey: "src/assets/equipe/professores/auro.png",
             },
         ],
     },
