@@ -152,7 +152,7 @@ export function Footer() {
 
                     <div className="flex flex-col items-center md:flex-row  md:gap-1 text-xs text-muted-ink ">
                         <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido por -</p>
-                        <p className="text-xs leading-5 text-muted-ink">Kleber | Cirlene | Divina | José Roberto | Carlos</p>
+                        <p className="text-xs leading-5 text-muted-ink">Kleber Gonçalves | Cirlene | Divina | José Roberto | Carlos</p>
                     </div>
                 </div>
             </div>

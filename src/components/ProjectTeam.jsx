@@ -11,8 +11,9 @@ import carlos from "../assets/equipe/alunos/carlos.png";
 import joseRoberto from "../assets/equipe/alunos/jose-roberto.png";
 
 // Assets professores
-import testeProf from "../assets/equipe/professores/testeProf.jpg";
 import auroProf from "../assets/equipe/professores/auro.png";
+import felipeProf from "../assets/equipe/professores/felipe.jpeg";
+import fabioProf from "../assets/equipe/professores/fabio.jpeg";
 
 const team = {
     alunos: {
@@ -44,7 +45,7 @@ const team = {
                 metadataKey: "src/assets/equipe/alunos/jose-roberto.png",
             },
             {
-                name: "Kleber",
+                name: "Kleber Gonçalves",
                 role: "Aluno",
                 image: kleber,
                 metadataKey: "src/assets/equipe/alunos/kleber.png",
@@ -57,19 +58,19 @@ const team = {
         description: "Professores que acompanharam e apoiaram o projeto.",
         members: [
             {
-                name: "Fabio",
+                name: "Fábio Gomes",
                 role: "Professor",
-                image: testeProf,
-                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
+                image: fabioProf,
+                metadataKey: "src/assets/equipe/professores/fabioProf.jpeg",
             },
             {
                 name: "Felipe Cordeiro",
                 role: "Professor",
-                image: testeProf,
-                metadataKey: "src/assets/equipe/professores/testeProf.jpg",
+                image: felipeProf,
+                metadataKey: "src/assets/equipe/professores/felipe.jpeg",
             },
             {
-                name: "Auro",
+                name: "Auro Henrique Júnior",
                 role: "Professor",
                 image: auroProf,
                 metadataKey: "src/assets/equipe/professores/auro.png",
