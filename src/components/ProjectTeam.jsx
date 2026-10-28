@@ -12,7 +12,7 @@ import joseRoberto from "../assets/equipe/alunos/jose-roberto.png";
 
 // Assets professores
 import auroProf from "../assets/equipe/professores/auro.png";
-import felipeProf from "../assets/equipe/professores/felipe.jpeg";
+import felipeProf from "../assets/equipe/professores/felipe.svg";
 import fabioProf from "../assets/equipe/professores/fabio.svg";
 
 const team = {
@@ -67,7 +67,7 @@ const team = {
                 name: "Felipe Cordeiro",
                 role: "Professor",
                 image: felipeProf,
-                metadataKey: "src/assets/equipe/professores/felipe.jpeg",
+                metadataKey: "src/assets/equipe/professores/felipe.svg",
             },
             {
                 name: "Auro Henrique Júnior",
