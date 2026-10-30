@@ -567,4 +567,142 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 ---
 
 <!-- BEGIN AUTO-GENERATED SECTION -->
+
+## Snapshot automatizado do repositório
+
+> Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
+
+- **Commit de referência:** 55dbdc8f1fb7d4b1d410e1d942567eda3fd7ba03
+- **Data do commit:** 2026-10-30T13:48:06-03:00
+- **Mensagem do commit:** ci(ai-context): sincronizar contexto em commits e pull requests
+- **Branch desta execução:** docs/ai-context
+- **Projeto declarado:** helpe-center@0.0.0
+- **Scripts npm:** 8
+- **Dependências de runtime:** 16
+- **Dependências de desenvolvimento:** 14
+- **Workflows:** 4
+- **Scripts de automação:** 6
+
+### Scripts npm
+
+| Comando | Definição |
+|---|---|
+| npm run dev | vite |
+| npm run build | node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs |
+| npm run audit:images | node scripts/audit-images.mjs |
+| npm run lint | eslint . |
+| npm run preview | vite preview |
+| npm run predev | node scripts/generate-image-metadata.mjs |
+| npm run prelint | node scripts/generate-image-metadata.mjs |
+| npm run test:search | node --test src/lib/searchTutorials.test.js src/lib/assistantResponse.test.js |
+
+### Variáveis declaradas no .env.example
+
+> Somente os nomes são listados. Valores nunca são lidos nem publicados.
+
+- GEMINI_API_KEY
+- GEMINI_MODEL
+- SUPPORT_APPS_SCRIPT_ENDPOINT
+- VERCEL_OIDC_TOKEN
+
+### Dependências de runtime
+
+| Pacote | Versão declarada |
+|---|---|
+| @google/genai | ^2.24.0 |
+| @gsap/react | ^2.1.2 |
+| @radix-ui/react-accordion | ^1.2.20 |
+| @radix-ui/react-dialog | ^1.1.23 |
+| @radix-ui/react-select | ^2.3.7 |
+| @radix-ui/react-slot | ^1.3.3 |
+| @sketchyicons/react | ^0.5.0 |
+| @thesvg/react | ^3.3.8 |
+| clsx | ^2.1.1 |
+| gsap | ^3.15.0 |
+| lucide-react | ^1.47.0 |
+| react | ^19.2.8 |
+| react-dom | ^19.2.8 |
+| react-router-dom | ^7.18.4 |
+| tailwind-merge | ^3.7.0 |
+| zod | ^4.6.5 |
+
+### Dependências de desenvolvimento
+
+| Pacote | Versão declarada |
+|---|---|
+| @astratra/prerender | ^0.2.0 |
+| @eslint/js | ^10.0.1 |
+| @tailwindcss/vite | ^4.3.3 |
+| @types/react | ^19.2.18 |
+| @types/react-dom | ^19.2.7 |
+| @vitejs/plugin-react | ^6.1.1 |
+| eslint | ^10.10.0 |
+| eslint-plugin-react-hooks | ^7.1.1 |
+| eslint-plugin-react-refresh | ^0.5.6 |
+| globals | ^17.12.0 |
+| playwright | ^1.63.0 |
+| sharp | ^0.35.5 |
+| tailwindcss | ^4.3.3 |
+| vite | ^8.3.0 |
+
+### Workflows do GitHub Actions
+
+- .github/workflows/ai-context.yml — AI Context — Synchronize
+- .github/workflows/lighthouse-feat-ferramentas.yml — Lighthouse feat/ferramentas
+- .github/workflows/prerender.yml — Build prerendered site
+- .github/workflows/validate-feat-ferramentas.yml — Validate Hauy Conecta
+
+### Scripts de automação
+
+- scripts/audit-images.mjs
+- scripts/convert-section-images2.mjs
+- scripts/convert-tutorial-images.mjs
+- scripts/generate-image-metadata.mjs
+- scripts/generate-prerender-routes.mjs
+- scripts/update-ai-context.mjs
+
+### Arquivos de página
+
+- src/pages/About.jsx
+- src/pages/Assistente.jsx
+- src/pages/Categories.jsx
+- src/pages/Category.jsx
+- src/pages/FAQ.jsx
+- src/pages/Home2.jsx
+- src/pages/NotFound.jsx
+- src/pages/SendQuestion.jsx
+- src/pages/Tools.jsx
+- src/pages/Tutorial.jsx
+- src/pages/Tutorials.jsx
+
+### Endpoints serverless
+
+- api/assistant.js
+- api/support.js
+
+### Diretórios principais de src/
+
+- src/assets/
+- src/components/
+- src/data/
+- src/docs/
+- src/hooks/
+- src/lib/
+- src/pages/
+- src/schemas/
+- src/test/
+
+### Oito commits recentes até o commit de referência
+
+| Commit | Data | Mensagem |
+|---|---|---|
+| 55dbdc8 | 2026-10-30 | ci(ai-context): sincronizar contexto em commits e pull requests |
+| 6d20098 | 2026-10-30 | docs(ai-context): corrigir delimitadores do snapshot |
+| cf4ce7d | 2026-10-30 | chore(ai-context): adicionar gerador do snapshot do repositorio |
+| 9476ca9 | 2026-10-30 | docs(ai-context): adicionar contexto tecnico do Hauy Conecta |
+| c1f1c40 | 2026-10-30 | build: update prerendered site |
+| bfdbe4c | 2026-10-30 | docs: adicionar documento de arquitetura e planejamento do PWA Hauy Conecta |
+| 98a4b20 | 2026-10-28 | build: update prerendered site |
+| a5dc31d | 2026-10-28 | Replace felipe's image format from JPEG to SVG and remove old JPEG files |
+
 <!-- END AUTO-GENERATED SECTION -->
