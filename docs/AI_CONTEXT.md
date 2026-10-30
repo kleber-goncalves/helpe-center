@@ -545,7 +545,7 @@ O workflow .github/workflows/ai-context.yml executa a sincronização:
 - sem criar um novo commit quando o snapshot já estiver atualizado;
 - usando um commit de documentação criado pelo github-actions[bot].
 
-No fluxo de PR, a sincronização utiliza o evento `pull_request` e só atualiza branches do próprio repositório; PRs originados de forks não recebem escrita automática. O gerador confiável é carregado da branch padrão do repositório, não da branch-base do PR. A sincronização também é ignorada quando a branch de origem é a própria branch padrão (`main`), pois o snapshot já é mantido pelo fluxo de push. Essa configuração evita depender de arquivos que ainda não existam em uma branch-base antiga e evita o uso de `pull_request_target` para essa tarefa.
+No fluxo de PR, a sincronização utiliza o evento `pull_request` e só atualiza branches do próprio repositório; PRs originados de forks não recebem escrita automática. O gerador confiável é carregado da branch padrão do repositório, não da branch-base do PR. A sincronização também é ignorada quando a branch de origem é a própria branch padrão (`main`) ou quando o evento foi disparado pelo `github-actions[bot]`. Esse último controle evita que um commit automático do snapshot provoque uma nova sincronização que gere outro commit em sequência. Como pushes feitos com `GITHUB_TOKEN` podem colocar os workflows de `pull_request` subsequentes em estado de aprovação obrigatória, esses eventos do bot precisam ser aprovados manualmente para que as validações da PR sejam executadas.
 
 **Importante:** a automação atualiza o snapshot técnico, não a narrativa semântica. Não presumir que o texto sobre funcionalidades e decisões mudou automaticamente só porque o GitHub Actions criou um commit.
 
