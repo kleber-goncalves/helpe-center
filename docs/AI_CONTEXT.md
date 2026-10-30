@@ -568,29 +568,33 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 3c2a39b11460069d80f74fbd44429c7adfe05386
-- **Data do commit:** 2026-10-30T15:37:24-03:00
-- **Mensagem do commit:** docs(pwa): registrar auditoria e estrutura modular
+- **Commit de referência:** 837b2cfda1d0344615cf44118e2020aba2002006
+- **Data do commit:** 2026-10-30T16:34:38-03:00
+- **Mensagem do commit:** feat(pwa): implementar instalacao e shell offline
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
-- **Scripts npm:** 8
+- **Scripts npm:** 12
 - **Dependências de runtime:** 16
-- **Dependências de desenvolvimento:** 14
-- **Workflows:** 4
-- **Scripts de automação:** 6
+- **Dependências de desenvolvimento:** 18
+- **Workflows:** 5
+- **Scripts de automação:** 8
 
 ### Scripts npm
 
 | Comando | Definição |
 |---|---|
 | npm run dev | vite |
-| npm run build | node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs |
+| npm run build | node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs |
 | npm run audit:images | node scripts/audit-images.mjs |
 | npm run lint | eslint . |
 | npm run preview | vite preview |
-| npm run predev | node scripts/generate-image-metadata.mjs |
+| npm run predev | node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs |
 | npm run prelint | node scripts/generate-image-metadata.mjs |
 | npm run test:search | node --test src/lib/searchTutorials.test.js src/lib/assistantResponse.test.js |
+| npm run pwa:icons | node scripts/generate-pwa-icons.mjs |
+| npm run test:pwa:unit | node --test tests/pwa/unit/*.test.js |
+| npm run test:pwa:e2e | node --test tests/pwa/e2e/*.test.js |
+| npm run test:pwa | npm run test:pwa:unit && npm run test:pwa:e2e |
 
 ### Variáveis declaradas no .env.example
 
@@ -640,12 +644,17 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | sharp | ^0.35.5 |
 | tailwindcss | ^4.3.3 |
 | vite | ^8.3.0 |
+| vite-plugin-pwa | ^2.0.0 |
+| workbox-core | ^7.4.1 |
+| workbox-precaching | ^7.4.1 |
+| workbox-routing | ^7.4.1 |
 
 ### Workflows do GitHub Actions
 
 - .github/workflows/ai-context.yml — AI Context — Synchronize
 - .github/workflows/lighthouse-feat-ferramentas.yml — Lighthouse feat/ferramentas
 - .github/workflows/prerender.yml — Build prerendered site
+- .github/workflows/sync-pwa-phase1.yml — Sync PWA Phase 1 metadata
 - .github/workflows/validate-feat-ferramentas.yml — Validate Hauy Conecta
 
 ### Scripts de automação
@@ -655,6 +664,8 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - scripts/convert-tutorial-images.mjs
 - scripts/generate-image-metadata.mjs
 - scripts/generate-prerender-routes.mjs
+- scripts/generate-pwa-icons.mjs
+- scripts/sync-pwa-phase1-docs.mjs
 - scripts/update-ai-context.mjs
 
 ### Arquivos de página
@@ -693,13 +704,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 837b2cf | 2026-10-30 | feat(pwa): implementar instalacao e shell offline |
+| cb49e64 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 3c2a39b | 2026-10-30 | docs(pwa): registrar auditoria e estrutura modular |
 | 691ad05 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | bfdd3c9 | 2026-10-30 | Merge pull request #15 from kleber-goncalves/main |
 | 8b67f2f | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | b35c7a9 | 2026-10-30 | Merge pull request #14 from kleber-goncalves/chore/ci-pipeline-hardening |
 | 4cb40c0 | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
-| d7d2dd7 | 2026-10-30 | docs(ai-context): registrar aprovação de workflows disparados pelo bot |
-| 35fd2e3 | 2026-10-30 | fix(actions): evitar ressincronização do AI Context pelo bot |
 
 <!-- END AUTO-GENERATED SECTION -->
