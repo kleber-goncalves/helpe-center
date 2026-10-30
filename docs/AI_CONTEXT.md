@@ -572,10 +572,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 9d2c7f43d5b39db40bbcbf5846fbe24872c3542d
-- **Data do commit:** 2026-10-30T13:51:51-03:00
-- **Mensagem do commit:** Merge pull request #12 from kleber-goncalves/docs/ai-context
-- **Branch desta execução:** main
+- **Commit de referência:** e1127d0200bfc6224648c1249ec2026f4af10d92
+- **Data do commit:** 2026-10-30T14:40:35-03:00
+- **Mensagem do commit:** fix(actions): alinhar sincronização do AI Context ao default branch
+- **Branch desta execução:** chore/ci-pipeline-hardening
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 8
 - **Dependências de runtime:** 16
@@ -696,13 +696,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| e1127d0 | 2026-10-30 | fix(actions): alinhar sincronização do AI Context ao default branch |
+| 4fd29cb | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 9d2c7f4 | 2026-10-30 | Merge pull request #12 from kleber-goncalves/docs/ai-context |
 | 60f337b | 2026-10-30 | style: atualizar estilos do componente ImageLightbox |
 | f47c723 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 55dbdc8 | 2026-10-30 | ci(ai-context): sincronizar contexto em commits e pull requests |
 | 6d20098 | 2026-10-30 | docs(ai-context): corrigir delimitadores do snapshot |
 | fd95e32 | 2026-10-30 | build: update prerendered site |
-| cf4ce7d | 2026-10-30 | chore(ai-context): adicionar gerador do snapshot do repositorio |
-| 9476ca9 | 2026-10-30 | docs(ai-context): adicionar contexto tecnico do Hauy Conecta |
 
 <!-- END AUTO-GENERATED SECTION -->
