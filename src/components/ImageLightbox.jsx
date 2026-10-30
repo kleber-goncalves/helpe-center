@@ -208,13 +208,15 @@ export function ImageLightbox({ src, alt, children }) {
                         justify-center
                         rounded-lg
                         bg-mist
-                        text-white
+                        border
+                        text-searchPesq
                         opacity-90
                         shadow-soft
                         transition-[opacity,background-color,transform]
                         duration-400
                         group-hover:scale-105
                         group-hover:bg-coral/80
+                        group-hover:text-background
                         sm:size-10
                         motion-reduce:transition-none
                     "
