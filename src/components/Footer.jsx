@@ -137,7 +137,7 @@ export function Footer() {
                                 </FooterLink>
                             ))}
 
-                            <FooterLink to="https://forms.gle/9LSAz3PdBqa899KW8" external>
+                            <FooterLink to="/enviar-duvida" >
                                 Enviar uma dúvida
                             </FooterLink>
                         </div>
