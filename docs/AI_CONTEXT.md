@@ -572,10 +572,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 55dbdc8f1fb7d4b1d410e1d942567eda3fd7ba03
-- **Data do commit:** 2026-10-30T13:48:06-03:00
-- **Mensagem do commit:** ci(ai-context): sincronizar contexto em commits e pull requests
-- **Branch desta execução:** docs/ai-context
+- **Commit de referência:** 9d2c7f43d5b39db40bbcbf5846fbe24872c3542d
+- **Data do commit:** 2026-10-30T13:51:51-03:00
+- **Mensagem do commit:** Merge pull request #12 from kleber-goncalves/docs/ai-context
+- **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 8
 - **Dependências de runtime:** 16
@@ -696,13 +696,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 9d2c7f4 | 2026-10-30 | Merge pull request #12 from kleber-goncalves/docs/ai-context |
+| 60f337b | 2026-10-30 | style: atualizar estilos do componente ImageLightbox |
+| f47c723 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 55dbdc8 | 2026-10-30 | ci(ai-context): sincronizar contexto em commits e pull requests |
 | 6d20098 | 2026-10-30 | docs(ai-context): corrigir delimitadores do snapshot |
+| fd95e32 | 2026-10-30 | build: update prerendered site |
 | cf4ce7d | 2026-10-30 | chore(ai-context): adicionar gerador do snapshot do repositorio |
 | 9476ca9 | 2026-10-30 | docs(ai-context): adicionar contexto tecnico do Hauy Conecta |
-| c1f1c40 | 2026-10-30 | build: update prerendered site |
-| bfdbe4c | 2026-10-30 | docs: adicionar documento de arquitetura e planejamento do PWA Hauy Conecta |
-| 98a4b20 | 2026-10-28 | build: update prerendered site |
-| a5dc31d | 2026-10-28 | Replace felipe's image format from JPEG to SVG and remove old JPEG files |
 
 <!-- END AUTO-GENERATED SECTION -->
