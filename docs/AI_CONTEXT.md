@@ -572,10 +572,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** d7d2dd7c3e4f323a0488bda41a8629f1ab23010f
-- **Data do commit:** 2026-10-30T14:54:33-03:00
-- **Mensagem do commit:** docs(ai-context): registrar aprovação de workflows disparados pelo bot
-- **Branch desta execução:** chore/ci-pipeline-hardening
+- **Commit de referência:** b35c7a94f7052390e2a73826a21a8adef5aece75
+- **Data do commit:** 2026-10-30T15:10:59-03:00
+- **Mensagem do commit:** Merge pull request #14 from kleber-goncalves/chore/ci-pipeline-hardening
+- **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 8
 - **Dependências de runtime:** 16
@@ -696,13 +696,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| b35c7a9 | 2026-10-30 | Merge pull request #14 from kleber-goncalves/chore/ci-pipeline-hardening |
+| 4cb40c0 | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
 | d7d2dd7 | 2026-10-30 | docs(ai-context): registrar aprovação de workflows disparados pelo bot |
 | 35fd2e3 | 2026-10-30 | fix(actions): evitar ressincronização do AI Context pelo bot |
 | ab850ea | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
 | b6f87db | 2026-10-30 | docs(ai-context): atualizar documentação das validações e sincronização |
 | c12e6a1 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | bb249ec | 2026-10-30 | ci: validar pull requests para dev e main |
-| e1127d0 | 2026-10-30 | fix(actions): alinhar sincronização do AI Context ao default branch |
-| 4fd29cb | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
