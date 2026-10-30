@@ -1,29 +1,34 @@
 # Testes do PWA — Hauy Conecta
 
-Os testes específicos do PWA ficam fora de `src/`, separados por nível. A implementação e as decisões estão documentadas em `docs/arquitetura-pwa-hauy-conecta.md`.
+Os testes específicos do PWA ficam fora de src/, separados por nível. A implementação e as decisões estão documentadas em docs/arquitetura-pwa-hauy-conecta.md.
 
 ## Estrutura
 
-```text
-tests/pwa/
-├── unit/         # Regras puras e transições de estado
-├── integration/  # Service Worker, Cache Storage e IndexedDB
-├── e2e/          # Instalação, atualização, navegação e downloads offline
-└── fixtures/     # Dados sintéticos e arquivos pequenos de teste
-```
+- unit/: regras puras, manifesto e políticas de cache.
+- integration/: interação real entre Service Worker, Cache Storage e IndexedDB.
+- e2e/: registro/atualização, navegação offline e ciclo de vida dos downloads.
+- fixtures/: dados sintéticos e pequenos arquivos de teste.
 
-## Ferramentas e critérios
+## Ferramentas e comandos
 
-- **Unitários:** usar `node:test` e `node:assert` do Node 24 para regras puras. Não adicionar Vitest/Jest apenas para criar a estrutura.
-- **Integração:** usar Playwright em Chromium com Service Workers habilitados e APIs reais do navegador sempre que possível.
-- **E2E:** validar build servido em HTTP local, registro do Service Worker, rotas diretas, estado offline, atualização e ciclo de vida dos pacotes.
-- **Fixtures:** usar imagens pequenas e sintéticas. Nunca depender dos vídeos reais do portal (aproximadamente 298 MiB) para executar o conjunto de testes.
-- **Isolamento:** cada teste deve limpar somente os caches e bancos de teste que criou; não assumir nomes de cache de produção nos testes.
-- **Determinismo:** evitar depender de internet externa, APIs reais, YouTube ou Gemini.
-- **Acessibilidade:** validar nomes acessíveis, foco por teclado e mensagens de progresso nos fluxos de interface.
+- Unitários: Node test runner (node:test) e node:assert, sem instalar Vitest/Jest para regras puras.
+- Navegador: Playwright com Chromium e Service Workers habilitados.
+- npm run test:pwa: executa unitários e E2E.
+- npm run test:pwa:unit: executa os testes sem navegador.
+- npm run test:pwa:e2e: valida o build servido por Vite Preview em HTTP local.
 
-## Integração com scripts e CI
+## Testes já criados
 
-Quando o primeiro teste for criado, adicionar um script próprio `npm run test:pwa` e incluí-lo no workflow `Validate Hauy Conecta`. Manter `npm run test:search` independente. Não renomear `src/test/`: essa pasta atual contém componentes de experimentação do portal, não a suíte automatizada do PWA.
+- Manifesto: identidade, idioma, escopo, modo standalone e ícones.
+- Política de cache: versão, limite por arquivo, tipos incluídos e exclusão de tutorial/MP4.
+- E2E: registro/controle do Service Worker e navegação direta para uma rota de tutorial quando a rede é desligada.
 
-Nenhum teste PWA foi criado ainda; este arquivo registra a convenção que deverá ser seguida nas próximas fases.
+## Critérios
+
+- Fixtures pequenas e sintéticas; nunca depender dos vídeos reais do portal (aproximadamente 298 MiB).
+- Isolamento: cada teste deve limpar somente os caches e bancos de teste que criou.
+- Determinismo: evitar depender de internet externa, YouTube, Gemini ou APIs reais.
+- Acessibilidade: validar nomes acessíveis, foco por teclado e mensagens de progresso nos fluxos de interface.
+- O workflow Validate Hauy Conecta executa os testes unitários PWA antes do lint e os testes de navegador depois do build/prerender.
+
+A execução E2E ainda precisa ser confirmada no runner Ubuntu do GitHub Actions; o Chromium encerrou dentro do sandbox remoto Vercel durante a pré-renderização.

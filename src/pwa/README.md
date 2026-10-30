@@ -1,48 +1,34 @@
 # Módulo PWA — Hauy Conecta
 
-Este diretório concentra a implementação do Progressive Web App. A arquitetura completa, as decisões e as fases estão em `docs/arquitetura-pwa-hauy-conecta.md`.
+Este diretório concentra a implementação do Progressive Web App. A arquitetura completa está em docs/arquitetura-pwa-hauy-conecta.md.
 
-## Regras de organização
+## Implementação atual
 
-1. Manter o PWA isolado em `src/pwa/`; não espalhar lógica de cache, IndexedDB ou Service Worker pelos componentes genéricos do portal.
-2. A aplicação React conversa com o PWA por `client/`, `ui/` e serviços de domínio; não acessa diretamente detalhes internos do Service Worker.
+- config/manifest.js define nome, escopo, modo de exibição, cores e ícones.
+- config/cache-policy.js define a versão do cache, os tipos de arquivos do precache, exclusões e limite por arquivo.
+- client/register-service-worker.js registra o Service Worker uma vez e publica eventos de atualização/preparação offline.
+- service-worker/sw.js contém o código Workbox executado no contexto do Service Worker.
+- ui/hooks/usePwaStatus.js adapta estado de conexão e eventos PWA para React.
+- ui/components/PwaStatusBanner.jsx apresenta os avisos ao usuário.
+
+## Limites de responsabilidade
+
+1. Manter o PWA isolado em src/pwa; não espalhar lógica de cache ou Service Worker pelos componentes genéricos do portal.
+2. A aplicação React conversa com o PWA por client e ui; não acessa diretamente detalhes internos do Service Worker.
 3. O Service Worker tem contexto de execução próprio. Não importar React, hooks ou módulos que dependam do DOM da aplicação.
-4. Centralizar políticas e limites em `config/`; não repetir nomes de cache, versões ou limites em diversos arquivos.
-5. Cache Storage armazena respostas HTTP. IndexedDB armazena metadados e estado dos pacotes. Não usar IndexedDB para duplicar arquivos de mídia.
-6. Downloads devem ser orquestrados por serviços, persistidos por repositórios e apresentados por componentes/hooks separados.
-7. Não misturar caches gerenciados pelo Workbox com caches de pacotes opt-in. Uma atualização do shell nunca deve apagar downloads do usuário.
-8. Criar cada subpasta somente quando a primeira responsabilidade correspondente for implementada. Não adicionar diretórios vazios ou `.gitkeep`.
-9. Manter funções utilitárias próximas do domínio; `utils/` é reservado a funções puras compartilhadas.
+4. Centralizar políticas e limites em config.
+5. Cache Storage armazena respostas HTTP. IndexedDB será usado para metadados dos pacotes, quando a fase de downloads começar.
+6. Não misturar caches gerenciados pelo Workbox com caches de pacotes opt-in. Uma atualização do shell nunca deve apagar downloads do usuário.
+7. Vídeos e arquivos de tutoriais não entram no precache inicial.
+8. Criar cada subpasta somente quando a primeira responsabilidade correspondente for implementada. Não adicionar diretórios vazios ou .gitkeep.
+9. Manter funções utilitárias próximas do domínio; utils é reservado a funções puras compartilhadas.
 
-## Estrutura planejada
+## Política atual de precache
 
-```text
-src/pwa/
-├── config/                  # Manifesto, versões e políticas de cache
-├── client/                  # Registro, conexão e atualização
-│   ├── connection/
-│   └── updates/
-├── service-worker/          # Código executado pelo Service Worker
-│   ├── routes/
-│   └── strategies/
-├── storage/                 # Adaptadores de armazenamento
-│   ├── cache/
-│   └── indexed-db/
-├── downloads/               # Pacotes offline por tutorial
-│   ├── catalog/
-│   ├── services/
-│   └── repositories/
-├── ui/                      # Integração com a interface React
-│   ├── components/
-│   └── hooks/
-└── utils/                   # Helpers puros realmente compartilhados
-```
+O precache inclui JavaScript, CSS, HTML, favicon, manifesto e ícones PWA, com limite de 2 MiB por arquivo. Os caminhos de tutoriais, imagens e arquivos MP4 ficam fora da lista inicial.
 
-## Limites importantes
+A navegação tenta buscar a rota na rede para preservar o HTML pré-renderizado. Quando a rede falha, o Service Worker usa o app shell e deixa o React Router resolver a rota. public/offline.html é o fallback final.
 
-- Não colocar vídeos no precache automático.
-- Não baixar a biblioteca inteira de imagens.
-- Não prometer funcionamento offline para Gemini, Apps Script, formulários ou outros serviços externos.
-- Não marcar um pacote como disponível offline antes de validar todos os recursos obrigatórios.
-- Não apagar caches opt-in ao ativar uma nova versão do Service Worker.
-- Não introduzir uma biblioteca de estado global ou abstração de armazenamento sem necessidade comprovada.
+## Próximas responsabilidades
+
+As áreas storage, downloads, connection e updates avançados serão criadas quando as fases de Cache Storage/IndexedDB e downloads opt-in começarem. Não criar abstrações vazias antecipadamente.

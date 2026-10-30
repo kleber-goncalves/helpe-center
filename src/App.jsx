@@ -8,6 +8,7 @@ import { Header } from "./components/Header";
 import { Preloader } from "./components/Preloader";
 import { ScrollToTop } from "./components/ScrollToTop";
 import ButtonReset from "./components/buttonReset";
+import { PwaStatusBanner } from "./pwa/ui/components/PwaStatusBanner";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
 import { HauyAssistantWidget } from "./components/HauyAssistantWidget";
 
@@ -116,6 +117,8 @@ function AppContent() {
             ============================================== */}
 
             {loading && <Preloader onComplete={handlePreloaderComplete} />}
+
+            <PwaStatusBanner />
 
             {/* ==============================================
                 TRANSIÇÃO DE TEMA
