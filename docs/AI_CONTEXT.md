@@ -536,12 +536,7 @@ Quando um PR ou commit muda essas informações, a pessoa responsável ou a IA q
 
 ### Snapshot — manutenção automatizada
 
-A seção delimitada pelos marcadores abaixo é produzida por scripts/update-ai-context.mjs:
-
-<!-- BEGIN AUTO-GENERATED SECTION -->
-<!-- END AUTO-GENERATED SECTION -->
-
-O snapshot reúne informações objetivas do repositório, como commit de referência, branch, scripts npm, dependências, variáveis declaradas no .env.example (somente nomes), workflows, scripts de automação, diretórios e arquivos principais e histórico recente.
+A seção delimitada pelos comentários HTML de início e fim é produzida por scripts/update-ai-context.mjs. O snapshot reúne informações objetivas do repositório, como commit de referência, branch, scripts npm, dependências, variáveis declaradas no .env.example (somente nomes), workflows, scripts de automação, diretórios e arquivos principais e histórico recente.
 
 O workflow .github/workflows/ai-context.yml executa a sincronização:
 
