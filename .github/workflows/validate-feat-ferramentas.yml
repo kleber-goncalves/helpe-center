@@ -1,14 +1,17 @@
 name: Validate Hauy Conecta
 
-concurrency:
-  group: validate-${{ github.ref }}
-  cancel-in-progress: true
-
 on:
   push:
     branches:
       - main
-      - feat/ferramentas
+      - dev
+    paths-ignore:
+      - "dist/**"
+      - "public/sitemap.xml"
+  pull_request:
+    branches:
+      - main
+      - dev
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
@@ -17,17 +20,22 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: validate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
+    name: Tests, lint and production build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
@@ -35,14 +43,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Search unit tests
+      - name: Run unit tests
         run: npm run test:search
+
+      - name: Run ESLint
+        run: npm run lint
 
       - name: Install Playwright Chromium and system dependencies
         run: npx playwright install --with-deps chromium
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Build and prerender
+      - name: Build, prerender and audit images
         run: npm run build
