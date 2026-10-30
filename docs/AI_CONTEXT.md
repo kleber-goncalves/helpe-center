@@ -566,16 +566,16 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 837b2cfda1d0344615cf44118e2020aba2002006
-- **Data do commit:** 2026-10-30T16:34:38-03:00
-- **Mensagem do commit:** feat(pwa): implementar instalacao e shell offline
+- **Commit de referência:** 8a0a6d8cee5f88e405bfbb0ad667fae24401203e
+- **Data do commit:** 2026-10-30T19:35:13Z
+- **Mensagem do commit:** chore(pwa): sincronizar lockfile e documentação
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
 - **Dependências de runtime:** 16
 - **Dependências de desenvolvimento:** 18
-- **Workflows:** 5
-- **Scripts de automação:** 8
+- **Workflows:** 4
+- **Scripts de automação:** 7
 
 ### Scripts npm
 
@@ -652,7 +652,6 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - .github/workflows/ai-context.yml — AI Context — Synchronize
 - .github/workflows/lighthouse-feat-ferramentas.yml — Lighthouse feat/ferramentas
 - .github/workflows/prerender.yml — Build prerendered site
-- .github/workflows/sync-pwa-phase1.yml — Sync PWA Phase 1 metadata
 - .github/workflows/validate-feat-ferramentas.yml — Validate Hauy Conecta
 
 ### Scripts de automação
@@ -663,7 +662,6 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - scripts/generate-image-metadata.mjs
 - scripts/generate-prerender-routes.mjs
 - scripts/generate-pwa-icons.mjs
-- scripts/sync-pwa-phase1-docs.mjs
 - scripts/update-ai-context.mjs
 
 ### Arquivos de página
@@ -702,13 +700,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 8a0a6d8 | 2026-10-30 | chore(pwa): sincronizar lockfile e documentação |
+| 634d0f9 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 837b2cf | 2026-10-30 | feat(pwa): implementar instalacao e shell offline |
 | cb49e64 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 3c2a39b | 2026-10-30 | docs(pwa): registrar auditoria e estrutura modular |
 | 691ad05 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | bfdd3c9 | 2026-10-30 | Merge pull request #15 from kleber-goncalves/main |
 | 8b67f2f | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| b35c7a9 | 2026-10-30 | Merge pull request #14 from kleber-goncalves/chore/ci-pipeline-hardening |
-| 4cb40c0 | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
 
 <!-- END AUTO-GENERATED SECTION -->
