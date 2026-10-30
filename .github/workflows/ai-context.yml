@@ -8,13 +8,14 @@ on:
       - "docs/AI_CONTEXT.md"
       - "dist/**"
       - "public/sitemap.xml"
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - synchronize
       - reopened
     branches:
-      - "**"
+      - main
+      - dev
     paths-ignore:
       - "docs/AI_CONTEXT.md"
       - "dist/**"
@@ -22,7 +23,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: read
 
 concurrency:
   group: ai-context-${{ github.event.pull_request.head.ref || github.ref_name }}
@@ -72,8 +72,9 @@ jobs:
   sync-pull-request:
     name: Refresh context on same-repository pull requests
     if: >-
-      github.event_name == 'pull_request_target' &&
-      github.event.pull_request.head.repo.full_name == github.repository
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref != github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -100,12 +101,14 @@ jobs:
             echo "HAS_PR_GENERATOR=false" >> "$GITHUB_ENV"
           fi
 
-      - name: Load the trusted generator from the base branch
+      - name: Load the trusted generator from the default branch
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        shell: bash
         run: |
-          git fetch origin "${BASE_SHA}" --depth=1
-          git show "${BASE_SHA}:scripts/update-ai-context.mjs" > "${RUNNER_TEMP}/update-ai-context-trusted.mjs"
+          set -euo pipefail
+          git fetch origin "${DEFAULT_BRANCH}" --depth=1
+          git show "FETCH_HEAD:scripts/update-ai-context.mjs" > "${RUNNER_TEMP}/update-ai-context-trusted.mjs"
           cp "${RUNNER_TEMP}/update-ai-context-trusted.mjs" scripts/update-ai-context.mjs
 
       - name: Update generated context snapshot
