@@ -572,9 +572,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** e1127d0200bfc6224648c1249ec2026f4af10d92
-- **Data do commit:** 2026-10-30T14:40:35-03:00
-- **Mensagem do commit:** fix(actions): alinhar sincronização do AI Context ao default branch
+- **Commit de referência:** b6f87dbee7a9d25d2e73919590e33f75cd992c88
+- **Data do commit:** 2026-10-30T14:43:57-03:00
+- **Mensagem do commit:** docs(ai-context): atualizar documentação das validações e sincronização
 - **Branch desta execução:** chore/ci-pipeline-hardening
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 8
@@ -696,13 +696,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| b6f87db | 2026-10-30 | docs(ai-context): atualizar documentação das validações e sincronização |
+| c12e6a1 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
+| bb249ec | 2026-10-30 | ci: validar pull requests para dev e main |
 | e1127d0 | 2026-10-30 | fix(actions): alinhar sincronização do AI Context ao default branch |
 | 4fd29cb | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| 9d2c7f4 | 2026-10-30 | Merge pull request #12 from kleber-goncalves/docs/ai-context |
-| 60f337b | 2026-10-30 | style: atualizar estilos do componente ImageLightbox |
-| f47c723 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| 55dbdc8 | 2026-10-30 | ci(ai-context): sincronizar contexto em commits e pull requests |
-| 6d20098 | 2026-10-30 | docs(ai-context): corrigir delimitadores do snapshot |
-| fd95e32 | 2026-10-30 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
