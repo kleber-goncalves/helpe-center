@@ -429,7 +429,7 @@ Comandos atualmente declarados no package.json incluem:
 
 Antes de executar validações, confira os scripts e dependências atuais. Não assuma que o conjunto de testes permanece igual ao snapshot de uma revisão anterior.
 
-Os workflows atuais incluem validação do projeto, Lighthouse específico de branch e geração de pré-renderização. Confira os nomes, branches e gatilhos no snapshot automatizado e nos arquivos de workflow. Um workflow verde não substitui testes manuais de layout, navegação e uso em celular.
+O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validações em pull requests direcionadas a `dev` e `main`, além de pushes nessas branches. O pipeline usa Node.js 24, instala dependências com `npm ci`, executa os testes unitários declarados, ESLint, instala Chromium/Playwright e roda `npm run build`, que inclui build Vite, pré-renderização Astratra e auditoria de imagens. O Lighthouse permanece em workflow separado e específico para a branch de ferramentas. Um workflow verde não substitui testes manuais de layout, navegação e uso em celular.
 
 ## 14. Estado atual do PWA
 
@@ -545,7 +545,7 @@ O workflow .github/workflows/ai-context.yml executa a sincronização:
 - sem criar um novo commit quando o snapshot já estiver atualizado;
 - usando um commit de documentação criado pelo github-actions[bot].
 
-No fluxo de PR, o workflow carrega a versão confiável do gerador a partir da branch base antes de executá-lo, evitando executar a versão do script que possa ter sido alterada pelo próprio PR em um contexto com permissão de escrita.
+No fluxo de PR, a sincronização utiliza o evento `pull_request` e só atualiza branches do próprio repositório; PRs originados de forks não recebem escrita automática. O gerador confiável é carregado da branch padrão do repositório, não da branch-base do PR. A sincronização também é ignorada quando a branch de origem é a própria branch padrão (`main`), pois o snapshot já é mantido pelo fluxo de push. Essa configuração evita depender de arquivos que ainda não existam em uma branch-base antiga e evita o uso de `pull_request_target` para essa tarefa.
 
 **Importante:** a automação atualiza o snapshot técnico, não a narrativa semântica. Não presumir que o texto sobre funcionalidades e decisões mudou automaticamente só porque o GitHub Actions criou um commit.
 
