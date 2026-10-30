@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { OptimizedImage } from "./OptimizedImage";
 
 const mainLinks = [
     ["Início", "/"],
     ["Categorias", "/categorias"],
     ["Tutoriais", "/tutoriais"],
+    ["Ferramentas", "/ferramentas"],
     ["FAQ", "/faq"],
 ];
 
@@ -89,23 +91,26 @@ function FooterLink({ to, children, external = false }) {
 export function Footer() {
     return (
         <footer className="border-t border-line bg-mist3">
-            <div className="mx-auto max-w-6xl px-5 py-14 lg:px-8 lg:py-16">
+            <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-16">
                 <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr] lg:gap-20">
                     {/* Identidade */}
                     <div className="max-w-md">
                         <Link to="/" className="group inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/40 focus-visible:ring-offset-2">
-                            <div className="grid h-11 w-11 shrink-0 place-items-center">
-                                <img src="/logo.png" className="h-full w-full object-contain" />
+                            <div className="grid h-18 w-18 shrink-0 place-items-center bg-white/30 rounded-lg">
+                                <OptimizedImage src="/logo.svg" alt="Hauy Conecta" sizes="72px" wrapperClassName="h-full w-full" className="object-contain" />
                             </div>
 
                             <div className="flex flex-col leading-none">
-                                <span className="font-display text-lg font-bold text-foreground">Hauy Conecta</span>
+                                <div className="flex  flex-col items-start ">
+                                    <span className="font-display text-lg font-black text-foreground leading-none">Hauy</span>
+                                    <span className="leading-none font-display text-lg font-black text-foreground">Conecta</span>
+                                </div>
 
-                                <span className="mt-1 text-xs text-muted-ink">Central de Ajuda Digital</span>
+                                <span className="leading-none mt-1 text-xs text-muted-ink font-extrabold">Central de Ajuda Digital</span>
                             </div>
                         </Link>
 
-                        <p className="mt-5 max-w-sm text-[15px] leading-7 text-muted-foreground">Tutoriais simples para alunos, professores e funcionários resolverem suas dúvidas digitais no dia a dia da escola.</p>
+                        <p className="mt-5 max-w-sm text-[15px] leading-7 text-muted-foreground"> Tutoriais simples para alunos, professores e funcionários resolverem suas dúvidas digitais no dia a dia da E.E.Hauy Petruceli Mayrink.</p>
                     </div>
 
                     {/* Navegação */}
@@ -132,7 +137,7 @@ export function Footer() {
                                 </FooterLink>
                             ))}
 
-                            <FooterLink to="https://forms.gle/9LSAz3PdBqa899KW8" external>
+                            <FooterLink to="/enviar-duvida" >
                                 Enviar uma dúvida
                             </FooterLink>
                         </div>
@@ -140,14 +145,14 @@ export function Footer() {
                 </div>
 
                 {/* Rodapé inferior */}
-                <div className="flex flex-col gap-3 md:flex-row items-center justify-between mt-12 border-t border-line pt-6">
+                <div className="flex flex-col gap-3 2xl:flex-row items-center justify-between mt-12 border-t border-line pt-6">
                     <div className="flex flex-col gap-3 text-xs text-muted-ink sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto Escolar de Tecnologia e Informática</p>
+                        <p className="text-xs leading-5 text-muted-ink">© 2026 Hauy Conecta — Projeto desenvolvido por alunos do Curso Técnico em Informática da E.E.Hauy Petruceli Mayrink</p>
                     </div>
 
                     <div className="flex flex-col items-center md:flex-row  md:gap-1 text-xs text-muted-ink ">
-                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido em equipe, integrantes -</p>
-                        <p className="text-xs leading-5 text-muted-ink">Kleber | Cirlene | Divina | Robertin | Carlos</p>
+                        <p className="text-xs leading-5 text-muted-ink">Projeto desenvolvido por -</p>
+                        <p className="text-xs leading-5 text-muted-ink">Kleber Gonçalves | Cirlene | Divina | José Roberto | Carlos</p>
                     </div>
                 </div>
             </div>

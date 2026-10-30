@@ -1,0 +1,590 @@
+{
+  "repository": "kleber-goncalves/helpe-center",
+  "branch": "feat/ferramentas",
+  "sourceRoot": "public",
+  "destinationRoot": "public",
+  "media": [
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-1-word.webp"
+    },
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-2-exportar.webp"
+    },
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-3-exportar-pdf.webp"
+    },
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-nome.webp"
+    },
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-4-pasta.webp"
+    },
+    {
+      "path": "/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.webp",
+      "type": "image",
+      "tutorialId": "converter-documento-pdf",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/arquivos-pdf/converter-documento-pdf/passo-5-confirmar.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-1-apresentacao.webp",
+      "type": "image",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-1-apresentacao.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-1-inicio.webp",
+      "type": "image",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-1-inicio.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-branco-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-branco-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-branco.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-branco.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-modelo-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-modelo-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-modelo.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-modelo.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-pesquisa-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-pesquisa-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-2-pesquisa.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-2-pesquisa.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-3-texto-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-3-texto-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-3-texto.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-3-texto.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-3-titulo-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-3-titulo-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-3-titulo.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-3-titulo.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-adicionar-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-adicionar-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-adicionar.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-adicionar.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-duplicar-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-duplicar-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-duplicar.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-duplicar.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-excluir-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-excluir-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-4-excluir.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-4-excluir.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-elementos-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-elementos-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-elementos.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-elementos.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-imagens-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-imagens-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-imagens.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-imagens.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-posicionamento-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-5-posicionamento.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-5-posicionamento.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-apresentar-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-apresentar-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-apresentar.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-apresentar.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-baixar-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-baixar-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-baixar.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-baixar.mp4"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar-poster.webp",
+      "type": "poster",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-compartilhar-poster.webp"
+    },
+    {
+      "path": "/tutoriais/canva/apresentacao-canva/passo-7-compartilhar.mp4",
+      "type": "video",
+      "tutorialId": "apresentacao-canva",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/canva/apresentacao-canva/passo-7-compartilhar.mp4"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-1-gmail.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-1-gmail.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-2-escrever.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-2-escrever.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-2-mensagem.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-3-assunto.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-3-assunto.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-3-destinatario.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-4-clipe.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-4-clipe.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-4-selecionar.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-5-carregado.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-5-carregado.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-5-selecionado.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-6-conferir.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-6-conferir.webp"
+    },
+    {
+      "path": "/tutoriais/email/anexar-arquivo-email/passo-6-enviar.webp",
+      "type": "image",
+      "tutorialId": "anexar-arquivo-email",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/email/anexar-arquivo-email/passo-6-enviar.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-1.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-1.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-2-a1.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-2-a1.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-2-b2.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-2-b2.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-2-c5.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-2-c5.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-2-coluna-b.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-2-coluna-b.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-2-linha-2.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-2-linha-2.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-3-nome.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-3-nome.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-3-nota.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-3-nota.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-4-data.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-4-data.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-4-nome.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-4-nome.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-4-nota.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-4-nota.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-4-turma.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-4-turma.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-5-alunos.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-5-alunos.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-5-colunas.webp",
+      "type": "image",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-5-colunas.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-6-A-poster.webp",
+      "type": "poster",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-6-A-poster.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-6-A.mp4",
+      "type": "video",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-6-A.mp4"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-6-N-poster.webp",
+      "type": "poster",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-6-N-poster.webp"
+    },
+    {
+      "path": "/tutoriais/excel/como-comecar-usar-excel/passo-6-N.mp4",
+      "type": "video",
+      "tutorialId": "comecar-usar-excel",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/excel/como-comecar-usar-excel/passo-6-N.mp4"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-1-acesso.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-1-conta.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-3-compartilhar.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-3-menu.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-4-acesso-geral.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-4-pessoas.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-5-comentarista.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-5-editor.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-5-visualizador.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-6-copiar-link.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.webp",
+      "type": "image",
+      "tutorialId": "compartilhar-arquivo",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/compartilhar-arquivo/passo-6-enviar.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.webp",
+      "type": "image",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-1-acesso.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-1-conta.webp",
+      "type": "image",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-1-conta.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta-poster.webp",
+      "type": "poster",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-2-pasta-poster.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-2-pasta.mp4",
+      "type": "video",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-2-pasta.mp4"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-3-novo.webp",
+      "type": "image",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-3-novo.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-3-upload.webp",
+      "type": "image",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-3-upload.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar-pasta-poster.webp",
+      "type": "poster",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-4-localizar-pasta-poster.webp"
+    },
+    {
+      "path": "/tutoriais/google-drive/salvar-google-drive/passo-4-localizar.mp4",
+      "type": "video",
+      "tutorialId": "salvar-google-drive",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/google-drive/salvar-google-drive/passo-4-localizar.mp4"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-1.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-1.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-2-parte-texto-selecionado.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-2-parte-texto-selecionado.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-2-todo-texto.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-2-todo-texto.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-3-escolher-fonte.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-3-escolher-fonte.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-3-escolher-tamanho.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-3-escolher-tamanho.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-4-ajustar-alinhamento.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-4-ajustar-alinhamento.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-4-configurar-espacamento.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-4-configurar-espacamento.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-5-confirmar-formato.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-5-confirmar-formato.webp"
+    },
+    {
+      "path": "/tutoriais/word/formatar-trabalho/passo-5-confirmar-margens.webp",
+      "type": "image",
+      "tutorialId": "formatar-trabalho-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/formatar-trabalho/passo-5-confirmar-margens.webp"
+    },
+    {
+      "path": "/tutoriais/word/sumario-automatico-word/passo-1-titulo-1.webp",
+      "type": "image",
+      "tutorialId": "sumario-automatico-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/sumario-automatico-word/passo-1-titulo-1.webp"
+    },
+    {
+      "path": "/tutoriais/word/sumario-automatico-word/passo-1-titulo-2.webp",
+      "type": "image",
+      "tutorialId": "sumario-automatico-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/sumario-automatico-word/passo-1-titulo-2.webp"
+    },
+    {
+      "path": "/tutoriais/word/sumario-automatico-word/passo-2-modelo.webp",
+      "type": "image",
+      "tutorialId": "sumario-automatico-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/sumario-automatico-word/passo-2-modelo.webp"
+    },
+    {
+      "path": "/tutoriais/word/sumario-automatico-word/passo-2-referencias.webp",
+      "type": "image",
+      "tutorialId": "sumario-automatico-word",
+      "githubUrl": "https://raw.githubusercontent.com/kleber-goncalves/helpe-center/feat/ferramentas/tutoriais/word/sumario-automatico-word/passo-2-referencias.webp"
+    }
+  ]
+}

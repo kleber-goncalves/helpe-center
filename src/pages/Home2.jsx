@@ -8,6 +8,7 @@ import { HelpCTA } from "../components/HelpCTA2";
 import { SearchBar } from "../components/SearchBar";
 import { TutorialCard } from "../components/TutorialCard";
 import { SectionTransition } from "../components/SectionTransition";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { Reveal } from "../components/Reveal";
 
 // Data
@@ -36,7 +37,7 @@ export function Home() {
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
-        const pageTitle = `Home | ${SITE_NAME}`;
+        const pageTitle = `${SITE_NAME} | Central de Ajuda Digital`;
         const description = DEFAULT_DESCRIPTION;
         const canonicalUrl = `${SITE_URL}/`;
 
@@ -121,7 +122,7 @@ export function Home() {
             <section className=" bg-mist3 px-0 lg:px-0 ">
                 <div className="dot-grid pointer-events-none absolute -right-0 top-19 hidden h-72 w-96 lg:block" aria-hidden="true" />
                 <div className="relative z-10 mx-auto  max-w-6xl flex flex-col md:flex-row justify-between items-center ">
-                    <div className="mx-auto max-w-xl px-5 pt-18 text-start lg:px-0 lg:py-23">
+                    <div className=" max-w-xl px-5 pt-18 text-start  lg:py-23">
                         <Reveal duration={1} y={32} ease="sine.out">
                             <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-[3.4rem]">Olá, como podemos ajudar?</h1>
                         </Reveal>
@@ -163,24 +164,24 @@ export function Home() {
                                 w-[73%]
                                 rounded-3xl
                                 bg-coral
-                                dark:bg-[#edf4f6]
+                                dark:bg-coral-soft
                             "
                             />
-
-                            <img
+                            <OptimizedImage
                                 src={heroImg}
                                 alt="Mulher mexendo no notebook"
+                                metadataKey="src/assets/hero.webp"
+                                loading="eager"
                                 fetchPriority="high"
                                 decoding="async"
-                                draggable="false"
-                                className="
-                                relative
-                                z-10
-                                block
-                                h-auto
-                                w-full
-                                object-contain
-                            "
+                                wrapperClassName="
+                                    relative
+                                    z-10
+                                    block
+                                    w-full
+                                "
+                                className="object-contain"
+                                sizes="(min-width: 1024px) 460px, min(100vw, 390px)"
                             />
                         </div>
                     </Reveal>
@@ -213,8 +214,8 @@ export function Home() {
                                 {priorityTopics.map((topic) => {
                                     const Icon = topic.icon;
                                     return (
-                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper/40  hover:text-coral">
-                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-coral">
+                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
+                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-searchPesq ">
                                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                             </span>
                                             <div className="min-w-0 flex-1 text-left pr-18">
@@ -241,7 +242,7 @@ export function Home() {
                             ))}
                         </div>
                         <div className="   flex mt-8 flex-col items-center">
-                            <Link to="/tutoriais" className="text-sm  border border-mauve-800 px-4 py-2  rounded-lg font-bold text-[#315d70] hover:text-ink flex items-center gap-3">
+                            <Link to="/tutoriais" className="text-sm  border border-line px-4 py-2 rounded-lg font-bold text-coral hover:text-ink transition-colors flex items-center gap-3">
                                 Ver todos os tutoriais
                                 <ArrowRight className="h-4 w-4 text-muted-ink" />
                             </Link>

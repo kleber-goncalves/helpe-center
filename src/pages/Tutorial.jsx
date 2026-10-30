@@ -1,10 +1,11 @@
-import { ArrowLeft, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // components
 import { Badge, Button } from "../components/ui";
 import { TutorialStep } from "../components/TutorialStep";
+import { TutorialCompletion } from "../components/TutorialCompletion";
 import { TutorialStepNav } from "../components/TutorialStepNav";
 
 // data
@@ -13,6 +14,23 @@ import { findTutorial, tutorials } from "../data/tutorials";
 
 // SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+
+function trackTutorialEvent(eventName, tutorial) {
+    if (
+        !import.meta.env.PROD ||
+        typeof window === "undefined" ||
+        typeof window.gtag !== "function"
+    ) {
+        return false;
+    }
+
+    window.gtag("event", eventName, {
+        tutorial_id: tutorial.id,
+        tutorial_category: tutorial.category,
+    });
+
+    return true;
+}
 
 /*
  * =========================================================
@@ -26,6 +44,20 @@ export function Tutorial() {
     const tutorial = findTutorial(tutorialId);
 
     const [activeStep, setActiveStep] = useState(0);
+
+    const beginEventSent = useRef(false);
+    const completionEventSent = useRef(false);
+
+    useEffect(() => {
+        if (!tutorial || beginEventSent.current) {
+            return;
+        }
+
+        beginEventSent.current = trackTutorialEvent(
+            "tutorial_begin",
+            tutorial
+        );
+    }, [tutorial]);
 
     /*
      * ==================================================
@@ -161,6 +193,10 @@ export function Tutorial() {
 
     const category = categories.find((item) => item.id === tutorial.category);
 
+    const Icon = tutorial.icon;
+
+    const IconCategory = category.icon;
+
     const related = tutorials.filter((item) => item.category === tutorial.category && item.id !== tutorial.id).slice(0, 2);
 
     const steps = tutorial.steps ?? createSteps(tutorial);
@@ -217,7 +253,19 @@ export function Tutorial() {
             return;
         }
 
-        handleStepNavigation(activeStep + 1);
+        const nextStep = activeStep + 1;
+
+        if (
+            nextStep === steps.length - 1 &&
+            !completionEventSent.current
+        ) {
+            completionEventSent.current = trackTutorialEvent(
+                "tutorial_complete",
+                tutorial
+            );
+        }
+
+        handleStepNavigation(nextStep);
     }
 
     function goToPreviousStep() {
@@ -298,7 +346,7 @@ export function Tutorial() {
                      * ==================================================
                      */}
 
-                    <article className="min-w-0">
+                    <article data-reader-content className="min-w-0">
                         {activeStep === 0 && (
                             <>
                                 {/*
@@ -308,7 +356,13 @@ export function Tutorial() {
                                  */}
 
                                 <header>
-                                    <Badge>{category?.name ?? tutorial.category}</Badge>
+                                    <Badge className="py-1 flex w-fit items-center gap-1.5 ">
+                                        <span className="flex ">
+                                            <IconCategory className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                        </span>
+                                        {category?.name ?? tutorial.category}
+                                    </Badge>
+                                   
 
                                     <h1
                                         className="
@@ -337,9 +391,17 @@ export function Tutorial() {
                                     </p>
 
                                     <div className="mt-5 flex flex-wrap gap-2">
-                                        <Badge>{tutorial.difficulty}</Badge>
+                                        <Badge className={` ${tutorial.cor_difficulty} text-xs font-semibold`}>
+                                            <span className="flex mb-2 ">
+                                                <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                                            </span>
+                                            <span>{tutorial.difficulty}</span>
+                                        </Badge>
 
-                                        <Badge>{tutorial.duration}</Badge>
+                                        <Badge className="flex gap-1 shrink-0 items-center text-xs leading-6 text-muted-ink">
+                                            <Clock className="h-3.5 w-3.5" />
+                                            {tutorial.duration}
+                                        </Badge>
                                     </div>
                                 </header>
 
@@ -467,51 +529,7 @@ export function Tutorial() {
                          * ==================================================
                          */}
 
-                        {activeStep === steps.length - 1 && (
-                            <section
-                                className="
-                                    mt-8
-                                    max-w-4xl
-                                    rounded-xl
-                                    border
-                                    border-line
-                                    bg-mist
-                                    p-6
-                                "
-                            >
-                                <p
-                                    className="
-                                        text-xs
-                                        font-bold
-                                        tracking-[0.16em]
-                                        text-muted-foreground
-                                    "
-                                >
-                                    PRONTO!
-                                </p>
-
-                                <h2
-                                    className="
-                                        mt-2
-                                        text-2xl
-                                        font-bold
-                                        text-ink
-                                    "
-                                >
-                                    Você concluiu este tutorial.
-                                </h2>
-
-                                <p
-                                    className="
-                                        mt-2
-                                        text-sm
-                                        text-muted-ink
-                                    "
-                                >
-                                    Se precisar, volte aos passos e faça com calma.
-                                </p>
-                            </section>
-                        )}
+                        {activeStep === steps.length - 1 && <TutorialCompletion externalLearning={tutorial.externalLearning} />}
 
                         {/*
                          * ==================================================

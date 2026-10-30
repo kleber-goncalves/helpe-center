@@ -51,6 +51,12 @@ const Tutorials = lazy(() =>
     })),
 );
 
+const Tools = lazy(() =>
+    import("./pages/Tools").then((module) => ({
+        default: module.Tools,
+    })),
+);
+
 const TutorialRoute = lazy(() =>
     import("./pages/Tutorial").then((module) => ({
         default: module.TutorialRoute,
@@ -93,16 +99,15 @@ function RouteLoadingFallback() {
  */
 
 function AppContent() {
-    const [loading, setLoading] =
-        useState(true);
+    const [loading, setLoading] = useState(true);
 
-    const location =
-        useLocation();
+    const location = useLocation();
 
-    const handlePreloaderComplete =
-        useCallback(() => {
-            setLoading(false);
-        }, []);
+    const handlePreloaderComplete = useCallback(() => {
+        document.documentElement.setAttribute("data-hauy-preloader-ready", "true");
+
+        setLoading(false);
+    }, []);
 
     return (
         <>
@@ -172,7 +177,7 @@ function AppContent() {
                     setOpen() dentro de useEffect.
                 */}
 
-                {location.pathname !== "/assistente" && <HauyAssistantWidget key={location.pathname} />}
+                {location.pathname !== "/assistente-hauy" && <HauyAssistantWidget key={location.pathname} />}
 
                 {/* ==========================================
                     ROTAS
@@ -200,6 +205,12 @@ function AppContent() {
 
                         <Route path="/tutoriais" element={<Tutorials />} />
 
+                        {/* ================================
+                            FERRAMENTAS
+                        ================================= */}
+
+                        <Route path="/ferramentas" element={<Tools />} />
+
                         <Route path="/tutoriais/:tutorialId" element={<TutorialRoute />} />
 
                         {/* ================================
@@ -224,7 +235,7 @@ function AppContent() {
                             ASSISTENTE
                         ================================= */}
 
-                        <Route path="/assistente" element={<Assistente />} />
+                        <Route path="/assistente-hauy" element={<Assistente />} />
 
                         {/* ================================
                             404

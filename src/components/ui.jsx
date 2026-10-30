@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { Check, ChevronDown, X } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -14,9 +14,9 @@ import { cn } from "../lib/utils";
 
 export const Button = forwardRef(function Button({ className, variant = "default", ...props }, ref) {
     const variants = {
-        default: "bg-ink text-white hover:bg-[#1d4a60]",
+        default: "bg-ink text-white hover:bg-ink-hover",
 
-        outline: "border border-line bg-white text-ink hover:bg-mist",
+        outline: "border border-line bg-background text-ink hover:bg-mist",
 
         coral: "bg-coral-button text-white hover:bg-coral-button-hover",
     };
@@ -29,7 +29,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
 ========================================================= */
 
 export function Card({ className, ...props }) {
-    return <div className={cn("min-w-0 rounded-xl border border-line bg-white", className)} {...props} />;
+    return <div className={cn("min-w-0 rounded-xl border border-line bg-card dark:bg-paper", className)} {...props} />;
 }
 
 /* =========================================================
@@ -37,7 +37,7 @@ export function Card({ className, ...props }) {
 ========================================================= */
 
 export function Badge({ children, className }) {
-    return <span className={cn(["inline-flex shrink-0", "items-center justify-center", "whitespace-nowrap", "rounded-full", "bg-[#edf4f5]", "px-2.5", "text-xs font-semibold", "text-[#31566a]"].join(" "), className)}>{children}</span>;
+    return <span className={cn(["inline-flex shrink-0", "items-center justify-center", "whitespace-nowrap", "rounded-full", "bg-mist2", "px-2.5", "text-xs font-semibold", "text-muted-ink"].join(" "), className)}>{children}</span>;
 }
 
 /* =========================================================
@@ -152,7 +152,15 @@ export const SelectContent = forwardRef(function SelectContent({ className, posi
     return (
         <SelectPrimitive.Portal>
             <SelectPrimitive.Content ref={ref} position={position} sideOffset={4} className={cn(["relative", "z-[100]", "max-h-72", "min-w-[8rem]", "overflow-hidden", "rounded-lg", "border border-line", "bg-background", "p-1", "text-foreground", "shadow-lift"].join(" "), className)} {...props}>
-                <SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
+                <SelectPrimitive.ScrollUpButton className="flex h-5 items-center justify-center text-muted-foreground hover:text-coral hover:bg-coral/40">
+                    <ChevronUp size={16} aria-hidden="true" />
+                </SelectPrimitive.ScrollUpButton>
+
+                <SelectPrimitive.Viewport className={["max-h-60", "overflow-y-auto overflow-x-hidden", "p-1 pr-2", "[scrollbar-width:thin]", "duration-900 [scrollbar-color:var(--color-line)_transparent]", "[&::-webkit-scrollbar]:w-2", "[&::-webkit-scrollbar-track]:bg-transparent", "[&::-webkit-scrollbar-thumb]:rounded-full", "[&::-webkit-scrollbar-thumb]:bg-line"].join(" ")}>{children}</SelectPrimitive.Viewport>
+
+                <SelectPrimitive.ScrollDownButton className="flex h-5 items-center justify-center border-t border-line text-muted-foreground hover:text-coral hover:bg-coral/40">
+                    <ChevronDown size={16} aria-hidden="true" />
+                </SelectPrimitive.ScrollDownButton>
             </SelectPrimitive.Content>
         </SelectPrimitive.Portal>
     );

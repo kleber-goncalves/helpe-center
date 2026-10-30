@@ -1,14 +1,19 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { TeamOption } from "./TeamOption";
+import { OptimizedImage } from "./OptimizedImage";
 
 // Assets alunos
-import testeAlunos from "../assets/equipe/alunos/testeAlunos.jpg";
+import kleber from "../assets/equipe/alunos/kleber.png";
 import cirlena from "../assets/equipe/alunos/cirlena.png";
 import divina from "../assets/equipe/alunos/divina.png";
+import carlos from "../assets/equipe/alunos/carlos.png";
+import joseRoberto from "../assets/equipe/alunos/jose-roberto.png";
 
 // Assets professores
-import testeProf from "../assets/equipe/professores/testeProf.jpg";
+import auroProf from "../assets/equipe/professores/auro.png";
+import felipeProf from "../assets/equipe/professores/felipe.svg";
+import fabioProf from "../assets/equipe/professores/fabio.svg";
 
 const team = {
     alunos: {
@@ -16,29 +21,34 @@ const team = {
         description: "Integrantes responsáveis pelo desenvolvimento do projeto.",
         members: [
             {
-                name: "Kleber",
-                role: "Aluno",
-                image: testeAlunos,
-            },
-            {
                 name: "Cirlene",
                 role: "Aluna",
                 image: cirlena,
+                metadataKey: "src/assets/equipe/alunos/cirlena.png",
+            },
+            {
+                name: "Carlos",
+                role: "Aluno",
+                image: carlos,
+                metadataKey: "src/assets/equipe/alunos/carlos.png",
             },
             {
                 name: "Divina",
                 role: "Aluna",
                 image: divina,
+                metadataKey: "src/assets/equipe/alunos/divina.png",
             },
             {
-                name: "Robertin",
+                name: "José Roberto",
                 role: "Aluno",
-                image: testeAlunos,
+                image: joseRoberto,
+                metadataKey: "src/assets/equipe/alunos/jose-roberto.png",
             },
             {
-                name: "Carlos",
+                name: "Kleber Gonçalves",
                 role: "Aluno",
-                image: testeAlunos,
+                image: kleber,
+                metadataKey: "src/assets/equipe/alunos/kleber.png",
             },
         ],
     },
@@ -48,19 +58,22 @@ const team = {
         description: "Professores que acompanharam e apoiaram o projeto.",
         members: [
             {
-                name: "Fabio",
+                name: "Fábio Gomes",
                 role: "Professor",
-                image: testeProf,
+                image: fabioProf,
+                metadataKey: "src/assets/equipe/professores/fabio.svg",
             },
             {
                 name: "Felipe Cordeiro",
                 role: "Professor",
-                image: testeProf,
+                image: felipeProf,
+                metadataKey: "src/assets/equipe/professores/felipe.svg",
             },
             {
-                name: "Auro",
+                name: "Auro Henrique Júnior",
                 role: "Professor",
-                image: testeProf,
+                image: auroProf,
+                metadataKey: "src/assets/equipe/professores/auro.png",
             },
         ],
     },
@@ -145,7 +158,17 @@ export function ProjectTeam() {
                         <article key={`${activeGroup}-${member.name}`} className="group min-w-0">
                             {/* Foto */}
                             <div className={["relative overflow-hidden", "rounded-lg border border-line", "bg-mist3"].join(" ")}>
-                                <img src={member.image} alt={`Foto de ${member.name}`} loading="lazy" fetchPriority="low" decoding="async" draggable="false" className={["aspect-[4/5] w-full", "object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")} />
+                                <OptimizedImage
+                                    src={member.image}
+                                    alt={`Foto de ${member.name}`}
+                                    metadataKey={member.metadataKey}
+                                    loading="lazy"
+                                    fetchPriority="low"
+                                    decoding="async"
+                                    aspectRatio="4 / 5"
+                                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                                    className={["object-cover", "transition-transform duration-500", "ease-out", "motion-safe:group-hover:scale-[1.025]"].join(" ")}
+                                />
                             </div>
 
                             {/* Informação */}

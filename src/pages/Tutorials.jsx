@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react";
 // Componetes
 import { HelpCTA } from "../components/HelpCTA2";
 import { Reveal } from "../components/Reveal";
+import { OptimizedImage } from "../components/OptimizedImage";
 import { SearchBar } from "../components/SearchBar";
 import { SectionTransition } from "../components/SectionTransition";
 import { TutorialCard } from "../components/TutorialCard";
@@ -30,6 +31,7 @@ import searchImg from "../assets/search.webp";
 
 
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+import { Folder, MessageCircleQuestion } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -332,7 +334,7 @@ export function Tutorials() {
 
                     <div className="flex flex-col items-center rounded-xl px-6 text-center">
                         <div className="mx-auto mt-6 w-full max-w-[220px] sm:max-w-[370px]">
-                            <img src={searchImg} fetchPriority="low" loading="lazy" decoding="async" alt="Mulher com uma lupa de pesquisa" />
+                            <OptimizedImage src={searchImg} alt="Mulher com uma lupa de pesquisa" metadataKey="src/assets/search.webp" loading="lazy" fetchPriority="low" decoding="async" sizes="(min-width: 640px) 370px, min(100vw, 220px)" wrapperClassName="w-full" className="object-contain" />
                         </div>
 
                         <h2 className="mt-6 text-xl font-bold text-foreground">Não encontramos nenhum tutorial para essa dúvida.</h2>
@@ -344,7 +346,8 @@ export function Tutorials() {
                                 CATEGORIAS
                             ===================================== */}
 
-                            <Link to="/categorias" className={["mt-6 inline-flex items-center justify-center", "rounded-lg border border-line", "px-4 py-3", "text-sm font-bold text-muted-foreground", "hover:bg-mist", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                            <Link to="/categorias" className={["mt-6 inline-flex items-center justify-center gap-2", "rounded-lg border border-line", "px-4 py-3", "text-sm font-bold text-muted-foreground", "hover:bg-mist", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <Folder className="size-4 mb-1" aria-hidden="true" />
                                 Ver categorias
                             </Link>
 
@@ -362,7 +365,10 @@ export function Tutorials() {
                             ===================================== */}
 
                             <Link to="/enviar-duvida" className="mt-6">
-                                <Button variant="coral">Enviar uma dúvida</Button>
+                                <Button variant="coral" className="flex items-center justify-center">
+                                    <MessageCircleQuestion className="size-4 mb-1" aria-hidden="true" />
+                                    Enviar uma dúvida
+                                </Button>
                             </Link>
                         </div>
                     </div>

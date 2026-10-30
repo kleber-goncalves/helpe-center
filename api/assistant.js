@@ -4,7 +4,8 @@ import { GoogleGenAI } from "@google/genai";
 
 import { categories } from "../src/data/categories.js";
 import { tutorials } from "../src/data/tutorials.js";
-import { searchTutorials } from "../src/lib/searchTutorials.js";
+import { searchTutorialsWithRelevance } from "../src/lib/searchTutorials.js";
+import { isInsufficientAssistantAnswer } from "../src/lib/assistantResponse.js";
 
 /*
  * =========================================================
@@ -435,23 +436,55 @@ export async function POST(request) {
          * ==================================================
          */
 
-        const foundTutorials = searchTutorials(message, tutorials, categories);
+        const searchResults = searchTutorialsWithRelevance(
+            message,
+            tutorials,
+            categories,
+        );
 
-        const relevantTutorials = foundTutorials.slice(0, MAX_TUTORIALS);
+        const relevantTutorials = searchResults
+            .filter(
+                (result) =>
+                    result.relevance.level === "relevant",
+            )
+            .slice(0, MAX_TUTORIALS)
+            .map((result) => result.tutorial);
 
         /*
          * ==================================================
-         * NENHUM TUTORIAL
+         * CONTEÚDO PARECIDO
          * ==================================================
          *
-         * Não chamamos a IA quando a Central não possui
-         * conteúdo relevante.
+         * A dúvida não encontrou conteúdo forte o suficiente
+         * para responder com a IA, mas existe pelo menos um
+         * tutorial que compartilha termos importantes com ela.
          */
 
         if (relevantTutorials.length === 0) {
+            const relatedTutorials = searchResults
+                .filter(
+                    (result) =>
+                        result.relevance.level === "related",
+                )
+                .slice(0, 2)
+                .map((result) => result.tutorial);
+
+            if (relatedTutorials.length > 0) {
+                return jsonResponse({
+                    ok: true,
+                    answer: "Não encontramos um tutorial que responda exatamente à sua dúvida. Estes conteúdos podem ajudar, mas você também pode pesquisar o que digitou no Google ou no YouTube para encontrar outras explicações:",
+                    tutorials: relatedTutorials.map((tutorial) => ({
+                        id: tutorial.id,
+                        title: tutorial.title,
+                        description: tutorial.description,
+                    })),
+                    source: "related",
+                });
+            }
+
             return jsonResponse({
                 ok: true,
-                answer: "Ainda não encontramos um tutorial da Central de Ajuda sobre essa dúvida. Você pode pesquisar no Google ou enviar uma dúvida para a equipe.",
+                answer: "Não encontramos essa dúvida na Central. Ainda não temos um tutorial sobre esse assunto. Você pode continuar a busca no Google, assistir a vídeos relacionados ou enviar essa dúvida para a equipe.",
                 tutorials: [],
                 source: "none",
             });
@@ -471,7 +504,17 @@ export async function POST(request) {
          * ==================================================
          */
 
-        const answer = await generateAssistantResponse(message, tutorialContext);
+        const generatedAnswer = await generateAssistantResponse(message, tutorialContext);
+        const needsExternalSearch = isInsufficientAssistantAnswer(generatedAnswer);
+
+        /*
+         * Quando a IA informa que os conteúdos não bastam para responder,
+         * os tutoriais continuam visíveis como relacionados e a interface
+         * também oferece pesquisa externa para a pergunta original.
+         */
+        const answer = needsExternalSearch
+            ? "Não encontrei um tutorial que responda exatamente à sua dúvida. Os conteúdos abaixo são relacionados, mas talvez não ensinem o procedimento que você procura. Você também pode pesquisar o que digitou no Google ou no YouTube para encontrar outras explicações:"
+            : generatedAnswer;
 
         /*
          * ==================================================
@@ -487,7 +530,7 @@ export async function POST(request) {
                 title: tutorial.title,
                 description: tutorial.description,
             })),
-            source: "tutorials",
+            source: needsExternalSearch ? "related" : "tutorials",
         });
     } catch (error) {
         console.error("[Hauy Assistente]", error);

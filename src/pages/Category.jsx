@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { Link, useParams, } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { ChevronRight, MessageCircleQuestion } from "lucide-react";
+import categoryImg from "../assets/category.webp";
+
 
 // Components
 import { TutorialCard } from "../components/TutorialCard";
@@ -11,6 +13,7 @@ import { tutorials } from "../data/tutorials";
 
 // SEO
 import { SITE_NAME, SITE_URL, setPageTitle, setMetaTag, setMetaProperty, setCanonical, setJsonLd, removePageTitle, removeMetaTag, removeMetaProperty, removeCanonical, removeJsonLd } from "../lib/seo";
+import { OptimizedImage } from "../components/OptimizedImage";
 export function Category() {
     const { categoryId } = useParams();
     const category = categories.find((item) => item.id === categoryId);
@@ -137,7 +140,7 @@ export function Category() {
         return (
             <main className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
                 <h1 className="text-3xl font-bold text-ink">Categoria não encontrada</h1>
-                <Link className="mt-5 inline-block font-bold text-[#315d70]" to="/categorias">
+                <Link className="mt-5 inline-block font-bold text-coral" to="/categorias">
                     Ver categorias
                 </Link>
             </main>
@@ -162,19 +165,50 @@ export function Category() {
                     {category.name}
                 </span>
             </nav>
-            <div className="mt-7 flex items-start gap-4">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-[#eaf3f5] text-[#315d70]">
-                    <Icon className="h-6 w-6" />
-                </span>
-                <div>
-                    <h1 className="text-4xl font-bold tracking-tight text-ink">{category.name}</h1>
-                    <p className="mt-2 text-muted-ink">{category.description}</p>
+            <div data-reader-content>
+                <div className="mt-7 flex items-start gap-4">
+                    <span className="grid h-17 w-17 place-items-center rounded-xl bg-mist3 text-[var(--color-coral)]">
+                        <Icon className="h-12 w-12" />
+                    </span>
+                    <div>
+                        <h1 className="text-4xl font-bold tracking-tight text-ink">{category.name}</h1>
+                        <p className="mt-2 text-muted-ink">{category.description}</p>
+                    </div>
                 </div>
-            </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {results.map((tutorial) => (
-                    <TutorialCard key={tutorial.id} tutorial={tutorial} />
-                ))}
+                <div className="mt-10">
+                    {results.length > 0 ? (
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {results.map((tutorial) => (
+                                <TutorialCard key={tutorial.id} tutorial={tutorial} />
+                            ))}
+                        </div>
+                    ) : (
+                        <section className="flex flex-col items-center px-5 py-10 text-center sm:py-14" aria-labelledby="empty-category-title">
+                            
+                            <OptimizedImage
+                                src={categoryImg}
+                                alt="Mulher procurando conteúdo em uma caixa de arquivos"
+                                metadataKey="src/assets/category.webp"
+                                loading="lazy"
+                                decoding="async"
+                                wrapperClassName="relative z-10 mb-6 block w-full max-w-[360px]"
+                                className="object-contain"
+                                sizes="(min-width: 640px) 360px, calc(100vw - 2.5rem)"
+                            />
+
+                            <h2 id="empty-category-title" className="max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                                Ainda não temos tutoriais para esta categoria.
+                            </h2>
+
+                            <p className="mt-4 max-w-xl text-base leading-7 text-muted-ink">Pode nos enviar sua dúvida. Vamos analisar sua mensagem e, quando possível, orientar você.</p>
+
+                            <Link to="/enviar-duvida" className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-coral-button px-6 py-3 text-sm font-bold text-white shadow-soft transition duration-200 hover:bg-coral-button-hover hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2">
+                                <MessageCircleQuestion className="size-4" aria-hidden="true" />
+                                Enviar uma dúvida
+                            </Link>
+                        </section>
+                    )}
+                </div>
             </div>
         </main>
     );

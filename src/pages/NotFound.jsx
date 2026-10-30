@@ -222,7 +222,7 @@ export function NotFound() {
                                 </button>
 
                                 {/* Home */}
-                                <Link to="/" className={["inline-flex min-h-11", "items-center justify-center gap-2", "rounded-lg", "bg-mist px-4", "text-sm font-semibold", "border border-line", "text-white", "transition-colors", "hover:bg-[#1d4a60]", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2"].join(" ")}>
+                                <Link to="/" className={["inline-flex min-h-11", "items-center justify-center gap-2", "rounded-lg", "bg-mist px-4", "text-sm font-semibold", "border border-line", "text-white", "transition-colors", "hover:bg-[var(--color-ink-hover)]", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2"].join(" ")}>
                                     <Home className="size-4" aria-hidden="true" />
                                     Ir para o início
                                 </Link>

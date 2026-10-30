@@ -1,0 +1,1 @@
+var e=`/api/support`;export{e as t};

@@ -1,24 +1,24 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { BookOpen, CircleHelp, Folder, House, Info, MessageCircleQuestion } from "@sketchyicons/react";
-import { Accessibility, ChevronLeft, ChevronRight } from "lucide-react";
+import { BookOpen, CircleHelp, Folder, House, Info, BotMessageSquare } from "@sketchyicons/react";
+import { Accessibility, ChevronLeft, ChevronRight, Wrench } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 // GSAP
 import { gsap } from "gsap";
 
-
-
 // Componetes
 import { Button, Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AccessibilityPanel } from "./AccessibilityMenu";
+import { OptimizedImage } from "./OptimizedImage";
 
 const links = [
     ["Início", "/", House],
     ["Categorias", "/categorias", Folder],
     ["Tutoriais", "/tutoriais", BookOpen],
+    ["Ferramentas", "/ferramentas", Wrench],
     ["FAQ", "/faq", CircleHelp],
-    ["Assistente", "/assistente", MessageCircleQuestion],
+    ["Assistente Hauy", "/assistente-hauy", BotMessageSquare],
     ["Sobre", "/sobre", Info],
 ];
 
@@ -215,16 +215,17 @@ export function MobileHeader() {
             <header className={["fixed inset-x-0 top-0 z-[60]", "border-b", "transition-[background-color,border-color,box-shadow]", "duration-300 ease-out", open ? "border-line bg-paper backdrop-blur-none shadow-none" : "border-line/70 bg-paper/65 backdrop-blur-sm backdrop-saturate-150 shadow-[0_8px_32px_rgb(0_0_0_/_0.08)]"].join(" ")}>
                 <div className={["pointer-events-none absolute inset-x-0 bottom-0 h-px", "transition-opacity duration-300", open ? "opacity-0" : "opacity-60", "bg-foreground/10"].join(" ")} />
 
-                <div className="mx-auto flex h-16 items-center justify-between px-5">
+                <div className="mx-auto flex h-20 items-center justify-between px-5">
                     {/* =================================
                         LOGO
                     ================================= */}
                     <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
-                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg">
-                            <img src="/logo.png" alt="Hauy Conecta" fetchPriority="high" draggable="false" decoding="async" className="h-full w-full object-contain" />
+                        <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
+                            <OptimizedImage src="/logo.svg" alt="Hauy Conecta" loading="eager" fetchPriority="high" decoding="async" wrapperClassName="h-full w-full" sizes="52px" className="object-contain" />
                         </div>
 
                         <div className="flex flex-col leading-tight">
+                            <span className="text-[11px] text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
                             <span className="text-base font-bold text-ink">Hauy Conecta</span>
 
                             <span className="text-[11px] text-muted-ink">Central de Ajuda Digital</span>
@@ -241,7 +242,7 @@ export function MobileHeader() {
                         ================================= */}
                         <Sheet open={open} onOpenChange={handleSheetOpenChange}>
                             <SheetTrigger asChild>
-                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                                     <span className="relative flex h-[18px] w-[18px]" aria-hidden="true">
                                         {/* Top */}
                                         <span ref={topBarRef} className={["absolute left-0 top-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
@@ -250,7 +251,7 @@ export function MobileHeader() {
                                         <span ref={middleBarRef} className={["absolute left-0 top-1/2", "h-[1.75px] w-full", "-translate-y-1/2", "rounded-full bg-current", "will-change-transform"].join(" ")} />
 
                                         {/* Bottom */}
-                                        <span ref={bottomBarRef} className={["absolute bottom-0 left-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
+                                        <span ref={bottomBarRef} className={["absolute  bottom-0 left-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
                                     </span>
                                 </button>
                             </SheetTrigger>
@@ -263,7 +264,7 @@ export function MobileHeader() {
                                     {/* =================================
                                         CABEÇALHO
                                     ================================= */}
-                                    <div className="shrink-0 border-b border-line px-4 py-4">
+                                    <div className="shrink-0 border-b border-line px-4 py-4 mt-7">
                                         <div className="flex min-h-8 items-center justify-between gap-3">
                                             <div className="flex  flex-row w-full items-center  gap-2">
                                                 {menuView === "accessibility" && (
