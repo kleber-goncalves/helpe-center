@@ -433,27 +433,23 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 
 ## 14. Estado atual do PWA
 
-**Status: planejamento arquitetural; não implementado no código verificado da branch main.**
+**Status: ainda não implementado. A Fase 0 de auditoria e organização está sendo executada na branch `feat/pwa`.**
 
-O documento de referência é docs/arquitetura-pwa-hauy-conecta.md.
+O documento de referência é `docs/arquitetura-pwa-hauy-conecta.md`. A estrutura do módulo e os critérios de teste estão descritos em `src/pwa/README.md` e `tests/pwa/README.md`.
 
-A proposta aprovada para planejamento é um modelo híbrido:
+A auditoria de 30/10/2026 mediu `dist/` com 354,77 MiB e 983 arquivos: 18 vídeos MP4 somando 298,38 MiB (maior arquivo: 66,63 MiB), 822 WebP, 88 PNG, 5 SVG, 26 HTML, 20 JavaScript e 1 CSS. A biblioteca `public/tutoriais/` contém 158 imagens-fonte e 18 vídeos distribuídos entre oito tutoriais.
 
-- camada básica automática para shell, conteúdo essencial e um conjunto pequeno de imagens essenciais;
-- cache runtime de imagens acessadas com limites;
-- download opt-in de tutoriais selecionados;
-- vídeos opcionais, separados e desativados por padrão;
-- Cache Storage para recursos e IndexedDB para metadados dos downloads;
-- Service Worker/Workbox com políticas específicas por tipo de recurso;
-- atualização do aplicativo sem apagar os pacotes escolhidos pelo usuário;
-- tratamento especial de HTTP Range para reprodução de vídeos offline.
+`src/App.jsx` usa `React.lazy` em nove rotas/páginas. O precache deverá considerar os chunks lazy, não apenas o bundle inicial, e os testes deverão validar abertura direta de rotas sem rede.
 
-A análise anterior identificou que o acervo de mídia é grande em relação ao shell da aplicação. Portanto, não armazenar todos os vídeos e todas as imagens automaticamente.
+O pipeline de produção executa geração de metadados, geração de rotas, Vite, Astratra e auditoria de imagens. O workflow `prerender.yml` versiona `dist/` na `main`; a Vercel publica o `dist/` pré-gerado. Manifesto e Service Worker precisam sobreviver à pré-renderização e entrar nesse artefato.
 
-Antes de implementar, revisar as decisões pendentes da seção 17 do documento de arquitetura, especialmente conteúdo do cache básico, tamanho máximo, aviso de dados móveis e navegadores oficialmente suportados.
+A organização proposta separa `src/pwa/config`, `client`, `service-worker`, `storage`, `downloads`, `ui` e `utils`; os testes ficam em `tests/pwa/unit`, `integration`, `e2e` e `fixtures`. As subpastas serão criadas junto com os arquivos correspondentes, evitando diretórios vazios.
 
-O pré-carregamento atual feito por src/hooks/useTutorialStepMedia.js não substitui Service Worker, Cache Storage ou downloads persistentes. Não declarar o aplicativo instalável ou offline enquanto isso não estiver efetivamente implementado e testado.
+A arquitetura híbrida permanece vigente: shell e conteúdo básico em cache, imagens runtime limitadas, downloads opt-in de tutoriais e vídeos opcionais separados. Vídeos não entram no precache automático. Cache Storage guarda respostas HTTP; IndexedDB guarda metadados.
 
+O `vite-plugin-pwa@2.0.0` foi identificado como candidato compatível com Vite 8 e Node 24; ainda não foi instalado. Nenhum manifesto, Service Worker, registro de instalação, política de cache ou fluxo de download foi implementado.
+
+O pré-carregamento atual de `src/hooks/useTutorialStepMedia.js` não substitui Service Worker, Cache Storage ou downloads persistentes. Não declarar o aplicativo instalável ou offline enquanto isso não estiver implementado e testado.
 ## 15. Limitações e cuidados conhecidos
 
 1. **Rate limit serverless:** os Map de rate limit são locais à instância e não formam um controle distribuído.
