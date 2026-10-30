@@ -433,23 +433,21 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 
 ## 14. Estado atual do PWA
 
-**Status: ainda não implementado. A Fase 0 de auditoria e organização está sendo executada na branch `feat/pwa`.**
+**Status: Fase 1 parcialmente implementada na branch feat/pwa; o PWA ainda não está liberado como funcionalidade de produção.**
 
-O documento de referência é `docs/arquitetura-pwa-hauy-conecta.md`. A estrutura do módulo e os critérios de teste estão descritos em `src/pwa/README.md` e `tests/pwa/README.md`.
+A arquitetura e o histórico estão em docs/arquitetura-pwa-hauy-conecta.md. O código PWA fica isolado em src/pwa/ e os testes automatizados em tests/pwa/.
 
-A auditoria de 30/10/2026 mediu `dist/` com 354,77 MiB e 983 arquivos: 18 vídeos MP4 somando 298,38 MiB (maior arquivo: 66,63 MiB), 822 WebP, 88 PNG, 5 SVG, 26 HTML, 20 JavaScript e 1 CSS. A biblioteca `public/tutoriais/` contém 158 imagens-fonte e 18 vídeos distribuídos entre oito tutoriais.
+A implementação atual usa vite-plugin-pwa 2.0.0 com injectManifest e Workbox 7.4.1. O manifesto é definido em src/pwa/config/manifest.js; os ícones PNG são gerados de public/logo.svg por scripts/generate-pwa-icons.mjs antes de dev/build.
 
-`src/App.jsx` usa `React.lazy` em nove rotas/páginas. O precache deverá considerar os chunks lazy, não apenas o bundle inicial, e os testes deverão validar abertura direta de rotas sem rede.
+O Service Worker em src/pwa/service-worker/sw.js faz precache de JS, CSS, HTML, favicon, manifesto e ícones, com limite de 2 MiB por arquivo. Os caminhos de tutoriais e arquivos MP4 são excluídos. A navegação tenta a rede primeiro e usa o app shell quando a rede falha; public/offline.html é fallback final.
 
-O pipeline de produção executa geração de metadados, geração de rotas, Vite, Astratra e auditoria de imagens. O workflow `prerender.yml` versiona `dist/` na `main`; a Vercel publica o `dist/` pré-gerado. Manifesto e Service Worker precisam sobreviver à pré-renderização e entrar nesse artefato.
+O registro e a atualização ficam em src/pwa/client/register-service-worker.js. A interface React usa src/pwa/ui/hooks/usePwaStatus.js e src/pwa/ui/components/PwaStatusBanner.jsx para sinalizar conexão, preparação offline e atualização disponível. A atualização é prompt: precisa de ação explícita da pessoa.
 
-A organização proposta separa `src/pwa/config`, `client`, `service-worker`, `storage`, `downloads`, `ui` e `utils`; os testes ficam em `tests/pwa/unit`, `integration`, `e2e` e `fixtures`. As subpastas serão criadas junto com os arquivos correspondentes, evitando diretórios vazios.
+Scripts novos: npm run pwa:icons, npm run test:pwa:unit, npm run test:pwa:e2e e npm run test:pwa. O workflow Validate Hauy Conecta executa testes unitários antes do lint e testes E2E após build/prerender.
 
-A arquitetura híbrida permanece vigente: shell e conteúdo básico em cache, imagens runtime limitadas, downloads opt-in de tutoriais e vídeos opcionais separados. Vídeos não entram no precache automático. Cache Storage guarda respostas HTTP; IndexedDB guarda metadados.
+Validação realizada no sandbox Node 24: Vite build passou, ESLint passou com duas advertências preexistentes em ImageLightbox.jsx e useTutorialStepMedia.js, e quatro testes unitários PWA passaram. O build completo chegou à etapa Astratra, mas o sandbox remoto encerrou o Chromium; a execução E2E precisa ser confirmada no GitHub Actions/Ubuntu. Não declarar instalação ou uso offline validado até essa execução e um teste manual no preview.
 
-O `vite-plugin-pwa@2.0.0` foi identificado como candidato compatível com Vite 8 e Node 24; ainda não foi instalado. Nenhum manifesto, Service Worker, registro de instalação, política de cache ou fluxo de download foi implementado.
-
-O pré-carregamento atual de `src/hooks/useTutorialStepMedia.js` não substitui Service Worker, Cache Storage ou downloads persistentes. Não declarar o aplicativo instalável ou offline enquanto isso não estiver implementado e testado.
+Ainda não foram implementados cache runtime de imagens, pacotes offline por tutorial, IndexedDB, downloads ou vídeo offline. A decisão híbrida permanece: vídeos não entram no precache automático.
 ## 15. Limitações e cuidados conhecidos
 
 1. **Rate limit serverless:** os Map de rate limit são locais à instância e não formam um controle distribuído.

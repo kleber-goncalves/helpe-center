@@ -1,6 +1,6 @@
 # Hauy Conecta --- Arquitetura e Planejamento do PWA
 
-> **Status:** auditoria da Fase 0 registrada; implementação do PWA ainda não iniciada.\
+> **Status:** Fase 1 parcialmente implementada na branch feat/pwa; validação do build completo com Astratra e E2E no GitHub Actions pendentes.\
 > **Modelo:** híbrido --- conteúdo básico e imagens essenciais em cache,
 > com download opcional de tutoriais e vídeos.
 
@@ -601,17 +601,24 @@ disponível offline, parcial, falha e atualização disponível.
 
 ### Fase 1 --- PWA instalável e offline básico
 
--   [ ] Integrar plugin.
--   [ ] Criar manifesto e ícones.
--   [ ] Registrar Service Worker.
--   [ ] Definir precache de shell, chunks, CSS e páginas.
--   [ ] Criar fallback offline.
--   [ ] Definir cache pequeno de imagens essenciais.
--   [ ] Implementar indicador online/offline.
--   [ ] Definir atualização com aviso.
--   [ ] Validar build completo e deploy.
+-   [x] Integrar vite-plugin-pwa 2.0.0 com estratégia injectManifest.
+-   [x] Criar manifesto e script de geração de ícones.
+-   [x] Criar e registrar o Service Worker customizado.
+-   [x] Definir precache inicial para arquivos JS/CSS/HTML/ICO/manifesto e ícones.
+-   [x] Excluir caminhos de tutoriais e vídeos do precache.
+-   [x] Criar fallback offline e navegação network-first com fallback para app shell.
+-   [x] Implementar indicador online/offline, aviso de preparação offline e atualização com confirmação.
+-   [x] Criar testes unitários do manifesto e da política de cache.
+-   [x] Criar testes E2E de registro do Service Worker e navegação offline.
+-   [x] Integrar testes PWA unitários e E2E ao workflow de validação.
+-   [ ] Validar build completo com Astratra no runner Ubuntu do GitHub Actions.
+-   [ ] Confirmar no preview da Vercel instalação e navegação offline em navegador real.
 
-**Saída:** instalação e conteúdo básico testados sem internet.
+**Implementação atual:** o app shell inclui JavaScript, CSS, HTML, favicon, manifesto e ícones. O Service Worker tenta a rede primeiro para as navegações; quando a rede falha, usa o app shell precacheado para o React Router resolver a rota localmente. A página offline estática é a última alternativa.
+
+**Limite desta entrega:** não existe cache runtime de imagens, download de tutoriais, IndexedDB de pacotes ou vídeo offline nesta fase.
+
+**Saída esperada:** instalação e navegação básica offline confirmadas pelo CI e por teste manual no preview.
 
 ### Fase 2 --- Imagens runtime e downloads de tutoriais
 
@@ -763,13 +770,10 @@ Antes de codificar, confirmar:
 
 ## 20. Registro de escopo
 
-Este documento descreve uma arquitetura proposta. Não confirma que
-dependências estejam instaladas, que o Service Worker exista ou que
-funcionalidades PWA tenham sido implementadas.
+Este documento registra a arquitetura e o andamento da implementação. A Fase 1 está parcialmente implementada na branch feat/pwa; não declarar o PWA pronto para produção até concluir a validação E2E no GitHub Actions e o teste manual no preview da Vercel.
 
-**Estado:** planejamento arquitetural.\
-**Próxima etapa:** revisar as decisões da seção 17 e realizar a
-auditoria técnica da Fase 0.
+**Estado:** Fase 0 auditada parcialmente; Fase 1 em implementação.\
+**Próxima etapa:** validar o fluxo de instalação e navegação offline no CI e no preview.
 
 ## 21. Resultado da auditoria técnica da Fase 0
 
@@ -859,8 +863,25 @@ Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no wor
 
 ## 23. Registro de implementação
 
-- Branch de trabalho: `feat/pwa`.
-- A auditoria e a definição da estrutura não instalam dependências e não ativam funcionalidades PWA.
-- O `vite-plugin-pwa@2.0.0` foi identificado como candidato compatível com o Vite 8 e Node 24 do projeto; a compatibilidade deverá ser confirmada novamente durante a instalação/build.
-- Nenhum manifesto, Service Worker, cache, registro de instalação ou fluxo de download foi implementado ainda.
+- Branch de trabalho: feat/pwa; main e dev permanecem intocadas.
+- Dependências adicionadas como devDependencies: vite-plugin-pwa 2.0.0, workbox-core 7.4.1, workbox-precaching 7.4.1 e workbox-routing 7.4.1.
+- O manifesto é definido em src/pwa/config/manifest.js.
+- Os ícones são gerados de public/logo.svg pelo script scripts/generate-pwa-icons.mjs, acionado por predev e build; PNGs gerados não precisam ser versionados como fontes.
+- O Service Worker usa injectManifest, nomes de cache versionados e navegação network-first com fallback ao app shell; a página estática public/offline.html é alternativa final.
+- O precache inicial inclui JS, CSS, HTML, favicon, manifesto e ícones, com limite por arquivo de 2 MiB. Imagens e vídeos de tutoriais são excluídos.
+- A interface apresenta estado de conexão, confirmação de preparação offline e aviso de atualização com ação explícita.
+- Testes unitários e E2E foram criados e adicionados ao workflow Validate Hauy Conecta.
+- npx vite build, ESLint e os quatro testes unitários passaram no sandbox Node 24. O build completo parou na etapa Astratra porque o Chromium encerra dentro do sandbox remoto; o E2E ainda deve ser confirmado no runner Ubuntu do GitHub Actions.
+- Nenhum cache runtime de imagens, pacote de tutorial, IndexedDB ou vídeo offline foi implementado nesta fase.
 - Os diretórios de domínio serão criados progressivamente junto com o primeiro arquivo de cada responsabilidade para evitar scaffolding vazio.
+
+## 24. Decisões e validação da Fase 1
+
+- O Service Worker é construído por injectManifest para manter o roteamento e a política offline sob controle do projeto.
+- O registro é feito pela aplicação React por meio do módulo client; componentes não manipulam diretamente o registro do navegador.
+- O tipo de atualização é prompt: a versão nova só é aplicada quando a pessoa aciona Atualizar agora.
+- A navegação tenta a rede primeiro para preservar o HTML pré-renderizado e SEO. Se a rede falhar, o Service Worker devolve o app shell para o React Router tratar a rota.
+- O precache é limitado por tipo de arquivo e tamanho; mídia de tutoriais não é baixada automaticamente.
+- Os ícones são artefatos gerados no início de dev/build, evitando manter PNGs derivados no controle de versão.
+- O workflow Validate Hauy Conecta executa testes unitários PWA antes de lint e testes de navegador após o build/prerender.
+- A validação em sandbox executou Vite build, ESLint e quatro testes unitários. O sandbox remoto não conseguiu manter Chromium ativo; a aprovação E2E depende da execução no runner Ubuntu do CI.
