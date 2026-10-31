@@ -983,3 +983,58 @@ A Fase 3 foi implementada na branch feat/pwa mantendo o escopo por escolha do us
 - O E2E usa vídeos pequenos do tutorial Excel, verifica o MP4 completo no Cache Storage, desliga a rede, carrega os metadados do player e realiza uma busca temporal. O teste também exige uma resposta HTTP 206 offline.
 - Permanecem pendentes o teste manual em dispositivos reais, arquivos grandes (especialmente vídeos do Canva), armazenamento/quota e comportamento em condições de rede móvel. Não declarar compatibilidade universal antes desses testes.
 
+
+
+## 27. Fase 4 — atualização de conteúdo e recuperação de pacotes offline
+
+A Fase 4 fortalece a confiabilidade dos pacotes opt-in sem alterar a separação entre o app shell, o cache runtime de imagens e os caches individuais dos tutoriais.
+
+### 27.1 Atualização do Service Worker
+
+- O registro permanece no modo \`prompt\`: a nova versão não é aplicada silenciosamente.
+- A ativação limpa apenas caches antigos do app shell, por meio de \`src/pwa/service-worker/cache-cleanup.js\`.
+- A limpeza usa \`Promise.allSettled\`; uma falha ao remover cache antigo não deve impedir a ativação da versão nova.
+- Os caches de pacotes (\`hauy-conecta-tutorial-package-*\`) e o cache runtime (\`hauy-conecta-runtime-images-v1\`) não entram na política de limpeza do app shell.
+- Existe teste unitário que confirma que a limpeza remove somente o app shell antigo e mantém os demais namespaces.
+
+### 27.2 Identificação de conteúdo desatualizado
+
+O IndexedDB registra fingerprints separadas:
+- \`contentVersion\`: dados do tutorial, passos, imagens e metadados das imagens;
+- \`videoContentVersion\`: lista e metadados dos MP4 opcionais.
+
+O script \`scripts/generate-image-metadata.mjs\` gera tamanho e SHA-256 para imagens e vídeos. O fingerprint do conteúdo principal incorpora o hash das imagens; o fingerprint dos vídeos incorpora o hash dos MP4. A serialização é determinística e ignora a função usada como ícone de categoria.
+
+Os campos opcionais de vídeo são removidos da fingerprint principal. Assim, um tutorial salvo sem vídeos não é considerado desatualizado quando muda somente um vídeo opcional. Se o pacote tiver vídeos, a fingerprint específica dos vídeos também é comparada.
+
+Os estados apresentados pela consulta do pacote são:
+- \`saved\`: cache e recursos íntegros, fingerprints atuais;
+- \`outdated\`: recursos presentes e válidos, mas conteúdo publicado mudou;
+- \`incomplete\`: cache ausente, recurso ausente, resposta inválida ou metadados de tamanho inconsistentes;
+- \`null\`: nenhum registro de pacote para o tutorial.
+
+### 27.3 Integridade durante gravação e consulta
+
+Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho efetivamente recebido é registrado em \`resourceDetails\`. Quando um tamanho esperado é conhecido por metadados ou \`Content-Length\`, o valor recebido é comparado antes de o pacote ser considerado concluído. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
+
+Na consulta, cada URL declarada no IndexedDB é procurada no cache e verificada por status, corpo, MIME type e tamanho positivo. Quando \`Content-Length\` está disponível, ele deve corresponder ao tamanho registrado.
+
+Essa validação não re-calcula SHA-256 do corpo armazenado a cada abertura. Os hashes gerados no build detectam mudanças no conteúdo publicado; a integridade do armazenamento local é validada pela conclusão da gravação no Cache Storage, pelos tamanhos registrados e pela conferência das respostas ao consultar o pacote.
+
+### 27.4 Atualização transacional e recuperação de falhas
+
+A substituição permanece em duas etapas:
+1. Criar um cache novo e temporário para o pacote atualizado.
+2. Baixar e validar todos os recursos, gravar o novo registro no IndexedDB e somente então remover o cache anterior.
+
+Se o download for cancelado, um recurso ficar indisponível, o Cache Storage falhar ou a quota for excedida, o cache temporário é descartado. O pacote anterior permanece associado ao registro antigo e a interface consulta seu estado novamente. A mensagem de erro diferencia armazenamento cheio e informa quando a versão anterior foi preservada.
+
+A interface permite reparar pacotes \`incomplete\` e atualizar pacotes \`outdated\`. Nunca exibe a confirmação de disponibilidade offline para os dois estados.
+
+### 27.5 Testes adicionados
+
+- Unitários: fingerprints determinísticas; alteração em texto/imagem/vídeo; separação da versão de vídeos opcionais; rejeição de respostas ausentes, status inválido, MIME incorreto, tamanho vazio ou divergente.
+- Unitários do Service Worker: limpeza do cache antigo do app shell sem remover cache runtime ou pacotes de tutoriais; falha de remoção não impede a ativação.
+- E2E: remoção de Cache Storage; conteúdo desatualizado; remoção dos dados locais do site; quota simulada durante atualização; resposta HTML inválida no lugar de imagem; cancelamento durante gravação; arquivo necessário indisponível.
+
+A execução local e o resultado final do GitHub Actions ainda devem ser confirmados no commit final desta fase. A quota real do navegador e a remoção real dos dados pelo usuário continuam recomendadas para aceite manual em Chrome desktop e Android.
