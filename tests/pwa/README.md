@@ -51,4 +51,20 @@ Os testes específicos do PWA ficam fora de `src/`. A implementação e as decis
 - Falhas de quota, rede, cancelamento ou persistência não podem apagar a versão anterior que ainda esteja íntegra.
 - O workflow Validate Hauy Conecta executa os testes unitários PWA, lint, build/prerender e testes E2E no runner Ubuntu.
 
-A simulação automatizada de quota não substitui o aceite manual em navegador real. Também devem ser verificados manualmente limites de armazenamento, remoção de dados pelo navegador, instalação, atualização e uso offline em Chrome desktop e Android.
+## Aceite manual informado pelo responsável
+
+Os seguintes cenários foram testados em dispositivos reais e reportados como funcionando:
+
+- Chrome desktop: instalação nativa, abertura standalone, atualização do Service Worker e navegação offline.
+- Samsung Galaxy A14 4G: instalação, navegação offline e reprodução de vídeos MP4 offline.
+- Dispositivo Android TecToy: instalação nativa.
+- Vídeos grandes: download e reprodução offline em dispositivos reais.
+
+O Motorola E20 (Android 11) não apresenta instalação nem criação de atalhos no Chrome nem para `example.com/`, mesmo após atualização do navegador. É uma limitação observada no ambiente navegador/launcher e não um teste de falha do código do Hauy Conecta. iOS/Safari não faz parte do escopo de validação atual.
+
+## Validações residuais
+
+- Revalidar a preservação dos pacotes entre publicações sucessivas na mesma origem definitiva de produção.
+- Verificar manualmente quota real e eventual evicção/remoção dos dados pelo navegador. Os E2E simulam quota excedida e remoção de dados, mas não substituem esse comportamento real.
+
+A instalação, atualização e navegação offline já aceitas manualmente não devem continuar marcadas como pendentes nos documentos de arquitetura.

@@ -95,3 +95,12 @@ A atualização usa cache temporário separado. O novo registro do IndexedDB só
 Quando o navegador remove Cache Storage ou os metadados deixam de existir, o botão não declara o tutorial disponível. Se o cache desaparecer e o registro continuar no IndexedDB, o pacote é \`incomplete\` e oferece reparo. Se os dados do site forem apagados, o registro não existe e o usuário recebe a ação de salvar novamente.
 
 O limite dessa verificação deve ser entendido corretamente: Cache Storage não oferece uma verificação criptográfica automática do corpo a cada consulta. A gravação é validada durante o download, os metadados registram o tamanho recebido e a consulta detecta ausência, resposta inválida, MIME incompatível e divergência de tamanho quando o cabeçalho está disponível. As fingerprints SHA-256 são usadas para detectar alteração dos arquivos publicados, não para re-hash dos arquivos a cada abertura do tutorial.
+
+## Roadmap futuro — não implementado
+
+As próximas melhorias ainda precisam de arquitetura e decisão de UX; não fazem parte do módulo atual:
+
+1. **Gerenciador central de tutoriais offline:** listagem e administração de todos os pacotes salvos, reutilizando IndexedDB, Cache Storage e os serviços deste módulo.
+2. **Monitoramento do armazenamento:** estimativas de uso/quota e eventual estado de persistência com Storage Manager API, respeitando suporte variável e sem substituir o tratamento de quota existente.
+
+Não criar componentes, rotas, hooks ou dependências para essas ideias antes de fechar a arquitetura. Consulte a seção 28 de [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md).

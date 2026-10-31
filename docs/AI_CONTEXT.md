@@ -17,7 +17,7 @@
 11. Quando uma mudança alterar comportamento, arquitetura, regras do produto, segurança, acessibilidade, SEO ou publicação, atualize também a seção narrativa pertinente deste arquivo no mesmo trabalho.
 12. Não edite manualmente a seção entre os marcadores de snapshot automatizado. Ela é gerada por scripts/update-ai-context.mjs.
 13. Nunca inclua chaves, tokens, senhas, credenciais, valores de arquivos .env, dados pessoais ou informações privadas neste documento.
-14. Não presuma que APIs externas funcionam offline. A Fase 1 do PWA está implementada e publicada na preview da branch feat/pwa; consulte docs/arquitetura-pwa-hauy-conecta.md para conhecer o escopo entregue, as validações e o que continua pendente.
+14. Não presuma que APIs externas funcionam offline. O núcleo do PWA está implementado na branch `feat/pwa` (PR #16, base `dev`), incluindo app shell, imagens runtime, pacotes de tutoriais, vídeos MP4 opcionais e recuperação de pacotes. A validação manual de instalação, standalone, atualização e uso offline foi confirmada no Chrome desktop e em dispositivos Android de teste. iOS/Safari está fora do escopo atual; preservação de pacotes entre publicações na origem de produção e quota real do navegador continuam como validações residuais. Consulte `docs/arquitetura-pwa-hauy-conecta.md`.
 15. Consulte também README.md, docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md, docs/DOCUMENTACAO_PROJETO.md e docs/REGRAS-DOS-TUTORIAIS.md quando a tarefa envolver produto, arquitetura ou conteúdo. Compare os documentos com o código atual, pois algumas documentações podem refletir revisões anteriores.
 16. Mantenha o escopo fiel às necessidades da comunidade escolar. Novos recursos devem resolver problemas reais, não apenas aumentar a complexidade técnica.
 
@@ -437,25 +437,46 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 
 ## 14. Estado atual do PWA
 
-**Status: Fase 1 implementada e publicada em preview na branch feat/pwa; a liberação para produção ainda depende do aceite manual da instalação e da abertura standalone em navegador/dispositivo-alvo.**
+**Status:** núcleo técnico implementado na branch `feat/pwa` (PR #16, base `dev`), Preview Vercel READY no HEAD consultado em 31/10/2026. A PR permanece aberta e em draft; não houve merge para `dev` nem alteração direta em `main`.
 
-A arquitetura e o histórico estão em docs/arquitetura-pwa-hauy-conecta.md. O código PWA fica isolado em src/pwa/ e os testes automatizados em tests/pwa/.
+### Implementação
 
-A implementação usa vite-plugin-pwa 2.0.0 com injectManifest e Workbox 7.4.1. O manifesto é definido em src/pwa/config/manifest.js; os ícones PNG são gerados de public/logo.svg por scripts/generate-pwa-icons.mjs antes de dev/build.
+- `vite-plugin-pwa@2.0.0` com `injectManifest` e Workbox 7.4.1.
+- Manifesto em `src/pwa/config/manifest.js`; ícones derivados de `public/logo.svg` por `scripts/generate-pwa-icons.mjs`.
+- Service Worker em `src/pwa/service-worker/sw.js`: precache do app shell, navegação network-first, fallback offline e cache runtime limitado para imagens da mesma origem.
+- Registro e atualização pelo módulo `src/pwa/client/register-service-worker.js`; atualização exige confirmação explícita.
+- Pacotes opt-in por tutorial usando Cache Storage + IndexedDB, com progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
+- Vídeos MP4 locais opcionais, desmarcados por padrão, com estimativa de tamanho, download em streaming e suporte a HTTP Range (206/416).
+- O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualização do shell não deve remover pacotes de tutoriais.
+- O CTA personalizado de instalação na Home foi removido por decisão do responsável. A instalação permanece nativa, sob controle do navegador.
 
-O Service Worker em src/pwa/service-worker/sw.js faz precache de JS, CSS, HTML, favicon, manifesto e ícones, com limite de 2 MiB por arquivo. Os caminhos de tutoriais e arquivos MP4 são excluídos. A navegação tenta a rede primeiro e usa o app shell quando a rede falha; public/offline.html é fallback final.
+### Validação automatizada e publicação
 
-O registro e a atualização ficam em src/pwa/client/register-service-worker.js. A interface React usa src/pwa/ui/hooks/usePwaStatus.js e src/pwa/ui/components/PwaStatusBanner.jsx para sinalizar conexão, preparação offline e atualização disponível. A atualização é prompt: precisa de ação explícita da pessoa.
+O workflow **Validate Hauy Conecta**, run `41242399960`, passou no último commit de código validado (`7b901b8`), incluindo testes existentes, testes unitários PWA, ESLint, build/prerender, auditoria de imagens e E2E. O workflow de pré-renderização `41242394976` também concluiu com sucesso. O deployment referente ao HEAD consultado (`9161dd0`) está READY na Vercel Preview.
 
-Scripts novos: npm run pwa:icons, npm run test:pwa:unit, npm run test:pwa:e2e e npm run test:pwa. O workflow Validate Hauy Conecta executa testes unitários, ESLint, build/prerender/auditoria e testes E2E.
+### Aceite manual informado pelo responsável
 
-Validação confirmada no GitHub Actions: testes existentes, quatro testes unitários PWA, ESLint, build Vite + Astratra, auditoria de imagens e testes E2E passaram. O E2E confirmou registro/ativação do Service Worker e abertura de uma rota de tutorial sem rede. A auditoria verificou 151 imagens em 27 arquivos HTML, todas com width/height e alt; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+- Chrome desktop: instalação, abertura standalone, atualização do Service Worker e navegação offline funcionando.
+- Samsung Galaxy A14 4G: instalação, consulta offline e reprodução de MP4 offline funcionando.
+- Dispositivo Android TecToy: instalação nativa funcionando; os testes manuais do ciclo foram reportados como aprovados.
+- Vídeos grandes: download e reprodução offline testados em dispositivos reais e funcionando.
+- Motorola E20 (Android 11): Chrome não apresenta instalação nem criação de atalho até para `example.com/`, mesmo após atualização. Registrar como incompatibilidade observada do ambiente navegador/launcher; não criar workaround no site sem evidência de que o problema seja do projeto.
+- iOS/Safari: não validado e fora do escopo desta entrega.
 
-O commit 63b5bc8744da1c4ec4deabeab352846db74b56b3 versionou o dist/ gerado na feat/pwa. A Vercel publicou o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2 como READY; manifesto, Service Worker e os quatro ícones responderam HTTP 200 com os MIME types esperados. O HTML da raiz contém a referência ao manifesto.
+### Pendências antes de encerrar a publicação
 
-Ainda falta a verificação manual da experiência de instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo. Não declarar o PWA pronto para produção antes desse aceite.
+1. Após a publicação na origem definitiva, testar a preservação dos pacotes entre duas versões sucessivas do app na mesma origem.
+2. Fazer aceite complementar de quota real e comportamento de evicção/remoção pelo navegador; a quota simulada já possui cobertura E2E.
+3. Revisar a PR #16 e obter autorização explícita antes de qualquer merge.
 
-Ainda não foram implementados cache runtime de imagens, pacotes offline por tutorial, IndexedDB, downloads ou vídeo offline. A decisão híbrida permanece: vídeos não entram no precache automático.
+### Melhorias futuras — ainda não implementadas
+
+Duas melhorias foram identificadas e precisam de arquitetura antes de virar código:
+
+1. **Gerenciador central de tutoriais offline:** área “Meus tutoriais offline” que liste pacotes do IndexedDB, valide o estado real no Cache Storage e permita abrir, atualizar/reparar e remover tutoriais. Deve reutilizar os serviços existentes (`getTutorialOfflinePackage`, `saveTutorialOffline`, `removeTutorialOffline`) sem duplicar regras de armazenamento. Ainda precisam ser decididos ponto de entrada/rota, contrato de listagem, atualização entre abas, tratamento de registros órfãos e apresentação de tamanhos.
+2. **Monitoramento do armazenamento:** exibir estimativas de uso/quota e, se fizer sentido, estado de persistência por meio de `navigator.storage.estimate()`, `persisted()` e solicitação opcional de `persist()`. As APIs são variáveis e aproximadas; não garantem espaço para downloads nem substituem o tratamento de `QuotaExceededError`. Precisam ser definidos local de exibição, frequência de atualização, fallback quando não houver suporte e UX de solicitação de persistência.
+
+A arquitetura e as decisões detalhadas estão em `docs/arquitetura-pwa-hauy-conecta.md`, seção 28. Nenhuma das duas melhorias está implementada ou comprometida para a próxima entrega.
 
 ## 15. Limitações e cuidados conhecidos
 
@@ -563,25 +584,14 @@ Direções de evolução documentadas incluem:
 - evoluir a experiência de ferramentas e tutoriais;
 - continuar fortalecendo acessibilidade, SEO e desempenho;
 - manter as integrações externas claras e seguras;
-- planejar e validar a implementação do PWA híbrido em etapas.
+- manter e evoluir o PWA híbrido com base em validações reais; o gerenciador central de tutoriais offline e o monitoramento do armazenamento são propostas futuras ainda sem implementação e dependem de arquitetura.
 
 Ideias futuras não devem ser registradas como compromissos nem funcionalidades existentes sem decisão explícita.
 
 ---
 
 
-## Estado atual do PWA — imagens e tutoriais offline
 
-A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). Confirme o HEAD mais recente do PR antes de continuar, pois os workflows de pré-renderização e sincronização do AI_CONTEXT podem criar commits adicionais.
-
-- O precache essencial inclui JS, CSS, HTML, favicon, manifesto, ícones PWA e os logotipos `logo.svg`, `iloveIMG.svg` e `ilovePDF.svg`.
-- O Service Worker guarda imagens da mesma origem no cache runtime `hauy-conecta-runtime-images-v1` quando elas são solicitadas online. Isso inclui imagens das seções, fotos da equipe e variantes `/_optimized/`. O limite atual é de 1.000 entradas; imagens que nunca foram carregadas não são baixadas antecipadamente.
-- O componente `TutorialCompletion` apresenta a ação `Salvar tutorial offline` no final de cada tutorial.
-- O pacote inclui dados/texto já presentes nos bundles pré-cacheados, imagens das etapas/exemplos, pôsteres e variantes responsivas. Cache Storage guarda os arquivos e IndexedDB mantém os metadados. Há progresso, cancelamento, atualização e remoção.
-- Cada pacote é local ao navegador/dispositivo no qual foi salvo; não existe sincronização entre dispositivos.
-- Vídeos MP4 e links externos ficam fora do pacote padrão e continuam exigindo internet. Não acrescentar downloads automáticos de vídeos: a biblioteca local tem volume elevado.
-- Testes acrescentados nesta fase: `tests/pwa/unit/tutorial-package.test.js` e cenários E2E para cache runtime e pacote de tutorial em `tests/pwa/e2e/offline-navigation.test.js`.
-- Não declarar a validação da nova fase concluída antes de consultar os resultados de GitHub Actions, build/prerender e preview da Vercel. A instalação standalone e os testes manuais offline em celular/PC também precisam ser reavaliados após o novo deploy.
 
 <!-- BEGIN AUTO-GENERATED SECTION -->
 

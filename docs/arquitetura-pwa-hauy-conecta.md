@@ -1,17 +1,14 @@
 # Hauy Conecta --- Arquitetura e Planejamento do PWA
 
-> **Status:** Fase 1 parcialmente implementada na branch feat/pwa; validação do build completo com Astratra e E2E no GitHub Actions pendentes.\
-> **Modelo:** híbrido --- conteúdo básico e imagens essenciais em cache,
-> com download opcional de tutoriais e vídeos.
+> **Status atual (31/10/2026):** núcleo do PWA implementado na branch `feat/pwa`, PR #16 aberta contra `dev`; instalação, uso offline, atualização e vídeos foram validados manualmente em Chrome desktop e dispositivos Android de teste. A validação final de preservação de pacotes entre publicações permanece reservada à URL de produção.\
+> **Modelo:** híbrido — app shell e imagens acessadas em cache; tutoriais salvos sob demanda; vídeos MP4 opcionais e desmarcados por padrão.\
+> **Escopo de compatibilidade:** Chrome desktop e Android testados. iOS/Safari fora do escopo de aceite desta etapa.
 
 ## 1. Objetivo e limite desta etapa
 
-Este documento define como o Hauy Conecta deverá funcionar como
-Progressive Web App (PWA), as tecnologias previstas, as regras de cache,
-o ciclo de vida dos downloads e os riscos a tratar antes da
-implementação.
+Este documento começou como arquitetura pré-implementação do Progressive Web App (PWA), registrando objetivos, opções técnicas, regras de cache e riscos. As seções iniciais preservam esse contexto e as decisões que orientaram o desenvolvimento.
 
-**Importante:** a arquitetura foi definida antes da implementação. O trabalho agora seguirá fases pequenas na branch `feat/pwa`, preservando `main` e `dev`. Cada fase deverá incluir testes adequados, validação do build completo e atualização desta documentação quando decisões ou comportamentos mudarem.
+**Estado revisado em 31/10/2026:** a implementação está concluída na branch `feat/pwa`. O status atual, os checklists concluídos, o aceite manual informado e as validações residuais estão nas seções 15 a 28. Qualquer mudança futura deve preservar `main` e `dev` até autorização explícita, ter testes adequados e atualizar a documentação correspondente.
 
 Este documento continua sendo a referência técnica principal para o PWA.
 
@@ -252,12 +249,7 @@ Regras:
 5.  Armazenar resposta completa, não fragmentos HTTP `206` isolados.
 6.  Validar reprodução offline e requisições HTTP Range.
 
-**Ponto crítico:** navegadores podem solicitar partes do vídeo usando o
-cabeçalho `Range`. O Workbox oferece `RangeRequestsPlugin`, que pode
-gerar uma resposta parcial a partir de uma resposta completa armazenada.
-Isso não substitui o download correto do arquivo completo. Se o fluxo
-Range não estiver validado, a primeira versão deve oferecer offline para
-texto, imagens e pôsteres, deixando vídeos dependentes de internet.
+**Ponto crítico considerado na implementação:** navegadores podem solicitar partes do vídeo usando o cabeçalho `Range`. O Service Worker atual responde às requisições Range a partir do MP4 completo armazenado, com respostas 206/416. O fluxo foi coberto por E2E e por testes manuais em dispositivos reais; os detalhes atuais estão na seção 26. A condição inicial de deixar vídeos dependentes de internet foi substituída pela opção explícita e desmarcada por padrão.
 
 ### 5.7. APIs e serviços externos
 
@@ -455,324 +447,195 @@ Estado: READY
 
 O HTML pré-renderizado da raiz contém a referência ao manifesto. O deployment foi criado pela integração Git da Vercel a partir do commit que versionou o dist/ gerado.
 
-### Validações que ainda exigem aceite manual
+### Validações que estavam pendentes no primeiro deployment (registro histórico)
 
 - Instalação pelo navegador e presença da opção de instalação.
 - Abertura standalone após instalar.
 - Atualização do Service Worker e comportamento do aviso de atualização.
 - Reabertura e navegação offline em navegador/dispositivo-alvo.
 
-Não declarar a experiência de instalação pronta para produção apenas com base nos testes E2E automatizados.
+Essa pendência referia-se ao primeiro deployment registrado acima. O aceite manual foi concluído posteriormente e está registrado nas seções 16, 20 e 24. A validação exclusiva da origem de produção continua pendente, conforme seção 16.2.
 
-## 10. O que instalar futuramente
+## 10. Dependências e estratégia implementadas
 
-A auditoria confirmou `vite ^8.3.0` no projeto e Node.js 24 no workflow. A versão avaliada para a integração é `vite-plugin-pwa@2.0.0`: sua faixa de peer dependency inclui Vite 8 e a linha 2.x requer Node 20.19.0 ou superior. A instalação só deve ocorrer na fase de integração, após confirmar a versão e atualizar o lockfile com `npm install`.
+A integração PWA já está instalada e configurada no projeto. A stack atual é:
 
-### Dependência principal
+- `vite-plugin-pwa@2.0.0`, integrado ao Vite 8.
+- Estratégia `injectManifest`, com Service Worker próprio em `src/pwa/service-worker/sw.js`.
+- Workbox 7.4.1, usando os módulos necessários: `workbox-core`, `workbox-precaching` e `workbox-routing`.
+- Node.js 24 nos workflows de CI e pré-renderização.
+- Cache Storage para app shell, imagens runtime e pacotes individuais.
+- IndexedDB nativo para metadados dos pacotes; não foi adicionada a biblioteca `idb`.
 
-```bash
-npm install -D vite-plugin-pwa@2.0.0
-```
+Não reinstalar essas dependências nem tratar a integração como etapa futura. Antes de alterar versões, conferir `package.json`, lockfile e compatibilidade com Vite/Node atuais.
 
-A integração deverá usar `injectManifest` para manter o Service Worker sob controle do projeto. Não instalar módulos Workbox por antecipação: adicionar como dependências de desenvolvimento somente os pacotes `workbox-*` realmente importados pelo Service Worker.
+## 11. Estratégia aplicada: `injectManifest`
 
-### Workbox, se usar `injectManifest`
+A escolha por `injectManifest` está implementada porque o projeto possui regras próprias para navegação, pacotes offline, vídeos MP4, HTTP Range, atualização e limpeza de caches.
 
-Instalar somente módulos importados pelo Service Worker customizado.
-Lista provável:
+- O projeto mantém o código-fonte do Service Worker.
+- O plugin injeta os arquivos do precache gerados pelo build.
+- Workbox fornece precache e roteamento.
+- As políticas específicas do Hauy Conecta permanecem explícitas em `sw.js` e nos módulos de domínio.
 
-``` bash
-npm install -D workbox-precaching workbox-routing workbox-strategies workbox-expiration workbox-range-requests workbox-core
-```
+Não migrar para `generateSW` sem necessidade arquitetural demonstrável e testes de regressão.
 
-  Pacote                     Responsabilidade
-  -------------------------- ---------------------------------------------
-  `workbox-precaching`       Precache dos arquivos do build
-  `workbox-routing`          Rotas interceptadas
-  `workbox-strategies`       `CacheFirst`, `NetworkFirst`, `NetworkOnly`
-  `workbox-expiration`       Limites de quantidade/idade
-  `workbox-range-requests`   Requisições Range para mídia armazenada
-  `workbox-core`             Recursos centrais, quando necessários
+## 12. Manifesto e instalação — estado atual
 
-Não instalar todos automaticamente. `vite-plugin-pwa` já utiliza
-ferramentas Workbox no build; os módulos acima são necessários quando o
-Service Worker customizado os importa.
+O manifesto é definido em `src/pwa/config/manifest.js` e contém nome, nome curto, descrição, idioma, ID, `start_url` e `scope` na raiz, `display: standalone`, cores e ícones PNG 192×192, 512×512 e 512×512 maskable.
 
-### IndexedDB
+O `vite-plugin-pwa` injeta `<link rel=manifest>` no HTML final. Os ícones são derivados de `public/logo.svg` por `scripts/generate-pwa-icons.mjs` antes de dev/build.
 
-Não é obrigatório instalar biblioteca.
+O projeto mantém metadados Apple Touch Icon no HTML, mas **iOS/Safari não faz parte do aceite desta etapa**: não temos dispositivo iOS disponível para validar a experiência e não serão adicionadas instruções ou promessas de suporte testado agora. A presença desses metadados não deve ser interpretada como validação de instalação no iOS.
+
+A instalação nativa é oferecida pelo navegador. O CTA React personalizado de instalação foi removido por decisão do responsável; não o reintroduzir sem pedido explícito.
 
--   IndexedDB nativo: menos dependências, mais código de baixo nível.
--   `idb`: wrapper pequeno que simplifica a API.
+## 13. Interface implementada e evolução planejada
 
-Avaliar `idb` somente se o gerenciamento de transações/metadados
-justificar. Não adicionar biblioteca por antecipação.
+A interface atual oferece banner geral de conectividade/preparação offline/atualização e a ação `Salvar tutorial offline` na conclusão de cada tutorial. O fluxo individual oferece seleção opcional de vídeos, desmarcada por padrão, progresso, cancelamento, atualização, reparo e remoção.
 
-### Não necessário inicialmente
+**Ainda não existe uma tela central “Meus tutoriais offline”** para listar e administrar todos os pacotes em um único local. Essa melhoria está planejada, mas depende de arquitetura e priorização; consultar a seção 28.
+
+Também não existe painel de monitoramento de quota/armazenamento baseado na Storage Manager API. O tratamento atual de quota e as estimativas de tamanho dos vídeos não equivalem a um monitoramento global do armazenamento do navegador. A proposta está na seção 28.
 
--   Banco de dados remoto para downloads locais.
--   Backend novo para offline básico.
--   Sincronização em segundo plano.
--   Push notifications.
--   Download automático de toda a biblioteca.
--   Biblioteca de estado global adicional, se React for suficiente.
+## 14. Pontos críticos e limitações conhecidas
 
-## 11. Estratégia `injectManifest` ou `generateSW`
+1. **Build e pré-renderização:** o plugin e o Service Worker precisam continuar compatíveis com Vite, Astratra, Playwright e o artefato `dist/`.
+2. **Lazy loading:** chunks necessários às rotas suportadas precisam estar disponíveis no precache ou serem recuperáveis pela política offline.
+3. **Vídeos/Range:** a reprodução depende da resposta correta a HTTP Range; testes automatizados e testes manuais reportados cobriram reprodução e busca temporal offline.
+4. **Quota:** o navegador pode negar armazenamento ou remover dados best-effort. O código trata `QuotaExceededError` e a suíte simula quota; uma visão global do uso e da quota ainda não foi implementada.
+5. **Integridade:** IndexedDB e Cache Storage não formam uma única transação; a substituição usa cache temporário e troca de metadados após validação.
+6. **Atualização:** a limpeza do app shell não pode apagar caches dos pacotes nem o cache runtime.
+7. **Escopo/segurança:** não armazenar APIs, respostas sensíveis ou conteúdo de terceiros como se fossem recursos offline.
+8. **Compatibilidade:** instalação e atalhos dependem também do navegador e do launcher. No Motorola E20, o Chrome não ofereceu instalação nem criação de atalho até mesmo para `https://example.com/`, inclusive após atualização do navegador; isso foi classificado como particularidade do ambiente, não falha específica do Hauy Conecta.
+9. **iOS/Safari:** fora do escopo de validação e aceite desta etapa; não declarar suporte testado.
+10. **Serviços externos:** Gemini, Apps Script, ferramentas externas e plataformas de vídeo continuam dependendo de internet.
+11. **Downloads interrompidos:** cancelamento, perda de recursos e quota devem manter o pacote anterior íntegro ou deixar o novo pacote sem estado de concluído.
 
-Recomendação inicial: avaliar `injectManifest`, pois existem regras
-específicas para pacotes, vídeos, atualização e limpeza.
+## 15. Plano de implementação por fases — estado em 31/10/2026
 
-Com `injectManifest`:
+### Fase 0 — auditoria e decisões
 
--   O projeto mantém o código-fonte do Service Worker.
--   O plugin injeta a lista de arquivos do precache.
--   Workbox fornece roteamento e estratégias.
--   As políticas específicas ficam explícitas no código.
+- [x] Confirmar Node, Vite e dependências principais.
+- [x] Inventariar `dist/`, chunks, rotas e mídia.
+- [x] Definir recursos essenciais, exclusões e limite de precache.
+- [x] Revisar URLs, MIME types dos artefatos PWA e publicação Vercel.
+- [x] Definir matriz de validação: Chrome desktop e Android em dispositivos disponíveis.
+- [x] Definir política de caches separados, quota, integridade e atualização.
+- [x] Registrar iOS/Safari como fora do escopo de aceite desta etapa.
 
-Isso traz mais controle, mas também mais responsabilidade de manutenção
-e testes. A escolha deve ser confirmada comparando a complexidade real
-com `generateSW`; não adicionar complexidade apenas por preferência.
-
-## 12. Manifesto e instalação
-
-O manifesto deverá definir:
-
--   `name` e `short_name`: Hauy Conecta.
--   `start_url`: rota inicial correta.
--   `scope`: escopo raiz.
--   `display`: preferencialmente `standalone`.
--   `theme_color` e `background_color`.
--   Ícones para Android/desktop.
--   Ícones `any` e `maskable`, quando houver arquivos adequados.
+### Fase 1 — PWA instalável e app shell offline
 
-Avaliar Apple Touch Icon e metadados para iOS. Preparar PNGs
-apropriados, especialmente 192×192 e 512×512. Não usar automaticamente o
-SVG atual sem conferir peso, dimensões e compatibilidade; gerar versões
-otimizadas da identidade visual existente se necessário.
+- [x] Integrar `vite-plugin-pwa` com `injectManifest`.
+- [x] Criar manifesto e geração de ícones.
+- [x] Criar e registrar Service Worker.
+- [x] Configurar precache e fallback de navegação.
+- [x] Implementar indicador online/offline e aviso de atualização.
+- [x] Criar testes unitários e E2E.
+- [x] Validar build, pré-renderização, artefatos e publicação de Preview.
+- [x] Validar manualmente instalação, abertura standalone, atualização e navegação offline nos ambientes desktop/Android disponíveis.
 
-## 13. Interface necessária
+### Fase 2 — imagens runtime e pacotes de tutoriais
 
-### Estados de conexão
+- [x] Cache runtime de imagens com limite de entradas.
+- [x] Catálogo de recursos por tutorial.
+- [x] Metadados dos pacotes em IndexedDB.
+- [x] Download individual de tutorial com progresso e cancelamento.
+- [x] Consulta, remoção, atualização e reparo de pacote.
+- [x] Verificação de integridade e preservação do pacote anterior em falhas.
+- [x] Preservar caches dos usuários durante a atualização normal do app shell.
 
-Mostrar de forma discreta: online, offline, download em andamento,
-disponível offline, parcial, falha e atualização disponível.
+### Fase 3 — vídeos MP4 offline
 
-### Ação "Salvar para uso offline"
+- [x] Catalogar vídeos locais e estimar tamanhos.
+- [x] Permitir inclusão opcional, desmarcada por padrão.
+- [x] Baixar em streaming e validar MIME/tamanho.
+- [x] Implementar HTTP Range (206/416) para reprodução e busca offline.
+- [x] Validar vídeos grandes em dispositivos reais, conforme aceite manual informado pelo responsável.
+- [x] Cobrir falhas, cancelamento e quota simulada nos testes automatizados.
 
--   Rótulo claro.
--   Explicar o que será salvo.
--   Tamanho estimado.
--   Vídeos separados e desmarcados por padrão.
--   Progresso e cancelamento.
--   Mensagem de sucesso/falha.
-
-### Área de downloads
-
--   Lista de tutoriais salvos.
--   Identificação dos que incluem vídeos.
--   Tamanho aproximado.
--   Remoção de pacote.
--   Identificação de pacotes incompletos.
--   Estimativa de espaço.
-
-### Acessibilidade
-
--   Não depender somente de cor para indicar estado.
--   Progresso acessível a leitores de tela.
--   Botões com nomes acessíveis.
--   Confirmação clara para ações destrutivas.
--   Navegação por teclado e layout responsivo.
-
-## 14. Partes críticas --- atenção especial
-
-1.  **Build e pré-renderização:** plugin PWA pode não produzir arquivos
-    corretos no artefato final ou Astratra pode interferir.
-2.  **Lazy loading:** chunks não armazenados podem quebrar páginas
-    offline.
-3.  **Vídeos/Range:** cache de resposta parcial pode causar falha na
-    reprodução.
-4.  **Quota:** navegador pode negar espaço ou remover dados.
-5.  **Integridade:** IndexedDB e Cache Storage não são uma transação
-    única.
-6.  **Atualização:** limpeza do precache não pode apagar pacotes.
-7.  **Escopo/segurança:** não cachear indevidamente APIs, respostas
-    sensíveis ou terceiros.
-8.  **Compatibilidade:** instalação, persistência e downloads variam
-    entre Chrome Android, desktop e Safari/iOS.
-9.  **Analytics/serviços externos:** offline não significa que APIs,
-    assistente ou suporte funcionem.
-10. **Downloads interrompidos:** suspensão da aba/rede pode deixar
-    estado inconsistente e arquivos parciais.
-
-## 15. Plano de implementação por fases
-
-### Fase 0 --- auditoria antes de codificar
-
--   [x] Confirmar versões Node, Vite e dependências principais.
--   [x] Medir novamente `dist/`.
--   [x] Listar quantidade e tamanho de JS/CSS e confirmar divisão de páginas em chunks lazy.
--   [ ] Mapear e aprovar a lista final de imagens essenciais do cache básico.
--   [x] Mapear mídia por tutorial: imagens, pôsteres e vídeos.
--   [ ] Verificar URLs, MIME types e cabeçalhos HTTP dos arquivos que serão servidos offline.
--   [x] Revisar a integração Vite + Astratra + GitHub Actions + Vercel.
--   [ ] Confirmar a matriz final de navegadores e dispositivos suportados.
--   [ ] Fechar limites de cache, quota e política de atualização.
-
-**Saída parcial:** inventário de build/mídia e pipeline documentados; estrutura modular de código e testes definida. Nenhuma funcionalidade PWA foi ativada nesta fase.
-
-### Fase 1 --- PWA instalável e offline básico
-
--   [x] Integrar vite-plugin-pwa 2.0.0 com estratégia injectManifest.
--   [x] Criar manifesto e script de geração de ícones.
--   [x] Criar e registrar o Service Worker customizado.
--   [x] Definir precache inicial para arquivos JS/CSS/HTML/ICO/manifesto e ícones.
--   [x] Excluir caminhos de tutoriais e vídeos do precache.
--   [x] Criar fallback offline e navegação network-first com fallback para app shell.
--   [x] Implementar indicador online/offline, aviso de preparação offline e atualização com confirmação.
--   [x] Criar testes unitários do manifesto e da política de cache.
--   [x] Criar testes E2E de registro do Service Worker e navegação offline.
--   [x] Integrar testes PWA unitários e E2E ao workflow de validação.
--   [x] Validar build completo com Astratra no runner Ubuntu do GitHub Actions.
--   [x] Confirmar na preview da Vercel a publicação do manifesto, Service Worker e ícones com MIME types corretos.
--   [x] Confirmar no E2E o registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
--   [ ] Confirmar manualmente instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
-
-**Implementação atual:** o app shell inclui JavaScript, CSS, HTML, favicon, manifesto e ícones. O Service Worker tenta a rede primeiro para as navegações; quando a rede falha, usa o app shell precacheado para o React Router resolver a rota. A página offline estática é a última alternativa.
-
-**Validação do CI:** testes existentes, quatro testes unitários PWA, ESLint, build Vite + Astratra, auditoria de imagens e E2E passaram no GitHub Actions. O E2E confirmou registro e ativação do Service Worker e navegação offline para uma rota de tutorial. A auditoria verificou 151 imagens em 27 HTMLs; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
-
-**Validação da Vercel:** o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, ficou READY. Manifesto, Service Worker e ícones responderam HTTP 200 com os MIME types esperados.
-
-**Limite da Fase 1 inicial:** naquele momento ainda não existia cache runtime de imagens, download de tutoriais ou IndexedDB de pacotes. Esses recursos foram implementados na Fase 1.1, documentada na seção 25. Vídeo offline continua fora do escopo do pacote padrão.
-
-**Saída desta etapa:** build e publicação do app shell confirmados, recursos servidos corretamente na preview e testes automatizados de registro/offline aprovados. A experiência de instalação e abertura standalone ainda precisa de aceite manual.
-
-### Fase 2 --- Imagens runtime e downloads de tutoriais
-
--   [ ] Cache limitado de imagens.
--   [ ] Catálogo de recursos por tutorial.
--   [ ] Metadados no IndexedDB.
--   [ ] Gerenciador de downloads.
--   [ ] Progresso, cancelamento e falhas.
--   [ ] Área de consulta/remoção.
--   [ ] Verificação de integridade.
--   [ ] Preservar pacotes durante atualização.
-
-**Saída:** salvar, consultar offline e remover tutorial sem vídeos.
-
-### Fase 3 --- Vídeos offline
-
--   [x] Definir vídeos elegíveis: MP4 locais de passos e exemplos; links externos ficam fora.
--   [x] Mostrar tamanho estimado por tutorial a partir dos metadados gerados no build.
--   [x] Implementar inclusão opcional e desmarcada por padrão.
--   [x] Armazenar a resposta MP4 completa no cache individual do tutorial.
--   [x] Tratar HTTP Range com respostas 206 no Service Worker.
--   [ ] Validar reprodução offline em dispositivos reais.
--   [ ] Testar arquivos grandes, falhas, cancelamento e quota em dispositivos representativos.
--   [x] Exibir aviso de consumo de dados móveis e armazenamento.
-
-**Saída:** reprodução offline validada por E2E em Chromium; o aceite em dispositivos reais e com vídeos grandes permanece pendente.
-
-### Fase 4 --- Hardening e publicação
-
--   [ ] Instalação e atualização.
--   [ ] Atualização com downloads existentes.
--   [ ] Armazenamento cheio e remoção pelo navegador.
--   [ ] Perda de rede durante download.
--   [ ] Rotas diretas e navegação offline.
--   [ ] APIs externas offline.
--   [ ] Acessibilidade.
--   [ ] Lighthouse/desempenho.
--   [ ] GitHub Actions.
--   [ ] Artefato `dist/` e deploy Vercel.
--   [ ] Documentar limitações.
-
-**Saída:** checklist aprovado e limitações conhecidas documentadas.
-
-## 16. Matriz mínima de testes
-
-  -----------------------------------------------------------------------
-  Cenário                             Resultado esperado
-  ----------------------------------- -----------------------------------
-  Primeiro acesso online              Aplicação carrega e armazena
-                                      recursos básicos
-
-  Reabrir sem internet                Shell e conteúdo básico disponíveis
-
-  Abrir rota de tutorial diretamente  Rota funciona quando coberta pelo
-  offline                             precache/fallback
-
-  Navegar etapas offline              Texto e imagens armazenadas
-                                      aparecem
-
-  Imagem nunca acessada/não baixada   Ausência de mídia não quebra a
-                                      página
-
-  Salvar tutorial online              Recursos obrigatórios armazenados e
-                                      pacote completo
-
-  Cancelar download                   Estado atualizado e parciais
-                                      tratados
-
-  Perder rede durante download        Pacote não é marcado completo
-
-  Remover tutorial                    Remove somente recursos daquele
-                                      pacote
-
-  Atualizar app                       Pacotes do usuário permanecem
-
-  Armazenamento insuficiente          Aviso; pacote não fica completo
-
-  Vídeo baixado offline               Reprodução e Range funcionam
-
-  Assistente offline                  Mensagem de serviço dependente de
-                                      internet
-
-  Formulário offline                  Não alegar envio concluído
-
-  Limpar dados do site                Aplicação reconhece que pacote não
-                                      está disponível
-
-  Teclado/leitor de tela              Controles e estados compreensíveis
-  -----------------------------------------------------------------------
-
-## 17. Decisões ainda pendentes
-
-Antes de codificar, confirmar:
-
-1.  Quais páginas e imagens compõem o pacote básico?
-2.  Salvar tutorial baixa todas as imagens ou permite seleção?
-3.  Vídeos serão opção separada e desmarcada por padrão?
-4.  Qual limite inicial de tamanho por tutorial e para todos os
-    downloads?
-5.  Exibir aviso antes de baixar vídeos em rede móvel?
-6.  Como indicar que um tutorial salvo está desatualizado?
-7.  Quais versões de Android/Chrome e desktop serão oficialmente
-    suportadas?
-8.  iOS/Safari será suporte oficial ou compatibilidade secundária?
-
-### Recomendação inicial
-
--   Tutorial: texto, imagens e pôsteres.
--   Vídeos: opção separada, desativada por padrão.
--   Sem download automático em massa.
--   Cache runtime de imagens limitado.
--   Pacotes escolhidos preservados durante atualizações normais.
--   Priorizar testes em Chrome Android e Chrome desktop.
-
-## 18. Definição de arquitetura fechada
-
--   [ ] Conteúdo do cache básico listado.
--   [ ] Conteúdo excluído do cache automático definido.
--   [ ] Estratégias por tipo de recurso aprovadas.
--   [ ] Formato e ciclo de vida dos pacotes definidos.
--   [ ] Política de quota e limpeza definida.
--   [ ] Atualização sem apagar downloads especificada.
--   [ ] Integração Astratra, `dist/`, Actions e Vercel planejada.
--   [ ] Limitações de APIs e serviços externos documentadas.
--   [ ] Navegadores-alvo e critérios de teste definidos.
-
-**Somente depois desta etapa deve começar a implementação.**
+### Fase 4 — hardening, atualização e preparação de publicação
+
+- [x] Atualização do Service Worker com confirmação explícita.
+- [x] Limpeza isolada do app shell, preservando caches de usuário.
+- [x] Identificação de pacotes `saved`, `outdated` e `incomplete`.
+- [x] Atualização transacional, reparo e recuperação de falhas.
+- [x] Testes unitários, E2E, lint, build/prerender e auditoria no GitHub Actions.
+- [x] Publicar e confirmar a Preview da branch `feat/pwa`.
+- [x] Aceite manual de instalação, standalone, atualização e navegação offline no Chrome desktop e Android, conforme informado pelo responsável.
+- [ ] Revalidar a preservação dos pacotes entre publicações na mesma origem definitiva de produção.
+- [ ] Fazer aceite manual específico de quota real/evicção de dados do navegador; a quota simulada já é coberta pelos E2E.
+- [ ] Revisão final da PR e autorização para merge/publicação.
+
+**Saída atual:** implementação funcional e validações de desenvolvimento concluídas. A etapa restante é de aceite de produção e revisão/publicação; não há necessidade de acrescentar funcionalidades ao núcleo do PWA para concluir esta entrega.
+
+## 16. Matriz de testes e aceite
+
+| Cenário | Resultado esperado | Situação |
+|---|---|---|
+| Primeiro acesso online | App shell e recursos essenciais carregados | Validado |
+| Reabrir sem internet | Shell e conteúdo básico disponíveis | Validado em dispositivos Android |
+| Abrir rota de tutorial diretamente offline | React Router resolve a rota usando recursos armazenados | E2E e aceite manual |
+| Imagem runtime previamente acessada | Imagem servida sem rede | E2E |
+| Imagem não armazenada | Ausência da mídia não quebra a página | Coberto pela estratégia/testes |
+| Salvar tutorial | Recursos obrigatórios persistidos e pacote íntegro | E2E e aceite manual |
+| Cancelar/falhar download | Pacote não concluído; versão anterior preservada quando existe | E2E |
+| Atualizar o app | Aviso aparece e atualização depende de confirmação | E2E e aceite manual |
+| Atualizar conteúdo de pacote | Novo pacote validado antes de remover o anterior | E2E |
+| Armazenamento insuficiente | Erro tratado; pacote anterior preservado | Quota simulada em E2E |
+| Vídeo baixado offline | Reprodução, metadados e HTTP Range funcionam | E2E e teste manual em dispositivos reais |
+| Assistente/formulário offline | Não alegar que serviços externos foram executados | Limitação documentada |
+| Limpar dados do site | Pacote deixa de ser declarado disponível | E2E |
+| Teclado/leitor de tela | Controles e estados compreensíveis | Validar conforme alterações futuras de UI |
+
+### 16.1 Aceite manual já informado
+
+- **Chrome desktop:** instalação nativa, abertura standalone, atualização do Service Worker e navegação offline testadas e funcionando.
+- **Samsung Galaxy A14 4G:** instalação, experiência offline e reprodução de vídeos MP4 offline testadas e funcionando.
+- **Dispositivo Android TecToy:** instalação nativa testada e funcionando; os demais testes manuais realizados no ciclo foram reportados como aprovados pelo responsável.
+- **Vídeos grandes:** download e reprodução offline testados em dispositivos reais e reportados como funcionando.
+- **Motorola E20 (Android 11):** Chrome não apresenta opção de instalação/criação de atalho nem em `example.com/`, mesmo após atualização. É uma limitação observada do ambiente navegador/launcher e não um teste de falha do código do Hauy Conecta.
+- **iOS/Safari:** não testado e fora do escopo desta entrega.
+
+### 16.2 Validações ainda reservadas à produção
+
+- Preservação dos pacotes entre publicações sucessivas na mesma origem de produção.
+- Comportamento diante da quota real e remoção/evicção de armazenamento pelo navegador, além das simulações automatizadas.
+
+## 17. Decisões vigentes e pendências residuais
+
+As decisões centrais de arquitetura foram tomadas e implementadas:
+
+1. App shell e recursos essenciais entram no precache; mídia de tutorial não é baixada automaticamente.
+2. Imagens gerais são armazenadas sob demanda em cache runtime limitado.
+3. Cada tutorial salvo possui cache próprio e metadados em IndexedDB.
+4. O pacote normal inclui conteúdo, imagens e pôsteres; vídeos MP4 são uma seleção opcional, desmarcada por padrão.
+5. A atualização do app shell não deve apagar pacotes dos usuários.
+6. Atualização de pacotes usa cache temporário, validação e substituição após a gravação do novo registro.
+7. Chrome desktop e Android em dispositivos disponíveis formam a matriz de aceite. iOS/Safari está fora do escopo atual.
+8. O Motorola E20 apresentou indisponibilidade geral de instalação/atalhos no Chrome, inclusive em `example.com/`; não adicionar workaround no site sem evidência de que o problema seja do projeto.
+
+Pendências que permanecem:
+
+- Executar na origem definitiva o teste de preservação dos pacotes entre publicações.
+- Fazer aceite manual de quota real e evicção/remoção de dados do navegador.
+- Revisar a matriz de navegadores quando houver novos dispositivos disponíveis.
+
+As melhorias futuras “Gerenciador central de tutoriais offline” e “Monitoramento do armazenamento” ainda não foram implementadas nem tiveram arquitetura detalhada aprovada. A proposta inicial e as questões que precisam ser resolvidas estão na seção 28.
+
+## 18. Definição da arquitetura entregue
+
+- [x] Conteúdo do app shell e exclusões do cache definidos.
+- [x] Estratégias por tipo de recurso implementadas.
+- [x] Formato e ciclo de vida dos pacotes definidos.
+- [x] Limite do cache runtime definido.
+- [x] Política de atualização sem apagar downloads implementada.
+- [x] Integração Astratra, `dist/`, GitHub Actions e Vercel integrada.
+- [x] Limitações de APIs e serviços externos documentadas.
+- [x] Matriz de aceite Chrome desktop/Android documentada.
+- [x] Decisão de deixar iOS/Safari fora do escopo registrada.
+
+A arquitetura principal está fechada para esta entrega. Melhorias futuras devem ser avaliadas separadamente, reutilizando o armazenamento e os serviços existentes em vez de duplicar regras.
 
 ## 19. Referências técnicas
 
@@ -795,14 +658,17 @@ Antes de codificar, confirmar:
 -   [MDN --- StorageManager
     API](https://developer.mozilla.org/docs/Web/API/StorageManager)
 
-## 20. Registro de escopo
+## 20. Registro de escopo e situação atual
 
-A Fase 1 está implementada e publicada na preview da branch feat/pwa. Build completo, auditoria, testes unitários, ESLint e E2E passaram no GitHub Actions. Manifesto, Service Worker e ícones foram verificados na Vercel com HTTP 200 e MIME types corretos.
+O núcleo do PWA está implementado na branch `feat/pwa`, PR #16 contra `dev`. A branch possui Preview Vercel em estado READY no HEAD consultado durante a revisão documental.
 
-Não declarar o PWA pronto para produção até concluir o aceite manual de instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
+A implementação inclui app shell offline, cache runtime de imagens, pacotes individuais de tutoriais, vídeos MP4 opcionais, reprodução por HTTP Range, controle de atualização do Service Worker, integridade, reparo e preservação de pacotes durante falhas de atualização.
 
-**Estado:** Fase 0 auditada parcialmente; Fase 1 implementada e publicada em preview.\
-**Próxima etapa:** validar manualmente instalação, abertura standalone e experiência offline em navegador/dispositivo real.
+O responsável pelo projeto confirmou a validação manual de instalação, abertura standalone, atualização e navegação offline no Chrome desktop e em dispositivos Android disponíveis, bem como teste de vídeos grandes em dispositivos reais.
+
+**Não confundir aceite da Preview com o aceite final de produção.** Continua reservado à publicação definitiva o teste de preservação dos pacotes entre deploys na mesma origem. A quota real/evicção do navegador também permanece como validação manual complementar.
+
+**Estado:** núcleo técnico implementado; testes automatizados aprovados no último commit de código validado; Preview READY; aceite manual desktop/Android informado como aprovado; PR #16 continua aberta e em draft; nenhum merge autorizado.
 
 ## 21. Resultado da auditoria técnica da Fase 0
 
@@ -900,24 +766,25 @@ Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no wor
 - Na Fase 1.1, foram adicionados cache runtime de imagens gerais e pacotes opt-in de tutoriais com Cache Storage + IndexedDB. Vídeos offline continuam fora do pacote padrão.
 - Os diretórios de domínio serão criados progressivamente junto com o primeiro arquivo de cada responsabilidade para evitar scaffolding vazio.
 
-## 24. Decisões e validação da Fase 1
+## 24. Decisões e validação do app shell PWA
 
-- O Service Worker é construído por injectManifest para manter o roteamento e a política offline sob controle do projeto.
+- O Service Worker é construído por `injectManifest` para manter o roteamento e a política offline sob controle do projeto.
 - O registro é feito pela aplicação React por meio do módulo client; componentes não manipulam diretamente o registro do navegador.
 - O tipo de atualização é prompt: a versão nova só é aplicada quando a pessoa aciona Atualizar agora.
 - A navegação tenta a rede primeiro para preservar o HTML pré-renderizado e SEO. Se a rede falhar, o Service Worker devolve o app shell para o React Router tratar a rota.
 - O precache é limitado por tipo de arquivo e tamanho; mídia de tutoriais não é baixada automaticamente.
-- Os ícones são artefatos gerados no início de dev/build, evitando manter PNGs derivados no controle de versão.
-- O workflow Validate Hauy Conecta executou testes unitários PWA, testes existentes, ESLint, build/prerender/auditoria e testes E2E no runner Ubuntu.
+- Os ícones são gerados antes de dev/build, evitando manter PNGs derivados como fontes manuais.
+- O workflow Validate Hauy Conecta executa testes unitários PWA, testes existentes, ESLint, build/prerender/auditoria e testes E2E no runner Ubuntu.
 - O CI confirmou registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
-- A auditoria confirmou 151 imagens em 27 HTMLs, todas com width/height e alt; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
-- O deployment Vercel dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi publicado como READY. Manifesto, Service Worker e os quatro ícones retornaram HTTP 200 com MIME types corretos.
-- O aceite manual da instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo permanece pendente.
+- O deployment Vercel da Preview confirmou manifesto, Service Worker e ícones com HTTP 200 e MIME types corretos.
 
+**Aceite manual informado pelo responsável:** instalação nativa e abertura standalone no Chrome desktop e Android, atualização do Service Worker e navegação offline foram testadas e estão funcionando. Os testes de vídeos grandes e reprodução offline em dispositivos reais também foram concluídos com sucesso.
 
-## 25. Fase 1.1 — imagens gerais e pacotes de tutoriais
+A opção de instalação personalizada na Home foi removida. A instalação permanece sob controle da interface nativa do navegador; não adicionar CTA de instalação sem nova solicitação.
 
-Esta seção registra o comportamento implementado em `feat/pwa` após o aceite manual inicial da navegação offline. Ela complementa as decisões anteriores e substitui qualquer observação de que cache runtime de imagens ou pacotes opt-in ainda não existiam.
+## 25. Fase 1.1 — imagens runtime e pacotes individuais de tutoriais
+
+Esta seção registra a implementação que ampliou o app shell com cache runtime de imagens e downloads opt-in de tutoriais.
 
 ### Imagens gerais e identidade visual
 
@@ -929,112 +796,152 @@ Esta seção registra o comportamento implementado em `feat/pwa` após o aceite 
 
 ### Salvar um tutorial para uso offline
 
-O botão `Salvar tutorial offline` aparece no componente `TutorialCompletion`, depois do último passo e antes da seção de conteúdos externos.
+O botão `Salvar tutorial offline` aparece no componente de conclusão do tutorial, depois do último passo.
 
-O catálogo coleta imagens e pôsteres dos passos/exemplos. Também inclui as variantes responsivas de cada imagem obtidas de `src/generated/imageMetadata.json`, pois o navegador pode escolher uma variante de `/_optimized/` em vez da imagem original.
+O pacote base coleta imagens, pôsteres e variantes responsivas de cada imagem, incluindo as variantes registradas em `src/generated/imageMetadata.json`. Os dados textuais do tutorial já estão nos bundles pré-cacheados.
 
-O pacote é mantido em um cache próprio por tutorial. Os metadados e a lista de recursos esperados são armazenados no IndexedDB `hauy-conecta-offline`. O download tem concorrência limitada, progresso, cancelamento, validação de respostas, remoção de cache parcial em caso de falha e ação para remover o pacote depois.
+Cada pacote possui cache próprio no Cache Storage. Os metadados e a lista de recursos esperados ficam no IndexedDB `hauy-conecta-offline`. O download tem concorrência limitada, progresso, cancelamento, validação de respostas, remoção de cache parcial em caso de falha e ação para atualizar/remover o pacote.
 
-A disponibilidade é local ao navegador/dispositivo. O botão não baixa arquivos MP4 nem conteúdo externo: os vídeos e links de videoaulas continuam exigindo internet. A conclusão do pacote garante texto, imagens e pôsteres, não os vídeos.
+**Vídeos MP4 não entram no pacote base por padrão.** A interface oferece uma seleção separada e desmarcada inicialmente para incluir os MP4 locais; esse fluxo e suas validações estão descritos na seção 26.
+
+A disponibilidade é local ao navegador/dispositivo. Não existe sincronização entre dispositivos nem uma tela central para gerenciar todos os pacotes.
 
 ### Arquivos e testes relacionados
 
-- `src/pwa/config/cache-policy.js`: versões, logos de precache, nome e limite do cache runtime e prefixo dos pacotes.
+- `src/pwa/config/cache-policy.js`: versões, logos de precache, limite do cache runtime e prefixo dos pacotes.
 - `src/pwa/service-worker/sw.js`: roteamento de imagens e prioridade de caches de pacotes.
 - `src/pwa/downloads/tutorial-package.js`: coleta de recursos, Cache Storage e IndexedDB.
-- `src/pwa/ui/components/TutorialOfflineButton.jsx`: interface de salvar, progresso, cancelamento, atualização e remoção.
-- `tests/pwa/unit/tutorial-package.test.js`: imagens, pôsteres, variantes responsivas e exclusão de URLs externas/vídeos.
-- `tests/pwa/e2e/offline-navigation.test.js`: navegação offline, armazenamento runtime e acesso a imagem de pacote sem conexão.
+- `src/pwa/ui/components/TutorialOfflineButton.jsx`: salvar, progresso, cancelamento, atualização, reparo e remoção.
+- `tests/pwa/unit/tutorial-package.test.js`: catálogo, variantes responsivas e regras do pacote.
+- `tests/pwa/e2e/offline-navigation.test.js`: navegação offline, armazenamento runtime e fluxos de pacote.
 
-A validação automatizada desta fase deve confirmar tanto o build completo/pré-renderização quanto os testes E2E executados pelo runner do GitHub Actions. A publicação em preview e a validação manual em dispositivos reais ainda devem ser conferidas após o deploy do novo commit.
+## 26. Fase 3 — vídeos MP4 offline
 
-
-## 26. Fase 3 — vídeos MP4 offline (implementação)
-
-A Fase 3 foi implementada na branch feat/pwa mantendo o escopo por escolha do usuário. A opção de incluir vídeos é apresentada separadamente e vem desmarcada por padrão; o download normal continua incluindo texto, imagens, pôsteres e variantes responsivas.
+A opção de incluir vídeos é separada e vem desmarcada por padrão. O pacote normal continua incluindo texto, imagens, pôsteres e variantes responsivas.
 
 ### Catálogo e estimativa
 
-- O script scripts/generate-image-metadata.mjs passou a catalogar também os MP4 de public/tutoriais, registrando o tamanho real em bytes no campo videos do JSON de mídia gerado.
-- collectTutorialVideoResources identifica MP4 locais nos campos video dos passos e exemplos, elimina duplicatas e ignora URLs externas.
-- estimateTutorialVideoSize agrega os tamanhos conhecidos para exibir quantidade e estimativa antes de iniciar o download.
-- O catálogo atual contém 18 MP4 locais, com aproximadamente 298,38 MiB somados. O tamanho do Canva é consideravelmente maior que o de Excel e Google Drive; por isso, não há download automático.
+- `scripts/generate-image-metadata.mjs` cataloga os MP4 de `public/tutoriais/`, registrando tamanho em bytes.
+- `collectTutorialVideoResources` identifica MP4 locais nos passos e exemplos, elimina duplicatas e ignora URLs externas.
+- `estimateTutorialVideoSize` agrega tamanhos conhecidos para exibir quantidade e estimativa antes do download.
+- O catálogo registrado nesta revisão contém 18 MP4 locais, com aproximadamente 298,38 MiB somados. Não há download automático.
 
 ### Download e armazenamento
 
 - A opção “Incluir vídeos para assistir sem internet” é opcional e desmarcada por padrão.
-- Os vídeos selecionados são baixados integralmente para o cache isolado daquele tutorial, junto das imagens e pôsteres.
-- O download valida resposta HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
-- O corpo do vídeo é encaminhado em streaming ao Cache Storage, sem montar o MP4 inteiro em um único ArrayBuffer na memória.
-- O progresso informa quantidade de arquivos e bytes transferidos dos vídeos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois de o novo pacote estar persistido.
-- Os metadados do IndexedDB registram URLs de imagens e vídeos separadamente, além da lista consolidada usada na verificação de integridade.
+- Os vídeos selecionados são baixados integralmente para o cache isolado do tutorial.
+- O download valida HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
+- O corpo é encaminhado em streaming ao Cache Storage.
+- O progresso informa arquivos e bytes transferidos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois que o novo foi persistido e validado.
+- Os metadados registram URLs de imagens e vídeos separadamente.
 
 ### Reprodução offline e HTTP Range
 
-- O Service Worker trata requisições GET para MP4 locais e procura o arquivo nos caches de pacotes do usuário.
 - Uma requisição sem Range recebe a resposta completa armazenada.
-- Uma requisição Range: bytes=início-fim recebe HTTP 206 com Content-Range, Content-Length e Accept-Ranges.
-- Intervalos inválidos ou fora do tamanho do arquivo recebem HTTP 416 e Content-Range: bytes */tamanho.
-- MP4 não incluído no pacote continua dependendo da rede; videoaulas externas (YouTube e outros hosts) também permanecem online-only.
+- Uma requisição `Range: bytes=início-fim` recebe HTTP 206 com `Content-Range`, `Content-Length` e `Accept-Ranges`.
+- Intervalos inválidos ou fora do tamanho recebem HTTP 416.
+- MP4 não incluído no pacote e videoaulas externas continuam dependendo da rede.
 
 ### Testes e aceite
 
-- Testes unitários cobrem coleta/deduplicação de MP4 locais, exclusão de URLs externas, estimativa de bytes e formatação.
-- O E2E usa vídeos pequenos do tutorial Excel, verifica o MP4 completo no Cache Storage, desliga a rede, carrega os metadados do player e realiza uma busca temporal. O teste também exige uma resposta HTTP 206 offline.
-- Permanecem pendentes o teste manual em dispositivos reais, arquivos grandes (especialmente vídeos do Canva), armazenamento/quota e comportamento em condições de rede móvel. Não declarar compatibilidade universal antes desses testes.
-
-
+- Testes unitários cobrem coleta/deduplicação de MP4, exclusão de URLs externas, estimativa de bytes e formatação.
+- O E2E valida o MP4 no Cache Storage, metadados do player e busca temporal offline com HTTP 206.
+- **O responsável pelo projeto confirmou que vídeos grandes foram testados em dispositivos reais e que o download/reprodução offline está funcionando.** Isso complementa o E2E com arquivos pequenos.
+- Quota simulada, cancelamento e falhas de recursos são cobertos pelos testes automatizados. A quota real do navegador e a evicção continuam como validação complementar pendente.
 
 ## 27. Fase 4 — atualização de conteúdo e recuperação de pacotes offline
 
-A Fase 4 fortalece a confiabilidade dos pacotes opt-in sem alterar a separação entre o app shell, o cache runtime de imagens e os caches individuais dos tutoriais.
+A implementação fortalece a confiabilidade dos pacotes opt-in sem misturar o ciclo de vida do app shell, do cache runtime de imagens e dos caches individuais dos tutoriais.
 
 ### 27.1 Atualização do Service Worker
 
-- O registro permanece no modo \`prompt\`: a nova versão não é aplicada silenciosamente.
-- A ativação limpa apenas caches antigos do app shell, por meio de \`src/pwa/service-worker/cache-cleanup.js\`.
-- A limpeza usa \`Promise.allSettled\`; uma falha ao remover cache antigo não deve impedir a ativação da versão nova.
-- Os caches de pacotes (\`hauy-conecta-tutorial-package-*\`) e o cache runtime (\`hauy-conecta-runtime-images-v1\`) não entram na política de limpeza do app shell.
-- Existe teste unitário que confirma que a limpeza remove somente o app shell antigo e mantém os demais namespaces.
+- O registro permanece no modo `prompt`: a nova versão não é aplicada silenciosamente.
+- A ativação limpa apenas caches antigos do app shell, por meio de `src/pwa/service-worker/cache-cleanup.js`.
+- A limpeza usa `Promise.allSettled`; falhas ao remover caches antigos não impedem a ativação.
+- Os caches `hauy-conecta-tutorial-package-*` e `hauy-conecta-runtime-images-v1` ficam fora da política de limpeza do app shell.
 
 ### 27.2 Identificação de conteúdo desatualizado
 
 O IndexedDB registra fingerprints separadas:
-- \`contentVersion\`: dados do tutorial, passos, imagens e metadados das imagens;
-- \`videoContentVersion\`: lista e metadados dos MP4 opcionais.
+- `contentVersion`: dados do tutorial, passos, imagens e metadados das imagens;
+- `videoContentVersion`: lista e metadados dos MP4 opcionais.
 
-O script \`scripts/generate-image-metadata.mjs\` gera tamanho e SHA-256 para imagens e vídeos. O fingerprint do conteúdo principal incorpora o hash das imagens; o fingerprint dos vídeos incorpora o hash dos MP4. A serialização é determinística e ignora a função usada como ícone de categoria.
+O script de metadados gera tamanho e SHA-256 para imagens e vídeos. Os estados apresentados pela consulta são `saved`, `outdated`, `incomplete` e `null`, conforme a integridade e a versão do conteúdo.
 
-Os campos opcionais de vídeo são removidos da fingerprint principal. Assim, um tutorial salvo sem vídeos não é considerado desatualizado quando muda somente um vídeo opcional. Se o pacote tiver vídeos, a fingerprint específica dos vídeos também é comparada.
+### 27.3 Integridade e atualização transacional
 
-Os estados apresentados pela consulta do pacote são:
-- \`saved\`: cache e recursos íntegros, fingerprints atuais;
-- \`outdated\`: recursos presentes e válidos, mas conteúdo publicado mudou;
-- \`incomplete\`: cache ausente, recurso ausente, resposta inválida ou metadados de tamanho inconsistentes;
-- \`null\`: nenhum registro de pacote para o tutorial.
+Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho recebido é registrado em `resourceDetails`. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
 
-### 27.3 Integridade durante gravação e consulta
+A consulta verifica existência, status, corpo, MIME type e tamanho registrado. A validação não recalcula SHA-256 do corpo armazenado em cada abertura: os hashes do build identificam mudanças no conteúdo publicado, enquanto a consulta local verifica a resposta persistida.
 
-Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho efetivamente recebido é registrado em \`resourceDetails\`. Quando um tamanho esperado é conhecido por metadados ou \`Content-Length\`, o valor recebido é comparado antes de o pacote ser considerado concluído. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
+A substituição ocorre em duas etapas: (1) criar cache temporário e baixar/validar os recursos; (2) gravar o novo registro no IndexedDB e somente então remover o cache anterior.
 
-Na consulta, cada URL declarada no IndexedDB é procurada no cache e verificada por status, corpo, MIME type e tamanho positivo. Quando `Content-Length` está disponível e não há `Content-Encoding`, ele deve corresponder ao tamanho registrado. Em respostas comprimidas, o `Content-Length` pode representar os bytes comprimidos, enquanto o corpo exposto ao JavaScript já está descomprimido; nesse caso, a comparação usa os bytes efetivamente recebidos/armazenados durante o download e ignora o comprimento de transporte na consulta.
+Se o download for cancelado, um recurso ficar indisponível, o Cache Storage falhar ou a quota for excedida, o cache temporário é descartado e o pacote anterior permanece associado ao registro antigo. Pacotes `incomplete` podem ser reparados; pacotes `outdated` podem ser atualizados.
 
-Essa validação não re-calcula SHA-256 do corpo armazenado a cada abertura. Os hashes gerados no build detectam mudanças no conteúdo publicado; a integridade do armazenamento local é validada pela conclusão da gravação no Cache Storage, pelos tamanhos registrados e pela conferência das respostas ao consultar o pacote.
+### 27.4 Testes e validação atual
 
-### 27.4 Atualização transacional e recuperação de falhas
+- Unitários: fingerprints, mudanças em texto/imagens/vídeos, separação da versão dos vídeos opcionais e validação de recursos.
+- Service Worker: limpeza de caches antigos do app shell sem apagar runtime images ou pacotes.
+- E2E: reparo de cache ausente, atualização de conteúdo, preservação do pacote anterior, limpeza de dados locais, quota simulada, resposta inválida, cancelamento e arquivo indisponível.
+- O workflow **Validate Hauy Conecta**, run `41242399960`, concluiu com sucesso no último commit de código validado (`7b901b8`). O build/prerender também concluiu com sucesso no workflow `41242394976`.
+- O deployment correspondente ao HEAD consultado (`9161dd0`) está READY na Preview da Vercel.
+- O responsável confirmou atualização do Service Worker e uso offline nos dispositivos de teste.
 
-A substituição permanece em duas etapas:
-1. Criar um cache novo e temporário para o pacote atualizado.
-2. Baixar e validar todos os recursos, gravar o novo registro no IndexedDB e somente então remover o cache anterior.
+Permanecem fora da validação de Preview: preservar pacotes entre publicações sucessivas na mesma origem definitiva de produção e observar quota real/evicção do navegador.
 
-Se o download for cancelado, um recurso ficar indisponível, o Cache Storage falhar ou a quota for excedida, o cache temporário é descartado. O pacote anterior permanece associado ao registro antigo e a interface consulta seu estado novamente. A mensagem de erro diferencia armazenamento cheio e informa quando a versão anterior foi preservada.
+## 28. Melhorias futuras — ainda não implementadas
 
-A interface permite reparar pacotes \`incomplete\` e atualizar pacotes \`outdated\`. Nunca exibe a confirmação de disponibilidade offline para os dois estados.
+As duas melhorias abaixo foram identificadas como evoluções úteis, mas **não fazem parte da entrega atual**. Antes de implementar, devem ser transformadas em histórias pequenas, com regras de produto, fluxos, estados, testes e decisão de UX documentados.
 
-### 27.5 Testes adicionados
+### 28.1 Gerenciador central de tutoriais offline
 
-- Unitários: fingerprints determinísticas; alteração em texto/imagem/vídeo; separação da versão de vídeos opcionais; rejeição de respostas ausentes, status inválido, MIME incorreto, tamanho vazio ou divergente.
-- Unitários do Service Worker: limpeza do cache antigo do app shell sem remover cache runtime ou pacotes de tutoriais; falha de remoção não impede a ativação.
-- E2E: remoção de Cache Storage e reparo concluído; conteúdo desatualizado e atualização concluída com substituição segura do cache anterior; remoção dos dados locais do site; quota simulada durante atualização; resposta HTML inválida no lugar de imagem; cancelamento durante atualização com preservação do pacote anterior e descarte do cache temporário; arquivo necessário indisponível.
+**Objetivo:** oferecer uma área “Meus tutoriais offline” para a pessoa visualizar e administrar os tutoriais salvos sem precisar abrir cada tutorial individualmente.
 
-A execução local e o resultado final do GitHub Actions ainda devem ser confirmados no commit final desta fase. A quota real do navegador e a remoção real dos dados pelo usuário continuam recomendadas para aceite manual em Chrome desktop e Android.
+**Base técnica existente a reutilizar:**
+- IndexedDB `hauy-conecta-offline`, object store `tutorial-packages`, como índice dos pacotes salvos.
+- Cache Storage, usando o `cacheName` registrado, como fonte dos recursos persistidos.
+- `getTutorialOfflinePackage` para verificar integridade e classificar `saved`, `outdated` ou `incomplete`.
+- `saveTutorialOffline` e `removeTutorialOffline` para executar operações existentes; a nova tela não deve duplicar lógica de download, integridade ou remoção.
+- Catálogo atual de tutoriais em `src/data/tutorials.js` para resolver título, categoria e rota, considerando registros órfãos caso o tutorial tenha sido removido da biblioteca.
+
+**Proposta inicial de experiência:**
+- lista de pacotes com título, categoria e data de salvamento;
+- indicação se o pacote contém vídeos;
+- estado atualizado, desatualizado ou incompleto;
+- ações de abrir tutorial, atualizar/reparar e remover;
+- estado vazio, carregamento, erro de leitura e confirmação antes de remover;
+- resumo da quantidade de pacotes salvos.
+
+**Decisões de arquitetura a fechar antes do código:**
+1. Onde a pessoa acessará a área: rota própria, item de navegação ou entrada em Tutoriais?
+2. Como listar todos os registros do IndexedDB sem expor a API de baixo nível aos componentes?
+3. Como calcular e exibir tamanho por pacote? O registro já possui `resourceDetails[].size` e `totalVideoBytes`; definir agregação consistente sem varrer todos os corpos a cada renderização.
+4. Como atualizar o estado quando outra aba salva/remove um pacote?
+5. Como tratar registros órfãos e pacotes parcialmente corrompidos?
+6. A remoção será individual inicialmente; ações em massa exigem decisão de UX e confirmação.
+
+### 28.2 Monitoramento do armazenamento
+
+**Objetivo:** dar visibilidade aproximada ao espaço utilizado pelo Hauy Conecta e ao limite informado pelo navegador, ajudando a pessoa a decidir se deve remover pacotes ou evitar baixar vídeos grandes.
+
+**APIs candidatas:**
+- `navigator.storage.estimate()`: fornece estimativa de uso e quota para a origem. Os números são aproximados, variam por navegador e incluem dados da origem que não são exclusivamente os pacotes de tutorial.
+- `navigator.storage.persisted()`: informa se o armazenamento da origem está marcado como persistente, quando suportado.
+- `navigator.storage.persist()`: pode solicitar persistência ao navegador; não garante concessão e não deve ser chamado automaticamente sem uma decisão de UX.
+
+**Proposta inicial de experiência:**
+- mostrar uso aproximado e quota quando a API estiver disponível;
+- indicar claramente quando o navegador não oferece a API;
+- explicar que a quota é compartilhada pela origem e que o navegador pode não revelar detalhes;
+- oferecer acesso ao gerenciador de tutoriais para liberar espaço;
+- manter o tratamento de `QuotaExceededError` mesmo que a estimativa indique espaço disponível, pois a quota pode mudar entre consulta e gravação.
+
+**Decisões de arquitetura a fechar antes do código:**
+1. Onde o resumo de armazenamento aparece: no futuro gerenciador central, nas configurações ou em ambos?
+2. A atualização será sob demanda, ao entrar na tela ou após downloads/remoções? Evitar polling contínuo.
+3. Como apresentar `usage`, `quota` e `usageDetails` sem sugerir precisão que a API não oferece?
+4. Como tratar APIs ausentes, valores nulos, erros e permissões de persistência negadas?
+5. Solicitar `persist()` somente após explicar o benefício e com ação explícita da pessoa, se a política do navegador permitir.
+6. A estimativa global não substitui tamanho dos pacotes, nem garante que um download cabe.
+
+**Ordem recomendada:** arquitetar primeiro o contrato de leitura/listagem de pacotes para o gerenciador; em seguida decidir como integrar a estimativa global de armazenamento nessa mesma área. Implementar e testar as duas melhorias separadamente, sem alterar o fluxo de download já validado.
