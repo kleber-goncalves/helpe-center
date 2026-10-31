@@ -422,26 +422,47 @@ Usar versionamento separado para shell, conteúdo e pacotes, evitando um
 
 ## 9. Integração com o build, Astratra e Vercel
 
-Este é um dos pontos mais sensíveis.
+O pipeline de publicação foi validado na branch feat/pwa e mantém a estratégia de artefato pré-gerado:
 
-O pipeline atual inclui geração de metadados de imagens, rotas de
-pré-renderização, build Vite, Astratra e auditoria de imagens. A
-integração PWA deve preservar a sequência e garantir que manifesto e
-Service Worker estejam no `dist/` final.
+1. scripts de metadados de imagens e ícones;
+2. geração das rotas e do sitemap;
+3. build Vite com geração do manifesto e do Service Worker por injectManifest;
+4. pré-renderização Astratra;
+5. auditoria das imagens;
+6. commit de dist/ e public/sitemap.xml na própria branch.
 
-Verificações obrigatórias:
+O workflow .github/workflows/prerender.yml executa em main e feat/pwa. Cada branch tem seu próprio grupo de concorrência. Alterações somente em dist/, public/sitemap.xml e docs/ não iniciam uma nova pré-renderização.
 
--   Determinar a etapa correta para o plugin PWA.
--   Garantir que Astratra não remova/sobrescreva manifesto ou Service
-    Worker.
--   Garantir Service Worker na raiz e escopo correto.
--   Preservar HTML pré-renderizado.
--   Preservar GitHub Actions que gera/publica `dist/`.
--   Testar o build completo do CI, não somente `vite build`.
--   Confirmar MIME type e cabeçalhos HTTP corretos na Vercel.
--   Confirmar que os arquivos PWA entram no commit automatizado de
-    `dist/`.
--   Evitar artefatos antigos e alterações repetidas desnecessárias.
+Depois de criar o commit do artefato, o workflow executa git reset --hard HEAD para descartar somente alterações locais não commitadas, que não fazem parte do commit de dist/. Em seguida, busca a referência remota, faz rebase do commit do artefato sobre o HEAD atualizado e envia a branch sem force push. Essa etapa evita conflitos quando a sincronização do AI_CONTEXT avança a branch enquanto a build está rodando.
+
+A Vercel continua publicando dist/ como artefato pré-gerado. O buildCommand do vercel.json é informativo; não executa novamente Vite ou Astratra.
+
+### Validação confirmada na preview feat/pwa
+
+Deployment: dpl_2DWRj67dpCPR47UKxNJw77JpxPF2  
+Commit publicado: 63b5bc8744da1c4ec4deabeab352846db74b56b3  
+Estado: READY
+
+| Recurso | HTTP | Content-Type |
+|---|---:|---|
+| / | 200 | text/html; charset=utf-8 |
+| /manifest.webmanifest | 200 | application/manifest+json; charset=utf-8 |
+| /sw.js | 200 | application/javascript; charset=utf-8 |
+| /icons/icon-192.png | 200 | image/png |
+| /icons/icon-512.png | 200 | image/png |
+| /icons/icon-maskable-512.png | 200 | image/png |
+| /icons/apple-touch-icon.png | 200 | image/png |
+
+O HTML pré-renderizado da raiz contém a referência ao manifesto. O deployment foi criado pela integração Git da Vercel a partir do commit que versionou o dist/ gerado.
+
+### Validações que ainda exigem aceite manual
+
+- Instalação pelo navegador e presença da opção de instalação.
+- Abertura standalone após instalar.
+- Atualização do Service Worker e comportamento do aviso de atualização.
+- Reabertura e navegação offline em navegador/dispositivo-alvo.
+
+Não declarar a experiência de instalação pronta para produção apenas com base nos testes E2E automatizados.
 
 ## 10. O que instalar futuramente
 
@@ -611,14 +632,20 @@ disponível offline, parcial, falha e atualização disponível.
 -   [x] Criar testes unitários do manifesto e da política de cache.
 -   [x] Criar testes E2E de registro do Service Worker e navegação offline.
 -   [x] Integrar testes PWA unitários e E2E ao workflow de validação.
--   [ ] Validar build completo com Astratra no runner Ubuntu do GitHub Actions.
--   [ ] Confirmar no preview da Vercel instalação e navegação offline em navegador real.
+-   [x] Validar build completo com Astratra no runner Ubuntu do GitHub Actions.
+-   [x] Confirmar na preview da Vercel a publicação do manifesto, Service Worker e ícones com MIME types corretos.
+-   [x] Confirmar no E2E o registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
+-   [ ] Confirmar manualmente instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
 
-**Implementação atual:** o app shell inclui JavaScript, CSS, HTML, favicon, manifesto e ícones. O Service Worker tenta a rede primeiro para as navegações; quando a rede falha, usa o app shell precacheado para o React Router resolver a rota localmente. A página offline estática é a última alternativa.
+**Implementação atual:** o app shell inclui JavaScript, CSS, HTML, favicon, manifesto e ícones. O Service Worker tenta a rede primeiro para as navegações; quando a rede falha, usa o app shell precacheado para o React Router resolver a rota. A página offline estática é a última alternativa.
+
+**Validação do CI:** testes existentes, quatro testes unitários PWA, ESLint, build Vite + Astratra, auditoria de imagens e E2E passaram no GitHub Actions. O E2E confirmou registro e ativação do Service Worker e navegação offline para uma rota de tutorial. A auditoria verificou 151 imagens em 27 HTMLs; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+
+**Validação da Vercel:** o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, ficou READY. Manifesto, Service Worker e ícones responderam HTTP 200 com os MIME types esperados.
 
 **Limite desta entrega:** não existe cache runtime de imagens, download de tutoriais, IndexedDB de pacotes ou vídeo offline nesta fase.
 
-**Saída esperada:** instalação e navegação básica offline confirmadas pelo CI e por teste manual no preview.
+**Saída desta etapa:** build e publicação do app shell confirmados, recursos servidos corretamente na preview e testes automatizados de registro/offline aprovados. A experiência de instalação e abertura standalone ainda precisa de aceite manual.
 
 ### Fase 2 --- Imagens runtime e downloads de tutoriais
 
@@ -770,10 +797,12 @@ Antes de codificar, confirmar:
 
 ## 20. Registro de escopo
 
-Este documento registra a arquitetura e o andamento da implementação. A Fase 1 está parcialmente implementada na branch feat/pwa; não declarar o PWA pronto para produção até concluir a validação E2E no GitHub Actions e o teste manual no preview da Vercel.
+A Fase 1 está implementada e publicada na preview da branch feat/pwa. Build completo, auditoria, testes unitários, ESLint e E2E passaram no GitHub Actions. Manifesto, Service Worker e ícones foram verificados na Vercel com HTTP 200 e MIME types corretos.
 
-**Estado:** Fase 0 auditada parcialmente; Fase 1 em implementação.\
-**Próxima etapa:** validar o fluxo de instalação e navegação offline no CI e no preview.
+Não declarar o PWA pronto para produção até concluir o aceite manual de instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
+
+**Estado:** Fase 0 auditada parcialmente; Fase 1 implementada e publicada em preview.\
+**Próxima etapa:** validar manualmente instalação, abertura standalone e experiência offline em navegador/dispositivo real.
 
 ## 21. Resultado da auditoria técnica da Fase 0
 
@@ -787,15 +816,11 @@ Consequência para o PWA: guardar somente o bundle inicial não garante acesso o
 
 ### Pipeline real de build/publicação
 
-`npm run build` executa, nesta ordem:
+Na auditoria inicial, o workflow .github/workflows/prerender.yml executava somente na branch main e versionava dist/ e public/sitemap.xml. A integração da Fase 1 ampliou o gatilho para main e feat/pwa, com concorrência isolada por branch e exclusão de alterações somente documentais e de artefatos gerados.
 
-1. `scripts/generate-image-metadata.mjs`.
-2. `scripts/generate-prerender-routes.mjs`.
-3. `vite build`.
-4. `astratra-prerender`.
-5. `scripts/audit-images.mjs`.
+O workflow agora executa npm run build na branch de origem, verifica o resultado com Vite/Astratra/auditoria, cria um commit para dist/ e public/sitemap.xml, limpa o working tree local e faz rebase sobre o HEAD remoto antes do push. A atualização não utiliza force push.
 
-O workflow `.github/workflows/prerender.yml` roda na branch `main`, executa o build completo e versiona `dist/` e `public/sitemap.xml`. O `vercel.json` publica o diretório `dist/` pré-gerado, sem refazer a pré-renderização na Vercel. Portanto, a integração do PWA precisa garantir que manifesto e Service Worker sobrevivam à etapa do Astratra e sejam incluídos no artefato versionado pelo workflow.
+A Vercel publica o dist/ já gerado. A validação do deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2 confirmou que manifesto, Service Worker e ícones chegaram à preview com HTTP 200 e MIME types corretos.
 
 ## 22. Organização modular do código e dos testes
 
@@ -883,5 +908,9 @@ Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no wor
 - A navegação tenta a rede primeiro para preservar o HTML pré-renderizado e SEO. Se a rede falhar, o Service Worker devolve o app shell para o React Router tratar a rota.
 - O precache é limitado por tipo de arquivo e tamanho; mídia de tutoriais não é baixada automaticamente.
 - Os ícones são artefatos gerados no início de dev/build, evitando manter PNGs derivados no controle de versão.
-- O workflow Validate Hauy Conecta executa testes unitários PWA antes de lint e testes de navegador após o build/prerender.
-- A validação em sandbox executou Vite build, ESLint e quatro testes unitários. O sandbox remoto não conseguiu manter Chromium ativo; a aprovação E2E depende da execução no runner Ubuntu do CI.
+- O workflow Validate Hauy Conecta executou testes unitários PWA, testes existentes, ESLint, build/prerender/auditoria e testes E2E no runner Ubuntu.
+- O CI confirmou registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
+- A auditoria confirmou 151 imagens em 27 HTMLs, todas com width/height e alt; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+- O deployment Vercel dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi publicado como READY. Manifesto, Service Worker e os quatro ícones retornaram HTTP 200 com MIME types corretos.
+- O aceite manual da instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo permanece pendente.
+
