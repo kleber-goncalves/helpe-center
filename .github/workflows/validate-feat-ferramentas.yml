@@ -46,6 +46,9 @@ jobs:
       - name: Run unit tests
         run: npm run test:search
 
+      - name: Run PWA unit tests
+        run: npm run test:pwa:unit
+
       - name: Run ESLint
         run: npm run lint
 
@@ -54,3 +57,6 @@ jobs:
 
       - name: Build, prerender and audit images
         run: npm run build
+
+      - name: Run PWA browser tests
+        run: npm run test:pwa:e2e

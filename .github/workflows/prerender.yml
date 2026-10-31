@@ -1,16 +1,18 @@
 name: Build prerendered site
 
 concurrency:
-  group: prerender-main
+  group: prerender-${{ github.ref }}
   cancel-in-progress: true
 
 on:
   push:
     branches:
       - main
+      - feat/pwa
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
+      - "docs/**"
 
 permissions:
   contents: write
@@ -51,4 +53,13 @@ jobs:
             exit 0
           fi
           git commit -m "build: update prerendered site"
-          git push
+
+          # Remove apenas alterações locais não commitadas: o dist e o sitemap
+          # já estão preservados no commit criado acima.
+          git reset --hard HEAD
+
+          # A sincronização do AI_CONTEXT pode avançar a branch durante a build.
+          # Rebaseia o artefato gerado sobre o HEAD remoto antes de publicar.
+          git fetch origin "${GITHUB_REF_NAME}"
+          git rebase "origin/${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

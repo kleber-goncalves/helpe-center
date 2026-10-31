@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs",
+    "build": "node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs",
     "audit:images": "node scripts/audit-images.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predev": "node scripts/generate-image-metadata.mjs",
+    "predev": "node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs",
     "prelint": "node scripts/generate-image-metadata.mjs",
-    "test:search": "node --test src/lib/searchTutorials.test.js src/lib/assistantResponse.test.js"
+    "test:search": "node --test src/lib/searchTutorials.test.js src/lib/assistantResponse.test.js",
+    "pwa:icons": "node scripts/generate-pwa-icons.mjs",
+    "test:pwa:unit": "node --test tests/pwa/unit/*.test.js",
+    "test:pwa:e2e": "node --test tests/pwa/e2e/*.test.js",
+    "test:pwa": "npm run test:pwa:unit && npm run test:pwa:e2e"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
@@ -45,6 +49,10 @@
     "playwright": "^1.63.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "vite-plugin-pwa": "^2.0.0",
+    "workbox-core": "^7.4.1",
+    "workbox-precaching": "^7.4.1",
+    "workbox-routing": "^7.4.1"
   }
 }

@@ -32,3 +32,6 @@ dist-ssr
 .env*
 src/generated/
 public/_optimized/
+
+# PWA icons are generated from the source SVG during dev/build
+/public/icons/*.png

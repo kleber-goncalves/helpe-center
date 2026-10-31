@@ -1,6 +1,6 @@
 # Hauy Conecta --- Arquitetura e Planejamento do PWA
 
-> **Status:** proposta arquitetural; nenhuma implementação iniciada.\
+> **Status:** Fase 1 parcialmente implementada na branch feat/pwa; validação do build completo com Astratra e E2E no GitHub Actions pendentes.\
 > **Modelo:** híbrido --- conteúdo básico e imagens essenciais em cache,
 > com download opcional de tutoriais e vídeos.
 
@@ -11,11 +11,9 @@ Progressive Web App (PWA), as tecnologias previstas, as regras de cache,
 o ciclo de vida dos downloads e os riscos a tratar antes da
 implementação.
 
-**Importante:** esta é somente a fase de arquitetura. Não alterar
-arquivos do repositório, não instalar dependências, não criar
-componentes e não executar implementação nesta etapa.
+**Importante:** a arquitetura foi definida antes da implementação. O trabalho agora seguirá fases pequenas na branch `feat/pwa`, preservando `main` e `dev`. Cada fase deverá incluir testes adequados, validação do build completo e atualização desta documentação quando decisões ou comportamentos mudarem.
 
-O documento deverá ser a referência para a futura implementação.
+Este documento continua sendo a referência técnica principal para o PWA.
 
 ## 2. Contexto atual conhecido do projeto
 
@@ -37,11 +35,17 @@ Com base na análise anterior do repositório:
 -   Google Analytics 4 e eventos de início/conclusão de tutoriais.
 -   APIs externas para assistente e suporte.
 
-Na inspeção anterior, `dist/` tinha aproximadamente **354,77 MiB**, dos
-quais cerca de **298,4 MB eram vídeos**. O maior vídeo observado tinha
-aproximadamente 66,6 MB. Esses valores são uma fotografia da análise
-anterior, não uma medição garantida do estado atual; devem ser medidos
-novamente na Fase 0.
+Na auditoria executada em **30/10/2026**, na base de trabalho da branch `feat/pwa` (`691ad05`), o diretório versionado `dist/` continha **983 arquivos e 354,77 MiB**. A distribuição observada foi:
+
+- 18 arquivos MP4: **298,38 MiB** no total; o maior possui **66,63 MiB**.
+- 822 arquivos WebP: **19,08 MiB**.
+- 88 arquivos PNG: **28,34 MiB**.
+- 5 arquivos SVG: **6,52 MiB**.
+- 26 arquivos HTML, 20 arquivos JavaScript (1,02 MiB) e 1 arquivo CSS (73,7 KiB), além de favicon, sitemap e outros arquivos pequenos.
+
+Os 822 WebP são arquivos presentes no artefato `dist/` e incluem variantes otimizadas/geradas; não devem ser interpretados como 822 imagens-fonte únicas.
+
+A biblioteca `public/tutoriais/` possui 158 imagens-fonte e 18 vídeos distribuídos entre os oito tutoriais. Os vídeos estão concentrados em três tutoriais: `apresentacao-canva` (14), `como-comecar-usar-excel` (2) e `salvar-google-drive` (2). O tutorial de Canva concentra a maior parte do volume de vídeo.
 
 **Consequência:** não colocar todos os vídeos ou toda a biblioteca de
 imagens no precache inicial.
@@ -418,42 +422,59 @@ Usar versionamento separado para shell, conteúdo e pacotes, evitando um
 
 ## 9. Integração com o build, Astratra e Vercel
 
-Este é um dos pontos mais sensíveis.
+O pipeline de publicação foi validado na branch feat/pwa e mantém a estratégia de artefato pré-gerado:
 
-O pipeline atual inclui geração de metadados de imagens, rotas de
-pré-renderização, build Vite, Astratra e auditoria de imagens. A
-integração PWA deve preservar a sequência e garantir que manifesto e
-Service Worker estejam no `dist/` final.
+1. scripts de metadados de imagens e ícones;
+2. geração das rotas e do sitemap;
+3. build Vite com geração do manifesto e do Service Worker por injectManifest;
+4. pré-renderização Astratra;
+5. auditoria das imagens;
+6. commit de dist/ e public/sitemap.xml na própria branch.
 
-Verificações obrigatórias:
+O workflow .github/workflows/prerender.yml executa em main e feat/pwa. Cada branch tem seu próprio grupo de concorrência. Alterações somente em dist/, public/sitemap.xml e docs/ não iniciam uma nova pré-renderização.
 
--   Determinar a etapa correta para o plugin PWA.
--   Garantir que Astratra não remova/sobrescreva manifesto ou Service
-    Worker.
--   Garantir Service Worker na raiz e escopo correto.
--   Preservar HTML pré-renderizado.
--   Preservar GitHub Actions que gera/publica `dist/`.
--   Testar o build completo do CI, não somente `vite build`.
--   Confirmar MIME type e cabeçalhos HTTP corretos na Vercel.
--   Confirmar que os arquivos PWA entram no commit automatizado de
-    `dist/`.
--   Evitar artefatos antigos e alterações repetidas desnecessárias.
+Depois de criar o commit do artefato, o workflow executa git reset --hard HEAD para descartar somente alterações locais não commitadas, que não fazem parte do commit de dist/. Em seguida, busca a referência remota, faz rebase do commit do artefato sobre o HEAD atualizado e envia a branch sem force push. Essa etapa evita conflitos quando a sincronização do AI_CONTEXT avança a branch enquanto a build está rodando.
+
+A Vercel continua publicando dist/ como artefato pré-gerado. O buildCommand do vercel.json é informativo; não executa novamente Vite ou Astratra.
+
+### Validação confirmada na preview feat/pwa
+
+Deployment: dpl_2DWRj67dpCPR47UKxNJw77JpxPF2  
+Commit publicado: 63b5bc8744da1c4ec4deabeab352846db74b56b3  
+Estado: READY
+
+| Recurso | HTTP | Content-Type |
+|---|---:|---|
+| / | 200 | text/html; charset=utf-8 |
+| /manifest.webmanifest | 200 | application/manifest+json; charset=utf-8 |
+| /sw.js | 200 | application/javascript; charset=utf-8 |
+| /icons/icon-192.png | 200 | image/png |
+| /icons/icon-512.png | 200 | image/png |
+| /icons/icon-maskable-512.png | 200 | image/png |
+| /icons/apple-touch-icon.png | 200 | image/png |
+
+O HTML pré-renderizado da raiz contém a referência ao manifesto. O deployment foi criado pela integração Git da Vercel a partir do commit que versionou o dist/ gerado.
+
+### Validações que ainda exigem aceite manual
+
+- Instalação pelo navegador e presença da opção de instalação.
+- Abertura standalone após instalar.
+- Atualização do Service Worker e comportamento do aviso de atualização.
+- Reabertura e navegação offline em navegador/dispositivo-alvo.
+
+Não declarar a experiência de instalação pronta para produção apenas com base nos testes E2E automatizados.
 
 ## 10. O que instalar futuramente
 
-**Não instalar nada nesta etapa.** A lista abaixo é uma proposta para a
-implementação.
+A auditoria confirmou `vite ^8.3.0` no projeto e Node.js 24 no workflow. A versão avaliada para a integração é `vite-plugin-pwa@2.0.0`: sua faixa de peer dependency inclui Vite 8 e a linha 2.x requer Node 20.19.0 ou superior. A instalação só deve ocorrer na fase de integração, após confirmar a versão e atualizar o lockfile com `npm install`.
 
 ### Dependência principal
 
-``` bash
-npm install -D vite-plugin-pwa
+```bash
+npm install -D vite-plugin-pwa@2.0.0
 ```
 
-A versão deverá ser compatível com Node e Vite do projeto. A
-documentação atual do `vite-plugin-pwa` informa que a linha 2.x requer
-Node 20.19.0 ou superior; confirmar a versão disponível e as exigências
-no momento da instalação.
+A integração deverá usar `injectManifest` para manter o Service Worker sob controle do projeto. Não instalar módulos Workbox por antecipação: adicionar como dependências de desenvolvimento somente os pacotes `workbox-*` realmente importados pelo Service Worker.
 
 ### Workbox, se usar `injectManifest`
 
@@ -587,31 +608,44 @@ disponível offline, parcial, falha e atualização disponível.
 
 ### Fase 0 --- auditoria antes de codificar
 
--   [ ] Confirmar versões Node, Vite e dependências.
--   [ ] Medir novamente `dist/`.
--   [ ] Listar JS/CSS e chunks lazy.
--   [ ] Mapear imagens essenciais.
--   [ ] Mapear mídia por tutorial: imagens, pôsteres e vídeos.
--   [ ] Verificar URLs e cabeçalhos dos arquivos.
--   [ ] Revisar Vite + Astratra + Actions + Vercel.
--   [ ] Definir navegadores/dispositivos-alvo.
--   [ ] Fechar limites de cache e política de atualização.
+-   [x] Confirmar versões Node, Vite e dependências principais.
+-   [x] Medir novamente `dist/`.
+-   [x] Listar quantidade e tamanho de JS/CSS e confirmar divisão de páginas em chunks lazy.
+-   [ ] Mapear e aprovar a lista final de imagens essenciais do cache básico.
+-   [x] Mapear mídia por tutorial: imagens, pôsteres e vídeos.
+-   [ ] Verificar URLs, MIME types e cabeçalhos HTTP dos arquivos que serão servidos offline.
+-   [x] Revisar a integração Vite + Astratra + GitHub Actions + Vercel.
+-   [ ] Confirmar a matriz final de navegadores e dispositivos suportados.
+-   [ ] Fechar limites de cache, quota e política de atualização.
 
-**Saída:** inventário e pipeline documentados, sem mudança funcional.
+**Saída parcial:** inventário de build/mídia e pipeline documentados; estrutura modular de código e testes definida. Nenhuma funcionalidade PWA foi ativada nesta fase.
 
 ### Fase 1 --- PWA instalável e offline básico
 
--   [ ] Integrar plugin.
--   [ ] Criar manifesto e ícones.
--   [ ] Registrar Service Worker.
--   [ ] Definir precache de shell, chunks, CSS e páginas.
--   [ ] Criar fallback offline.
--   [ ] Definir cache pequeno de imagens essenciais.
--   [ ] Implementar indicador online/offline.
--   [ ] Definir atualização com aviso.
--   [ ] Validar build completo e deploy.
+-   [x] Integrar vite-plugin-pwa 2.0.0 com estratégia injectManifest.
+-   [x] Criar manifesto e script de geração de ícones.
+-   [x] Criar e registrar o Service Worker customizado.
+-   [x] Definir precache inicial para arquivos JS/CSS/HTML/ICO/manifesto e ícones.
+-   [x] Excluir caminhos de tutoriais e vídeos do precache.
+-   [x] Criar fallback offline e navegação network-first com fallback para app shell.
+-   [x] Implementar indicador online/offline, aviso de preparação offline e atualização com confirmação.
+-   [x] Criar testes unitários do manifesto e da política de cache.
+-   [x] Criar testes E2E de registro do Service Worker e navegação offline.
+-   [x] Integrar testes PWA unitários e E2E ao workflow de validação.
+-   [x] Validar build completo com Astratra no runner Ubuntu do GitHub Actions.
+-   [x] Confirmar na preview da Vercel a publicação do manifesto, Service Worker e ícones com MIME types corretos.
+-   [x] Confirmar no E2E o registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
+-   [ ] Confirmar manualmente instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
 
-**Saída:** instalação e conteúdo básico testados sem internet.
+**Implementação atual:** o app shell inclui JavaScript, CSS, HTML, favicon, manifesto e ícones. O Service Worker tenta a rede primeiro para as navegações; quando a rede falha, usa o app shell precacheado para o React Router resolver a rota. A página offline estática é a última alternativa.
+
+**Validação do CI:** testes existentes, quatro testes unitários PWA, ESLint, build Vite + Astratra, auditoria de imagens e E2E passaram no GitHub Actions. O E2E confirmou registro e ativação do Service Worker e navegação offline para uma rota de tutorial. A auditoria verificou 151 imagens em 27 HTMLs; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+
+**Validação da Vercel:** o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, ficou READY. Manifesto, Service Worker e ícones responderam HTTP 200 com os MIME types esperados.
+
+**Limite da Fase 1 inicial:** naquele momento ainda não existia cache runtime de imagens, download de tutoriais ou IndexedDB de pacotes. Esses recursos foram implementados na Fase 1.1, documentada na seção 25. Vídeo offline continua fora do escopo do pacote padrão.
+
+**Saída desta etapa:** build e publicação do app shell confirmados, recursos servidos corretamente na preview e testes automatizados de registro/offline aprovados. A experiência de instalação e abertura standalone ainda precisa de aceite manual.
 
 ### Fase 2 --- Imagens runtime e downloads de tutoriais
 
@@ -628,16 +662,16 @@ disponível offline, parcial, falha e atualização disponível.
 
 ### Fase 3 --- Vídeos offline
 
--   [ ] Definir vídeos elegíveis.
--   [ ] Mostrar tamanho estimado.
--   [ ] Implementar download explícito.
--   [ ] Armazenar resposta completa.
--   [ ] Tratar HTTP Range.
+-   [x] Definir vídeos elegíveis: MP4 locais de passos e exemplos; links externos ficam fora.
+-   [x] Mostrar tamanho estimado por tutorial a partir dos metadados gerados no build.
+-   [x] Implementar inclusão opcional e desmarcada por padrão.
+-   [x] Armazenar a resposta MP4 completa no cache individual do tutorial.
+-   [x] Tratar HTTP Range com respostas 206 no Service Worker.
 -   [ ] Validar reprodução offline em dispositivos reais.
--   [ ] Testar arquivos grandes, falhas, cancelamento e quota.
--   [ ] Definir avisos de dados móveis.
+-   [ ] Testar arquivos grandes, falhas, cancelamento e quota em dispositivos representativos.
+-   [x] Exibir aviso de consumo de dados móveis e armazenamento.
 
-**Saída:** reprodução offline confiável nos navegadores suportados.
+**Saída:** reprodução offline validada por E2E em Chromium; o aceite em dispositivos reais e com vídeos grandes permanece pendente.
 
 ### Fase 4 --- Hardening e publicação
 
@@ -763,10 +797,189 @@ Antes de codificar, confirmar:
 
 ## 20. Registro de escopo
 
-Este documento descreve uma arquitetura proposta. Não confirma que
-dependências estejam instaladas, que o Service Worker exista ou que
-funcionalidades PWA tenham sido implementadas.
+A Fase 1 está implementada e publicada na preview da branch feat/pwa. Build completo, auditoria, testes unitários, ESLint e E2E passaram no GitHub Actions. Manifesto, Service Worker e ícones foram verificados na Vercel com HTTP 200 e MIME types corretos.
 
-**Estado:** planejamento arquitetural.\
-**Próxima etapa:** revisar as decisões da seção 17 e realizar a
-auditoria técnica da Fase 0.
+Não declarar o PWA pronto para produção até concluir o aceite manual de instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo.
+
+**Estado:** Fase 0 auditada parcialmente; Fase 1 implementada e publicada em preview.\
+**Próxima etapa:** validar manualmente instalação, abertura standalone e experiência offline em navegador/dispositivo real.
+
+## 21. Resultado da auditoria técnica da Fase 0
+
+A auditoria foi realizada na branch `feat/pwa`, usando como referência o commit `691ad05260e7626d5e31efa926ee92878b197876` (30/10/2026). O resultado detalhado do inventário está registrado na seção 2.
+
+### Divisão de código e rotas
+
+`src/App.jsx` usa `React.lazy` para carregar sob demanda as páginas Home, Sobre, Categorias, FAQ, Tutoriais, Ferramentas, Tutorial, Enviar Dúvida e NotFound. `Category` e `Assistente` são importadas diretamente. O artefato `dist/` contém 20 arquivos JavaScript e 26 páginas HTML pré-renderizadas.
+
+Consequência para o PWA: guardar somente o bundle inicial não garante acesso offline às páginas lazy. A política de precache deverá incluir os chunks gerados necessários às rotas suportadas, e os testes deverão abrir rotas diretamente sem conexão.
+
+### Pipeline real de build/publicação
+
+Na auditoria inicial, o workflow .github/workflows/prerender.yml executava somente na branch main e versionava dist/ e public/sitemap.xml. A integração da Fase 1 ampliou o gatilho para main e feat/pwa, com concorrência isolada por branch e exclusão de alterações somente documentais e de artefatos gerados.
+
+O workflow agora executa npm run build na branch de origem, verifica o resultado com Vite/Astratra/auditoria, cria um commit para dist/ e public/sitemap.xml, limpa o working tree local e faz rebase sobre o HEAD remoto antes do push. A atualização não utiliza force push.
+
+A Vercel publica o dist/ já gerado. A validação do deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2 confirmou que manifesto, Service Worker e ícones chegaram à preview com HTTP 200 e MIME types corretos.
+
+## 22. Organização modular do código e dos testes
+
+O código específico do PWA ficará isolado em `src/pwa/`. Componentes genéricos do portal não devem receber regras de cache, IndexedDB ou Service Worker. A interface React deverá consumir serviços e hooks do módulo PWA, sem acessar diretamente os detalhes internos do Service Worker.
+
+Estrutura planejada (as subpastas serão materializadas quando a primeira implementação de cada responsabilidade for criada; não criar diretórios vazios ou arquivos `.gitkeep`):
+
+```text
+src/pwa/
+├── README.md
+├── config/
+│   ├── manifest.js
+│   └── cache-policy.js
+├── client/
+│   ├── register-service-worker.js
+│   ├── connection/
+│   └── updates/
+├── service-worker/
+│   ├── sw.js
+│   ├── routes/
+│   └── strategies/
+├── storage/
+│   ├── cache/
+│   └── indexed-db/
+├── downloads/
+│   ├── catalog/
+│   ├── services/
+│   └── repositories/
+├── ui/
+│   ├── components/
+│   └── hooks/
+└── utils/
+
+tests/pwa/
+├── README.md
+├── unit/
+├── integration/
+├── e2e/
+└── fixtures/
+
+public/icons/ (será criado na fase de manifesto e ícones)
+```
+
+### Responsabilidades e limites
+
+- `config/`: manifesto e políticas/limites centralizados, sem lógica de interface.
+- `client/`: registro do Service Worker, estado de conexão e ciclo de atualização consumidos pela aplicação React.
+- `service-worker/`: entrada `sw.js`, roteamento e estratégias executadas no contexto do Service Worker; não importar React nem módulos que dependam do DOM da aplicação.
+- `storage/cache/`: operações de Cache Storage relacionadas a pacotes escolhidos pelo usuário.
+- `storage/indexed-db/`: schema, conexão e persistência dos metadados dos pacotes; Cache Storage continua sendo o local dos corpos das respostas HTTP.
+- `downloads/catalog/`: identificação dos recursos locais pertencentes a cada tutorial.
+- `downloads/services/`: orquestração de download, progresso, cancelamento, integridade e remoção.
+- `downloads/repositories/`: persistência e consulta dos metadados dos downloads.
+- `ui/components/` e `ui/hooks/`: integração visual com React, sem duplicar regras de armazenamento.
+- `utils/`: somente funções puras realmente compartilhadas; utilitários específicos devem permanecer próximos do domínio que os usa.
+
+### Estratégia de testes
+
+- `unit/`: regras puras, estados dos pacotes, catálogo e políticas; usar `node:test` e `node:assert`, já disponíveis no Node 24, sem instalar outro runner por antecipação.
+- `integration/`: interação real entre Service Worker, Cache Storage e IndexedDB em navegador; usar Playwright, que já é dependência de desenvolvimento.
+- `e2e/`: instalação/registro, atualização, abertura de rotas offline e fluxos de download/remoção.
+- `fixtures/`: dados pequenos e artificiais; não copiar a biblioteca real de imagens nem vídeos pesados para os testes.
+
+Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no workflow de validação antes da conclusão da implementação. Não misturar os testes PWA com `test:search` nem renomear a atual pasta `src/test`, que contém componentes de experimentação do portal.
+
+## 23. Registro de implementação
+
+- Branch de trabalho: feat/pwa; main e dev permanecem intocadas.
+- Dependências adicionadas como devDependencies: vite-plugin-pwa 2.0.0, workbox-core 7.4.1, workbox-precaching 7.4.1 e workbox-routing 7.4.1.
+- O manifesto é definido em src/pwa/config/manifest.js.
+- Os ícones são gerados de public/logo.svg pelo script scripts/generate-pwa-icons.mjs, acionado por predev e build; PNGs gerados não precisam ser versionados como fontes.
+- O Service Worker usa injectManifest, nomes de cache versionados e navegação network-first com fallback ao app shell; a página estática public/offline.html é alternativa final.
+- O precache inicial inclui JS, CSS, HTML, favicon, manifesto e ícones, com limite por arquivo de 2 MiB. Imagens e vídeos de tutoriais são excluídos.
+- A interface apresenta estado de conexão, confirmação de preparação offline e aviso de atualização com ação explícita.
+- Testes unitários e E2E foram criados e adicionados ao workflow Validate Hauy Conecta.
+- npx vite build, ESLint e os quatro testes unitários passaram no sandbox Node 24. O build completo parou na etapa Astratra porque o Chromium encerra dentro do sandbox remoto; o E2E ainda deve ser confirmado no runner Ubuntu do GitHub Actions.
+- Na Fase 1.1, foram adicionados cache runtime de imagens gerais e pacotes opt-in de tutoriais com Cache Storage + IndexedDB. Vídeos offline continuam fora do pacote padrão.
+- Os diretórios de domínio serão criados progressivamente junto com o primeiro arquivo de cada responsabilidade para evitar scaffolding vazio.
+
+## 24. Decisões e validação da Fase 1
+
+- O Service Worker é construído por injectManifest para manter o roteamento e a política offline sob controle do projeto.
+- O registro é feito pela aplicação React por meio do módulo client; componentes não manipulam diretamente o registro do navegador.
+- O tipo de atualização é prompt: a versão nova só é aplicada quando a pessoa aciona Atualizar agora.
+- A navegação tenta a rede primeiro para preservar o HTML pré-renderizado e SEO. Se a rede falhar, o Service Worker devolve o app shell para o React Router tratar a rota.
+- O precache é limitado por tipo de arquivo e tamanho; mídia de tutoriais não é baixada automaticamente.
+- Os ícones são artefatos gerados no início de dev/build, evitando manter PNGs derivados no controle de versão.
+- O workflow Validate Hauy Conecta executou testes unitários PWA, testes existentes, ESLint, build/prerender/auditoria e testes E2E no runner Ubuntu.
+- O CI confirmou registro/ativação do Service Worker e navegação offline para uma rota de tutorial.
+- A auditoria confirmou 151 imagens em 27 HTMLs, todas com width/height e alt; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+- O deployment Vercel dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi publicado como READY. Manifesto, Service Worker e os quatro ícones retornaram HTTP 200 com MIME types corretos.
+- O aceite manual da instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo permanece pendente.
+
+
+## 25. Fase 1.1 — imagens gerais e pacotes de tutoriais
+
+Esta seção registra o comportamento implementado em `feat/pwa` após o aceite manual inicial da navegação offline. Ela complementa as decisões anteriores e substitui qualquer observação de que cache runtime de imagens ou pacotes opt-in ainda não existiam.
+
+### Imagens gerais e identidade visual
+
+- `logo.svg`, `iloveIMG.svg`, `ilovePDF.svg`, favicon e ícones PWA entram no precache.
+- O Service Worker aplica cache runtime às solicitações de imagem da mesma origem.
+- Imagens de seções, fotos da equipe, imagens de conteúdo e variantes geradas em `/_optimized/` são armazenadas quando solicitadas.
+- O cache runtime possui limite de 1.000 entradas e namespace independente.
+- Recursos que nunca foram solicitados enquanto havia conexão não são baixados antecipadamente. A disponibilidade offline depende de a imagem já ter sido armazenada.
+
+### Salvar um tutorial para uso offline
+
+O botão `Salvar tutorial offline` aparece no componente `TutorialCompletion`, depois do último passo e antes da seção de conteúdos externos.
+
+O catálogo coleta imagens e pôsteres dos passos/exemplos. Também inclui as variantes responsivas de cada imagem obtidas de `src/generated/imageMetadata.json`, pois o navegador pode escolher uma variante de `/_optimized/` em vez da imagem original.
+
+O pacote é mantido em um cache próprio por tutorial. Os metadados e a lista de recursos esperados são armazenados no IndexedDB `hauy-conecta-offline`. O download tem concorrência limitada, progresso, cancelamento, validação de respostas, remoção de cache parcial em caso de falha e ação para remover o pacote depois.
+
+A disponibilidade é local ao navegador/dispositivo. O botão não baixa arquivos MP4 nem conteúdo externo: os vídeos e links de videoaulas continuam exigindo internet. A conclusão do pacote garante texto, imagens e pôsteres, não os vídeos.
+
+### Arquivos e testes relacionados
+
+- `src/pwa/config/cache-policy.js`: versões, logos de precache, nome e limite do cache runtime e prefixo dos pacotes.
+- `src/pwa/service-worker/sw.js`: roteamento de imagens e prioridade de caches de pacotes.
+- `src/pwa/downloads/tutorial-package.js`: coleta de recursos, Cache Storage e IndexedDB.
+- `src/pwa/ui/components/TutorialOfflineButton.jsx`: interface de salvar, progresso, cancelamento, atualização e remoção.
+- `tests/pwa/unit/tutorial-package.test.js`: imagens, pôsteres, variantes responsivas e exclusão de URLs externas/vídeos.
+- `tests/pwa/e2e/offline-navigation.test.js`: navegação offline, armazenamento runtime e acesso a imagem de pacote sem conexão.
+
+A validação automatizada desta fase deve confirmar tanto o build completo/pré-renderização quanto os testes E2E executados pelo runner do GitHub Actions. A publicação em preview e a validação manual em dispositivos reais ainda devem ser conferidas após o deploy do novo commit.
+
+
+## 26. Fase 3 — vídeos MP4 offline (implementação)
+
+A Fase 3 foi implementada na branch feat/pwa mantendo o escopo por escolha do usuário. A opção de incluir vídeos é apresentada separadamente e vem desmarcada por padrão; o download normal continua incluindo texto, imagens, pôsteres e variantes responsivas.
+
+### Catálogo e estimativa
+
+- O script scripts/generate-image-metadata.mjs passou a catalogar também os MP4 de public/tutoriais, registrando o tamanho real em bytes no campo videos do JSON de mídia gerado.
+- collectTutorialVideoResources identifica MP4 locais nos campos video dos passos e exemplos, elimina duplicatas e ignora URLs externas.
+- estimateTutorialVideoSize agrega os tamanhos conhecidos para exibir quantidade e estimativa antes de iniciar o download.
+- O catálogo atual contém 18 MP4 locais, com aproximadamente 298,38 MiB somados. O tamanho do Canva é consideravelmente maior que o de Excel e Google Drive; por isso, não há download automático.
+
+### Download e armazenamento
+
+- A opção “Incluir vídeos para assistir sem internet” é opcional e desmarcada por padrão.
+- Os vídeos selecionados são baixados integralmente para o cache isolado daquele tutorial, junto das imagens e pôsteres.
+- O download valida resposta HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
+- O corpo do vídeo é encaminhado em streaming ao Cache Storage, sem montar o MP4 inteiro em um único ArrayBuffer na memória.
+- O progresso informa quantidade de arquivos e bytes transferidos dos vídeos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois de o novo pacote estar persistido.
+- Os metadados do IndexedDB registram URLs de imagens e vídeos separadamente, além da lista consolidada usada na verificação de integridade.
+
+### Reprodução offline e HTTP Range
+
+- O Service Worker trata requisições GET para MP4 locais e procura o arquivo nos caches de pacotes do usuário.
+- Uma requisição sem Range recebe a resposta completa armazenada.
+- Uma requisição Range: bytes=início-fim recebe HTTP 206 com Content-Range, Content-Length e Accept-Ranges.
+- Intervalos inválidos ou fora do tamanho do arquivo recebem HTTP 416 e Content-Range: bytes */tamanho.
+- MP4 não incluído no pacote continua dependendo da rede; videoaulas externas (YouTube e outros hosts) também permanecem online-only.
+
+### Testes e aceite
+
+- Testes unitários cobrem coleta/deduplicação de MP4 locais, exclusão de URLs externas, estimativa de bytes e formatação.
+- O E2E usa vídeos pequenos do tutorial Excel, verifica o MP4 completo no Cache Storage, desliga a rede, carrega os metadados do player e realiza uma busca temporal. O teste também exige uma resposta HTTP 206 offline.
+- Permanecem pendentes o teste manual em dispositivos reais, arquivos grandes (especialmente vídeos do Canva), armazenamento/quota e comportamento em condições de rede móvel. Não declarar compatibilidade universal antes desses testes.
+
