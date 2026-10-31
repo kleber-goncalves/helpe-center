@@ -131,6 +131,109 @@ export function formatBytes(bytes) {
     }).format(value) + " " + units[unitIndex];
 }
 
+function serializeVersionValue(value) {
+    if (
+        value === null ||
+        typeof value === "string" ||
+        typeof value === "number" ||
+        typeof value === "boolean"
+    ) {
+        return JSON.stringify(value);
+    }
+
+    if (typeof value === "undefined" || typeof value === "function") {
+        return "null";
+    }
+
+    if (Array.isArray(value)) {
+        return "[" + value.map(serializeVersionValue).join(",") + "]";
+    }
+
+    if (typeof value === "object") {
+        const keys = Object.keys(value)
+            .filter((key) => typeof value[key] !== "function" && typeof value[key] !== "undefined")
+            .sort();
+
+        return "{" + keys.map((key) =>
+            JSON.stringify(key) + ":" + serializeVersionValue(value[key]),
+        ).join(",") + "}";
+    }
+
+    return JSON.stringify(String(value));
+}
+
+/**
+ * Fingerprint determinístico para identificar alterações no conteúdo salvo.
+ * Não é usado como mecanismo criptográfico de integridade.
+ */
+function createVersionFingerprint(value) {
+    let hash = 0xcbf29ce484222325n;
+
+    for (let index = 0; index < value.length; index += 1) {
+        hash ^= BigInt(value.charCodeAt(index));
+        hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+    }
+
+    return hash.toString(16).padStart(16, "0");
+}
+
+/**
+ * Calcula versões separadas para conteúdo/imagens e vídeos opcionais.
+ * Assim, um vídeo novo não torna desatualizado um pacote que nunca incluiu vídeos.
+ */
+export function createTutorialContentVersions({
+    tutorial,
+    steps,
+    imageMetadata = { images: {} },
+    videoMetadata = {},
+}) {
+    const imagePaths = collectTutorialImageResources(steps, imageMetadata);
+    const videoPaths = collectTutorialVideoResources(steps);
+    const tutorialContent = { ...(tutorial ?? {}) };
+
+    delete tutorialContent.icon;
+
+    const imageDetails = imagePaths.map((path) => {
+        const metadata = imageMetadata?.images?.["public" + path];
+
+        return {
+            path,
+            size: metadata?.size ?? null,
+            width: metadata?.width ?? null,
+            height: metadata?.height ?? null,
+            format: metadata?.format ?? null,
+            responsive: (metadata?.responsive ?? []).map((variant) => ({
+                src: variant?.src ?? null,
+                width: variant?.width ?? null,
+            })),
+        };
+    });
+
+    const videoDetails = videoPaths.map((path) => ({
+        path,
+        size: videoMetadata?.[path]?.size ?? null,
+    }));
+
+    const contentVersion = createVersionFingerprint(
+        serializeVersionValue({
+            packageVersion: TUTORIAL_PACKAGE_VERSION,
+            tutorial: tutorialContent,
+            steps,
+            images: imageDetails,
+        }),
+    );
+
+    const videoContentVersion = createVersionFingerprint(
+        serializeVersionValue({
+            packageVersion: TUTORIAL_PACKAGE_VERSION,
+            tutorialId: tutorial?.id ?? null,
+            videos: videoDetails,
+        }),
+    );
+
+    return { contentVersion, videoContentVersion };
+}
+
 function ensureStorageSupport() {
     if (typeof indexedDB === "undefined" || typeof caches === "undefined") {
         throw new Error("O armazenamento offline não está disponível neste navegador.");
@@ -229,30 +332,87 @@ async function deleteStoredPackage(tutorialId) {
  * Retorna o estado real do pacote. O registro do IndexedDB sozinho não
  * basta: os arquivos também precisam continuar no Cache Storage.
  */
-export async function getTutorialOfflinePackage(tutorialId) {
+/**
+ * Confere o estado real do pacote. A existência do registro no IndexedDB
+ * não basta: cada resposta também precisa continuar íntegra no Cache Storage.
+ */
+export async function getTutorialOfflinePackage(tutorialId, contentVersions = {}) {
     const record = await getStoredPackage(tutorialId);
 
     if (!record) {
         return null;
     }
 
-    if (!(await caches.has(record.cacheName))) {
-        return { ...record, status: "incomplete" };
+    const resources = record.resources ?? [];
+    const missingResources = [];
+    const invalidResources = [];
+    const isContentOutdated = Boolean(contentVersions.contentVersion) &&
+        record.contentVersion !== contentVersions.contentVersion;
+    const isVideoContentOutdated = Boolean(record.videos?.length) &&
+        Boolean(contentVersions.videoContentVersion) &&
+        record.videoContentVersion !== contentVersions.videoContentVersion;
+    const isOutdated = isContentOutdated || isVideoContentOutdated;
+
+    if (!record.cacheName || !(await caches.has(record.cacheName))) {
+        return {
+            ...record,
+            status: "incomplete",
+            missingResources: [...resources],
+            invalidResources,
+            isOutdated,
+        };
     }
 
     const cache = await caches.open(record.cacheName);
-    const missingResources = [];
+    const resourceDetails = new Map(
+        (record.resourceDetails ?? []).map((resource) => [resource.url, resource]),
+    );
 
-    for (const resource of record.resources ?? []) {
-        if (!(await cache.match(resource))) {
+    for (const resource of resources) {
+        const response = await cache.match(resource);
+
+        if (!response) {
             missingResources.push(resource);
+            continue;
+        }
+
+        const details = resourceDetails.get(resource);
+        const resourceType = details?.type ??
+            (record.videos?.includes(resource) ? "video" : "image");
+        const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+        const contentLengthHeader = response.headers.get("content-length");
+        const contentLength = Number(contentLengthHeader);
+        const hasValidContentType = resourceType === "video"
+            ? contentType.startsWith("video/") || contentType === "application/octet-stream"
+            : contentType.startsWith("image/");
+        const hasValidVideoSize = resourceType !== "video" ||
+            !details?.size ||
+            !contentLengthHeader ||
+            (Number.isFinite(contentLength) && contentLength === details.size);
+
+        if (
+            response.status !== 200 ||
+            !response.body ||
+            !hasValidContentType ||
+            !hasValidVideoSize ||
+            (details && (!Number.isFinite(details.size) || details.size <= 0))
+        ) {
+            invalidResources.push(resource);
         }
     }
 
+    const hasIntegrityProblems = missingResources.length > 0 || invalidResources.length > 0;
+
     return {
         ...record,
-        status: missingResources.length === 0 ? "saved" : "incomplete",
+        status: hasIntegrityProblems
+            ? "incomplete"
+            : isOutdated
+                ? "outdated"
+                : "saved",
         missingResources,
+        invalidResources,
+        isOutdated,
     };
 }
 
@@ -319,6 +479,8 @@ export async function saveTutorialOffline({
     imageMetadata,
     includeVideos = false,
     videoMetadata = {},
+    contentVersion = null,
+    videoContentVersion = null,
     onProgress,
     signal,
 }) {
@@ -353,6 +515,7 @@ export async function saveTutorialOffline({
     }));
     const resourceEntries = [...imageResources, ...videoResources];
     const totalResources = resourceEntries.length;
+    const resourceDetails = new Array(totalResources);
 
     const previousRecord = await getStoredPackage(tutorialId);
     const cacheName = createPackageCacheName(tutorialId);
@@ -436,27 +599,60 @@ export async function saveTutorialOffline({
                 }
 
                 let transferredBytes = 0;
-                const responseToCache = resource.type === "video"
-                    ? createTrackedResponse(response, (chunkBytes) => {
-                        transferredBytes += chunkBytes;
+                const responseToCache = createTrackedResponse(response, (chunkBytes) => {
+                    transferredBytes += chunkBytes;
+
+                    if (resource.type === "video") {
                         bytesDownloaded += chunkBytes;
                         reportProgress();
-                    })
-                    : response.clone();
+                    }
+                });
 
                 await packageCache.put(resource.url, responseToCache);
 
-                if (resource.type === "video") {
-                    if (expectedSize && transferredBytes > 0 && transferredBytes !== expectedSize) {
-                        throw new Error(
-                            "O tamanho recebido de um vídeo não corresponde ao arquivo original. Tente novamente.",
-                        );
-                    }
+                const cachedResponse = await packageCache.match(resource.url);
+                const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
+                const hasValidCachedType = resource.type === "video"
+                    ? cachedContentType.startsWith("video/") || cachedContentType === "application/octet-stream"
+                    : cachedContentType.startsWith("image/");
 
-                    if (transferredBytes === 0 && expectedSize) {
-                        bytesDownloaded += expectedSize;
-                    }
+                if (
+                    !cachedResponse ||
+                    cachedResponse.status !== 200 ||
+                    !cachedResponse.body ||
+                    !hasValidCachedType
+                ) {
+                    throw new Error(
+                        "Um arquivo do tutorial não foi armazenado corretamente. Tente baixar novamente.",
+                    );
                 }
+
+                const wasStreamTracked = transferredBytes > 0;
+
+                if (!wasStreamTracked) {
+                    transferredBytes = (await cachedResponse.blob()).size;
+                }
+
+                if (transferredBytes <= 0) {
+                    throw new Error("Um arquivo do tutorial foi recebido vazio. Tente baixar novamente.");
+                }
+
+                if (resource.type === "video" && expectedSize && transferredBytes !== expectedSize) {
+                    throw new Error(
+                        "O tamanho recebido de um vídeo não corresponde ao arquivo original. Tente novamente.",
+                    );
+                }
+
+                if (resource.type === "video" && !wasStreamTracked) {
+                    bytesDownloaded += transferredBytes;
+                }
+
+                resourceDetails[index] = {
+                    url: resource.url,
+                    type: resource.type,
+                    size: transferredBytes,
+                    contentType: cachedContentType.split(";")[0],
+                };
 
                 completed += 1;
                 reportProgress(true);
@@ -495,6 +691,9 @@ export async function saveTutorialOffline({
             images: imageResources.map((resource) => resource.url),
             videos: videoResources.map((resource) => resource.url),
             totalVideoBytes: totalBytes,
+            resourceDetails,
+            contentVersion,
+            videoContentVersion,
             version: TUTORIAL_PACKAGE_VERSION,
             savedAt: Date.now(),
         };
