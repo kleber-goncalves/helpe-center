@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 import {
     getPwaInstallSnapshot,
@@ -7,15 +7,11 @@ import {
 } from "../../client/install-prompt.js";
 
 export function usePwaInstall() {
-    const [installState, setInstallState] = useState(getPwaInstallSnapshot);
-
-    useEffect(() => {
-        const unsubscribe = subscribeToPwaInstall(setInstallState);
-
-        setInstallState(getPwaInstallSnapshot());
-
-        return unsubscribe;
-    }, []);
+    const installState = useSyncExternalStore(
+        subscribeToPwaInstall,
+        getPwaInstallSnapshot,
+        getPwaInstallSnapshot,
+    );
 
     const requestInstall = useCallback(
         () => promptPwaInstall(),
