@@ -147,13 +147,14 @@ test("gera fingerprints estáveis e detecta mudanças no conteúdo do tutorial",
                 width: 640,
                 height: 480,
                 size: 1200,
+                contentHash: "image-hash-original",
                 format: "webp",
                 responsive: [{ src: "/_optimized/image-320.webp", width: 320 }],
             },
         },
     };
     const videoMetadata = {
-        "/tutorial/video.mp4": { size: 4096 },
+        "/tutorial/video.mp4": { size: 4096, contentHash: "video-hash-original" },
     };
 
     const first = createTutorialContentVersions({
@@ -207,6 +208,22 @@ test("gera fingerprints estáveis e detecta mudanças no conteúdo do tutorial",
 
     assert.notEqual(changedImage.contentVersion, first.contentVersion);
 
+    const changedImageContent = createTutorialContentVersions({
+        tutorial,
+        steps,
+        imageMetadata: {
+            images: {
+                "public/tutorial/image.webp": {
+                    ...imageMetadata.images["public/tutorial/image.webp"],
+                    contentHash: "image-hash-updated",
+                },
+            },
+        },
+        videoMetadata,
+    });
+
+    assert.notEqual(changedImageContent.contentVersion, first.contentVersion);
+
     const changedVideo = createTutorialContentVersions({
         tutorial,
         steps,
@@ -218,6 +235,21 @@ test("gera fingerprints estáveis e detecta mudanças no conteúdo do tutorial",
 
     assert.equal(changedVideo.contentVersion, first.contentVersion);
     assert.notEqual(changedVideo.videoContentVersion, first.videoContentVersion);
+
+    const changedVideoContent = createTutorialContentVersions({
+        tutorial,
+        steps,
+        imageMetadata,
+        videoMetadata: {
+            "/tutorial/video.mp4": {
+                size: 4096,
+                contentHash: "video-hash-updated",
+            },
+        },
+    });
+
+    assert.equal(changedVideoContent.contentVersion, first.contentVersion);
+    assert.notEqual(changedVideoContent.videoContentVersion, first.videoContentVersion);
 
     const removedVideo = createTutorialContentVersions({
         tutorial,
@@ -235,6 +267,15 @@ test("não considera respostas ausentes, inválidas ou com tamanho incompatível
         status: 200,
         headers: { "content-type": "image/webp" },
     });
+
+    const wrongImageLength = new Response("image", {
+        status: 200,
+        headers: {
+            "content-type": "image/webp",
+            "content-length": "5",
+        },
+    });
+
     const validVideo = new Response("video-bytes", {
         status: 200,
         headers: {
@@ -259,6 +300,7 @@ test("não considera respostas ausentes, inválidas ou com tamanho incompatível
     });
 
     assert.equal(isValidCachedTutorialResource(validImage, { type: "image", size: 11 }), true);
+    assert.equal(isValidCachedTutorialResource(wrongImageLength, { type: "image", size: 10 }), false);
     assert.equal(isValidCachedTutorialResource(validVideo, { type: "video", size: 10 }), true);
     assert.equal(isValidCachedTutorialResource(missingVideoBytes, { type: "video", size: 10 }), false);
     assert.equal(isValidCachedTutorialResource(notFound, { type: "image", size: 10 }), false);
