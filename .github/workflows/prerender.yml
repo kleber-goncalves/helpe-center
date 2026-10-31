@@ -12,6 +12,7 @@ on:
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
+      - "docs/**"
 
 permissions:
   contents: write
@@ -52,4 +53,9 @@ jobs:
             exit 0
           fi
           git commit -m "build: update prerendered site"
-          git push
+
+          # A sincronização do AI_CONTEXT pode avançar a branch durante a build.
+          # Rebaseia o artefato gerado sobre o HEAD remoto antes de publicar.
+          git fetch origin "${GITHUB_REF_NAME}"
+          git rebase "origin/${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
