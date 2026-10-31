@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** af36476ad2a7f5de1186fe0b7485eeac963628dd
-- **Data do commit:** 2026-10-31T16:30:03-03:00
-- **Mensagem do commit:** feat(pwa): validar integridade e versão dos pacotes offline
+- **Commit de referência:** 9123b3b162bf340a40f4662ec3c6016a22124be5
+- **Data do commit:** 2026-10-31T16:31:24-03:00
+- **Mensagem do commit:** test(pwa): cobrir versões de conteúdo e integridade dos pacotes
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 9123b3b | 2026-10-31 | test(pwa): cobrir versões de conteúdo e integridade dos pacotes |
+| b116ed6 | 2026-10-31 | test(pwa): expor validação de integridade dos recursos offline |
+| 27f2d3e | 2026-10-31 | refactor(pwa): preservar caches de tutoriais no ciclo de ativação |
+| 25c24df | 2026-10-31 | refactor(pwa): isolar limpeza dos caches do app shell |
+| 845844b | 2026-10-31 | feat(pwa): incluir tamanho de imagens na metadata offline |
+| 16f63a2 | 2026-10-31 | feat(pwa): indicar pacotes desatualizados e preservar estado anterior |
+| 997096a | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | af36476 | 2026-10-31 | feat(pwa): validar integridade e versão dos pacotes offline |
-| 2d04de1 | 2026-10-31 | build: update prerendered site |
-| 4e0de7b | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 607054a | 2026-10-31 | feat(pwa): add optional offline tutorial videos |
-| 7606b3d | 2026-10-31 | build: update prerendered site |
-| 822b414 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 19164a6 | 2026-10-31 | fix(pwa): avoid state updates inside effect |
-| 8bc0535 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
