@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 1f1fc87ed51363b8c59b7ea94bd2e2804032b59e
-- **Data do commit:** 2026-10-31T16:35:03-03:00
-- **Mensagem do commit:** fix(pwa): validar tamanho de todos os recursos salvos
+- **Commit de referência:** 4bb44b3c8e0340924f6f65dd6709b1f735776db2
+- **Data do commit:** 2026-10-31T16:35:18-03:00
+- **Mensagem do commit:** test(pwa): cobrir hashes e tamanho real de imagens e vídeos
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 4bb44b3 | 2026-10-31 | test(pwa): cobrir hashes e tamanho real de imagens e vídeos |
+| 66ca0fc | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 1f1fc87 | 2026-10-31 | fix(pwa): validar tamanho de todos os recursos salvos |
 | 2543c1b | 2026-10-31 | feat(pwa): gerar hashes de conteúdo para validar atualizações de mídia |
 | bf4b329 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | fec93eb | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 0775568 | 2026-10-31 | test(pwa): validar cancelamento e limpeza dos dados offline |
 | 51d0e3f | 2026-10-31 | test(pwa): garantir que mudanças em vídeos não invalidem pacotes sem vídeo |
-| e5746b7 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| cf646ef | 2026-10-31 | test(pwa): cobrir falhas de armazenamento e atualização de pacotes |
 
 <!-- END AUTO-GENERATED SECTION -->
