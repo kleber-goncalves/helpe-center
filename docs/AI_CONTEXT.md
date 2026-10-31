@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 607054a6c815fbdf808a1611c3b736d500ab074d
-- **Data do commit:** 2026-10-31T01:16:22-03:00
-- **Mensagem do commit:** feat(pwa): add optional offline tutorial videos
+- **Commit de referência:** af36476ad2a7f5de1186fe0b7485eeac963628dd
+- **Data do commit:** 2026-10-31T16:30:03-03:00
+- **Mensagem do commit:** feat(pwa): validar integridade e versão dos pacotes offline
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| af36476 | 2026-10-31 | feat(pwa): validar integridade e versão dos pacotes offline |
+| 2d04de1 | 2026-10-31 | build: update prerendered site |
+| 4e0de7b | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 607054a | 2026-10-31 | feat(pwa): add optional offline tutorial videos |
 | 7606b3d | 2026-10-31 | build: update prerendered site |
 | 822b414 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 19164a6 | 2026-10-31 | fix(pwa): avoid state updates inside effect |
 | 8bc0535 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 81b8363 | 2026-10-31 | feat(pwa): cache images and save tutorials offline |
-| a3e5db9 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
-| ba1e642 | 2026-10-30 | docs(pwa): registrar publicação e validação da Fase 1 |
 
 <!-- END AUTO-GENERATED SECTION -->
