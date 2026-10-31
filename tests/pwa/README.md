@@ -39,7 +39,7 @@ Os testes específicos do PWA ficam fora de `src/`. A implementação e as decis
 - Dados locais apagados: a interface volta a oferecer o download, sem declarar o pacote disponível.
 - Quota excedida durante atualização: a versão anteriormente salva permanece associada ao registro.
 - Recurso substituído por HTML inválido: o pacote é identificado como incompleto.
-- Cancelamento durante a gravação: o cache temporário é removido.
+- Cancelamento durante a atualização: o pacote anterior é preservado e o cache temporário é removido.
 - Arquivo necessário indisponível: o pacote não é registrado como salvo.
 
 ## Critérios de qualidade
