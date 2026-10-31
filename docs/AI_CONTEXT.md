@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 35e4e8a19d895a7d20f9bbcf28f5623e594ae1f2
-- **Data do commit:** 2026-10-31T18:02:52-03:00
-- **Mensagem do commit:** refactor(pwa): sincronizar estado de instalação com React
+- **Commit de referência:** e7bea32a9b5d440d29a6db4007b2f47bdcf750a0
+- **Data do commit:** 2026-10-31T18:04:12-03:00
+- **Mensagem do commit:** fix(pwa): estabilizar snapshot do estado de instalação
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| e7bea32 | 2026-10-31 | fix(pwa): estabilizar snapshot do estado de instalação |
+| 7c7dd36 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 35e4e8a | 2026-10-31 | refactor(pwa): sincronizar estado de instalação com React |
 | 22912ba | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 2ab1cdc | 2026-10-31 | feat(pwa): adicionar convite de instalação na Home |
 | a9bbab0 | 2026-10-31 | build: update prerendered site |
 | 25fa5a8 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 0c69c51 | 2026-10-31 | test(pwa): interceptar Cache Storage antes do carregamento da página |
-| f8b8461 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| de97bf1 | 2026-10-31 | ci: isolar concorrência das execuções automatizadas |
 
 <!-- END AUTO-GENERATED SECTION -->
