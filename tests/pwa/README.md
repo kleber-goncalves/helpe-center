@@ -26,7 +26,6 @@ Os testes específicos do PWA ficam fora de `src/`. A implementação e as decis
 - Separação das versões: alterações nos MP4 opcionais não invalidam pacotes que não incluem vídeos.
 - Integridade: rejeição de respostas ausentes, status inválido, MIME incompatível, recursos vazios e tamanho divergente.
 - Ativação do Service Worker: remove apenas caches antigos do app shell e preserva caches runtime e pacotes offline.
-- Instalação: captura e consumo de `beforeinstallprompt`, resposta de instalação, evento `appinstalled`, modo standalone e instruções específicas por plataforma.
 
 ### E2E
 
@@ -51,7 +50,5 @@ Os testes específicos do PWA ficam fora de `src/`. A implementação e as decis
 - Um pacote só pode ser apresentado como disponível quando o cache e todos os recursos esperados estiverem válidos.
 - Falhas de quota, rede, cancelamento ou persistência não podem apagar a versão anterior que ainda esteja íntegra.
 - O workflow Validate Hauy Conecta executa os testes unitários PWA, lint, build/prerender e testes E2E no runner Ubuntu.
-
-A instalação deve ser validada manualmente em Chrome desktop e Android, além das instruções de instalação pelo Safari em iPhone/iPad. O evento `beforeinstallprompt` não é suportado em todos os navegadores; sua ausência não deve ocultar a alternativa manual.
 
 A simulação automatizada de quota não substitui o aceite manual em navegador real. Também devem ser verificados manualmente limites de armazenamento, remoção de dados pelo navegador, instalação, atualização e uso offline em Chrome desktop e Android.

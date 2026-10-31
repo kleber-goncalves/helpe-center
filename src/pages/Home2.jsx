@@ -10,7 +10,6 @@ import { TutorialCard } from "../components/TutorialCard";
 import { SectionTransition } from "../components/SectionTransition";
 import { OptimizedImage } from "../components/OptimizedImage";
 import { Reveal } from "../components/Reveal";
-import { InstallPwaCard } from "../pwa/ui/components/InstallPwaCard";
 
 // Data
 import { categories, priorityTopics } from "../data/categories";
@@ -140,7 +139,6 @@ export function Home() {
 
                         <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
 
-                        <InstallPwaCard />
                     </div>
                     <Reveal duration={0.7} y={16} delay={0.14}>
                         <div
