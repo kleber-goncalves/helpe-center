@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** de97bf17aae25a6c2b71d1727765b9742afc2ad8
-- **Data do commit:** 2026-10-31T16:50:35-03:00
-- **Mensagem do commit:** ci: isolar concorrência das execuções automatizadas
+- **Commit de referência:** 0c69c513d11085b0f519a0fbe661f1739db7b3f8
+- **Data do commit:** 2026-10-31T16:51:41-03:00
+- **Mensagem do commit:** test(pwa): interceptar Cache Storage antes do carregamento da página
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 0c69c51 | 2026-10-31 | test(pwa): interceptar Cache Storage antes do carregamento da página |
+| f8b8461 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | de97bf1 | 2026-10-31 | ci: isolar concorrência das execuções automatizadas |
 | 1db7f55 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 906029e | 2026-10-31 | test(pwa): interceptar gravações para simular quota e cancelamento |
 | 0a7f150 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | a596f85 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
 | 1675319 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
-| e35e311 | 2026-10-31 | test(pwa): não confundir tamanho comprimido com corpo armazenado |
-| 00fd18f | 2026-10-31 | fix(pwa): considerar content-encoding na validação do tamanho |
 
 <!-- END AUTO-GENERATED SECTION -->
