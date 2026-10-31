@@ -214,6 +214,7 @@ export function createTutorialContentVersions({
         return {
             path,
             size: metadata?.size ?? null,
+            contentHash: metadata?.contentHash ?? null,
             width: metadata?.width ?? null,
             height: metadata?.height ?? null,
             format: metadata?.format ?? null,
@@ -227,6 +228,7 @@ export function createTutorialContentVersions({
     const videoDetails = videoPaths.map((path) => ({
         path,
         size: videoMetadata?.[path]?.size ?? null,
+        contentHash: videoMetadata?.[path]?.contentHash ?? null,
     }));
 
     const contentVersion = createVersionFingerprint(
@@ -377,7 +379,7 @@ export function isValidCachedTutorialResource(
         return false;
     }
 
-    if (resourceType === "video" && details?.size) {
+    if (details?.size) {
         const contentLengthHeader = response.headers.get("content-length");
 
         if (
@@ -544,6 +546,7 @@ export async function saveTutorialOffline({
         path,
         type: "image",
         url: new URL(path, origin).href,
+        size: imageMetadata?.images?.["public" + path]?.size,
     }));
     const videoResources = videoPaths.map((path) => ({
         path,
@@ -675,9 +678,9 @@ export async function saveTutorialOffline({
                     throw new Error("Um arquivo do tutorial foi recebido vazio. Tente baixar novamente.");
                 }
 
-                if (resource.type === "video" && expectedSize && transferredBytes !== expectedSize) {
+                if (expectedSize && transferredBytes !== expectedSize) {
                     throw new Error(
-                        "O tamanho recebido de um vídeo não corresponde ao arquivo original. Tente novamente.",
+                        "O tamanho recebido de um arquivo não corresponde ao original. Tente baixar novamente.",
                     );
                 }
 
