@@ -4,7 +4,9 @@ import test from "node:test";
 import {
     collectTutorialImageResources,
     collectTutorialVideoResources,
+    createTutorialContentVersions,
     estimateTutorialVideoSize,
+    isValidCachedTutorialResource,
     formatBytes,
 } from "../../../src/pwa/downloads/tutorial-package.js";
 
@@ -121,4 +123,136 @@ test("ignora caminhos inválidos e retorna listas vazias sem mídias locais", ()
 
     assert.deepEqual(images, []);
     assert.deepEqual(videos, []);
+});
+
+
+test("gera fingerprints estáveis e detecta mudanças no conteúdo do tutorial", () => {
+    const tutorial = {
+        id: "tutorial-exemplo",
+        title: "Tutorial exemplo",
+        description: "Descrição original",
+        icon: () => null,
+    };
+    const steps = [
+        {
+            title: "Etapa 1",
+            description: "Conteúdo original",
+            image: "/tutorial/image.webp",
+            video: "/tutorial/video.mp4",
+        },
+    ];
+    const imageMetadata = {
+        images: {
+            "public/tutorial/image.webp": {
+                width: 640,
+                height: 480,
+                size: 1200,
+                format: "webp",
+                responsive: [{ src: "/_optimized/image-320.webp", width: 320 }],
+            },
+        },
+    };
+    const videoMetadata = {
+        "/tutorial/video.mp4": { size: 4096 },
+    };
+
+    const first = createTutorialContentVersions({
+        tutorial,
+        steps,
+        imageMetadata,
+        videoMetadata,
+    });
+    const reorderedObjects = createTutorialContentVersions({
+        tutorial: {
+            description: "Descrição original",
+            title: "Tutorial exemplo",
+            id: "tutorial-exemplo",
+            icon: () => null,
+        },
+        steps: [{
+            video: "/tutorial/video.mp4",
+            image: "/tutorial/image.webp",
+            description: "Conteúdo original",
+            title: "Etapa 1",
+        }],
+        imageMetadata,
+        videoMetadata,
+    });
+
+    assert.deepEqual(first, reorderedObjects);
+
+    const changedText = createTutorialContentVersions({
+        tutorial,
+        steps: [{ ...steps[0], description: "Conteúdo atualizado" }],
+        imageMetadata,
+        videoMetadata,
+    });
+
+    assert.notEqual(changedText.contentVersion, first.contentVersion);
+    assert.equal(changedText.videoContentVersion, first.videoContentVersion);
+
+    const changedImage = createTutorialContentVersions({
+        tutorial,
+        steps,
+        imageMetadata: {
+            images: {
+                "public/tutorial/image.webp": {
+                    ...imageMetadata.images["public/tutorial/image.webp"],
+                    size: 1300,
+                },
+            },
+        },
+        videoMetadata,
+    });
+
+    assert.notEqual(changedImage.contentVersion, first.contentVersion);
+
+    const changedVideo = createTutorialContentVersions({
+        tutorial,
+        steps,
+        imageMetadata,
+        videoMetadata: {
+            "/tutorial/video.mp4": { size: 5000 },
+        },
+    });
+
+    assert.equal(changedVideo.contentVersion, first.contentVersion);
+    assert.notEqual(changedVideo.videoContentVersion, first.videoContentVersion);
+});
+
+test("não considera respostas ausentes, inválidas ou com tamanho incompatível como recursos offline válidos", () => {
+    const validImage = new Response("image-bytes", {
+        status: 200,
+        headers: { "content-type": "image/webp" },
+    });
+    const validVideo = new Response("video-bytes", {
+        status: 200,
+        headers: {
+            "content-type": "video/mp4",
+            "content-length": "10",
+        },
+    });
+    const missingVideoBytes = new Response("video", {
+        status: 200,
+        headers: {
+            "content-type": "video/mp4",
+            "content-length": "5",
+        },
+    });
+    const notFound = new Response("not found", {
+        status: 404,
+        headers: { "content-type": "image/webp" },
+    });
+    const htmlFallback = new Response("<html></html>", {
+        status: 200,
+        headers: { "content-type": "text/html" },
+    });
+
+    assert.equal(isValidCachedTutorialResource(validImage, { type: "image", size: 11 }), true);
+    assert.equal(isValidCachedTutorialResource(validVideo, { type: "video", size: 10 }), true);
+    assert.equal(isValidCachedTutorialResource(missingVideoBytes, { type: "video", size: 10 }), false);
+    assert.equal(isValidCachedTutorialResource(notFound, { type: "image", size: 10 }), false);
+    assert.equal(isValidCachedTutorialResource(htmlFallback, { type: "image", size: 10 }), false);
+    assert.equal(isValidCachedTutorialResource(null, { type: "image", size: 10 }), false);
+    assert.equal(isValidCachedTutorialResource(validImage, { type: "image", size: 0 }), false);
 });
