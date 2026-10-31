@@ -24,11 +24,13 @@ permissions:
 
 concurrency:
   group: validate-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  # Não cancelar uma validação de código por uma execução posterior do bot.
+  cancel-in-progress: false
 
 jobs:
   validate:
     name: Tests, lint and production build
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
