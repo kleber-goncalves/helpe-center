@@ -63,6 +63,97 @@ async function waitForServiceWorkerControl(page) {
     });
 }
 
+
+
+async function openExcelCompletion(page) {
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    await waitForServiceWorkerControl(page);
+    await page.goto(BASE_URL + "/tutoriais/comecar-usar-excel", {
+        waitUntil: "domcontentloaded",
+    });
+
+    await page.getByRole("heading", {
+        name: "Como começar a usar o Excel",
+    }).waitFor({ state: "visible", timeout: 15_000 });
+
+    const lastStepButton = page
+        .locator('nav[aria-label="Etapas do tutorial"] ol')
+        .first()
+        .getByRole("button")
+        .last();
+
+    await lastStepButton.click();
+
+    await page.getByRole("heading", {
+        name: "Salve a planilha",
+    }).waitFor({ state: "visible", timeout: 15_000 });
+}
+
+async function readTutorialPackage(page, tutorialId) {
+    return page.evaluate(async (id) => {
+        const database = await new Promise((resolve, reject) => {
+            const request = indexedDB.open("hauy-conecta-offline", 1);
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+
+        try {
+            return await new Promise((resolve, reject) => {
+                const request = database
+                    .transaction("tutorial-packages", "readonly")
+                    .objectStore("tutorial-packages")
+                    .get(id);
+
+                request.onsuccess = () => resolve(request.result ?? null);
+                request.onerror = () => reject(request.error);
+            });
+        } finally {
+            database.close();
+        }
+    }, tutorialId);
+}
+
+async function writeTutorialPackage(page, record) {
+    return page.evaluate(async (packageRecord) => {
+        const database = await new Promise((resolve, reject) => {
+            const request = indexedDB.open("hauy-conecta-offline", 1);
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+
+        try {
+            await new Promise((resolve, reject) => {
+                const transaction = database.transaction("tutorial-packages", "readwrite");
+
+                transaction.objectStore("tutorial-packages").put(packageRecord);
+                transaction.oncomplete = resolve;
+                transaction.onerror = () => reject(transaction.error);
+                transaction.onabort = () => reject(transaction.error);
+            });
+        } finally {
+            database.close();
+        }
+    }, record);
+}
+
+async function saveExcelPackage(page) {
+    await page.getByRole("button", { name: "Salvar tutorial offline" }).click();
+
+    await page.getByText(
+        "Este tutorial está disponível offline neste dispositivo.",
+        { exact: true },
+    ).waitFor({ state: "visible", timeout: 30_000 });
+
+    const record = await readTutorialPackage(page, "comecar-usar-excel");
+
+    assert.ok(record?.cacheName, "O IndexedDB deve registrar o cache do pacote.");
+    assert.ok(record.resources?.length > 0, "O pacote deve declarar seus recursos.");
+
+    return record;
+}
+
 async function loadImageInPage(page, url) {
     return page.evaluate((imageUrl) => new Promise((resolve, reject) => {
         const image = new Image();
@@ -412,6 +503,249 @@ test("baixa vídeos opcionais e reproduz/avança no MP4 sem internet", async () 
         assert.ok(rangeResponse, "O Service Worker deve responder a uma requisição HTTP Range.");
     } finally {
         await context.setOffline(false);
+        await context.close();
+    }
+});
+
+
+test("identifica pacote incompleto quando o Cache Storage é removido", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+        const record = await saveExcelPackage(page);
+
+        const removed = await page.evaluate(async (cacheName) => caches.delete(cacheName), record.cacheName);
+        assert.equal(removed, true, "O cache do pacote deve ser removido no cenário simulado.");
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.getByRole("heading", {
+            name: "Como começar a usar o Excel",
+        }).waitFor({ state: "visible", timeout: 15_000 });
+
+        const lastStepButton = page
+            .locator('nav[aria-label="Etapas do tutorial"] ol')
+            .first()
+            .getByRole("button")
+            .last();
+
+        await lastStepButton.click();
+
+        await page.getByRole("button", { name: "Reparar pacote" }).waitFor({
+            state: "visible",
+            timeout: 15_000,
+        });
+
+        await page.getByText(
+            "Parte dos arquivos não está mais disponível no armazenamento. Repare o pacote enquanto estiver conectado ou remova-o.",
+            { exact: true },
+        ).waitFor({ state: "visible" });
+
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({ state: "hidden" });
+    } finally {
+        await context.close();
+    }
+});
+
+test("identifica pacote desatualizado sem apagar o conteúdo anteriormente salvo", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+        const record = await saveExcelPackage(page);
+        const originalCacheName = record.cacheName;
+
+        await writeTutorialPackage(page, {
+            ...record,
+            contentVersion: "fingerprint-obsoleto-simulado",
+        });
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.getByRole("heading", {
+            name: "Como começar a usar o Excel",
+        }).waitFor({ state: "visible", timeout: 15_000 });
+
+        const lastStepButton = page
+            .locator('nav[aria-label="Etapas do tutorial"] ol')
+            .first()
+            .getByRole("button")
+            .last();
+
+        await lastStepButton.click();
+
+        await page.getByRole("button", {
+            name: "Atualizar pacote desatualizado",
+        }).waitFor({ state: "visible", timeout: 15_000 });
+
+        await page.getByText(
+            "O conteúdo deste tutorial mudou desde o último download. A versão salva continua no dispositivo, mas precisa ser atualizada para corresponder ao portal.",
+            { exact: true },
+        ).waitFor({ state: "visible" });
+
+        const previousCacheStillExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            originalCacheName,
+        );
+
+        assert.equal(previousCacheStillExists, true);
+    } finally {
+        await context.close();
+    }
+});
+
+test("não oferece pacote salvo depois que os dados do site são apagados", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+        const record = await saveExcelPackage(page);
+
+        await page.evaluate(async () => {
+            await new Promise((resolve, reject) => {
+                const request = indexedDB.deleteDatabase("hauy-conecta-offline");
+
+                request.onsuccess = resolve;
+                request.onerror = () => reject(request.error);
+                request.onblocked = () => reject(
+                    new Error("O banco offline ficou bloqueado durante a simulação."),
+                );
+            });
+        });
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.getByRole("heading", {
+            name: "Como começar a usar o Excel",
+        }).waitFor({ state: "visible", timeout: 15_000 });
+
+        const lastStepButton = page
+            .locator('nav[aria-label="Etapas do tutorial"] ol')
+            .first()
+            .getByRole("button")
+            .last();
+
+        await lastStepButton.click();
+
+        await page.getByRole("button", { name: "Salvar tutorial offline" }).waitFor({
+            state: "visible",
+            timeout: 15_000,
+        });
+
+        const falselyMarkedAsSaved = await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).count();
+
+        assert.equal(falselyMarkedAsSaved, 0);
+
+        const orphanedCacheStillExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            record.cacheName,
+        );
+
+        assert.equal(orphanedCacheStillExists, true);
+    } finally {
+        await context.close();
+    }
+});
+
+test("preserva o pacote anterior quando uma atualização falha por quota", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+        const record = await saveExcelPackage(page);
+
+        await page.evaluate((previousCacheName) => {
+            const originalPut = Cache.prototype.put;
+
+            Cache.prototype.put = function (request, response) {
+                if (
+                    this.name.startsWith("hauy-conecta-tutorial-package-v1-") &&
+                    this.name !== previousCacheName
+                ) {
+                    return Promise.reject(
+                        new DOMException("Quota exceeded", "QuotaExceededError"),
+                    );
+                }
+
+                return originalPut.call(this, request, response);
+            };
+        }, record.cacheName);
+
+        await page.getByRole("button", { name: "Atualizar pacote" }).click();
+
+        await page.getByText(
+            "O armazenamento deste dispositivo está cheio. Libere espaço e tente novamente. A versão anterior do pacote foi preservada.",
+            { exact: true },
+        ).waitFor({ state: "visible", timeout: 20_000 });
+
+        const previousCacheStillExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            record.cacheName,
+        );
+
+        const storedRecord = await readTutorialPackage(page, "comecar-usar-excel");
+
+        assert.equal(previousCacheStillExists, true);
+        assert.equal(storedRecord.cacheName, record.cacheName);
+    } finally {
+        await context.close();
+    }
+});
+
+test("reconhece como incompleto um arquivo substituído por resposta HTML no cache", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+        const record = await saveExcelPackage(page);
+        const targetResource = record.images?.[0];
+
+        assert.ok(targetResource, "O pacote deve conter ao menos uma imagem.");
+
+        await page.evaluate(async ({ cacheName, resourceUrl }) => {
+            const cache = await caches.open(cacheName);
+
+            await cache.put(resourceUrl, new Response("<html>not found</html>", {
+                status: 200,
+                headers: { "content-type": "text/html" },
+            }));
+        }, {
+            cacheName: record.cacheName,
+            resourceUrl: targetResource,
+        });
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.getByRole("heading", {
+            name: "Como começar a usar o Excel",
+        }).waitFor({ state: "visible", timeout: 15_000 });
+
+        const lastStepButton = page
+            .locator('nav[aria-label="Etapas do tutorial"] ol')
+            .first()
+            .getByRole("button")
+            .last();
+
+        await lastStepButton.click();
+
+        await page.getByRole("button", { name: "Reparar pacote" }).waitFor({
+            state: "visible",
+            timeout: 15_000,
+        });
+
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({ state: "hidden" });
+    } finally {
         await context.close();
     }
 });
