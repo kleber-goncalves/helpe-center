@@ -4,8 +4,10 @@ import "./App.css";
 import App from "./App.jsx";
 
 import { initializeAccessibility } from "./lib/accessibility";
+import { initializePwaInstall } from "./pwa/client/install-prompt.js";
 
 initializeAccessibility();
+initializePwaInstall();
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>

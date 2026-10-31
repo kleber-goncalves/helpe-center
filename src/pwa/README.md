@@ -7,6 +7,9 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 - `config/manifest.js` define nome, escopo, modo de exibição, cores e ícones.
 - `config/cache-policy.js` centraliza versões, recursos do precache e limites dos caches.
 - `client/register-service-worker.js` registra o Service Worker uma vez e publica eventos de atualização/preparação offline.
+- `client/install-prompt.js` captura o evento de instalação antes do carregamento tardio da Home e disponibiliza instruções manuais para navegadores sem prompt nativo.
+- `ui/hooks/usePwaInstall.js` expõe o estado de instalação para os componentes React.
+- `ui/components/InstallPwaCard.jsx` apresenta a ação de instalação no Hero da página inicial.
 - `service-worker/sw.js` contém o código Workbox executado no contexto do Service Worker.
 - `downloads/tutorial-package.js` cataloga e armazena os recursos necessários aos pacotes de tutoriais.
 - `ui/components/TutorialOfflineButton.jsx` integra o fluxo de salvar, atualizar, cancelar e remover um tutorial.
@@ -23,6 +26,12 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 6. Vídeos MP4 são opcionais e desmarcados por padrão; links externos continuam fora do pacote offline.
 7. Criar subpastas somente quando a responsabilidade correspondente for implementada; não adicionar diretórios vazios ou `.gitkeep`.
 8. Manter funções utilitárias próximas do domínio; `utils` é reservado a funções puras compartilhadas.
+
+## Instalação do aplicativo
+
+A Home apresenta um convite de instalação logo abaixo da busca principal. Quando o navegador disponibiliza `beforeinstallprompt`, o botão abre o prompt nativo. A captura desse evento é inicializada no entrypoint (`src/main.jsx`), pois a Home é carregada sob demanda e poderia receber o evento tarde demais.
+
+Quando o prompt não está disponível, o botão abre instruções compatíveis com a plataforma: Safari no iPhone/iPad, navegadores Android e navegadores desktop. O evento `appinstalled` e o modo de exibição `standalone` são usados para ocultar o convite quando a aplicação está instalada. A instalação adiciona o aplicativo/atalho ao dispositivo; ela não baixa todos os tutoriais nem substitui a ação individual de salvar pacotes offline.
 
 ## Política de armazenamento
 
