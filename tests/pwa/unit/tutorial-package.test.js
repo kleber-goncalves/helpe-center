@@ -218,6 +218,16 @@ test("gera fingerprints estáveis e detecta mudanças no conteúdo do tutorial",
 
     assert.equal(changedVideo.contentVersion, first.contentVersion);
     assert.notEqual(changedVideo.videoContentVersion, first.videoContentVersion);
+
+    const removedVideo = createTutorialContentVersions({
+        tutorial,
+        steps: [{ ...steps[0], video: null }],
+        imageMetadata,
+        videoMetadata: {},
+    });
+
+    assert.equal(removedVideo.contentVersion, first.contentVersion);
+    assert.notEqual(removedVideo.videoContentVersion, first.videoContentVersion);
 });
 
 test("não considera respostas ausentes, inválidas ou com tamanho incompatível como recursos offline válidos", () => {
