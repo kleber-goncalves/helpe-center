@@ -575,9 +575,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 559f3ee9a433d8530379200b34e7325cc62424fe
-- **Data do commit:** 2026-10-30T22:17:41-03:00
-- **Mensagem do commit:** ci(pwa): limpar working tree antes do rebase
+- **Commit de referência:** ba1e6429c26fce4ec0460977ba3c55e37e5bd61f
+- **Data do commit:** 2026-10-30T22:24:22-03:00
+- **Mensagem do commit:** docs(pwa): registrar publicação e validação da Fase 1
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -709,13 +709,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| ba1e642 | 2026-10-30 | docs(pwa): registrar publicação e validação da Fase 1 |
+| cf7ec5d | 2026-10-30 | docs(pwa): atualizar estado validado da Fase 1 |
+| 63b5bc8 | 2026-10-31 | build: update prerendered site |
+| db8dd81 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 559f3ee | 2026-10-30 | ci(pwa): limpar working tree antes do rebase |
 | ee3563f | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | f00dd2c | 2026-10-30 | ci(pwa): evitar conflito na publicação do dist |
 | af94016 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| f1e60c8 | 2026-10-30 | ci(pwa): gerar dist na branch de preview |
-| deba47e | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
-| 8a0a6d8 | 2026-10-30 | chore(pwa): sincronizar lockfile e documentação |
-| 634d0f9 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
