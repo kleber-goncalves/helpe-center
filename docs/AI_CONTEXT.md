@@ -566,9 +566,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 8a0a6d8cee5f88e405bfbb0ad667fae24401203e
-- **Data do commit:** 2026-10-30T19:35:13Z
-- **Mensagem do commit:** chore(pwa): sincronizar lockfile e documentação
+- **Commit de referência:** f1e60c8e10d58186f00a31656ff0969c573296c0
+- **Data do commit:** 2026-10-30T22:12:27-03:00
+- **Mensagem do commit:** ci(pwa): gerar dist na branch de preview
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -700,13 +700,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| f1e60c8 | 2026-10-30 | ci(pwa): gerar dist na branch de preview |
+| deba47e | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
 | 8a0a6d8 | 2026-10-30 | chore(pwa): sincronizar lockfile e documentação |
 | 634d0f9 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 837b2cf | 2026-10-30 | feat(pwa): implementar instalacao e shell offline |
 | cb49e64 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 | 3c2a39b | 2026-10-30 | docs(pwa): registrar auditoria e estrutura modular |
 | 691ad05 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| bfdd3c9 | 2026-10-30 | Merge pull request #15 from kleber-goncalves/main |
-| 8b67f2f | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
