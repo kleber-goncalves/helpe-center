@@ -566,9 +566,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** f00dd2c856aae9b2780ff000fe23077adec23217
-- **Data do commit:** 2026-10-30T22:14:58-03:00
-- **Mensagem do commit:** ci(pwa): evitar conflito na publicação do dist
+- **Commit de referência:** 559f3ee9a433d8530379200b34e7325cc62424fe
+- **Data do commit:** 2026-10-30T22:17:41-03:00
+- **Mensagem do commit:** ci(pwa): limpar working tree antes do rebase
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -700,13 +700,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 559f3ee | 2026-10-30 | ci(pwa): limpar working tree antes do rebase |
+| ee3563f | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | f00dd2c | 2026-10-30 | ci(pwa): evitar conflito na publicação do dist |
 | af94016 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | f1e60c8 | 2026-10-30 | ci(pwa): gerar dist na branch de preview |
 | deba47e | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
 | 8a0a6d8 | 2026-10-30 | chore(pwa): sincronizar lockfile e documentação |
 | 634d0f9 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| 837b2cf | 2026-10-30 | feat(pwa): implementar instalacao e shell offline |
-| cb49e64 | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
