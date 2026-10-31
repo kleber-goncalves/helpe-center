@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 76ce9ef6b176ca14a860ad7e68c88b713d419657
-- **Data do commit:** 2026-10-31T16:41:10-03:00
-- **Mensagem do commit:** docs(pwa): registrar preservação em cancelamento de atualização
+- **Commit de referência:** 4da10e2220021fb6799b19bd4bd3448ced4a39a2
+- **Data do commit:** 2026-10-31T16:43:43-03:00
+- **Mensagem do commit:** docs(pwa): documentar testes de reparo e atualização
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 4da10e2 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
+| b6f5364 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
+| aea4c44 | 2026-10-31 | test(pwa): validar reparo e atualização concluídos |
+| 8799794 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
+| 18e7014 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 76ce9ef | 2026-10-31 | docs(pwa): registrar preservação em cancelamento de atualização |
 | 7a0fb1b | 2026-10-31 | docs(pwa): detalhar teste de cancelamento com pacote anterior |
 | 9a46041 | 2026-10-31 | test(pwa): preservar pacote anterior após cancelar atualização |
-| e242f5e | 2026-10-31 | build: update prerendered site |
-| 4a56157 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 6c28fee | 2026-10-31 | docs(pwa): atualizar cobertura dos testes de recuperação |
-| 9d8ba1e | 2026-10-31 | docs(pwa): registrar ciclo de atualização e recuperação de pacotes |
-| 7af3ad7 | 2026-10-31 | docs(pwa): documentar atualização e recuperação de pacotes offline |
 
 <!-- END AUTO-GENERATED SECTION -->
