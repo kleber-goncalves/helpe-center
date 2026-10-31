@@ -599,9 +599,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 7b901b8a61f338388e2c79809e79b2e4d8e2c9e8
-- **Data do commit:** 2026-10-31T18:11:06-03:00
-- **Mensagem do commit:** revert(pwa): remover convite de instalação da Home
+- **Commit de referência:** 883bd0d6f2d2bf1f13884dd5287b1397895ce97c
+- **Data do commit:** 2026-10-31T19:18:35-03:00
+- **Mensagem do commit:** docs(pwa): alinhar documentação ao estado atual
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -733,13 +733,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 883bd0d | 2026-10-31 | docs(pwa): alinhar documentação ao estado atual |
+| 9161dd0 | 2026-10-31 | build: update prerendered site |
+| 23ee57d | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 7b901b8 | 2026-10-31 | revert(pwa): remover convite de instalação da Home |
 | f305961 | 2026-10-31 | build: update prerendered site |
 | a2d59f5 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | e7bea32 | 2026-10-31 | fix(pwa): estabilizar snapshot do estado de instalação |
 | 7c7dd36 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 35e4e8a | 2026-10-31 | refactor(pwa): sincronizar estado de instalação com React |
-| 22912ba | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 2ab1cdc | 2026-10-31 | feat(pwa): adicionar convite de instalação na Home |
 
 <!-- END AUTO-GENERATED SECTION -->
