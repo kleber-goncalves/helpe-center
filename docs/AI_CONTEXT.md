@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 7a0fb1b5902fc0c19f7ebac599e079dd059f56b8
-- **Data do commit:** 2026-10-31T16:41:06-03:00
-- **Mensagem do commit:** docs(pwa): detalhar teste de cancelamento com pacote anterior
+- **Commit de referência:** 76ce9ef6b176ca14a860ad7e68c88b713d419657
+- **Data do commit:** 2026-10-31T16:41:10-03:00
+- **Mensagem do commit:** docs(pwa): registrar preservação em cancelamento de atualização
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,6 +723,7 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 76ce9ef | 2026-10-31 | docs(pwa): registrar preservação em cancelamento de atualização |
 | 7a0fb1b | 2026-10-31 | docs(pwa): detalhar teste de cancelamento com pacote anterior |
 | 9a46041 | 2026-10-31 | test(pwa): preservar pacote anterior após cancelar atualização |
 | e242f5e | 2026-10-31 | build: update prerendered site |
@@ -730,6 +731,5 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 | 6c28fee | 2026-10-31 | docs(pwa): atualizar cobertura dos testes de recuperação |
 | 9d8ba1e | 2026-10-31 | docs(pwa): registrar ciclo de atualização e recuperação de pacotes |
 | 7af3ad7 | 2026-10-31 | docs(pwa): documentar atualização e recuperação de pacotes offline |
-| eb474d3 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 
 <!-- END AUTO-GENERATED SECTION -->
