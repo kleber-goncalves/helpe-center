@@ -154,6 +154,54 @@ async function saveExcelPackage(page) {
     return record;
 }
 
+async function interceptNewTutorialPackageCache(page, previousCacheName, mode) {
+    await page.evaluate(({ previousCacheName, mode }) => {
+        const originalOpen = caches.open.bind(caches);
+
+        Object.defineProperty(caches, "open", {
+            configurable: true,
+            value: async function (cacheName) {
+                const cache = await originalOpen(cacheName);
+
+                if (
+                    cacheName.startsWith("hauy-conecta-tutorial-package-v1-") &&
+                    cacheName !== previousCacheName
+                ) {
+                    const originalPut = cache.put.bind(cache);
+
+                    Object.defineProperty(cache, "put", {
+                        configurable: true,
+                        value(request, response) {
+                            window.__tutorialPackagePutStarted = true;
+
+                            if (mode === "quota") {
+                                return Promise.reject(
+                                    new DOMException("Quota exceeded", "QuotaExceededError"),
+                                );
+                            }
+
+                            if (mode === "delay") {
+                                return new Promise((resolve, reject) => {
+                                    setTimeout(() => {
+                                        originalPut(request, response).then(resolve, reject);
+                                    }, 2_000);
+                                });
+                            }
+
+                            return originalPut(request, response);
+                        },
+                    });
+                }
+
+                return cache;
+            },
+        });
+
+        window.__tutorialPackagePutStarted = false;
+    }, { previousCacheName, mode });
+}
+
+
 async function loadImageInPage(page, url) {
     return page.evaluate((imageUrl) => new Promise((resolve, reject) => {
         const image = new Image();
@@ -704,22 +752,7 @@ test("preserva o pacote anterior quando uma atualização falha por quota", asyn
         await openExcelCompletion(page);
         const record = await saveExcelPackage(page);
 
-        await page.evaluate((previousCacheName) => {
-            const originalPut = Cache.prototype.put;
-
-            Cache.prototype.put = function (request, response) {
-                if (
-                    this.name.startsWith("hauy-conecta-tutorial-package-v1-") &&
-                    this.name !== previousCacheName
-                ) {
-                    return Promise.reject(
-                        new DOMException("Quota exceeded", "QuotaExceededError"),
-                    );
-                }
-
-                return originalPut.call(this, request, response);
-            };
-        }, record.cacheName);
+        await interceptNewTutorialPackageCache(page, record.cacheName, "quota");
 
         await page.getByRole("button", { name: "Atualizar pacote" }).click();
 
@@ -801,27 +834,7 @@ test("preserva o pacote anterior e remove o cache temporário após cancelar uma
         await openExcelCompletion(page);
         const previousRecord = await saveExcelPackage(page);
 
-        await page.evaluate((previousCacheName) => {
-            const originalPut = Cache.prototype.put;
-            window.__tutorialPackagePutStarted = false;
-
-            Cache.prototype.put = function (request, response) {
-                if (
-                    this.name.startsWith("hauy-conecta-tutorial-package-v1-") &&
-                    this.name !== previousCacheName
-                ) {
-                    window.__tutorialPackagePutStarted = true;
-
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            originalPut.call(this, request, response).then(resolve, reject);
-                        }, 2_000);
-                    });
-                }
-
-                return originalPut.call(this, request, response);
-            };
-        }, previousRecord.cacheName);
+        await interceptNewTutorialPackageCache(page, previousRecord.cacheName, "delay");
 
         await page.getByRole("button", { name: "Atualizar pacote" }).click();
 
