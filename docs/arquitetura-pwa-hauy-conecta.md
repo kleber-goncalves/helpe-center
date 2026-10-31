@@ -662,16 +662,16 @@ disponível offline, parcial, falha e atualização disponível.
 
 ### Fase 3 --- Vídeos offline
 
--   [ ] Definir vídeos elegíveis.
--   [ ] Mostrar tamanho estimado.
--   [ ] Implementar download explícito.
--   [ ] Armazenar resposta completa.
--   [ ] Tratar HTTP Range.
+-   [x] Definir vídeos elegíveis: MP4 locais de passos e exemplos; links externos ficam fora.
+-   [x] Mostrar tamanho estimado por tutorial a partir dos metadados gerados no build.
+-   [x] Implementar inclusão opcional e desmarcada por padrão.
+-   [x] Armazenar a resposta MP4 completa no cache individual do tutorial.
+-   [x] Tratar HTTP Range com respostas 206 no Service Worker.
 -   [ ] Validar reprodução offline em dispositivos reais.
--   [ ] Testar arquivos grandes, falhas, cancelamento e quota.
--   [ ] Definir avisos de dados móveis.
+-   [ ] Testar arquivos grandes, falhas, cancelamento e quota em dispositivos representativos.
+-   [x] Exibir aviso de consumo de dados móveis e armazenamento.
 
-**Saída:** reprodução offline confiável nos navegadores suportados.
+**Saída:** reprodução offline validada por E2E em Chromium; o aceite em dispositivos reais e com vídeos grandes permanece pendente.
 
 ### Fase 4 --- Hardening e publicação
 
@@ -947,3 +947,39 @@ A disponibilidade é local ao navegador/dispositivo. O botão não baixa arquivo
 - `tests/pwa/e2e/offline-navigation.test.js`: navegação offline, armazenamento runtime e acesso a imagem de pacote sem conexão.
 
 A validação automatizada desta fase deve confirmar tanto o build completo/pré-renderização quanto os testes E2E executados pelo runner do GitHub Actions. A publicação em preview e a validação manual em dispositivos reais ainda devem ser conferidas após o deploy do novo commit.
+
+
+## 26. Fase 3 — vídeos MP4 offline (implementação)
+
+A Fase 3 foi implementada na branch feat/pwa mantendo o escopo por escolha do usuário. A opção de incluir vídeos é apresentada separadamente e vem desmarcada por padrão; o download normal continua incluindo texto, imagens, pôsteres e variantes responsivas.
+
+### Catálogo e estimativa
+
+- O script scripts/generate-image-metadata.mjs passou a catalogar também os MP4 de public/tutoriais, registrando o tamanho real em bytes no campo videos do JSON de mídia gerado.
+- collectTutorialVideoResources identifica MP4 locais nos campos video dos passos e exemplos, elimina duplicatas e ignora URLs externas.
+- estimateTutorialVideoSize agrega os tamanhos conhecidos para exibir quantidade e estimativa antes de iniciar o download.
+- O catálogo atual contém 18 MP4 locais, com aproximadamente 298,38 MiB somados. O tamanho do Canva é consideravelmente maior que o de Excel e Google Drive; por isso, não há download automático.
+
+### Download e armazenamento
+
+- A opção “Incluir vídeos para assistir sem internet” é opcional e desmarcada por padrão.
+- Os vídeos selecionados são baixados integralmente para o cache isolado daquele tutorial, junto das imagens e pôsteres.
+- O download valida resposta HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
+- O corpo do vídeo é encaminhado em streaming ao Cache Storage, sem montar o MP4 inteiro em um único ArrayBuffer na memória.
+- O progresso informa quantidade de arquivos e bytes transferidos dos vídeos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois de o novo pacote estar persistido.
+- Os metadados do IndexedDB registram URLs de imagens e vídeos separadamente, além da lista consolidada usada na verificação de integridade.
+
+### Reprodução offline e HTTP Range
+
+- O Service Worker trata requisições GET para MP4 locais e procura o arquivo nos caches de pacotes do usuário.
+- Uma requisição sem Range recebe a resposta completa armazenada.
+- Uma requisição Range: bytes=início-fim recebe HTTP 206 com Content-Range, Content-Length e Accept-Ranges.
+- Intervalos inválidos ou fora do tamanho do arquivo recebem HTTP 416 e Content-Range: bytes */tamanho.
+- MP4 não incluído no pacote continua dependendo da rede; videoaulas externas (YouTube e outros hosts) também permanecem online-only.
+
+### Testes e aceite
+
+- Testes unitários cobrem coleta/deduplicação de MP4 locais, exclusão de URLs externas, estimativa de bytes e formatação.
+- O E2E usa vídeos pequenos do tutorial Excel, verifica o MP4 completo no Cache Storage, desliga a rede, carrega os metadados do player e realiza uma busca temporal. O teste também exige uma resposta HTTP 206 offline.
+- Permanecem pendentes o teste manual em dispositivos reais, arquivos grandes (especialmente vídeos do Canva), armazenamento/quota e comportamento em condições de rede móvel. Não declarar compatibilidade universal antes desses testes.
+

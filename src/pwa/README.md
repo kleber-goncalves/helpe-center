@@ -20,7 +20,7 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 3. Centralizar políticas e limites em `config`.
 4. Cache Storage armazena respostas HTTP. IndexedDB mantém metadados dos pacotes, como tutorial, versão, cache associado e recursos esperados.
 5. Não misturar o cache runtime de imagens com os caches de pacotes opt-in. Uma atualização do shell não pode apagar downloads do usuário.
-6. Vídeos MP4 e links externos não são incluídos no pacote offline padrão.
+6. Vídeos MP4 são opcionais e desmarcados por padrão; links externos continuam fora do pacote offline.
 7. Criar subpastas somente quando a responsabilidade correspondente for implementada; não adicionar diretórios vazios ou `.gitkeep`.
 8. Manter funções utilitárias próximas do domínio; `utils` é reservado a funções puras compartilhadas.
 
@@ -56,7 +56,13 @@ Cada pacote tem um cache próprio no Cache Storage. O IndexedDB guarda metadados
 
 O pacote permanece no navegador/dispositivo em que foi salvo; não sincroniza automaticamente com outros dispositivos.
 
-**Vídeos MP4 não fazem parte do pacote padrão.** O botão informa essa limitação. Vídeos locais, videoaulas do YouTube, playlists e outros links externos ainda exigem internet. Não incluir MP4 automaticamente, pois a biblioteca totaliza centenas de MiB e poderia consumir dados móveis e armazenamento inesperadamente.
+**Vídeos MP4 são opcionais e desmarcados por padrão.** O catálogo de mídia gerado no build registra o tamanho real de cada arquivo local. A interface mostra a quantidade e o tamanho estimado dos vídeos antes do download e alerta sobre consumo de dados e armazenamento.
+
+Quando a pessoa marca **Incluir vídeos para assistir sem internet**, os MP4 locais dos passos e exemplos são baixados integralmente para o mesmo cache individual do tutorial. O progresso informa arquivos concluídos e bytes transferidos dos vídeos. O pacote só é marcado como salvo depois que imagens, pôsteres e vídeos selecionados foram persistidos e validados. Cancelamento ou falha remove o cache temporário e preserva um pacote anterior que já estava salvo.
+
+O Service Worker reconhece solicitações locais de MP4 e procura os arquivos nos caches dos pacotes. Quando o player envia uma requisição Range, o Service Worker responde com HTTP 206, Content-Range, Content-Length e Accept-Ranges, permitindo carregar metadados, reproduzir e avançar/retroceder sem rede. Vídeos que não foram selecionados continuam sendo solicitados pela rede. Videoaulas do YouTube, playlists e outros links externos permanecem dependentes de internet.
+
+A biblioteca atual tem 18 MP4 locais e aproximadamente 298,38 MiB no total. O tamanho varia por tutorial; o pacote Canva, por exemplo, é muito maior que Excel e Google Drive. Por isso, não existe download automático em massa.
 
 ## Navegação offline
 
@@ -65,5 +71,5 @@ A navegação tenta buscar a rota na rede para preservar o HTML pré-renderizado
 ## Testes
 
 - `npm run test:pwa:unit`: políticas e coleta de recursos de tutoriais.
-- `npm run test:pwa:e2e`: registro do Service Worker, navegação offline, cache runtime de imagem e download de pacote de tutorial.
+- `npm run test:pwa:e2e`: registro do Service Worker, navegação offline, cache runtime, download de pacote com MP4 e reprodução/busca offline.
 - `npm run test:pwa`: executa os testes unitários e E2E.

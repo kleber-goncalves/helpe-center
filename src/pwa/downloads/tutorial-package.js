@@ -6,7 +6,7 @@ import {
 const DATABASE_NAME = "hauy-conecta-offline";
 const DATABASE_VERSION = 1;
 const PACKAGE_STORE = "tutorial-packages";
-const DOWNLOAD_CONCURRENCY = 3;
+const DOWNLOAD_CONCURRENCY = 2;
 
 function getLocalImagePath(value) {
     if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
@@ -58,6 +58,77 @@ export function collectTutorialImageResources(steps, imageMetadata = { images: {
     }
 
     return [...resources].sort();
+}
+
+/**
+ * Reúne somente vídeos MP4 locais vinculados aos passos e exemplos.
+ * URLs externas não são incluídas no pacote offline.
+ */
+export function collectTutorialVideoResources(steps) {
+    const resources = new Set();
+
+    function addVideo(value) {
+        if (
+            typeof value !== "string" ||
+            !value.startsWith("/") ||
+            value.startsWith("//")
+        ) {
+            return;
+        }
+
+        const pathname = value.split(/[?#]/, 1)[0];
+
+        if (pathname.toLowerCase().endsWith(".mp4")) {
+            resources.add(pathname);
+        }
+    }
+
+    for (const step of steps ?? []) {
+        addVideo(step?.video);
+
+        for (const example of step?.examples ?? []) {
+            addVideo(example?.video);
+        }
+    }
+
+    return [...resources].sort();
+}
+
+/**
+ * Soma os tamanhos conhecidos pelo catálogo de mídia gerado no build.
+ */
+export function estimateTutorialVideoSize(videoPaths, videoMetadata = {}) {
+    return (videoPaths ?? []).reduce(
+        (estimate, path) => {
+            const size = videoMetadata?.[path]?.size;
+
+            if (Number.isFinite(size) && size >= 0) {
+                estimate.knownBytes += size;
+            } else {
+                estimate.unknownCount += 1;
+            }
+
+            return estimate;
+        },
+        { knownBytes: 0, unknownCount: 0 },
+    );
+}
+
+export function formatBytes(bytes) {
+    if (!Number.isFinite(bytes) || bytes <= 0) {
+        return "0 B";
+    }
+
+    const units = ["B", "KiB", "MiB", "GiB"];
+    const unitIndex = Math.min(
+        Math.floor(Math.log(bytes) / Math.log(1024)),
+        units.length - 1,
+    );
+    const value = bytes / (1024 ** unitIndex);
+
+    return new Intl.NumberFormat("pt-BR", {
+        maximumFractionDigits: 1,
+    }).format(value) + " " + units[unitIndex];
 }
 
 function ensureStorageSupport() {
@@ -199,6 +270,44 @@ function createAbortError() {
 }
 
 /**
+ * Encaminha o corpo em streaming para o Cache Storage sem acumular o MP4
+ * inteiro em um único ArrayBuffer na memória.
+ */
+function createTrackedResponse(response, onChunk) {
+    if (!response.body || typeof ReadableStream === "undefined") {
+        return response.clone();
+    }
+
+    const reader = response.body.getReader();
+    const stream = new ReadableStream({
+        async pull(controller) {
+            try {
+                const { done, value } = await reader.read();
+
+                if (done) {
+                    controller.close();
+                    return;
+                }
+
+                onChunk?.(value.byteLength);
+                controller.enqueue(value);
+            } catch (error) {
+                controller.error(error);
+            }
+        },
+        cancel(reason) {
+            return reader.cancel(reason);
+        },
+    });
+
+    return new Response(stream, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+    });
+}
+
+/**
  * Baixa todas as imagens/pôsteres do pacote com concorrência limitada.
  * O pacote só é marcado como salvo depois que todos os recursos e os
  * metadados forem persistidos. Falhas removem o cache temporário.
@@ -208,6 +317,8 @@ export async function saveTutorialOffline({
     title,
     steps,
     imageMetadata,
+    includeVideos = false,
+    videoMetadata = {},
     onProgress,
     signal,
 }) {
@@ -225,15 +336,33 @@ export async function saveTutorialOffline({
 
     ensureStorageSupport();
 
-    const resourcePaths = collectTutorialImageResources(steps, imageMetadata);
+    const imagePaths = collectTutorialImageResources(steps, imageMetadata);
+    const videoPaths = includeVideos ? collectTutorialVideoResources(steps) : [];
+    const videoEstimate = estimateTutorialVideoSize(videoPaths, videoMetadata);
     const origin = window.location.origin;
-    const resources = resourcePaths.map((path) => new URL(path, origin).href);
+    const imageResources = imagePaths.map((path) => ({
+        path,
+        type: "image",
+        url: new URL(path, origin).href,
+    }));
+    const videoResources = videoPaths.map((path) => ({
+        path,
+        type: "video",
+        url: new URL(path, origin).href,
+        size: videoMetadata?.[path]?.size,
+    }));
+    const resourceEntries = [...imageResources, ...videoResources];
+    const totalResources = resourceEntries.length;
 
     const previousRecord = await getStoredPackage(tutorialId);
     const cacheName = createPackageCacheName(tutorialId);
     const packageCache = await caches.open(cacheName);
     const controller = new AbortController();
-    const abortFromCaller = () => controller.abort();
+    let cancelledByCaller = Boolean(signal?.aborted);
+    const abortFromCaller = () => {
+        cancelledByCaller = true;
+        controller.abort();
+    };
 
     if (signal?.aborted) {
         controller.abort();
@@ -243,37 +372,94 @@ export async function saveTutorialOffline({
 
     let nextIndex = 0;
     let completed = 0;
+    let bytesDownloaded = 0;
+    let totalBytes = videoEstimate.knownBytes;
+    let lastProgressUpdate = 0;
     let firstError = null;
 
-    onProgress?.({ completed, total: resources.length });
+    function reportProgress(force = false) {
+        const now = Date.now();
+
+        if (force || now - lastProgressUpdate >= 150) {
+            lastProgressUpdate = now;
+            onProgress?.({
+                completed,
+                total: totalResources,
+                bytesDownloaded,
+                totalBytes,
+            });
+        }
+    }
+
+    reportProgress(true);
 
     async function worker() {
         while (!firstError && !controller.signal.aborted) {
             const index = nextIndex;
             nextIndex += 1;
 
-            if (index >= resources.length) {
+            if (index >= resourceEntries.length) {
                 return;
             }
 
-            const resource = resources[index];
+            const resource = resourceEntries[index];
 
             try {
-                const response = await fetch(resource, {
+                const response = await fetch(resource.url, {
                     cache: "reload",
                     signal: controller.signal,
                 });
 
-                const contentType = response.headers.get("content-type") ?? "";
+                const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+                const contentLength = Number(response.headers.get("content-length"));
+                const isValidType = resource.type === "video"
+                    ? contentType.startsWith("video/") || contentType === "application/octet-stream"
+                    : contentType.startsWith("image/");
 
-                if (!response.ok || !contentType.toLowerCase().startsWith("image/")) {
-                    throw new Error("Não foi possível baixar uma imagem necessária do tutorial.");
+                if (response.status !== 200 || !isValidType) {
+                    throw new Error(
+                        resource.type === "video"
+                            ? "Não foi possível baixar um vídeo completo do tutorial."
+                            : "Não foi possível baixar uma imagem necessária do tutorial.",
+                    );
                 }
 
-                await packageCache.put(resource, response.clone());
+                const expectedSize = resource.size ?? (
+                    Number.isFinite(contentLength) && contentLength > 0
+                        ? contentLength
+                        : null
+                );
+
+                if (resource.type === "video" && !resource.size && expectedSize) {
+                    totalBytes += expectedSize;
+                    reportProgress(true);
+                }
+
+                let transferredBytes = 0;
+                const responseToCache = resource.type === "video"
+                    ? createTrackedResponse(response, (chunkBytes) => {
+                        transferredBytes += chunkBytes;
+                        bytesDownloaded += chunkBytes;
+                        reportProgress();
+                    })
+                    : response.clone();
+
+                await packageCache.put(resource.url, responseToCache);
+
+                if (resource.type === "video") {
+                    if (expectedSize && transferredBytes > 0 && transferredBytes !== expectedSize) {
+                        throw new Error(
+                            "O tamanho recebido de um vídeo não corresponde ao arquivo original. Tente novamente.",
+                        );
+                    }
+
+                    if (transferredBytes === 0 && expectedSize) {
+                        bytesDownloaded += expectedSize;
+                    }
+                }
 
                 completed += 1;
-                onProgress?.({ completed, total: resources.length });
+                reportProgress(true);
             } catch (error) {
                 if (!firstError) {
                     firstError = error;
@@ -287,7 +473,7 @@ export async function saveTutorialOffline({
 
     try {
         const workers = Array.from(
-            { length: Math.min(DOWNLOAD_CONCURRENCY, Math.max(resources.length, 1)) },
+            { length: Math.min(DOWNLOAD_CONCURRENCY, Math.max(resourceEntries.length, 1)) },
             () => worker(),
         );
 
@@ -305,7 +491,10 @@ export async function saveTutorialOffline({
             tutorialId,
             title,
             cacheName,
-            resources,
+            resources: resourceEntries.map((resource) => resource.url),
+            images: imageResources.map((resource) => resource.url),
+            videos: videoResources.map((resource) => resource.url),
+            totalVideoBytes: totalBytes,
             version: TUTORIAL_PACKAGE_VERSION,
             savedAt: Date.now(),
         };
@@ -320,7 +509,7 @@ export async function saveTutorialOffline({
     } catch (error) {
         await caches.delete(cacheName);
 
-        if (controller.signal.aborted && error?.name !== "AbortError") {
+        if (cancelledByCaller && error?.name !== "AbortError") {
             throw createAbortError();
         }
 

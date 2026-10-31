@@ -35,14 +35,14 @@ precacheAndRoute(self.__WB_MANIFEST);
  * Recursos de pacotes de tutoriais têm prioridade sobre esse cache.
  */
 
-async function findTutorialPackageImage(request) {
+async function findTutorialPackageResource(request) {
     const cacheNames = (await caches.keys()).filter((cacheName) =>
         cacheName.startsWith(TUTORIAL_PACKAGE_CACHE_PREFIX),
     );
 
     for (const cacheName of cacheNames) {
         const packageCache = await caches.open(cacheName);
-        const cachedResponse = await packageCache.match(request);
+        const cachedResponse = await packageCache.match(request.url);
 
         if (cachedResponse) {
             return cachedResponse;
@@ -50,6 +50,98 @@ async function findTutorialPackageImage(request) {
     }
 
     return null;
+}
+
+/**
+ * Interpreta uma faixa de bytes única, incluindo sufixos (bytes=-N).
+ * Intervalos inválidos ou fora do arquivo são tratados como não satisfatíveis.
+ */
+function parseByteRange(rangeHeader, size) {
+    const match = /^bytes=(\d*)-(\d*)$/i.exec(rangeHeader ?? "");
+
+    if (!match || size <= 0 || (!match[1] && !match[2])) {
+        return null;
+    }
+
+    let start;
+    let end;
+
+    if (!match[1]) {
+        const suffixLength = Number(match[2]);
+
+        if (!Number.isSafeInteger(suffixLength) || suffixLength <= 0) {
+            return null;
+        }
+
+        start = Math.max(size - suffixLength, 0);
+        end = size - 1;
+    } else {
+        start = Number(match[1]);
+        end = match[2] ? Number(match[2]) : size - 1;
+
+        if (
+            !Number.isSafeInteger(start) ||
+            !Number.isSafeInteger(end) ||
+            start < 0 ||
+            end < start ||
+            start >= size
+        ) {
+            return null;
+        }
+
+        end = Math.min(end, size - 1);
+    }
+
+    return { start, end };
+}
+
+/**
+ * Entrega a resposta MP4 completa ou reconstrói HTTP 206 para Range.
+ * Cache Storage guarda o arquivo completo; o player recebe apenas a faixa pedida.
+ */
+async function createVideoResponse(request, cachedResponse) {
+    const headers = new Headers(cachedResponse.headers);
+    headers.set("Accept-Ranges", "bytes");
+
+    if (request.method === "HEAD") {
+        return new Response(null, {
+            status: cachedResponse.status,
+            statusText: cachedResponse.statusText,
+            headers,
+        });
+    }
+
+    const rangeHeader = request.headers.get("range");
+
+    if (!rangeHeader) {
+        return new Response(cachedResponse.body, {
+            status: cachedResponse.status,
+            statusText: cachedResponse.statusText,
+            headers,
+        });
+    }
+
+    const blob = await cachedResponse.blob();
+    const range = parseByteRange(rangeHeader, blob.size);
+
+    if (!range) {
+        headers.set("Content-Range", "bytes */" + blob.size);
+        headers.set("Content-Length", "0");
+
+        return new Response(null, { status: 416, headers });
+    }
+
+    const { start, end } = range;
+    const partialBody = blob.slice(start, end + 1, blob.type);
+
+    headers.set("Content-Length", String(partialBody.size));
+    headers.set("Content-Range", "bytes " + start + "-" + end + "/" + blob.size);
+
+    return new Response(partialBody, {
+        status: 206,
+        statusText: "Partial Content",
+        headers,
+    });
 }
 
 async function trimRuntimeImageCache(cache) {
@@ -84,7 +176,7 @@ async function handleImageRequest({ request, event }) {
     const isExplicitDownload = request.cache === "reload";
 
     if (!isExplicitDownload) {
-        const packageResponse = await findTutorialPackageImage(request);
+        const packageResponse = await findTutorialPackageResource(request);
 
         if (packageResponse) {
             return packageResponse;
@@ -132,6 +224,41 @@ registerRoute(
         request.destination === "image" &&
         url.origin === self.location.origin,
     handleImageRequest,
+);
+
+/*
+ * =========================================================
+ * VÍDEOS MP4 DOS PACOTES OFFLINE
+ * =========================================================
+ *
+ * Somente arquivos explicitamente baixados são entregues pelo Cache Storage.
+ * Downloads explícitos (cache: "reload") ignoram o pacote anterior.
+ */
+
+async function handleVideoRequest({ request }) {
+    const isExplicitDownload = request.cache === "reload";
+
+    if (!isExplicitDownload) {
+        const packageResponse = await findTutorialPackageResource(request);
+
+        if (packageResponse) {
+            return createVideoResponse(request, packageResponse);
+        }
+    }
+
+    try {
+        return await fetch(request);
+    } catch {
+        return Response.error();
+    }
+}
+
+registerRoute(
+    ({ request, url }) =>
+        (request.method === "GET" || request.method === "HEAD") &&
+        url.origin === self.location.origin &&
+        url.pathname.toLowerCase().endsWith(".mp4"),
+    handleVideoRequest,
 );
 
 /*
