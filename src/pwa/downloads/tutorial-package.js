@@ -188,15 +188,18 @@ export function createTutorialContentVersions({
     videoMetadata = {},
 }) {
     const contentSteps = (steps ?? []).map((step) => {
-        const { video, ...stepContent } = step ?? {};
+        const stepContent = { ...(step ?? {}) };
 
-        return {
-            ...stepContent,
-            examples: (stepContent.examples ?? []).map((example) => {
-                const { video: exampleVideo, ...exampleContent } = example ?? {};
-                return exampleContent;
-            }),
-        };
+        delete stepContent.video;
+        stepContent.examples = (stepContent.examples ?? []).map((example) => {
+            const exampleContent = { ...(example ?? {}) };
+
+            delete exampleContent.video;
+
+            return exampleContent;
+        });
+
+        return stepContent;
     });
     const imagePaths = collectTutorialImageResources(steps, imageMetadata);
     const videoPaths = collectTutorialVideoResources(steps);
