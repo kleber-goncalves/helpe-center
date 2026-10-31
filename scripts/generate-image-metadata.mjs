@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { promises as fs } from "node:fs";
+import { createReadStream, promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -44,6 +44,17 @@ async function walk(directory, extensions = IMAGE_EXTENSIONS) {
     }
 
     return files;
+}
+
+function getFileContentHash(filePath) {
+    return new Promise((resolve, reject) => {
+        const hash = createHash("sha256");
+        const stream = createReadStream(filePath);
+
+        stream.on("data", (chunk) => hash.update(chunk));
+        stream.on("error", reject);
+        stream.on("end", () => resolve(hash.digest("hex")));
+    });
 }
 
 function toPosix(value) {
@@ -207,11 +218,13 @@ async function readImageMetadata(filePath) {
     }
 
     const fileStats = await fs.stat(filePath);
+    const contentHash = await getFileContentHash(filePath);
 
     return {
         width: dimensions.width,
         height: dimensions.height,
         size: fileStats.size,
+        contentHash,
         format: extension === ".svg"
             ? "svg"
             : dimensions.format ?? extension.slice(1),
@@ -279,6 +292,7 @@ async function main() {
 
         videoEntries[getPublicUrl(filePath)] = {
             size: metadata.size,
+            contentHash: await getFileContentHash(filePath),
             format: "mp4",
         };
     }
