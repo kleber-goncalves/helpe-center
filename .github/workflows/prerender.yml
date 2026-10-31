@@ -54,6 +54,10 @@ jobs:
           fi
           git commit -m "build: update prerendered site"
 
+          # Remove apenas alterações locais não commitadas: o dist e o sitemap
+          # já estão preservados no commit criado acima.
+          git reset --hard HEAD
+
           # A sincronização do AI_CONTEXT pode avançar a branch durante a build.
           # Rebaseia o artefato gerado sobre o HEAD remoto antes de publicar.
           git fetch origin "${GITHUB_REF_NAME}"
