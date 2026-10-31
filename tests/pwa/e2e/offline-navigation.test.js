@@ -606,7 +606,9 @@ test("não oferece pacote salvo depois que os dados do site são apagados", asyn
         await openExcelCompletion(page);
         const record = await saveExcelPackage(page);
 
-        await page.evaluate(async () => {
+        await page.evaluate(async (cacheName) => {
+            await caches.delete(cacheName);
+
             await new Promise((resolve, reject) => {
                 const request = indexedDB.deleteDatabase("hauy-conecta-offline");
 
@@ -616,7 +618,7 @@ test("não oferece pacote salvo depois que os dados do site são apagados", asyn
                     new Error("O banco offline ficou bloqueado durante a simulação."),
                 );
             });
-        });
+        }, record.cacheName);
 
         await page.reload({ waitUntil: "domcontentloaded" });
         await page.getByRole("heading", {
@@ -643,12 +645,12 @@ test("não oferece pacote salvo depois que os dados do site são apagados", asyn
 
         assert.equal(falselyMarkedAsSaved, 0);
 
-        const orphanedCacheStillExists = await page.evaluate(
+        const packageCacheWasRemoved = await page.evaluate(
             async (cacheName) => caches.has(cacheName),
             record.cacheName,
         );
 
-        assert.equal(orphanedCacheStillExists, true);
+        assert.equal(packageCacheWasRemoved, false);
     } finally {
         await context.close();
     }
@@ -745,6 +747,86 @@ test("reconhece como incompleto um arquivo substituído por resposta HTML no cac
             "Este tutorial está disponível offline neste dispositivo.",
             { exact: true },
         ).waitFor({ state: "hidden" });
+    } finally {
+        await context.close();
+    }
+});
+
+
+test("remove o cache temporário quando o download é cancelado durante a gravação", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+
+        await page.evaluate(() => {
+            const originalPut = Cache.prototype.put;
+            window.__tutorialPackagePutStarted = false;
+
+            Cache.prototype.put = function (request, response) {
+                if (this.name.startsWith("hauy-conecta-tutorial-package-v1-")) {
+                    window.__tutorialPackagePutStarted = true;
+
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            originalPut.call(this, request, response).then(resolve, reject);
+                        }, 2_000);
+                    });
+                }
+
+                return originalPut.call(this, request, response);
+            };
+        });
+
+        await page.getByRole("button", { name: "Salvar tutorial offline" }).click();
+
+        await page.waitForFunction(
+            () => window.__tutorialPackagePutStarted === true,
+            null,
+            { timeout: 15_000 },
+        );
+
+        await page.getByRole("button", { name: "Cancelar download" }).click();
+
+        await page.getByText(
+            "Download cancelado. Nenhum pacote parcial foi mantido.",
+            { exact: true },
+        ).waitFor({ state: "visible", timeout: 15_000 });
+
+        const result = await page.evaluate(async () => {
+            const database = await new Promise((resolve, reject) => {
+                const request = indexedDB.open("hauy-conecta-offline", 1);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+
+            let record;
+
+            try {
+                record = await new Promise((resolve, reject) => {
+                    const request = database
+                        .transaction("tutorial-packages", "readonly")
+                        .objectStore("tutorial-packages")
+                        .get("comecar-usar-excel");
+
+                    request.onsuccess = () => resolve(request.result ?? null);
+                    request.onerror = () => reject(request.error);
+                });
+            } finally {
+                database.close();
+            }
+
+            const packageCaches = (await caches.keys()).filter((name) =>
+                name.startsWith("hauy-conecta-tutorial-package-v1-"),
+            );
+
+            return { record: record ?? null, packageCaches };
+        });
+
+        assert.equal(result.record, null);
+        assert.deepEqual(result.packageCaches, []);
     } finally {
         await context.close();
     }
