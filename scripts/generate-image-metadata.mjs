@@ -206,9 +206,12 @@ async function readImageMetadata(filePath) {
         throw new Error(`Não foi possível obter dimensões: ${getMetadataKey(filePath)}`);
     }
 
+    const fileStats = await fs.stat(filePath);
+
     return {
         width: dimensions.width,
         height: dimensions.height,
+        size: fileStats.size,
         format: extension === ".svg"
             ? "svg"
             : dimensions.format ?? extension.slice(1),
