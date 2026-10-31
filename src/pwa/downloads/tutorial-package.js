@@ -381,8 +381,14 @@ export function isValidCachedTutorialResource(
 
     if (details?.size) {
         const contentLengthHeader = response.headers.get("content-length");
+        const isContentEncoded = Boolean(
+            response.headers.get("content-encoding")?.trim(),
+        );
 
+        // Content-Length pode refletir o corpo comprimido, enquanto o
+        // stream exposto ao JavaScript já contém os bytes descomprimidos.
         if (
+            !isContentEncoded &&
             contentLengthHeader &&
             Number(contentLengthHeader) !== details.size
         ) {
@@ -616,6 +622,9 @@ export async function saveTutorialOffline({
 
                 const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
                 const contentLength = Number(response.headers.get("content-length"));
+                const isContentEncoded = Boolean(
+                    response.headers.get("content-encoding")?.trim(),
+                );
                 const isValidType = resource.type === "video"
                     ? contentType.startsWith("video/") || contentType === "application/octet-stream"
                     : contentType.startsWith("image/");
@@ -629,7 +638,7 @@ export async function saveTutorialOffline({
                 }
 
                 const expectedSize = resource.size ?? (
-                    Number.isFinite(contentLength) && contentLength > 0
+                    !isContentEncoded && Number.isFinite(contentLength) && contentLength > 0
                         ? contentLength
                         : null
                 );
