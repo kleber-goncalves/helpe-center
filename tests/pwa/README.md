@@ -35,7 +35,7 @@ Os testes específicos do PWA ficam fora de `src/`. A implementação e as decis
 - Download de pacote com imagens e pôsteres.
 - Download de MP4 e reprodução/busca temporal offline.
 - Cache do pacote removido: o tutorial passa a ser identificado como incompleto e pode ser reparado com novo cache validado.
-- Conteúdo alterado: a interface indica pacote desatualizado sem excluir o cache anterior.
+- Conteúdo alterado: a interface indica pacote desatualizado, atualiza o pacote com sucesso e remove o cache anterior somente depois da substituição.
 - Dados locais apagados: a interface volta a oferecer o download, sem declarar o pacote disponível.
 - Quota excedida durante atualização: a versão anteriormente salva permanece associada ao registro.
 - Recurso substituído por HTML inválido: o pacote é identificado como incompleto.
