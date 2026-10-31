@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** ba1e6429c26fce4ec0460977ba3c55e37e5bd61f
-- **Data do commit:** 2026-10-30T22:24:22-03:00
-- **Mensagem do commit:** docs(pwa): registrar publicação e validação da Fase 1
+- **Commit de referência:** 81b8363a69d14dfcbe5430aab607ff902bb1fce2
+- **Data do commit:** 2026-10-31T00:31:11-03:00
+- **Mensagem do commit:** feat(pwa): cache images and save tutorials offline
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 81b8363 | 2026-10-31 | feat(pwa): cache images and save tutorials offline |
+| a3e5db9 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | ba1e642 | 2026-10-30 | docs(pwa): registrar publicação e validação da Fase 1 |
 | cf7ec5d | 2026-10-30 | docs(pwa): atualizar estado validado da Fase 1 |
 | 63b5bc8 | 2026-10-31 | build: update prerendered site |
 | db8dd81 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 559f3ee | 2026-10-30 | ci(pwa): limpar working tree antes do rebase |
 | ee3563f | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| f00dd2c | 2026-10-30 | ci(pwa): evitar conflito na publicação do dist |
-| af94016 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
