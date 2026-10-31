@@ -546,6 +546,22 @@ test("identifica pacote incompleto quando o Cache Storage é removido", async ()
             "Este tutorial está disponível offline neste dispositivo.",
             { exact: true },
         ).waitFor({ state: "hidden" });
+
+        await page.getByRole("button", { name: "Reparar pacote" }).click();
+
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({ state: "visible", timeout: 30_000 });
+
+        const repairedRecord = await readTutorialPackage(page, "comecar-usar-excel");
+        const repairedCacheExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            repairedRecord.cacheName,
+        );
+
+        assert.notEqual(repairedRecord.cacheName, record.cacheName);
+        assert.equal(repairedCacheExists, true);
     } finally {
         await context.close();
     }
@@ -593,6 +609,30 @@ test("identifica pacote desatualizado sem apagar o conteúdo anteriormente salvo
         );
 
         assert.equal(previousCacheStillExists, true);
+
+        await page.getByRole("button", {
+            name: "Atualizar pacote desatualizado",
+        }).click();
+
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({ state: "visible", timeout: 30_000 });
+
+        const updatedRecord = await readTutorialPackage(page, "comecar-usar-excel");
+        const oldCacheStillExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            originalCacheName,
+        );
+        const newCacheExists = await page.evaluate(
+            async (cacheName) => caches.has(cacheName),
+            updatedRecord.cacheName,
+        );
+
+        assert.notEqual(updatedRecord.cacheName, originalCacheName);
+        assert.notEqual(updatedRecord.contentVersion, "fingerprint-obsoleto-simulado");
+        assert.equal(oldCacheStillExists, false);
+        assert.equal(newCacheExists, true);
     } finally {
         await context.close();
     }
