@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 5f8fb521066c8c97e3e7b7b9a095deaa2ec62c15
-- **Data do commit:** 2026-10-31T16:32:18-03:00
-- **Mensagem do commit:** fix(pwa): excluir passos não normalizados da assinatura base
+- **Commit de referência:** cf646eff1e37032fb5817a10086ed6b8379c1ed5
+- **Data do commit:** 2026-10-31T16:33:45-03:00
+- **Mensagem do commit:** test(pwa): cobrir falhas de armazenamento e atualização de pacotes
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| cf646ef | 2026-10-31 | test(pwa): cobrir falhas de armazenamento e atualização de pacotes |
+| f011941 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
+| 49ead0e | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | 5f8fb52 | 2026-10-31 | fix(pwa): excluir passos não normalizados da assinatura base |
 | 0b4bb5b | 2026-10-31 | fix(pwa): remover campos de vídeo da assinatura base |
 | f1717c3 | 2026-10-31 | fix(pwa): separar versão dos vídeos opcionais do conteúdo do tutorial |
 | 85dc1e2 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | 63bfd96 | 2026-10-31 | test(pwa): garantir preservação dos pacotes na ativação do service worker |
-| 9123b3b | 2026-10-31 | test(pwa): cobrir versões de conteúdo e integridade dos pacotes |
-| b116ed6 | 2026-10-31 | test(pwa): expor validação de integridade dos recursos offline |
-| 27f2d3e | 2026-10-31 | refactor(pwa): preservar caches de tutoriais no ciclo de ativação |
 
 <!-- END AUTO-GENERATED SECTION -->
