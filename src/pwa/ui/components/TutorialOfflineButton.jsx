@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
     Check,
     Download,
@@ -10,6 +10,7 @@ import { Button } from "../../../components/ui";
 import imageMetadata from "../../../generated/imageMetadata.json";
 import {
     collectTutorialVideoResources,
+    createTutorialContentVersions,
     estimateTutorialVideoSize,
     formatBytes,
     getTutorialOfflinePackage,
@@ -35,6 +36,15 @@ export function TutorialOfflineButton({ tutorial, steps }) {
 
     const videoPaths = collectTutorialVideoResources(steps);
     const videoEstimate = estimateTutorialVideoSize(videoPaths, imageMetadata.videos);
+    const contentVersions = useMemo(
+        () => createTutorialContentVersions({
+            tutorial,
+            steps,
+            imageMetadata,
+            videoMetadata: imageMetadata.videos,
+        }),
+        [tutorial, steps],
+    );
 
     useEffect(() => {
         let active = true;
@@ -45,7 +55,7 @@ export function TutorialOfflineButton({ tutorial, steps }) {
         window.addEventListener("online", handleOnline);
         window.addEventListener("offline", handleOffline);
 
-        getTutorialOfflinePackage(tutorial.id)
+        getTutorialOfflinePackage(tutorial.id, contentVersions)
             .then((record) => {
                 if (active) {
                     const hasSavedVideos = Boolean(record?.videos?.length);
@@ -53,11 +63,9 @@ export function TutorialOfflineButton({ tutorial, steps }) {
                     setSavedIncludesVideos(hasSavedVideos);
                     setIncludeVideos(hasSavedVideos);
                     setStatus(
-                        record?.status === "saved"
-                            ? "saved"
-                            : record?.status === "incomplete"
-                                ? "incomplete"
-                                : "idle",
+                        ["saved", "incomplete", "outdated"].includes(record?.status)
+                            ? record.status
+                            : "idle",
                     );
                 }
             })
@@ -74,7 +82,7 @@ export function TutorialOfflineButton({ tutorial, steps }) {
             window.removeEventListener("offline", handleOffline);
             controllerRef.current?.abort();
         };
-    }, [tutorial.id]);
+    }, [tutorial.id, contentVersions]);
 
     async function handleSave() {
         if (!isOnline || status === "downloading" || status === "removing") {
@@ -101,6 +109,7 @@ export function TutorialOfflineButton({ tutorial, steps }) {
                 imageMetadata,
                 includeVideos,
                 videoMetadata: imageMetadata.videos,
+                ...contentVersions,
                 signal: controller.signal,
                 onProgress(nextProgress) {
                     setProgress(nextProgress);
@@ -113,15 +122,58 @@ export function TutorialOfflineButton({ tutorial, steps }) {
             setIncludeVideos(hasSavedVideos);
             setStatus("saved");
         } catch (error) {
+            let previousRecord = null;
+
+            try {
+                previousRecord = await getTutorialOfflinePackage(tutorial.id, contentVersions);
+            } catch {
+                // Mantém a mensagem principal da falha de download.
+            }
+
+            const previousStatus = previousRecord?.status ?? "idle";
+            const hasPreservedPackage = previousStatus === "saved" || previousStatus === "outdated";
+
+            setStatus(previousStatus);
+            setSavedIncludesVideos(Boolean(previousRecord?.videos?.length));
+
+            if (previousRecord) {
+                setIncludeVideos(Boolean(previousRecord.videos?.length));
+            }
+
             if (error?.name === "AbortError") {
-                setStatus("idle");
-                setErrorMessage("Download cancelado. Nenhum pacote incompleto foi mantido.");
-            } else {
-                setStatus("error");
                 setErrorMessage(
-                    error?.message ||
-                    "Não foi possível salvar o tutorial. Verifique sua conexão e o espaço disponível.",
+                    hasPreservedPackage
+                        ? "Download cancelado. A versão anterior do pacote foi preservada."
+                        : previousStatus === "incomplete"
+                            ? "Download cancelado. O pacote anterior continua identificado como incompleto."
+                            : "Download cancelado. Nenhum pacote parcial foi mantido.",
                 );
+            } else {
+                const isQuotaError = error?.name === "QuotaExceededError" ||
+                    /quota|storage.*full|disk full|no space/i.test(error?.message ?? "");
+
+                if (isQuotaError) {
+                    const storageMessage = "O armazenamento deste dispositivo está cheio. Libere espaço e tente novamente.";
+
+                    setErrorMessage(
+                        hasPreservedPackage
+                            ? storageMessage + " A versão anterior do pacote foi preservada."
+                            : storageMessage + " O download parcial foi descartado.",
+                    );
+                } else {
+                    const message = error?.message ||
+                        "Não foi possível salvar o tutorial. Verifique sua conexão e o espaço disponível.";
+
+                    setErrorMessage(
+                        hasPreservedPackage
+                            ? message + " A versão anterior do pacote foi preservada."
+                            : message,
+                    );
+                }
+
+                if (!previousRecord) {
+                    setStatus("error");
+                }
             }
         } finally {
             controllerRef.current = null;
@@ -201,7 +253,13 @@ export function TutorialOfflineButton({ tutorial, steps }) {
                     </Button>
                 )}
 
-                {status === "incomplete" && (
+                {status === "outdated" && (
+                <p className="mt-3 text-sm text-amber-700 dark:text-amber-400" role="status">
+                    O conteúdo deste tutorial mudou desde o último download. A versão salva continua no dispositivo, mas precisa ser atualizada para corresponder ao portal.
+                </p>
+            )}
+
+            {status === "incomplete" && (
                     <div className="flex flex-wrap gap-2">
                         <Button
                             type="button"
@@ -224,7 +282,7 @@ export function TutorialOfflineButton({ tutorial, steps }) {
                     </div>
                 )}
 
-                {status === "saved" && (
+                {(status === "saved" || status === "outdated") && (
                     <div className="flex flex-wrap gap-2">
                         <Button
                             type="button"
@@ -233,7 +291,7 @@ export function TutorialOfflineButton({ tutorial, steps }) {
                             disabled={!isOnline}
                         >
                             <Download className="size-4" aria-hidden="true" />
-                            Atualizar pacote
+                            {status === "outdated" ? "Atualizar pacote desatualizado" : "Atualizar pacote"}
                         </Button>
 
                         <Button
