@@ -17,7 +17,7 @@
 11. Quando uma mudança alterar comportamento, arquitetura, regras do produto, segurança, acessibilidade, SEO ou publicação, atualize também a seção narrativa pertinente deste arquivo no mesmo trabalho.
 12. Não edite manualmente a seção entre os marcadores de snapshot automatizado. Ela é gerada por scripts/update-ai-context.mjs.
 13. Nunca inclua chaves, tokens, senhas, credenciais, valores de arquivos .env, dados pessoais ou informações privadas neste documento.
-14. Não presuma que APIs externas funcionam offline. O PWA ainda está em planejamento; consulte docs/arquitetura-pwa-hauy-conecta.md antes de propor sua implementação.
+14. Não presuma que APIs externas funcionam offline. A Fase 1 do PWA está implementada e publicada na preview da branch feat/pwa; consulte docs/arquitetura-pwa-hauy-conecta.md para conhecer o escopo entregue, as validações e o que continua pendente.
 15. Consulte também README.md, docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md, docs/DOCUMENTACAO_PROJETO.md e docs/REGRAS-DOS-TUTORIAIS.md quando a tarefa envolver produto, arquitetura ou conteúdo. Compare os documentos com o código atual, pois algumas documentações podem refletir revisões anteriores.
 16. Mantenha o escopo fiel às necessidades da comunidade escolar. Novos recursos devem resolver problemas reais, não apenas aumentar a complexidade técnica.
 
@@ -399,11 +399,15 @@ A lista exata de scripts npm é mantida no snapshot automatizado.
 
 ### 11.5. Publicação
 
-O workflow .github/workflows/prerender.yml é responsável pela build e pré-renderização da branch main. Ele instala dependências, instala Chromium/Playwright, executa o build, remove o arquivo temporário de rotas e publica as alterações geradas em dist/ e public/sitemap.xml.
+O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
 
-A Vercel publica o conteúdo já pré-renderizado de dist/. O vercel.json atual define esse diretório como saída e usa um comando que não refaz a pré-renderização na Vercel.
+Depois de criar o commit do artefato, o workflow limpa somente alterações locais não commitadas, busca o HEAD remoto e faz rebase antes do push. Isso evita rejeições non-fast-forward quando a sincronização automática do AI_CONTEXT avança a branch durante a build. A atualização da referência não utiliza force push.
 
-**Atenção:** dist/ é versionado no repositório e integra o fluxo de publicação. Não mudar essa estratégia sem revisar Actions, Vercel, pré-renderização e artefatos.
+A Vercel publica o conteúdo pré-renderizado de dist/. O vercel.json define esse diretório como saída e mantém um buildCommand informativo; Vite e Astratra não são executados novamente na Vercel.
+
+Na preview da feat/pwa, o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, correspondente ao commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi marcado READY. A raiz respondeu HTTP 200; manifest.webmanifest respondeu 200 com application/manifest+json; sw.js respondeu 200 com application/javascript; e os quatro ícones responderam 200 com image/png.
+
+**Atenção:** dist/ é versionado no repositório e integra o fluxo de publicação. Alterações nesse pipeline exigem conferir Actions, Vercel, pré-renderização e os artefatos efetivamente publicados.
 
 ## 12. Analytics
 
@@ -433,21 +437,26 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 
 ## 14. Estado atual do PWA
 
-**Status: Fase 1 parcialmente implementada na branch feat/pwa; o PWA ainda não está liberado como funcionalidade de produção.**
+**Status: Fase 1 implementada e publicada em preview na branch feat/pwa; a liberação para produção ainda depende do aceite manual da instalação e da abertura standalone em navegador/dispositivo-alvo.**
 
 A arquitetura e o histórico estão em docs/arquitetura-pwa-hauy-conecta.md. O código PWA fica isolado em src/pwa/ e os testes automatizados em tests/pwa/.
 
-A implementação atual usa vite-plugin-pwa 2.0.0 com injectManifest e Workbox 7.4.1. O manifesto é definido em src/pwa/config/manifest.js; os ícones PNG são gerados de public/logo.svg por scripts/generate-pwa-icons.mjs antes de dev/build.
+A implementação usa vite-plugin-pwa 2.0.0 com injectManifest e Workbox 7.4.1. O manifesto é definido em src/pwa/config/manifest.js; os ícones PNG são gerados de public/logo.svg por scripts/generate-pwa-icons.mjs antes de dev/build.
 
 O Service Worker em src/pwa/service-worker/sw.js faz precache de JS, CSS, HTML, favicon, manifesto e ícones, com limite de 2 MiB por arquivo. Os caminhos de tutoriais e arquivos MP4 são excluídos. A navegação tenta a rede primeiro e usa o app shell quando a rede falha; public/offline.html é fallback final.
 
 O registro e a atualização ficam em src/pwa/client/register-service-worker.js. A interface React usa src/pwa/ui/hooks/usePwaStatus.js e src/pwa/ui/components/PwaStatusBanner.jsx para sinalizar conexão, preparação offline e atualização disponível. A atualização é prompt: precisa de ação explícita da pessoa.
 
-Scripts novos: npm run pwa:icons, npm run test:pwa:unit, npm run test:pwa:e2e e npm run test:pwa. O workflow Validate Hauy Conecta executa testes unitários antes do lint e testes E2E após build/prerender.
+Scripts novos: npm run pwa:icons, npm run test:pwa:unit, npm run test:pwa:e2e e npm run test:pwa. O workflow Validate Hauy Conecta executa testes unitários, ESLint, build/prerender/auditoria e testes E2E.
 
-Validação realizada no sandbox Node 24: Vite build passou, ESLint passou com duas advertências preexistentes em ImageLightbox.jsx e useTutorialStepMedia.js, e quatro testes unitários PWA passaram. O build completo chegou à etapa Astratra, mas o sandbox remoto encerrou o Chromium; a execução E2E precisa ser confirmada no GitHub Actions/Ubuntu. Não declarar instalação ou uso offline validado até essa execução e um teste manual no preview.
+Validação confirmada no GitHub Actions: testes existentes, quatro testes unitários PWA, ESLint, build Vite + Astratra, auditoria de imagens e testes E2E passaram. O E2E confirmou registro/ativação do Service Worker e abertura de uma rota de tutorial sem rede. A auditoria verificou 151 imagens em 27 arquivos HTML, todas com width/height e alt; o Workbox gerou 37 entradas de precache (aproximadamente 1,25 MiB).
+
+O commit 63b5bc8744da1c4ec4deabeab352846db74b56b3 versionou o dist/ gerado na feat/pwa. A Vercel publicou o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2 como READY; manifesto, Service Worker e os quatro ícones responderam HTTP 200 com os MIME types esperados. O HTML da raiz contém a referência ao manifesto.
+
+Ainda falta a verificação manual da experiência de instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo. Não declarar o PWA pronto para produção antes desse aceite.
 
 Ainda não foram implementados cache runtime de imagens, pacotes offline por tutorial, IndexedDB, downloads ou vídeo offline. A decisão híbrida permanece: vídeos não entram no precache automático.
+
 ## 15. Limitações e cuidados conhecidos
 
 1. **Rate limit serverless:** os Map de rate limit são locais à instância e não formam um controle distribuído.
