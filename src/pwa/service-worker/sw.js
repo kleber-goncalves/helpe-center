@@ -11,6 +11,7 @@ import {
     RUNTIME_IMAGE_CACHE_NAME,
     TUTORIAL_PACKAGE_CACHE_PREFIX,
 } from "../config/cache-policy.js";
+import { cleanupOldAppShellCaches } from "./cache-cleanup.js";
 
 setCacheNameDetails({
     prefix: "hauy-conecta",
@@ -312,25 +313,11 @@ const CURRENT_PRECACHE_CACHE_NAME = [
     APP_SHELL_CACHE_VERSION,
 ].join("-");
 
-async function cleanupOldAppShellCaches() {
-    const cacheNames = await caches.keys();
-
-    await Promise.all(
-        cacheNames
-            .filter(
-                (cacheName) =>
-                    cacheName.startsWith("hauy-conecta-app-shell-") &&
-                    cacheName !== CURRENT_PRECACHE_CACHE_NAME,
-            )
-            .map((cacheName) => caches.delete(cacheName)),
-    );
-}
-
 self.addEventListener("activate", (event) => {
     event.waitUntil(
         Promise.all([
             self.clients.claim(),
-            cleanupOldAppShellCaches(),
+            cleanupOldAppShellCaches(caches, CURRENT_PRECACHE_CACHE_NAME),
         ]),
     );
 });
