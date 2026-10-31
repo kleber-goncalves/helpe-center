@@ -187,6 +187,17 @@ export function createTutorialContentVersions({
     imageMetadata = { images: {} },
     videoMetadata = {},
 }) {
+    const contentSteps = (steps ?? []).map((step) => {
+        const { video, ...stepContent } = step ?? {};
+
+        return {
+            ...stepContent,
+            examples: (stepContent.examples ?? []).map((example) => {
+                const { video: exampleVideo, ...exampleContent } = example ?? {};
+                return exampleContent;
+            }),
+        };
+    });
     const imagePaths = collectTutorialImageResources(steps, imageMetadata);
     const videoPaths = collectTutorialVideoResources(steps);
     const tutorialContent = { ...(tutorial ?? {}) };
@@ -218,7 +229,7 @@ export function createTutorialContentVersions({
         serializeVersionValue({
             packageVersion: TUTORIAL_PACKAGE_VERSION,
             tutorial: tutorialContent,
-            steps,
+            steps: contentSteps,
             images: imageDetails,
         }),
     );
