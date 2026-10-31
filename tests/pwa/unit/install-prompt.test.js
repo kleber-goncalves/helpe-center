@@ -28,6 +28,13 @@ function createFakeWindow() {
     };
 }
 
+test("mantém a mesma referência do snapshot enquanto o estado não muda", () => {
+    const manager = createPwaInstallManager(createFakeWindow());
+    const initialSnapshot = manager.getSnapshot();
+
+    assert.equal(manager.getSnapshot(), initialSnapshot);
+});
+
 test("captura beforeinstallprompt e publica a disponibilidade para a interface", () => {
     const fakeWindow = createFakeWindow();
     const manager = createPwaInstallManager(fakeWindow);

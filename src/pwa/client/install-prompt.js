@@ -24,11 +24,23 @@ export function createPwaInstallManager(target) {
         );
     }
 
+    let cachedSnapshot = null;
+
     function getSnapshot() {
-        return {
+        const nextSnapshot = {
             canPrompt: Boolean(deferredPrompt),
             isInstalled: installedByEvent || isStandalone(),
         };
+
+        if (
+            !cachedSnapshot ||
+            cachedSnapshot.canPrompt !== nextSnapshot.canPrompt ||
+            cachedSnapshot.isInstalled !== nextSnapshot.isInstalled
+        ) {
+            cachedSnapshot = nextSnapshot;
+        }
+
+        return cachedSnapshot;
     }
 
     function notify() {
