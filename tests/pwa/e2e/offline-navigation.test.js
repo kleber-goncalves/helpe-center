@@ -154,49 +154,59 @@ async function saveExcelPackage(page) {
     return record;
 }
 
-async function interceptNewTutorialPackageCache(page, previousCacheName, mode) {
-    await page.evaluate(({ previousCacheName, mode }) => {
-        const originalOpen = caches.open.bind(caches);
+async function installTutorialPackageCacheInterceptor(page) {
+    await page.addInitScript(() => {
+        const originalOpen = CacheStorage.prototype.open;
 
-        Object.defineProperty(caches, "open", {
+        Object.defineProperty(CacheStorage.prototype, "open", {
             configurable: true,
+            writable: true,
             value: async function (cacheName) {
-                const cache = await originalOpen(cacheName);
+                const cache = await originalOpen.call(this, cacheName);
+                const config = window.__tutorialPackageCacheInterceptor;
 
                 if (
-                    cacheName.startsWith("hauy-conecta-tutorial-package-v1-") &&
-                    cacheName !== previousCacheName
+                    !config ||
+                    !cacheName.startsWith("hauy-conecta-tutorial-package-v1-") ||
+                    cacheName === config.previousCacheName
                 ) {
-                    const originalPut = cache.put.bind(cache);
-
-                    Object.defineProperty(cache, "put", {
-                        configurable: true,
-                        value(request, response) {
-                            window.__tutorialPackagePutStarted = true;
-
-                            if (mode === "quota") {
-                                return Promise.reject(
-                                    new DOMException("Quota exceeded", "QuotaExceededError"),
-                                );
-                            }
-
-                            if (mode === "delay") {
-                                return new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        originalPut(request, response).then(resolve, reject);
-                                    }, 2_000);
-                                });
-                            }
-
-                            return originalPut(request, response);
-                        },
-                    });
+                    return cache;
                 }
+
+                const originalPut = cache.put.bind(cache);
+
+                Object.defineProperty(cache, "put", {
+                    configurable: true,
+                    value(request, response) {
+                        window.__tutorialPackagePutStarted = true;
+
+                        if (config.mode === "quota") {
+                            return Promise.reject(
+                                new DOMException("Quota exceeded", "QuotaExceededError"),
+                            );
+                        }
+
+                        if (config.mode === "delay") {
+                            return new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    originalPut(request, response).then(resolve, reject);
+                                }, 2_000);
+                            });
+                        }
+
+                        return originalPut(request, response);
+                    },
+                });
 
                 return cache;
             },
         });
+    });
+}
 
+async function configureTutorialPackageCacheInterceptor(page, previousCacheName, mode) {
+    await page.evaluate(({ previousCacheName, mode }) => {
+        window.__tutorialPackageCacheInterceptor = { previousCacheName, mode };
         window.__tutorialPackagePutStarted = false;
     }, { previousCacheName, mode });
 }
@@ -749,10 +759,11 @@ test("preserva o pacote anterior quando uma atualização falha por quota", asyn
     const page = await context.newPage();
 
     try {
+        await installTutorialPackageCacheInterceptor(page);
         await openExcelCompletion(page);
         const record = await saveExcelPackage(page);
 
-        await interceptNewTutorialPackageCache(page, record.cacheName, "quota");
+        await configureTutorialPackageCacheInterceptor(page, record.cacheName, "quota");
 
         await page.getByRole("button", { name: "Atualizar pacote" }).click();
 
@@ -831,10 +842,11 @@ test("preserva o pacote anterior e remove o cache temporário após cancelar uma
     const page = await context.newPage();
 
     try {
+        await installTutorialPackageCacheInterceptor(page);
         await openExcelCompletion(page);
         const previousRecord = await saveExcelPackage(page);
 
-        await interceptNewTutorialPackageCache(page, previousRecord.cacheName, "delay");
+        await configureTutorialPackageCacheInterceptor(page, previousRecord.cacheName, "delay");
 
         await page.getByRole("button", { name: "Atualizar pacote" }).click();
 
