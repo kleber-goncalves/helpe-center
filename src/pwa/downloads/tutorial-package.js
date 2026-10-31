@@ -336,6 +336,46 @@ async function deleteStoredPackage(tutorialId) {
  * Confere o estado real do pacote. A existência do registro no IndexedDB
  * não basta: cada resposta também precisa continuar íntegra no Cache Storage.
  */
+/**
+ * Valida a resposta que representa um recurso salvo no Cache Storage.
+ * Para vídeos, compara o Content-Length quando o navegador o disponibiliza.
+ */
+export function isValidCachedTutorialResource(
+    response,
+    details,
+    resourceType = details?.type ?? "image",
+) {
+    if (!response || response.status !== 200 || !response.body) {
+        return false;
+    }
+
+    const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+    const hasValidContentType = resourceType === "video"
+        ? contentType.startsWith("video/") || contentType === "application/octet-stream"
+        : contentType.startsWith("image/");
+
+    if (!hasValidContentType) {
+        return false;
+    }
+
+    if (details && (!Number.isFinite(details.size) || details.size <= 0)) {
+        return false;
+    }
+
+    if (resourceType === "video" && details?.size) {
+        const contentLengthHeader = response.headers.get("content-length");
+
+        if (
+            contentLengthHeader &&
+            Number(contentLengthHeader) !== details.size
+        ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export async function getTutorialOfflinePackage(tutorialId, contentVersions = {}) {
     const record = await getStoredPackage(tutorialId);
 
@@ -379,24 +419,7 @@ export async function getTutorialOfflinePackage(tutorialId, contentVersions = {}
         const details = resourceDetails.get(resource);
         const resourceType = details?.type ??
             (record.videos?.includes(resource) ? "video" : "image");
-        const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
-        const contentLengthHeader = response.headers.get("content-length");
-        const contentLength = Number(contentLengthHeader);
-        const hasValidContentType = resourceType === "video"
-            ? contentType.startsWith("video/") || contentType === "application/octet-stream"
-            : contentType.startsWith("image/");
-        const hasValidVideoSize = resourceType !== "video" ||
-            !details?.size ||
-            !contentLengthHeader ||
-            (Number.isFinite(contentLength) && contentLength === details.size);
-
-        if (
-            response.status !== 200 ||
-            !response.body ||
-            !hasValidContentType ||
-            !hasValidVideoSize ||
-            (details && (!Number.isFinite(details.size) || details.size <= 0))
-        ) {
+        if (!isValidCachedTutorialResource(response, details, resourceType)) {
             invalidResources.push(resource);
         }
     }
