@@ -73,3 +73,25 @@ A navegação tenta buscar a rota na rede para preservar o HTML pré-renderizado
 - `npm run test:pwa:unit`: políticas e coleta de recursos de tutoriais.
 - `npm run test:pwa:e2e`: registro do Service Worker, navegação offline, cache runtime, download de pacote com MP4 e reprodução/busca offline.
 - `npm run test:pwa`: executa os testes unitários e E2E.
+
+
+## Atualização e recuperação de pacotes
+
+A atualização do Service Worker usa o modo prompt. A nova versão só é ativada após a confirmação da pessoa. Durante a ativação, a limpeza remove exclusivamente caches antigos do app shell (\`hauy-conecta-app-shell-*\`); caches de tutoriais (\`hauy-conecta-tutorial-package-*\`) e o cache runtime de imagens ficam fora dessa limpeza.
+
+Cada pacote registra fingerprints separados para o conteúdo textual/imagens e para os vídeos opcionais. A geração de metadados calcula SHA-256 para imagens e MP4, além de manter o tamanho dos arquivos. A alteração de texto, imagem, vídeo ou metadados relevantes permite identificar um pacote desatualizado sem exigir que um pacote sem vídeos seja atualizado só porque o catálogo de vídeos mudou.
+
+A consulta de disponibilidade verifica:
+- se o cache associado ao registro ainda existe;
+- se cada URL esperada está presente;
+- se a resposta armazenada tem status HTTP 200 e corpo;
+- se o MIME type corresponde ao tipo de recurso;
+- se o tamanho registrado é positivo e, quando existe \`Content-Length\`, corresponde ao valor armazenado.
+
+Um pacote com recurso ausente ou inválido é identificado como \`incomplete\`. Um pacote íntegro cuja fingerprint não corresponde ao conteúdo atual é \`outdated\`. Somente um pacote íntegro e atualizado recebe o estado \`saved\`.
+
+A atualização usa cache temporário separado. O novo registro do IndexedDB só é gravado após todos os recursos serem baixados, persistidos e validados. O cache anterior só é removido depois que o novo registro foi salvo. Em caso de cancelamento, falha de rede ou quota, o cache temporário é descartado e o estado do pacote anterior é consultado novamente, evitando informar falsamente que o tutorial foi perdido.
+
+Quando o navegador remove Cache Storage ou os metadados deixam de existir, o botão não declara o tutorial disponível. Se o cache desaparecer e o registro continuar no IndexedDB, o pacote é \`incomplete\` e oferece reparo. Se os dados do site forem apagados, o registro não existe e o usuário recebe a ação de salvar novamente.
+
+O limite dessa verificação deve ser entendido corretamente: Cache Storage não oferece uma verificação criptográfica automática do corpo a cada consulta. A gravação é validada durante o download, os metadados registram o tamanho recebido e a consulta detecta ausência, resposta inválida, MIME incompatível e divergência de tamanho quando o cabeçalho está disponível. As fingerprints SHA-256 são usadas para detectar alteração dos arquivos publicados, não para re-hash dos arquivos a cada abertura do tutorial.
