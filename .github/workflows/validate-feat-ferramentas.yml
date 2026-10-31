@@ -23,8 +23,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: validate-${{ github.event.pull_request.number || github.ref }}
-  # Não cancelar uma validação de código por uma execução posterior do bot.
+  group: validate-${{ github.event.pull_request.number || github.ref }}-${{ github.actor == 'github-actions[bot]' && 'automation' || 'code' }}
+  # Execuções do bot usam grupo próprio e não disputam a validação de código.
   cancel-in-progress: false
 
 jobs:
