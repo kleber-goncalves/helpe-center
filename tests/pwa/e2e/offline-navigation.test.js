@@ -831,3 +831,79 @@ test("remove o cache temporário quando o download é cancelado durante a grava�
         await context.close();
     }
 });
+
+
+test("não declara pacote disponível quando um arquivo necessário está indisponível", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await openExcelCompletion(page);
+
+        await page.evaluate((unavailablePath) => {
+            const originalFetch = window.fetch.bind(window);
+
+            window.fetch = (input, init) => {
+                const requestUrl = typeof input === "string" || input instanceof URL
+                    ? new URL(input, location.origin)
+                    : new URL(input.url);
+
+                if (requestUrl.pathname === unavailablePath) {
+                    return Promise.resolve(new Response("recurso indisponível", {
+                        status: 404,
+                        headers: { "content-type": "text/plain" },
+                    }));
+                }
+
+                return originalFetch(input, init);
+            };
+        }, EXCEL_TUTORIAL_IMAGE);
+
+        await page.getByRole("button", { name: "Salvar tutorial offline" }).click();
+
+        await page.getByText(
+            "Não foi possível baixar uma imagem necessária do tutorial.",
+            { exact: true },
+        ).waitFor({ state: "visible", timeout: 20_000 });
+
+        const result = await page.evaluate(async () => {
+            const database = await new Promise((resolve, reject) => {
+                const request = indexedDB.open("hauy-conecta-offline", 1);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+
+            let record;
+
+            try {
+                record = await new Promise((resolve, reject) => {
+                    const request = database
+                        .transaction("tutorial-packages", "readonly")
+                        .objectStore("tutorial-packages")
+                        .get("comecar-usar-excel");
+
+                    request.onsuccess = () => resolve(request.result ?? null);
+                    request.onerror = () => reject(request.error);
+                });
+            } finally {
+                database.close();
+            }
+
+            const packageCaches = (await caches.keys()).filter((name) =>
+                name.startsWith("hauy-conecta-tutorial-package-v1-"),
+            );
+
+            return { record: record ?? null, packageCaches };
+        });
+
+        assert.equal(result.record, null);
+        assert.deepEqual(result.packageCaches, []);
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({ state: "hidden" });
+    } finally {
+        await context.close();
+    }
+});
