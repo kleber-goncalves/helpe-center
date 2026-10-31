@@ -529,7 +529,13 @@ export function Tutorial() {
                          * ==================================================
                          */}
 
-                        {activeStep === steps.length - 1 && <TutorialCompletion externalLearning={tutorial.externalLearning} />}
+                        {activeStep === steps.length - 1 && (
+                            <TutorialCompletion
+                                externalLearning={tutorial.externalLearning}
+                                tutorial={tutorial}
+                                steps={steps}
+                            />
+                        )}
 
                         {/*
                          * ==================================================

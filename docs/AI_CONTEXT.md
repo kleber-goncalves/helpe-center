@@ -569,6 +569,20 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 ---
 
+
+## Estado atual do PWA — imagens e tutoriais offline
+
+A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). Confirme o HEAD mais recente do PR antes de continuar, pois os workflows de pré-renderização e sincronização do AI_CONTEXT podem criar commits adicionais.
+
+- O precache essencial inclui JS, CSS, HTML, favicon, manifesto, ícones PWA e os logotipos `logo.svg`, `iloveIMG.svg` e `ilovePDF.svg`.
+- O Service Worker guarda imagens da mesma origem no cache runtime `hauy-conecta-runtime-images-v1` quando elas são solicitadas online. Isso inclui imagens das seções, fotos da equipe e variantes `/_optimized/`. O limite atual é de 1.000 entradas; imagens que nunca foram carregadas não são baixadas antecipadamente.
+- O componente `TutorialCompletion` apresenta a ação `Salvar tutorial offline` no final de cada tutorial.
+- O pacote inclui dados/texto já presentes nos bundles pré-cacheados, imagens das etapas/exemplos, pôsteres e variantes responsivas. Cache Storage guarda os arquivos e IndexedDB mantém os metadados. Há progresso, cancelamento, atualização e remoção.
+- Cada pacote é local ao navegador/dispositivo no qual foi salvo; não existe sincronização entre dispositivos.
+- Vídeos MP4 e links externos ficam fora do pacote padrão e continuam exigindo internet. Não acrescentar downloads automáticos de vídeos: a biblioteca local tem volume elevado.
+- Testes acrescentados nesta fase: `tests/pwa/unit/tutorial-package.test.js` e cenários E2E para cache runtime e pacote de tutorial em `tests/pwa/e2e/offline-navigation.test.js`.
+- Não declarar a validação da nova fase concluída antes de consultar os resultados de GitHub Actions, build/prerender e preview da Vercel. A instalação standalone e os testes manuais offline em celular/PC também precisam ser reavaliados após o novo deploy.
+
 <!-- BEGIN AUTO-GENERATED SECTION -->
 
 ## Snapshot automatizado do repositório

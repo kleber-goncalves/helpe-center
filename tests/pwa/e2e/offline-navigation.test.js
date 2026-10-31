@@ -12,6 +12,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.
 const HOST = "127.0.0.1";
 const PORT = 4187;
 const BASE_URL = "http://" + HOST + ":" + PORT;
+const RUNTIME_IMAGE_CACHE_NAME = "hauy-conecta-runtime-images-v1";
+const TUTORIAL_PACKAGE_CACHE_PREFIX = "hauy-conecta-tutorial-package-v1-";
+const EXCEL_TUTORIAL_IMAGE = "/tutoriais/excel/como-comecar-usar-excel/passo-1.webp";
 
 let previewProcess;
 let browser;
@@ -58,6 +61,17 @@ async function waitForServiceWorkerControl(page) {
             });
         }
     });
+}
+
+async function loadImageInPage(page, url) {
+    return page.evaluate((imageUrl) => new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.onload = () => resolve(image.naturalWidth);
+        image.onerror = () => reject(new Error("A imagem não carregou: " + imageUrl));
+
+        image.src = imageUrl;
+    }), url);
 }
 
 before(async () => {
@@ -140,6 +154,112 @@ test("abre uma rota de tutorial sem rede usando os recursos precacheados", async
             state: "visible",
             timeout: 15_000,
         });
+    } finally {
+        await context.setOffline(false);
+        await context.close();
+    }
+});
+
+test("armazena imagens locais no cache runtime e as entrega sem internet", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+        await waitForServiceWorkerControl(page);
+
+        const imageWidth = await loadImageInPage(page, EXCEL_TUTORIAL_IMAGE);
+
+        assert.ok(imageWidth > 0, "A imagem deve carregar enquanto há conexão.");
+
+        const isCached = await page.evaluate(async ({ cacheName, imagePath }) => {
+            const cache = await caches.open(cacheName);
+            const response = await cache.match(new URL(imagePath, location.origin).href);
+
+            return Boolean(response);
+        }, {
+            cacheName: RUNTIME_IMAGE_CACHE_NAME,
+            imagePath: EXCEL_TUTORIAL_IMAGE,
+        });
+
+        assert.equal(isCached, true, "A imagem acessada deve ficar no cache runtime.");
+
+        await context.setOffline(true);
+
+        const offlineImageWidth = await loadImageInPage(page, EXCEL_TUTORIAL_IMAGE);
+
+        assert.ok(offlineImageWidth > 0, "A imagem deve continuar carregando sem internet.");
+    } finally {
+        await context.setOffline(false);
+        await context.close();
+    }
+});
+
+test("salva um tutorial, preserva as imagens offline e permite consultá-las sem rede", async () => {
+    const context = await browser.newContext({ serviceWorkers: "allow" });
+    const page = await context.newPage();
+
+    try {
+        await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+        await waitForServiceWorkerControl(page);
+
+        await page.goto(
+            BASE_URL + "/tutoriais/comecar-usar-excel",
+            { waitUntil: "domcontentloaded" },
+        );
+
+        await page.getByRole("heading", { name: "Como começar a usar o Excel" }).waitFor({
+            state: "visible",
+            timeout: 15_000,
+        });
+
+        const lastStepButton = page
+            .locator('nav[aria-label="Etapas do tutorial"] ol')
+            .first()
+            .getByRole("button")
+            .last();
+
+        await lastStepButton.click();
+
+        await page.getByRole("heading", { name: "Salve a planilha" }).waitFor({
+            state: "visible",
+            timeout: 15_000,
+        });
+
+        await page.getByRole("button", { name: "Salvar tutorial offline" }).click();
+
+        await page.getByText(
+            "Este tutorial está disponível offline neste dispositivo.",
+            { exact: true },
+        ).waitFor({
+            state: "visible",
+            timeout: 30_000,
+        });
+
+        const packageResource = await page.evaluate(async (cachePrefix) => {
+            const cacheNames = (await caches.keys()).filter((name) =>
+                name.startsWith(cachePrefix),
+            );
+
+            for (const cacheName of cacheNames) {
+                const cache = await caches.open(cacheName);
+                const requests = await cache.keys();
+
+                if (requests.length > 0) {
+                    return requests[0].url;
+                }
+            }
+
+            return null;
+        }, TUTORIAL_PACKAGE_CACHE_PREFIX);
+
+        assert.ok(packageResource, "O pacote do tutorial deve armazenar pelo menos uma imagem.");
+
+        await context.setOffline(true);
+
+        const offlineImageWidth = await loadImageInPage(page, packageResource);
+
+        assert.ok(offlineImageWidth > 0, "Uma imagem do pacote deve abrir mesmo sem internet.");
     } finally {
         await context.setOffline(false);
         await context.close();

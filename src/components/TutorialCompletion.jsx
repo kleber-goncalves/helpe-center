@@ -1,8 +1,10 @@
 import { ExternalLink, ListVideo } from "lucide-react";
 
+import { TutorialOfflineButton } from "../pwa/ui/components/TutorialOfflineButton";
+
 import { Youtube } from "@thesvg/react";
 
-export function TutorialCompletion({ externalLearning = [] }) {
+export function TutorialCompletion({ externalLearning = [], tutorial, steps = [] }) {
     return (
         <section
             className="
@@ -31,6 +33,13 @@ export function TutorialCompletion({ externalLearning = [] }) {
             <p className="mt-2 text-sm leading-6 text-muted-ink">
                 Se precisar, volte aos passos e faça com calma.
             </p>
+
+            {tutorial && (
+                <TutorialOfflineButton
+                    tutorial={tutorial}
+                    steps={steps}
+                />
+            )}
 
             {externalLearning.length > 0 && (
                 <div className="mt-7 border-t border-line pt-6">

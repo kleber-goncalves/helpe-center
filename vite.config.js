@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { pwaManifest } from "./src/pwa/config/manifest.js";
 import {
     MAX_PRECACHE_FILE_SIZE_BYTES,
+    PRECACHE_ASSETS,
     PRECACHE_GLOB_IGNORES,
     PRECACHE_GLOB_PATTERNS,
 } from "./src/pwa/config/cache-policy.js";
@@ -30,7 +31,7 @@ export default defineConfig({
             injectRegister: false,
             registerType: "prompt",
             manifest: pwaManifest,
-            includeAssets: ["favicon.ico", "icons/apple-touch-icon.png"],
+            includeAssets: PRECACHE_ASSETS,
             injectManifest: {
                 globPatterns: PRECACHE_GLOB_PATTERNS,
                 globIgnores: PRECACHE_GLOB_IGNORES,

@@ -643,7 +643,7 @@ disponível offline, parcial, falha e atualização disponível.
 
 **Validação da Vercel:** o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, ficou READY. Manifesto, Service Worker e ícones responderam HTTP 200 com os MIME types esperados.
 
-**Limite desta entrega:** não existe cache runtime de imagens, download de tutoriais, IndexedDB de pacotes ou vídeo offline nesta fase.
+**Limite da Fase 1 inicial:** naquele momento ainda não existia cache runtime de imagens, download de tutoriais ou IndexedDB de pacotes. Esses recursos foram implementados na Fase 1.1, documentada na seção 25. Vídeo offline continua fora do escopo do pacote padrão.
 
 **Saída desta etapa:** build e publicação do app shell confirmados, recursos servidos corretamente na preview e testes automatizados de registro/offline aprovados. A experiência de instalação e abertura standalone ainda precisa de aceite manual.
 
@@ -897,7 +897,7 @@ Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no wor
 - A interface apresenta estado de conexão, confirmação de preparação offline e aviso de atualização com ação explícita.
 - Testes unitários e E2E foram criados e adicionados ao workflow Validate Hauy Conecta.
 - npx vite build, ESLint e os quatro testes unitários passaram no sandbox Node 24. O build completo parou na etapa Astratra porque o Chromium encerra dentro do sandbox remoto; o E2E ainda deve ser confirmado no runner Ubuntu do GitHub Actions.
-- Nenhum cache runtime de imagens, pacote de tutorial, IndexedDB ou vídeo offline foi implementado nesta fase.
+- Na Fase 1.1, foram adicionados cache runtime de imagens gerais e pacotes opt-in de tutoriais com Cache Storage + IndexedDB. Vídeos offline continuam fora do pacote padrão.
 - Os diretórios de domínio serão criados progressivamente junto com o primeiro arquivo de cada responsabilidade para evitar scaffolding vazio.
 
 ## 24. Decisões e validação da Fase 1
@@ -914,3 +914,36 @@ Os testes PWA deverão ter comando próprio (`npm run test:pwa`) e entrar no wor
 - O deployment Vercel dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi publicado como READY. Manifesto, Service Worker e os quatro ícones retornaram HTTP 200 com MIME types corretos.
 - O aceite manual da instalação, abertura standalone, atualização e navegação offline no navegador/dispositivo-alvo permanece pendente.
 
+
+## 25. Fase 1.1 — imagens gerais e pacotes de tutoriais
+
+Esta seção registra o comportamento implementado em `feat/pwa` após o aceite manual inicial da navegação offline. Ela complementa as decisões anteriores e substitui qualquer observação de que cache runtime de imagens ou pacotes opt-in ainda não existiam.
+
+### Imagens gerais e identidade visual
+
+- `logo.svg`, `iloveIMG.svg`, `ilovePDF.svg`, favicon e ícones PWA entram no precache.
+- O Service Worker aplica cache runtime às solicitações de imagem da mesma origem.
+- Imagens de seções, fotos da equipe, imagens de conteúdo e variantes geradas em `/_optimized/` são armazenadas quando solicitadas.
+- O cache runtime possui limite de 1.000 entradas e namespace independente.
+- Recursos que nunca foram solicitados enquanto havia conexão não são baixados antecipadamente. A disponibilidade offline depende de a imagem já ter sido armazenada.
+
+### Salvar um tutorial para uso offline
+
+O botão `Salvar tutorial offline` aparece no componente `TutorialCompletion`, depois do último passo e antes da seção de conteúdos externos.
+
+O catálogo coleta imagens e pôsteres dos passos/exemplos. Também inclui as variantes responsivas de cada imagem obtidas de `src/generated/imageMetadata.json`, pois o navegador pode escolher uma variante de `/_optimized/` em vez da imagem original.
+
+O pacote é mantido em um cache próprio por tutorial. Os metadados e a lista de recursos esperados são armazenados no IndexedDB `hauy-conecta-offline`. O download tem concorrência limitada, progresso, cancelamento, validação de respostas, remoção de cache parcial em caso de falha e ação para remover o pacote depois.
+
+A disponibilidade é local ao navegador/dispositivo. O botão não baixa arquivos MP4 nem conteúdo externo: os vídeos e links de videoaulas continuam exigindo internet. A conclusão do pacote garante texto, imagens e pôsteres, não os vídeos.
+
+### Arquivos e testes relacionados
+
+- `src/pwa/config/cache-policy.js`: versões, logos de precache, nome e limite do cache runtime e prefixo dos pacotes.
+- `src/pwa/service-worker/sw.js`: roteamento de imagens e prioridade de caches de pacotes.
+- `src/pwa/downloads/tutorial-package.js`: coleta de recursos, Cache Storage e IndexedDB.
+- `src/pwa/ui/components/TutorialOfflineButton.jsx`: interface de salvar, progresso, cancelamento, atualização e remoção.
+- `tests/pwa/unit/tutorial-package.test.js`: imagens, pôsteres, variantes responsivas e exclusão de URLs externas/vídeos.
+- `tests/pwa/e2e/offline-navigation.test.js`: navegação offline, armazenamento runtime e acesso a imagem de pacote sem conexão.
+
+A validação automatizada desta fase deve confirmar tanto o build completo/pré-renderização quanto os testes E2E executados pelo runner do GitHub Actions. A publicação em preview e a validação manual em dispositivos reais ainda devem ser conferidas após o deploy do novo commit.
