@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** d91f23c42b5ce8182a1b0fc12f1b9059b465c45a
-- **Data do commit:** 2026-10-31T16:46:05-03:00
-- **Mensagem do commit:** ci: evitar cancelamento da validação por sincronização automática
+- **Commit de referência:** a596f85abbe4751b381b90258f0a69102b2c0c0d
+- **Data do commit:** 2026-10-31T16:48:27-03:00
+- **Mensagem do commit:** docs(pwa): explicar validação de recursos com content encoding
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| a596f85 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
+| 1675319 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
+| e35e311 | 2026-10-31 | test(pwa): não confundir tamanho comprimido com corpo armazenado |
+| 00fd18f | 2026-10-31 | fix(pwa): considerar content-encoding na validação do tamanho |
+| 01b4ea4 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | d91f23c | 2026-10-31 | ci: evitar cancelamento da validação por sincronização automática |
 | e81bcba | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | 4915839 | 2026-10-31 | ci: ignorar sincronização isolada do AI_CONTEXT na validação |
-| 874bd5f | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 35793df | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
-| 4da10e2 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
-| b6f5364 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
-| aea4c44 | 2026-10-31 | test(pwa): validar reparo e atualização concluídos |
 
 <!-- END AUTO-GENERATED SECTION -->
