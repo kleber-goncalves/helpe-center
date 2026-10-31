@@ -206,6 +206,7 @@ export function createTutorialContentVersions({
     const tutorialContent = { ...(tutorial ?? {}) };
 
     delete tutorialContent.icon;
+    delete tutorialContent.steps;
 
     const imageDetails = imagePaths.map((path) => {
         const metadata = imageMetadata?.images?.["public" + path];
