@@ -86,7 +86,7 @@ A consulta de disponibilidade verifica:
 - se cada URL esperada está presente;
 - se a resposta armazenada tem status HTTP 200 e corpo;
 - se o MIME type corresponde ao tipo de recurso;
-- se o tamanho registrado é positivo e, quando existe \`Content-Length\`, corresponde ao valor armazenado.
+- se o tamanho registrado é positivo e, quando existe `Content-Length` sem `Content-Encoding`, corresponde ao valor armazenado. Respostas comprimidas são comparadas pelo corpo descomprimido medido durante o download.
 
 Um pacote com recurso ausente ou inválido é identificado como \`incomplete\`. Um pacote íntegro cuja fingerprint não corresponde ao conteúdo atual é \`outdated\`. Somente um pacote íntegro e atualizado recebe o estado \`saved\`.
 
