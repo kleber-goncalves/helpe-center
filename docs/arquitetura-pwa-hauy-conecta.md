@@ -1035,6 +1035,6 @@ A interface permite reparar pacotes \`incomplete\` e atualizar pacotes \`outdate
 
 - Unitários: fingerprints determinísticas; alteração em texto/imagem/vídeo; separação da versão de vídeos opcionais; rejeição de respostas ausentes, status inválido, MIME incorreto, tamanho vazio ou divergente.
 - Unitários do Service Worker: limpeza do cache antigo do app shell sem remover cache runtime ou pacotes de tutoriais; falha de remoção não impede a ativação.
-- E2E: remoção de Cache Storage; conteúdo desatualizado; remoção dos dados locais do site; quota simulada durante atualização; resposta HTML inválida no lugar de imagem; cancelamento durante atualização com preservação do pacote anterior e descarte do cache temporário; arquivo necessário indisponível.
+- E2E: remoção de Cache Storage e reparo concluído; conteúdo desatualizado e atualização concluída com substituição segura do cache anterior; remoção dos dados locais do site; quota simulada durante atualização; resposta HTML inválida no lugar de imagem; cancelamento durante atualização com preservação do pacote anterior e descarte do cache temporário; arquivo necessário indisponível.
 
 A execução local e o resultado final do GitHub Actions ainda devem ser confirmados no commit final desta fase. A quota real do navegador e a remoção real dos dados pelo usuário continuam recomendadas para aceite manual em Chrome desktop e Android.
