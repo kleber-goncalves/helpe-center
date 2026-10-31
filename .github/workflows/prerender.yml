@@ -1,13 +1,14 @@
 name: Build prerendered site
 
 concurrency:
-  group: prerender-main
+  group: prerender-${{ github.ref }}
   cancel-in-progress: true
 
 on:
   push:
     branches:
       - main
+      - feat/pwa
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
