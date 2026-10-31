@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 9123b3b162bf340a40f4662ec3c6016a22124be5
-- **Data do commit:** 2026-10-31T16:31:24-03:00
-- **Mensagem do commit:** test(pwa): cobrir versões de conteúdo e integridade dos pacotes
+- **Commit de referência:** 0b4bb5b6d82d9331f9b6fb67eaeab1b8f0320635
+- **Data do commit:** 2026-10-31T16:32:08-03:00
+- **Mensagem do commit:** fix(pwa): remover campos de vídeo da assinatura base
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 0b4bb5b | 2026-10-31 | fix(pwa): remover campos de vídeo da assinatura base |
+| f1717c3 | 2026-10-31 | fix(pwa): separar versão dos vídeos opcionais do conteúdo do tutorial |
+| 85dc1e2 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
+| 63bfd96 | 2026-10-31 | test(pwa): garantir preservação dos pacotes na ativação do service worker |
 | 9123b3b | 2026-10-31 | test(pwa): cobrir versões de conteúdo e integridade dos pacotes |
 | b116ed6 | 2026-10-31 | test(pwa): expor validação de integridade dos recursos offline |
 | 27f2d3e | 2026-10-31 | refactor(pwa): preservar caches de tutoriais no ciclo de ativação |
 | 25c24df | 2026-10-31 | refactor(pwa): isolar limpeza dos caches do app shell |
-| 845844b | 2026-10-31 | feat(pwa): incluir tamanho de imagens na metadata offline |
-| 16f63a2 | 2026-10-31 | feat(pwa): indicar pacotes desatualizados e preservar estado anterior |
-| 997096a | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| af36476 | 2026-10-31 | feat(pwa): validar integridade e versão dos pacotes offline |
 
 <!-- END AUTO-GENERATED SECTION -->
