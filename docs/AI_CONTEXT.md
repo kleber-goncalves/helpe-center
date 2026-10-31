@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 51d0e3fd67827cc52d16ed75b6a3a9ed388a5cf4
-- **Data do commit:** 2026-10-31T16:34:21-03:00
-- **Mensagem do commit:** test(pwa): garantir que mudanças em vídeos não invalidem pacotes sem vídeo
+- **Commit de referência:** 0775568789ec2feb5b13e538a485186b70cba2de
+- **Data do commit:** 2026-10-31T16:34:23-03:00
+- **Mensagem do commit:** test(pwa): validar cancelamento e limpeza dos dados offline
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,6 +723,7 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 0775568 | 2026-10-31 | test(pwa): validar cancelamento e limpeza dos dados offline |
 | 51d0e3f | 2026-10-31 | test(pwa): garantir que mudanças em vídeos não invalidem pacotes sem vídeo |
 | e5746b7 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | cf646ef | 2026-10-31 | test(pwa): cobrir falhas de armazenamento e atualização de pacotes |
@@ -730,6 +731,5 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 | 49ead0e | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | 5f8fb52 | 2026-10-31 | fix(pwa): excluir passos não normalizados da assinatura base |
 | 0b4bb5b | 2026-10-31 | fix(pwa): remover campos de vídeo da assinatura base |
-| f1717c3 | 2026-10-31 | fix(pwa): separar versão dos vídeos opcionais do conteúdo do tutorial |
 
 <!-- END AUTO-GENERATED SECTION -->
