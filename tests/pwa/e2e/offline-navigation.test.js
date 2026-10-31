@@ -753,19 +753,23 @@ test("reconhece como incompleto um arquivo substituído por resposta HTML no cac
 });
 
 
-test("remove o cache temporário quando o download é cancelado durante a gravação", async () => {
+test("preserva o pacote anterior e remove o cache temporário após cancelar uma atualização", async () => {
     const context = await browser.newContext({ serviceWorkers: "allow" });
     const page = await context.newPage();
 
     try {
         await openExcelCompletion(page);
+        const previousRecord = await saveExcelPackage(page);
 
-        await page.evaluate(() => {
+        await page.evaluate((previousCacheName) => {
             const originalPut = Cache.prototype.put;
             window.__tutorialPackagePutStarted = false;
 
             Cache.prototype.put = function (request, response) {
-                if (this.name.startsWith("hauy-conecta-tutorial-package-v1-")) {
+                if (
+                    this.name.startsWith("hauy-conecta-tutorial-package-v1-") &&
+                    this.name !== previousCacheName
+                ) {
                     window.__tutorialPackagePutStarted = true;
 
                     return new Promise((resolve, reject) => {
@@ -777,9 +781,9 @@ test("remove o cache temporário quando o download é cancelado durante a grava�
 
                 return originalPut.call(this, request, response);
             };
-        });
+        }, previousRecord.cacheName);
 
-        await page.getByRole("button", { name: "Salvar tutorial offline" }).click();
+        await page.getByRole("button", { name: "Atualizar pacote" }).click();
 
         await page.waitForFunction(
             () => window.__tutorialPackagePutStarted === true,
@@ -790,7 +794,7 @@ test("remove o cache temporário quando o download é cancelado durante a grava�
         await page.getByRole("button", { name: "Cancelar download" }).click();
 
         await page.getByText(
-            "Download cancelado. Nenhum pacote parcial foi mantido.",
+            "Download cancelado. A versão anterior do pacote foi preservada.",
             { exact: true },
         ).waitFor({ state: "visible", timeout: 15_000 });
 
@@ -825,8 +829,9 @@ test("remove o cache temporário quando o download é cancelado durante a grava�
             return { record: record ?? null, packageCaches };
         });
 
-        assert.equal(result.record, null);
-        assert.deepEqual(result.packageCaches, []);
+        assert.equal(result.record?.cacheName, previousRecord.cacheName);
+        assert.ok(result.packageCaches.includes(previousRecord.cacheName));
+        assert.equal(result.packageCaches.length, 1);
     } finally {
         await context.close();
     }
