@@ -1017,7 +1017,7 @@ Os estados apresentados pela consulta do pacote são:
 
 Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho efetivamente recebido é registrado em \`resourceDetails\`. Quando um tamanho esperado é conhecido por metadados ou \`Content-Length\`, o valor recebido é comparado antes de o pacote ser considerado concluído. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
 
-Na consulta, cada URL declarada no IndexedDB é procurada no cache e verificada por status, corpo, MIME type e tamanho positivo. Quando \`Content-Length\` está disponível, ele deve corresponder ao tamanho registrado.
+Na consulta, cada URL declarada no IndexedDB é procurada no cache e verificada por status, corpo, MIME type e tamanho positivo. Quando `Content-Length` está disponível e não há `Content-Encoding`, ele deve corresponder ao tamanho registrado. Em respostas comprimidas, o `Content-Length` pode representar os bytes comprimidos, enquanto o corpo exposto ao JavaScript já está descomprimido; nesse caso, a comparação usa os bytes efetivamente recebidos/armazenados durante o download e ignora o comprimento de transporte na consulta.
 
 Essa validação não re-calcula SHA-256 do corpo armazenado a cada abertura. Os hashes gerados no build detectam mudanças no conteúdo publicado; a integridade do armazenamento local é validada pela conclusão da gravação no Cache Storage, pelos tamanhos registrados e pela conferência das respostas ao consultar o pacote.
 
