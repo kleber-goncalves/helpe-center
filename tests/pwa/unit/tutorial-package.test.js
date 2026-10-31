@@ -275,6 +275,14 @@ test("não considera respostas ausentes, inválidas ou com tamanho incompatível
             "content-length": "5",
         },
     });
+    const compressedImage = new Response("decoded-image-bytes", {
+        status: 200,
+        headers: {
+            "content-type": "image/webp",
+            "content-encoding": "br",
+            "content-length": "5",
+        },
+    });
 
     const validVideo = new Response("video-bytes", {
         status: 200,
@@ -301,6 +309,7 @@ test("não considera respostas ausentes, inválidas ou com tamanho incompatível
 
     assert.equal(isValidCachedTutorialResource(validImage, { type: "image", size: 11 }), true);
     assert.equal(isValidCachedTutorialResource(wrongImageLength, { type: "image", size: 10 }), false);
+    assert.equal(isValidCachedTutorialResource(compressedImage, { type: "image", size: 19 }), true);
     assert.equal(isValidCachedTutorialResource(validVideo, { type: "video", size: 10 }), true);
     assert.equal(isValidCachedTutorialResource(missingVideoBytes, { type: "video", size: 10 }), false);
     assert.equal(isValidCachedTutorialResource(notFound, { type: "image", size: 10 }), false);
