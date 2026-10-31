@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 0c69c513d11085b0f519a0fbe661f1739db7b3f8
-- **Data do commit:** 2026-10-31T16:51:41-03:00
-- **Mensagem do commit:** test(pwa): interceptar Cache Storage antes do carregamento da página
+- **Commit de referência:** 2ab1cdcdc1346f541050bbc0d7a9e79b0c62a90e
+- **Data do commit:** 2026-10-31T18:01:52-03:00
+- **Mensagem do commit:** feat(pwa): adicionar convite de instalação na Home
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 2ab1cdc | 2026-10-31 | feat(pwa): adicionar convite de instalação na Home |
+| a9bbab0 | 2026-10-31 | build: update prerendered site |
+| 25fa5a8 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 0c69c51 | 2026-10-31 | test(pwa): interceptar Cache Storage antes do carregamento da página |
 | f8b8461 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | de97bf1 | 2026-10-31 | ci: isolar concorrência das execuções automatizadas |
 | 1db7f55 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 906029e | 2026-10-31 | test(pwa): interceptar gravações para simular quota e cancelamento |
-| 0a7f150 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
-| a596f85 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
-| 1675319 | 2026-10-31 | docs(pwa): explicar validação de recursos com content encoding |
 
 <!-- END AUTO-GENERATED SECTION -->
