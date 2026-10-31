@@ -17,7 +17,7 @@
 11. Quando uma mudança alterar comportamento, arquitetura, regras do produto, segurança, acessibilidade, SEO ou publicação, atualize também a seção narrativa pertinente deste arquivo no mesmo trabalho.
 12. Não edite manualmente a seção entre os marcadores de snapshot automatizado. Ela é gerada por scripts/update-ai-context.mjs.
 13. Nunca inclua chaves, tokens, senhas, credenciais, valores de arquivos .env, dados pessoais ou informações privadas neste documento.
-14. Não presuma que APIs externas funcionam offline. O PWA ainda está em planejamento; consulte docs/arquitetura-pwa-hauy-conecta.md antes de propor sua implementação.
+14. Não presuma que APIs externas funcionam offline. O núcleo do PWA está implementado na branch `feat/pwa` (PR #16, base `dev`), incluindo app shell, imagens runtime, pacotes de tutoriais, vídeos MP4 opcionais e recuperação de pacotes. A validação manual de instalação, standalone, atualização e uso offline foi confirmada no Chrome desktop e em dispositivos Android de teste. iOS/Safari está fora do escopo atual; preservação de pacotes entre publicações na origem de produção e quota real do navegador continuam como validações residuais. Consulte `docs/arquitetura-pwa-hauy-conecta.md`.
 15. Consulte também README.md, docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md, docs/DOCUMENTACAO_PROJETO.md e docs/REGRAS-DOS-TUTORIAIS.md quando a tarefa envolver produto, arquitetura ou conteúdo. Compare os documentos com o código atual, pois algumas documentações podem refletir revisões anteriores.
 16. Mantenha o escopo fiel às necessidades da comunidade escolar. Novos recursos devem resolver problemas reais, não apenas aumentar a complexidade técnica.
 
@@ -399,11 +399,15 @@ A lista exata de scripts npm é mantida no snapshot automatizado.
 
 ### 11.5. Publicação
 
-O workflow .github/workflows/prerender.yml é responsável pela build e pré-renderização da branch main. Ele instala dependências, instala Chromium/Playwright, executa o build, remove o arquivo temporário de rotas e publica as alterações geradas em dist/ e public/sitemap.xml.
+O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
 
-A Vercel publica o conteúdo já pré-renderizado de dist/. O vercel.json atual define esse diretório como saída e usa um comando que não refaz a pré-renderização na Vercel.
+Depois de criar o commit do artefato, o workflow limpa somente alterações locais não commitadas, busca o HEAD remoto e faz rebase antes do push. Isso evita rejeições non-fast-forward quando a sincronização automática do AI_CONTEXT avança a branch durante a build. A atualização da referência não utiliza force push.
 
-**Atenção:** dist/ é versionado no repositório e integra o fluxo de publicação. Não mudar essa estratégia sem revisar Actions, Vercel, pré-renderização e artefatos.
+A Vercel publica o conteúdo pré-renderizado de dist/. O vercel.json define esse diretório como saída e mantém um buildCommand informativo; Vite e Astratra não são executados novamente na Vercel.
+
+Na preview da feat/pwa, o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, correspondente ao commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi marcado READY. A raiz respondeu HTTP 200; manifest.webmanifest respondeu 200 com application/manifest+json; sw.js respondeu 200 com application/javascript; e os quatro ícones responderam 200 com image/png.
+
+**Atenção:** dist/ é versionado no repositório e integra o fluxo de publicação. Alterações nesse pipeline exigem conferir Actions, Vercel, pré-renderização e os artefatos efetivamente publicados.
 
 ## 12. Analytics
 
@@ -433,26 +437,46 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 
 ## 14. Estado atual do PWA
 
-**Status: planejamento arquitetural; não implementado no código verificado da branch main.**
+**Status:** núcleo técnico implementado na branch `feat/pwa` (PR #16, base `dev`), Preview Vercel READY no HEAD consultado em 31/10/2026. A PR permanece aberta e em draft; não houve merge para `dev` nem alteração direta em `main`.
 
-O documento de referência é docs/arquitetura-pwa-hauy-conecta.md.
+### Implementação
 
-A proposta aprovada para planejamento é um modelo híbrido:
+- `vite-plugin-pwa@2.0.0` com `injectManifest` e Workbox 7.4.1.
+- Manifesto em `src/pwa/config/manifest.js`; ícones derivados de `public/logo.svg` por `scripts/generate-pwa-icons.mjs`.
+- Service Worker em `src/pwa/service-worker/sw.js`: precache do app shell, navegação network-first, fallback offline e cache runtime limitado para imagens da mesma origem.
+- Registro e atualização pelo módulo `src/pwa/client/register-service-worker.js`; atualização exige confirmação explícita.
+- Pacotes opt-in por tutorial usando Cache Storage + IndexedDB, com progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
+- Vídeos MP4 locais opcionais, desmarcados por padrão, com estimativa de tamanho, download em streaming e suporte a HTTP Range (206/416).
+- O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualização do shell não deve remover pacotes de tutoriais.
+- O CTA personalizado de instalação na Home foi removido por decisão do responsável. A instalação permanece nativa, sob controle do navegador.
 
-- camada básica automática para shell, conteúdo essencial e um conjunto pequeno de imagens essenciais;
-- cache runtime de imagens acessadas com limites;
-- download opt-in de tutoriais selecionados;
-- vídeos opcionais, separados e desativados por padrão;
-- Cache Storage para recursos e IndexedDB para metadados dos downloads;
-- Service Worker/Workbox com políticas específicas por tipo de recurso;
-- atualização do aplicativo sem apagar os pacotes escolhidos pelo usuário;
-- tratamento especial de HTTP Range para reprodução de vídeos offline.
+### Validação automatizada e publicação
 
-A análise anterior identificou que o acervo de mídia é grande em relação ao shell da aplicação. Portanto, não armazenar todos os vídeos e todas as imagens automaticamente.
+O workflow **Validate Hauy Conecta**, run `41242399960`, passou no último commit de código validado (`7b901b8`), incluindo testes existentes, testes unitários PWA, ESLint, build/prerender, auditoria de imagens e E2E. O workflow de pré-renderização `41242394976` também concluiu com sucesso. O deployment referente ao HEAD consultado (`9161dd0`) está READY na Vercel Preview.
 
-Antes de implementar, revisar as decisões pendentes da seção 17 do documento de arquitetura, especialmente conteúdo do cache básico, tamanho máximo, aviso de dados móveis e navegadores oficialmente suportados.
+### Aceite manual informado pelo responsável
 
-O pré-carregamento atual feito por src/hooks/useTutorialStepMedia.js não substitui Service Worker, Cache Storage ou downloads persistentes. Não declarar o aplicativo instalável ou offline enquanto isso não estiver efetivamente implementado e testado.
+- Chrome desktop: instalação, abertura standalone, atualização do Service Worker e navegação offline funcionando.
+- Samsung Galaxy A14 4G: instalação, consulta offline e reprodução de MP4 offline funcionando.
+- Dispositivo Android TecToy: instalação nativa funcionando; os testes manuais do ciclo foram reportados como aprovados.
+- Vídeos grandes: download e reprodução offline testados em dispositivos reais e funcionando.
+- Motorola E20 (Android 11): Chrome não apresenta instalação nem criação de atalho até para `example.com/`, mesmo após atualização. Registrar como incompatibilidade observada do ambiente navegador/launcher; não criar workaround no site sem evidência de que o problema seja do projeto.
+- iOS/Safari: não validado e fora do escopo desta entrega.
+
+### Pendências antes de encerrar a publicação
+
+1. Após a publicação na origem definitiva, testar a preservação dos pacotes entre duas versões sucessivas do app na mesma origem.
+2. Fazer aceite complementar de quota real e comportamento de evicção/remoção pelo navegador; a quota simulada já possui cobertura E2E.
+3. Revisar a PR #16 e obter autorização explícita antes de qualquer merge.
+
+### Melhorias futuras — ainda não implementadas
+
+Duas melhorias foram identificadas e precisam de arquitetura antes de virar código:
+
+1. **Gerenciador central de tutoriais offline:** área “Meus tutoriais offline” que liste pacotes do IndexedDB, valide o estado real no Cache Storage e permita abrir, atualizar/reparar e remover tutoriais. Deve reutilizar os serviços existentes (`getTutorialOfflinePackage`, `saveTutorialOffline`, `removeTutorialOffline`) sem duplicar regras de armazenamento. Ainda precisam ser decididos ponto de entrada/rota, contrato de listagem, atualização entre abas, tratamento de registros órfãos e apresentação de tamanhos.
+2. **Monitoramento do armazenamento:** exibir estimativas de uso/quota e, se fizer sentido, estado de persistência por meio de `navigator.storage.estimate()`, `persisted()` e solicitação opcional de `persist()`. As APIs são variáveis e aproximadas; não garantem espaço para downloads nem substituem o tratamento de `QuotaExceededError`. Precisam ser definidos local de exibição, frequência de atualização, fallback quando não houver suporte e UX de solicitação de persistência.
+
+A arquitetura e as decisões detalhadas estão em `docs/arquitetura-pwa-hauy-conecta.md`, seção 28. Nenhuma das duas melhorias está implementada ou comprometida para a próxima entrega.
 
 ## 15. Limitações e cuidados conhecidos
 
@@ -560,11 +584,14 @@ Direções de evolução documentadas incluem:
 - evoluir a experiência de ferramentas e tutoriais;
 - continuar fortalecendo acessibilidade, SEO e desempenho;
 - manter as integrações externas claras e seguras;
-- planejar e validar a implementação do PWA híbrido em etapas.
+- manter e evoluir o PWA híbrido com base em validações reais; o gerenciador central de tutoriais offline e o monitoramento do armazenamento são propostas futuras ainda sem implementação e dependem de arquitetura.
 
 Ideias futuras não devem ser registradas como compromissos nem funcionalidades existentes sem decisão explícita.
 
 ---
+
+
+
 
 <!-- BEGIN AUTO-GENERATED SECTION -->
 
@@ -572,29 +599,33 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** bfdd3c98b3cdc3476a04f85997d91b5e0a5dc7fe
-- **Data do commit:** 2026-10-30T15:24:22-03:00
-- **Mensagem do commit:** Merge pull request #15 from kleber-goncalves/main
-- **Branch desta execução:** dev
+- **Commit de referência:** 883bd0d6f2d2bf1f13884dd5287b1397895ce97c
+- **Data do commit:** 2026-10-31T19:18:35-03:00
+- **Mensagem do commit:** docs(pwa): alinhar documentação ao estado atual
+- **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
-- **Scripts npm:** 8
+- **Scripts npm:** 12
 - **Dependências de runtime:** 16
-- **Dependências de desenvolvimento:** 14
+- **Dependências de desenvolvimento:** 18
 - **Workflows:** 4
-- **Scripts de automação:** 6
+- **Scripts de automação:** 7
 
 ### Scripts npm
 
 | Comando | Definição |
 |---|---|
 | npm run dev | vite |
-| npm run build | node scripts/generate-image-metadata.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs |
+| npm run build | node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs && node scripts/generate-prerender-routes.mjs && vite build && astratra-prerender && node scripts/audit-images.mjs |
 | npm run audit:images | node scripts/audit-images.mjs |
 | npm run lint | eslint . |
 | npm run preview | vite preview |
-| npm run predev | node scripts/generate-image-metadata.mjs |
+| npm run predev | node scripts/generate-image-metadata.mjs && node scripts/generate-pwa-icons.mjs |
 | npm run prelint | node scripts/generate-image-metadata.mjs |
 | npm run test:search | node --test src/lib/searchTutorials.test.js src/lib/assistantResponse.test.js |
+| npm run pwa:icons | node scripts/generate-pwa-icons.mjs |
+| npm run test:pwa:unit | node --test tests/pwa/unit/*.test.js |
+| npm run test:pwa:e2e | node --test tests/pwa/e2e/*.test.js |
+| npm run test:pwa | npm run test:pwa:unit && npm run test:pwa:e2e |
 
 ### Variáveis declaradas no .env.example
 
@@ -644,6 +675,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | sharp | ^0.35.5 |
 | tailwindcss | ^4.3.3 |
 | vite | ^8.3.0 |
+| vite-plugin-pwa | ^2.0.0 |
+| workbox-core | ^7.4.1 |
+| workbox-precaching | ^7.4.1 |
+| workbox-routing | ^7.4.1 |
 
 ### Workflows do GitHub Actions
 
@@ -659,6 +694,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - scripts/convert-tutorial-images.mjs
 - scripts/generate-image-metadata.mjs
 - scripts/generate-prerender-routes.mjs
+- scripts/generate-pwa-icons.mjs
 - scripts/update-ai-context.mjs
 
 ### Arquivos de página
@@ -689,6 +725,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - src/hooks/
 - src/lib/
 - src/pages/
+- src/pwa/
 - src/schemas/
 - src/test/
 
@@ -696,13 +733,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| bfdd3c9 | 2026-10-30 | Merge pull request #15 from kleber-goncalves/main |
-| 8b67f2f | 2026-10-30 | docs(ai-context): atualizar snapshot automaticamente |
-| b35c7a9 | 2026-10-30 | Merge pull request #14 from kleber-goncalves/chore/ci-pipeline-hardening |
-| 4cb40c0 | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
-| d7d2dd7 | 2026-10-30 | docs(ai-context): registrar aprovação de workflows disparados pelo bot |
-| 35fd2e3 | 2026-10-30 | fix(actions): evitar ressincronização do AI Context pelo bot |
-| ab850ea | 2026-10-30 | docs(ai-context): atualizar snapshot do pull request |
-| b6f87db | 2026-10-30 | docs(ai-context): atualizar documentação das validações e sincronização |
+| 883bd0d | 2026-10-31 | docs(pwa): alinhar documentação ao estado atual |
+| 9161dd0 | 2026-10-31 | build: update prerendered site |
+| 23ee57d | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
+| 7b901b8 | 2026-10-31 | revert(pwa): remover convite de instalação da Home |
+| f305961 | 2026-10-31 | build: update prerendered site |
+| a2d59f5 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
+| e7bea32 | 2026-10-31 | fix(pwa): estabilizar snapshot do estado de instalação |
+| 7c7dd36 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->

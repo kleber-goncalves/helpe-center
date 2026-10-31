@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { promises as fs } from "node:fs";
+import { createReadStream, promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -20,8 +20,9 @@ const IMAGE_EXTENSIONS = new Set([
     ".svg",
     ".webp",
 ]);
+const VIDEO_EXTENSIONS = new Set([".mp4"]);
 
-async function walk(directory) {
+async function walk(directory, extensions = IMAGE_EXTENSIONS) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const files = [];
 
@@ -33,16 +34,27 @@ async function walk(directory) {
                 continue;
             }
 
-            files.push(...(await walk(absolutePath)));
+            files.push(...(await walk(absolutePath, extensions)));
             continue;
         }
 
-        if (IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+        if (extensions.has(path.extname(entry.name).toLowerCase())) {
             files.push(absolutePath);
         }
     }
 
     return files;
+}
+
+function getFileContentHash(filePath) {
+    return new Promise((resolve, reject) => {
+        const hash = createHash("sha256");
+        const stream = createReadStream(filePath);
+
+        stream.on("data", (chunk) => hash.update(chunk));
+        stream.on("error", reject);
+        stream.on("end", () => resolve(hash.digest("hex")));
+    });
 }
 
 function toPosix(value) {
@@ -205,9 +217,14 @@ async function readImageMetadata(filePath) {
         throw new Error(`Não foi possível obter dimensões: ${getMetadataKey(filePath)}`);
     }
 
+    const fileStats = await fs.stat(filePath);
+    const contentHash = await getFileContentHash(filePath);
+
     return {
         width: dimensions.width,
         height: dimensions.height,
+        size: fileStats.size,
+        contentHash,
         format: extension === ".svg"
             ? "svg"
             : dimensions.format ?? extension.slice(1),
@@ -268,12 +285,25 @@ async function main() {
         };
     }
 
+    const videoEntries = {};
+
+    for (const filePath of await walk(PUBLIC_DIR, VIDEO_EXTENSIONS)) {
+        const metadata = await fs.stat(filePath);
+
+        videoEntries[getPublicUrl(filePath)] = {
+            size: metadata.size,
+            contentHash: await getFileContentHash(filePath),
+            format: "mp4",
+        };
+    }
+
     await fs.writeFile(
         OUTPUT_FILE,
         `${JSON.stringify(
             {
                 version: 1,
                 images: entries,
+                videos: videoEntries,
             },
             null,
             4,
@@ -282,7 +312,7 @@ async function main() {
     );
 
     console.log(
-        `[image-metadata] ${Object.keys(entries).length} imagens catalogadas.`,
+        `[image-metadata] ${Object.keys(entries).length} imagens e ${Object.keys(videoEntries).length} vídeos catalogados.`,
     );
     console.log(`[image-metadata] Saída: ${path.relative(ROOT, OUTPUT_FILE)}`);
 }
