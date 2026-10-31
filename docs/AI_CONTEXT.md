@@ -589,9 +589,9 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 4da10e2220021fb6799b19bd4bd3448ced4a39a2
-- **Data do commit:** 2026-10-31T16:43:43-03:00
-- **Mensagem do commit:** docs(pwa): documentar testes de reparo e atualização
+- **Commit de referência:** 4915839a9abae9408196d0f90708030aa8ed35e2
+- **Data do commit:** 2026-10-31T16:44:08-03:00
+- **Mensagem do commit:** ci: ignorar sincronização isolada do AI_CONTEXT na validação
 - **Branch desta execução:** feat/pwa
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -723,13 +723,13 @@ A implementação de cache avançou na branch `feat/pwa` (PR #16, base `dev`). C
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 4915839 | 2026-10-31 | ci: ignorar sincronização isolada do AI_CONTEXT na validação |
+| 874bd5f | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
+| 35793df | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
 | 4da10e2 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
 | b6f5364 | 2026-10-31 | docs(pwa): documentar testes de reparo e atualização |
 | aea4c44 | 2026-10-31 | test(pwa): validar reparo e atualização concluídos |
 | 8799794 | 2026-10-31 | docs(ai-context): atualizar snapshot do pull request |
 | 18e7014 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 76ce9ef | 2026-10-31 | docs(pwa): registrar preservação em cancelamento de atualização |
-| 7a0fb1b | 2026-10-31 | docs(pwa): detalhar teste de cancelamento com pacote anterior |
-| 9a46041 | 2026-10-31 | test(pwa): preservar pacote anterior após cancelar atualização |
 
 <!-- END AUTO-GENERATED SECTION -->
