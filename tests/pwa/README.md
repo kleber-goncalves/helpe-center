@@ -1,34 +1,54 @@
 # Testes do PWA — Hauy Conecta
 
-Os testes específicos do PWA ficam fora de src/, separados por nível. A implementação e as decisões estão documentadas em docs/arquitetura-pwa-hauy-conecta.md.
+Os testes específicos do PWA ficam fora de `src/`. A implementação e as decisões estão documentadas em `docs/arquitetura-pwa-hauy-conecta.md`.
 
 ## Estrutura
 
-- unit/: regras puras, manifesto e políticas de cache.
-- integration/: interação real entre Service Worker, Cache Storage e IndexedDB.
-- e2e/: registro/atualização, navegação offline e ciclo de vida dos downloads.
-- fixtures/: dados sintéticos e pequenos arquivos de teste.
+- `unit/`: regras puras, manifesto, políticas de cache, fingerprints e validação de recursos.
+- `e2e/`: registro do Service Worker, navegação offline e fluxos reais de download, atualização e recuperação no navegador.
 
 ## Ferramentas e comandos
 
-- Unitários: Node test runner (node:test) e node:assert, sem instalar Vitest/Jest para regras puras.
+- Unitários: Node test runner (`node:test`) e `node:assert`.
 - Navegador: Playwright com Chromium e Service Workers habilitados.
-- npm run test:pwa: executa unitários e E2E.
-- npm run test:pwa:unit: executa os testes sem navegador.
-- npm run test:pwa:e2e: valida o build servido por Vite Preview em HTTP local.
+- `npm run test:pwa:unit`: executa os testes unitários.
+- `npm run test:pwa:e2e`: executa os testes E2E com o build servido por Vite Preview.
+- `npm run test:pwa`: executa unitários e E2E.
 
-## Testes já criados
+## Cobertura atual
+
+### Unitários
 
 - Manifesto: identidade, idioma, escopo, modo standalone e ícones.
-- Política de cache: versão, limite por arquivo, tipos incluídos e exclusão de tutorial/MP4.
-- E2E: registro/controle do Service Worker e navegação direta para uma rota de tutorial quando a rede é desligada.
+- Política de cache: versão, limite por arquivo, recursos incluídos e exclusões.
+- Catálogo de imagens e vídeos: seleção de recursos locais, deduplicação e exclusão de URLs externas.
+- Fingerprints: estabilidade da serialização e detecção de alterações em texto, imagens e vídeos.
+- Separação das versões: alterações nos MP4 opcionais não invalidam pacotes que não incluem vídeos.
+- Integridade: rejeição de respostas ausentes, status inválido, MIME incompatível, recursos vazios e tamanho divergente.
+- Ativação do Service Worker: remove apenas caches antigos do app shell e preserva caches runtime e pacotes offline.
 
-## Critérios
+### E2E
 
-- Fixtures pequenas e sintéticas; nunca depender dos vídeos reais do portal (aproximadamente 298 MiB).
-- Isolamento: cada teste deve limpar somente os caches e bancos de teste que criou.
-- Determinismo: evitar depender de internet externa, YouTube, Gemini ou APIs reais.
-- Acessibilidade: validar nomes acessíveis, foco por teclado e mensagens de progresso nos fluxos de interface.
-- O workflow Validate Hauy Conecta executa os testes unitários PWA antes do lint e os testes de navegador depois do build/prerender.
+- Registro e controle do Service Worker.
+- Navegação por rota direta sem conexão.
+- Cache runtime de imagens.
+- Download de pacote com imagens e pôsteres.
+- Download de MP4 e reprodução/busca temporal offline.
+- Cache do pacote removido: o tutorial passa a ser identificado como incompleto.
+- Conteúdo alterado: a interface indica pacote desatualizado sem excluir o cache anterior.
+- Dados locais apagados: a interface volta a oferecer o download, sem declarar o pacote disponível.
+- Quota excedida durante atualização: a versão anteriormente salva permanece associada ao registro.
+- Recurso substituído por HTML inválido: o pacote é identificado como incompleto.
+- Cancelamento durante a gravação: o cache temporário é removido.
+- Arquivo necessário indisponível: o pacote não é registrado como salvo.
 
-A execução E2E ainda precisa ser confirmada no runner Ubuntu do GitHub Actions; o Chromium encerrou dentro do sandbox remoto Vercel durante a pré-renderização.
+## Critérios de qualidade
+
+- Usar recursos pequenos e sintéticos nos testes; não depender dos vídeos reais do portal (aproximadamente 298 MiB).
+- Cada teste deve limpar somente os caches e bancos que criou.
+- Não depender de YouTube, Gemini, APIs externas ou internet pública.
+- Um pacote só pode ser apresentado como disponível quando o cache e todos os recursos esperados estiverem válidos.
+- Falhas de quota, rede, cancelamento ou persistência não podem apagar a versão anterior que ainda esteja íntegra.
+- O workflow Validate Hauy Conecta executa os testes unitários PWA, lint, build/prerender e testes E2E no runner Ubuntu.
+
+A simulação automatizada de quota não substitui o aceite manual em navegador real. Também devem ser verificados manualmente limites de armazenamento, remoção de dados pelo navegador, instalação, atualização e uso offline em Chrome desktop e Android.
