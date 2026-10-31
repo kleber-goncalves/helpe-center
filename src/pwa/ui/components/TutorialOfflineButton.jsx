@@ -32,9 +32,6 @@ export function TutorialOfflineButton({ tutorial, steps }) {
         window.addEventListener("online", handleOnline);
         window.addEventListener("offline", handleOffline);
 
-        setStatus("checking");
-        setErrorMessage("");
-
         getTutorialOfflinePackage(tutorial.id)
             .then((record) => {
                 if (active) {

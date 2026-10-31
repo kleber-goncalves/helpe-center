@@ -36,6 +36,7 @@ export function TutorialCompletion({ externalLearning = [], tutorial, steps = []
 
             {tutorial && (
                 <TutorialOfflineButton
+                    key={tutorial.id}
                     tutorial={tutorial}
                     steps={steps}
                 />
