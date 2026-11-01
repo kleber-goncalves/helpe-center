@@ -616,9 +616,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 0f9290ee8f207b9b29b9a4ff0544d353730f2853
-- **Data do commit:** 2026-11-01T01:56:39-03:00
-- **Mensagem do commit:** docs: revisar documentação técnica e arquitetura PWA
+- **Commit de referência:** b85519620e583e1c41bbb970d0cf4cb13104c4bf
+- **Data do commit:** 2026-11-01T01:57:19-03:00
+- **Mensagem do commit:** docs: atualizar guias PWA, ocorrências e manifesto de mídia
 - **Branch desta execução:** docs/atualizacao-documentacao-atual
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -752,13 +752,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| b855196 | 2026-11-01 | docs: atualizar guias PWA, ocorrências e manifesto de mídia |
+| db2c051 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 0f9290e | 2026-11-01 | docs: revisar documentação técnica e arquitetura PWA |
 | 314cac7 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 1e99169 | 2026-11-01 | docs: atualizar contexto técnico e documentação do produto |
 | e5c461a | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 7bd789a | 2026-11-01 | docs: atualizar README e política de segurança |
 | 9857002 | 2026-11-01 | build: update prerendered site |
-| dfa39d1 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 8a3a3ac | 2026-11-01 | Merge pull request #19 from kleber-goncalves/dev |
 
 <!-- END AUTO-GENERATED SECTION -->
