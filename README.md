@@ -64,6 +64,7 @@
 - [Arquitetura técnica](#arquitetura-técnica)
 - [SEO e pré-renderização](#seo-e-pré-renderização)
 - [Acessibilidade](#acessibilidade)
+- [PWA e uso offline](#pwa-e-uso-offline)
 - [Assistente Hauy](#assistente-hauy)
 - [Conteúdo e dados](#conteúdo-e-dados)
 - [Privacidade e segurança](#privacidade-e-segurança)
@@ -274,6 +275,21 @@ O projeto oferece controles para:
 
 As preferências são persistidas localmente e aplicadas na inicialização da aplicação.
 
+### 📲 PWA e uso offline
+
+O Hauy Conecta possui recursos de Progressive Web App (PWA). Em navegadores compatíveis, a instalação é oferecida pelo próprio navegador; o portal não força a instalação nem mantém botão personalizado.
+
+Depois de uma visita online, o Service Worker mantém o app shell e recursos essenciais conforme a política de cache. Imagens da mesma origem são armazenadas à medida que são acessadas. Na conclusão de um tutorial, a pessoa pode escolher **Salvar tutorial offline** para baixar os recursos daquele tutorial.
+
+- Os pacotes são salvos individualmente no navegador/dispositivo atual; não são sincronizados entre aparelhos.
+- Vídeos MP4 são opcionais e desmarcados por padrão. A interface informa uma estimativa antes do download.
+- O fluxo oferece progresso, cancelamento, atualização, reparo e remoção.
+- A atualização do app shell não deve apagar pacotes de tutoriais.
+- Assistente, envio de dúvidas, ferramentas remotas, YouTube e outros serviços externos continuam dependendo de internet.
+- O armazenamento do navegador pode ser limitado ou sofrer evicção; pacote offline não é backup permanente.
+
+Documentação técnica: [módulo PWA](src/pwa/README.md), [arquitetura](docs/arquitetura-pwa-hauy-conecta.md) e [testes](tests/pwa/README.md).
+
 ### 🌓 Tema
 
 O projeto suporta tema claro e escuro, com adaptação à preferência salva do usuário e à preferência do sistema.
@@ -330,7 +346,8 @@ Isso mantém a arquitetura de navegação alinhada ao objetivo educacional: **me
 
 | Tecnologia                                                              | Função                                      |
 | ----------------------------------------------------------------------- | ------------------------------------------- |
-| [Playwright](https://playwright.dev/)                                   | Navegação automatizada durante o pré-render |
+| [Playwright](https://playwright.dev/)                                   | Navegação automatizada no pré-render e testes E2E |
+| [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) + Workbox           | Manifesto, Service Worker, precache e políticas de cache PWA |
 | [Astratra Prerender](https://www.npmjs.com/package/@astratra/prerender) | Geração das páginas HTML pré-renderizadas   |
 | [Sharp](https://sharp.pixelplumbing.com/)                               | Processamento/conversão de imagens          |
 | [GitHub Actions](https://docs.github.com/actions)                       | Automação de build e pré-render             |
@@ -802,32 +819,44 @@ http://localhost:5173
 
 O Assistente Hauy utiliza variáveis de ambiente no lado do servidor.
 
-### Obrigatória
+### Assistente Hauy
 
 ```env
 GEMINI_API_KEY=sua_chave_aqui
-```
-
-### Opcional
-
-```env
 GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
-Quando <code>GEMINI_MODEL</code> não é definida, a API utiliza o modelo indicado no código como padrão.
+`GEMINI_API_KEY` é usada somente no backend. `GEMINI_MODEL` é opcional; quando ausente, `api/assistant.js` utiliza `gemini-3.5-flash-lite` como padrão declarado no código.
 
-> Nunca publique chaves reais no GitHub.
+### Atendimento e pesquisas sem resultado
+
+```env
+SUPPORT_APPS_SCRIPT_ENDPOINT=
+```
+
+Essa variável aponta para o Web App do Google Apps Script utilizado pela API `POST /api/support`. Sem ela, o encaminhamento de dúvidas e pesquisas sem resultado não funciona.
+
+`VERCEL_OIDC_TOKEN` também aparece no `.env.example`, mas seu valor deve ser tratado como configuração gerenciada pela plataforma, não como valor para inventar ou publicar.
+
+> Nunca publique chaves, tokens, URLs privadas com parâmetros sensíveis ou valores reais de arquivos `.env`.
 
 ---
 
 ## Scripts disponíveis
 
-| Comando                      | Finalidade                                                                    |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| <code>npm run dev</code>     | Inicia o servidor de desenvolvimento do Vite                                  |
-| <code>npm run build</code>   | Gera as rotas de pré-renderização, compila a aplicação e executa o pré-render |
-| <code>npm run preview</code> | Serve localmente a build produzida                                            |
-| <code>npm run lint</code>    | Executa o ESLint                                                              |
+| Comando | Finalidade |
+|---|---|
+| `npm run dev` | Inicia o servidor de desenvolvimento Vite |
+| `npm run build` | Gera metadados de mídia e ícones PWA, rotas, build Vite, pré-renderização Astratra e auditoria de imagens |
+| `npm run preview` | Serve localmente a build produzida |
+| `npm run lint` | Executa ESLint |
+| `npm run test:search` | Testa busca e lógica de resposta do assistente |
+| `npm run test:pwa:unit` | Executa testes unitários PWA |
+| `npm run test:pwa:e2e` | Executa testes E2E PWA com Playwright/Chromium |
+| `npm run test:pwa` | Executa testes unitários e E2E PWA |
+| `npm run check:occurrences` | Valida IDs, status, metadados e referências do registro de ocorrências |
+| `npm run audit:images` | Executa auditoria sobre o artefato atual |
+| `npm run pwa:icons` | Gera os ícones PWA a partir do logo-fonte |
 
 ### Build completo
 
@@ -859,21 +888,22 @@ O workflow:
 
 <code>.github/workflows/prerender.yml</code>
 
+O workflow atual dispara em pushes para `main`, `dev` e `feat/pwa`. Alterações somente em `dist/**`, `public/sitemap.xml` e `docs/**` são ignoradas para evitar ciclos de geração. A validação de código é outro workflow, com pushes e Pull Requests para `main` e `dev`; o Lighthouse permanece em workflow separado, específico da branch `feat/ferramentas` e execução manual.
+
 executa em uma máquina Ubuntu e:
 
 1. baixa o repositório;
 2. instala as dependências;
 3. instala o Chromium e as dependências do Playwright;
-4. executa a build;
-5. gera as páginas pré-renderizadas;
-6. remove o arquivo temporário <code>prerender-routes.json</code>;
-7. publica o conteúdo gerado de <code>dist/</code> de volta no repositório.
+4. executa `npm run build` (metadados, ícones PWA, rotas, Vite, Astratra e auditoria);
+5. remove o arquivo temporário <code>prerender-routes.json</code>;
+6. versiona <code>dist/</code> e <code>public/sitemap.xml</code> na branch de origem.
 
 ### 2. Vercel
 
-A Vercel recebe o estado versionado do repositório e publica a pasta:
+A Vercel publica o artefato `dist/` já gerado pelo GitHub Actions. Seu `buildCommand` é informativo; Vite e Astratra não são executados novamente nesse fluxo.
 
-<code>dist/</code>
+**Release de 01/11/2026:** a PR #19 promoveu `dev` para `main`. O workflow de prerender criou o commit `98570028`; o deployment Production correspondente ficou READY e a raiz do domínio oficial respondeu HTTP 200. Isso registra aquela publicação, não garante deployments futuros.
 
 A configuração atual de <code>vercel.json</code> utiliza:
 
