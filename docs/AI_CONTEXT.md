@@ -17,7 +17,7 @@
 11. Quando uma mudança alterar comportamento, arquitetura, regras do produto, segurança, acessibilidade, SEO ou publicação, atualize também a seção narrativa pertinente deste arquivo no mesmo trabalho.
 12. Não edite manualmente a seção entre os marcadores de snapshot automatizado. Ela é gerada por scripts/update-ai-context.mjs.
 13. Nunca inclua chaves, tokens, senhas, credenciais, valores de arquivos .env, dados pessoais ou informações privadas neste documento.
-14. Não presuma que APIs externas funcionam offline. O núcleo do PWA está implementado na branch `feat/pwa` (PR #16, base `dev`), incluindo app shell, imagens runtime, pacotes de tutoriais, vídeos MP4 opcionais e recuperação de pacotes. A validação manual de instalação, standalone, atualização e uso offline foi confirmada no Chrome desktop e em dispositivos Android de teste. iOS/Safari está fora do escopo atual; preservação de pacotes entre publicações na origem de produção e quota real do navegador continuam como validações residuais. Consulte `docs/arquitetura-pwa-hauy-conecta.md`.
+14. Não presuma que APIs externas funcionam offline. O PWA foi integrado à `main` pela PR #19 em 2026-11-01 e publicado no domínio oficial. O código inclui app shell, cache runtime de imagens, pacotes de tutoriais opt-in, vídeos MP4 opcionais, atualização com confirmação e recuperação de pacotes. Instalação, modo standalone, navegação offline e reprodução de vídeos foram testados manualmente no Chrome desktop e em dispositivos Android antes da promoção. A preservação de pacotes após uma publicação subsequente na origem oficial e o comportamento com quota real/evicção ainda exigem aceite manual pós-release. iOS/Safari permanece fora do escopo validado. Consulte `docs/arquitetura-pwa-hauy-conecta.md` e `tests/pwa/README.md`.
 15. Consulte também README.md, docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md, docs/DOCUMENTACAO_PROJETO.md e docs/REGRAS-DOS-TUTORIAIS.md quando a tarefa envolver produto, arquitetura ou conteúdo. Compare os documentos com o código atual, pois algumas documentações podem refletir revisões anteriores.
 16. Mantenha o escopo fiel às necessidades da comunidade escolar. Novos recursos devem resolver problemas reais, não apenas aumentar a complexidade técnica.
 
@@ -399,15 +399,13 @@ A lista exata de scripts npm é mantida no snapshot automatizado.
 
 ### 11.5. Publicação
 
-O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Para esta investigação, a branch temporária `fix/pwa-video-cache-blob` também foi incluída para gerar e versionar `dist/` com a instrumentação antes de testar o Preview; essa inclusão é temporária e deve ser removida ao encerrar o diagnóstico. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
+O workflow `.github/workflows/prerender.yml` observa pushes nas branches `main`, `dev` e `feat/pwa`. A branch temporária `fix/pwa-video-cache-blob` foi usada durante o diagnóstico da PR #17 e não faz mais parte dos gatilhos permanentes.
 
-Depois de criar o commit do artefato, o workflow limpa somente alterações locais não commitadas, busca o HEAD remoto e faz rebase antes do push. Isso evita rejeições non-fast-forward quando a sincronização automática do AI_CONTEXT avança a branch durante a build. A atualização da referência não utiliza force push.
+O workflow ignora mudanças em `dist/**`, `public/sitemap.xml` e `docs/**`, instala dependências, instala Playwright/Chromium, executa `npm run build`, remove a lista temporária de rotas e versiona `dist/` e `public/sitemap.xml` na própria branch. Após criar o commit do artefato, busca a referência remota e faz rebase antes do push, sem force push.
 
-A Vercel publica o conteúdo pré-renderizado de dist/. O vercel.json define esse diretório como saída e mantém um buildCommand informativo; Vite e Astratra não são executados novamente na Vercel.
+A Vercel publica o diretório `dist/` versionado. O `vercel.json` usa um `buildCommand` informativo e define `outputDirectory: dist`; Vite e Astratra não são executados novamente na Vercel. Portanto, uma alteração em `src/` só chega ao Preview/produção depois que o workflow de prerender gerar e enviar o artefato correspondente.
 
-Na preview da feat/pwa, o deployment dpl_2DWRj67dpCPR47UKxNJw77JpxPF2, correspondente ao commit 63b5bc8744da1c4ec4deabeab352846db74b56b3, foi marcado READY. A raiz respondeu HTTP 200; manifest.webmanifest respondeu 200 com application/manifest+json; sw.js respondeu 200 com application/javascript; e os quatro ícones responderam 200 com image/png.
-
-**Atenção:** dist/ é versionado no repositório e integra o fluxo de publicação. Alterações nesse pipeline exigem conferir Actions, Vercel, pré-renderização e os artefatos efetivamente publicados.
+**Release de 01/11/2026:** a PR #19 foi integrada à `main` pelo merge commit `8a3a3ac5bc02eb3efb562380908bbbab94a12e72`. O workflow Build prerendered site #103 gerou o commit `9857002832214432e5090515f241e6154ceca044`; esse SHA está associado ao deployment READY de produção da Vercel. Consulte os resultados e as pendências da release na seção 14.
 
 ## 12. Analytics
 
@@ -424,60 +422,74 @@ Não adicionar dados pessoais aos eventos.
 
 ## 13. Testes e validação
 
-Comandos atualmente declarados no package.json incluem:
+Os comandos declarados atualmente no `package.json` incluem:
 
-- npm run lint: ESLint;
-- npm run test:search: testes Node da busca e da lógica de resposta do assistente;
-- npm run build: build completo, pré-renderização e auditoria de imagens;
-- npm run audit:images: auditoria de imagens no diretório gerado.
+- `npm run check:occurrences`: valida a estrutura do registro público de ocorrências.
+- `npm run test:search`: executa testes Node da busca e da lógica de resposta do assistente.
+- `npm run test:pwa:unit`: executa testes unitários da PWA.
+- `npm run test:pwa:e2e`: executa testes E2E do Service Worker e dos fluxos offline com Playwright/Chromium.
+- `npm run lint`: executa ESLint.
+- `npm run build`: gera metadados e ícones, rotas, build Vite, pré-renderização Astratra e auditoria de imagens.
 
-Antes de executar validações, confira os scripts e dependências atuais. Não assuma que o conjunto de testes permanece igual ao snapshot de uma revisão anterior.
+O workflow `.github/workflows/validate-feat-ferramentas.yml` executa em pushes e pull requests direcionados a `main` e `dev`. No Node.js 24, instala dependências com `npm ci`, valida o registro, executa testes da busca/assistente, testes unitários PWA, ESLint, instala Chromium/Playwright, executa build/prerender/auditoria e roda os testes E2E PWA. O job ignora eventos disparados por `github-actions[bot]`.
 
-O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validações em pull requests direcionadas a `dev` e `main`, além de pushes nessas branches. O pipeline usa Node.js 24, instala dependências com `npm ci`, executa os testes unitários declarados, ESLint, instala Chromium/Playwright e roda `npm run build`, que inclui build Vite, pré-renderização Astratra e auditoria de imagens. O Lighthouse permanece em workflow separado e específico para a branch de ferramentas. Um workflow verde não substitui testes manuais de layout, navegação e uso em celular.
+O workflow Lighthouse é separado e específico da branch `feat/ferramentas`; não o trate como um gate automático da produção. A branch `main` não possui proteção exigindo checks obrigatórios, portanto os resultados precisam ser conferidos manualmente antes de um merge.
+
+**Validação da release para produção (01/11/2026):**
+
+- [Validate Hauy Conecta #249](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214) — sucesso; checagem de ocorrências, testes de busca/assistente, testes unitários PWA, ESLint, build/prerender/auditoria e E2E.
+- [Build prerendered site #103](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) — sucesso; artefatos `dist/` e sitemap atualizados.
+- [AI Context Synchronize #191](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723249) — sucesso; snapshot gerado.
+- A raiz de produção `https://hauy-conecta.vercel.app/` respondeu HTTP 200 após a publicação.
+
+Esses checks validam o pipeline no runner. Não substituem testes manuais em aparelhos, especialmente mudanças em instalação, armazenamento persistente, reprodução offline ou comportamento real de quota.
 
 ## 14. Estado atual do PWA
 
-**Status:** núcleo técnico implementado na branch `feat/pwa` (PR #16, base `dev`), Preview Vercel READY no HEAD consultado em 31/10/2026. A PR permanece aberta e em draft; não houve merge para `dev` nem alteração direta em `main`.
+**Status:** integrado à `main` pela PR #19 e publicado em produção.
 
-### Implementação
+### Implementação vigente
 
-- `vite-plugin-pwa@2.0.0` com `injectManifest` e Workbox 7.4.1.
-- Manifesto em `src/pwa/config/manifest.js`; ícones derivados de `public/logo.svg` por `scripts/generate-pwa-icons.mjs`.
-- Service Worker em `src/pwa/service-worker/sw.js`: precache do app shell, navegação network-first, fallback offline e cache runtime limitado para imagens da mesma origem.
-- Registro e atualização pelo módulo `src/pwa/client/register-service-worker.js`; atualização exige confirmação explícita.
-- Pacotes opt-in por tutorial usando Cache Storage + IndexedDB, com progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
-- Vídeos MP4 locais opcionais, desmarcados por padrão, com estimativa de tamanho, download em streaming e suporte a HTTP Range (206/416).
-- **Diagnóstico temporário de download:** na branch `fix/pwa-video-cache-blob`, `tutorial-package.js` oferece logs opt-in para fetch, leitura de blocos, `Cache.put()`, verificação, workers e cancelamento. Ativar na aba do Preview com `sessionStorage.setItem("hauy:pwa:download-debug", "1")` antes de iniciar o pacote; desativar com `sessionStorage.removeItem("hauy:pwa:download-debug")`. O Service Worker também registra as requisições MP4 explícitas (`cache: "reload"`) no console próprio de inspeção. Essa instrumentação é temporária e não altera a lógica de download.
-- O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualização do shell não deve remover pacotes de tutoriais.
-- O CTA personalizado de instalação na Home foi removido por decisão do responsável. A instalação permanece nativa, sob controle do navegador.
+- `vite-plugin-pwa` com estratégia `injectManifest`, Workbox e registro manual do Service Worker.
+- Manifesto em `src/pwa/config/manifest.js`; PNGs derivados de `public/logo.svg` por `scripts/generate-pwa-icons.mjs`.
+- Service Worker em `src/pwa/service-worker/sw.js`: precache do app shell, fallback de navegação offline, cache runtime limitado para imagens da mesma origem e suporte a requisições Range de MP4 salvos.
+- Registro em `src/pwa/client/register-service-worker.js`; atualização em modo prompt, com confirmação da pessoa.
+- Pacotes individuais opt-in por tutorial, usando Cache Storage e IndexedDB. Há progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
+- Imagens de etapas/exemplos e pôsteres locais são incluídos nos pacotes. Vídeos MP4 locais são opcionais e desmarcados por padrão.
+- Imagens são baixadas com até dois workers; vídeos são processados sequencialmente. Cada corpo MP4 é lido progressivamente, materializado em Blob e depois gravado no Cache Storage.
+- O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualizar o shell não deve apagar pacotes opt-in.
+- A instalação é oferecida pelo navegador; não existe CTA personalizado de instalação na Home.
 
-### Validação automatizada e publicação
+### Integração e publicação em produção
 
-O workflow **Validate Hauy Conecta**, run `41242399960`, passou no último commit de código validado (`7b901b8`), incluindo testes existentes, testes unitários PWA, ESLint, build/prerender, auditoria de imagens e E2E. O workflow de pré-renderização `41242394976` também concluiu com sucesso. O deployment referente ao HEAD consultado (`9161dd0`) está READY na Vercel Preview.
+- PR #19: [release dev → main](https://github.com/kleber-goncalves/helpe-center/pull/19), integrada em 2026-11-01.
+- Merge commit: `8a3a3ac5bc02eb3efb562380908bbbab94a12e72`.
+- Commit final de artefatos em main: `9857002832214432e5090515f241e6154ceca044`.
+- [Validate #249](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214), [Build prerender #103](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) e [AI Context #191](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723249) concluíram com sucesso.
+- Deployment de produção: [Vercel READY](https://vercel.com/kleber-goncalves-s-projects/helpe-center/3RnqTbNbWFHvRErRKEYnpKwwpzVS), com alias `hauy-conecta.vercel.app`.
+- A raiz do domínio oficial respondeu HTTP 200 na verificação pós-deploy. Esse teste confirma a entrega do HTML, não a reprodução offline nem a preservação dos pacotes.
 
-### Aceite manual informado pelo responsável
+### Aceite manual informado antes da promoção
 
-- Chrome desktop: instalação, abertura standalone, atualização do Service Worker e navegação offline funcionando.
-- Samsung Galaxy A14 4G: instalação, consulta offline e reprodução de MP4 offline funcionando.
-- Dispositivo Android TecToy: instalação nativa funcionando; os testes manuais do ciclo foram reportados como aprovados.
-- Vídeos grandes: download e reprodução offline testados em dispositivos reais e funcionando.
-- Motorola E20 (Android 11): Chrome não apresenta instalação nem criação de atalho até para `example.com/`, mesmo após atualização. Registrar como incompatibilidade observada do ambiente navegador/launcher; não criar workaround no site sem evidência de que o problema seja do projeto.
-- iOS/Safari: não validado e fora do escopo desta entrega.
+- Chrome desktop: instalação nativa, abertura standalone, atualização do Service Worker e navegação offline.
+- Samsung Galaxy A14 4G: instalação, navegação offline e reprodução de MP4 offline.
+- Dispositivo Android TecToy: instalação nativa.
+- Vídeos grandes: download e reprodução offline testados em dispositivos reais; pacote do Canva validado no Preview.
+- Motorola E20 (Android 11): o Chrome desse aparelho não apresentou instalação/criação de atalho nem para `example.com/`; o comportamento foi observado no ambiente navegador/launcher, sem evidência de falha do portal.
+- iOS/Safari: não validado e fora do escopo de aceite atual.
 
-### Pendências antes de encerrar a publicação
+### Validações manuais ainda necessárias na origem oficial
 
-1. Após a publicação na origem definitiva, testar a preservação dos pacotes entre duas versões sucessivas do app na mesma origem.
-2. Fazer aceite complementar de quota real e comportamento de evicção/remoção pelo navegador; a quota simulada já possui cobertura E2E.
-3. Revisar a PR #16 e obter autorização explícita antes de qualquer merge.
+1. Confirmar a preservação de pacotes offline após uma próxima publicação na mesma origem oficial.
+2. Observar quota real, evicção e remoção de dados pelo navegador. Os testes E2E simulam essas condições, mas não substituem evidência em aparelhos.
+3. Repetir smoke test de instalação, standalone, navegação e reprodução de um pacote no domínio oficial.
 
-### Melhorias futuras — ainda não implementadas
+### Melhorias futuras — não implementadas
 
-Duas melhorias foram identificadas e precisam de arquitetura antes de virar código:
+1. **Gerenciador central de tutoriais offline:** listar os pacotes do IndexedDB, verificar integridade no Cache Storage e permitir abrir, reparar, atualizar ou remover.
+2. **Monitoramento de armazenamento:** mostrar estimativas por Storage Manager API, quando disponível, sem substituir o tratamento de `QuotaExceededError`.
 
-1. **Gerenciador central de tutoriais offline:** área “Meus tutoriais offline” que liste pacotes do IndexedDB, valide o estado real no Cache Storage e permita abrir, atualizar/reparar e remover tutoriais. Deve reutilizar os serviços existentes (`getTutorialOfflinePackage`, `saveTutorialOffline`, `removeTutorialOffline`) sem duplicar regras de armazenamento. Ainda precisam ser decididos ponto de entrada/rota, contrato de listagem, atualização entre abas, tratamento de registros órfãos e apresentação de tamanhos.
-2. **Monitoramento do armazenamento:** exibir estimativas de uso/quota e, se fizer sentido, estado de persistência por meio de `navigator.storage.estimate()`, `persisted()` e solicitação opcional de `persist()`. As APIs são variáveis e aproximadas; não garantem espaço para downloads nem substituem o tratamento de `QuotaExceededError`. Precisam ser definidos local de exibição, frequência de atualização, fallback quando não houver suporte e UX de solicitação de persistência.
-
-A arquitetura e as decisões detalhadas estão em `docs/arquitetura-pwa-hauy-conecta.md`, seção 28. Nenhuma das duas melhorias está implementada ou comprometida para a próxima entrega.
+As duas ideias são roadmap, não funcionalidades atuais. Consulte a [arquitetura PWA](arquitetura-pwa-hauy-conecta.md) e os [testes PWA](../tests/pwa/README.md).
 
 ## 15. Limitações e cuidados conhecidos
 
@@ -485,7 +497,7 @@ A arquitetura e as decisões detalhadas estão em `docs/arquitetura-pwa-hauy-con
 2. **Verificação de origem:** APIs permitem requisições sem Origin; isso não é autenticação.
 3. **Serviços externos:** Gemini, Apps Script, iLovePDF, iLoveIMG e plataformas de vídeo dependem de serviços de terceiros.
 4. **Busca recente:** o histórico fica no localStorage do navegador, não em conta sincronizada.
-5. **Pré-carregamento de mídia:** a preparação de mídia das etapas é em memória e limitada à sessão.
+5. **Pré-carregamento de mídia:** `useTutorialStepMedia` prepara mídia em memória para a etapa atual; o armazenamento offline persistente é responsabilidade separada do módulo PWA.
 6. **Conteúdo estático:** mudanças em tutoriais e categorias exigem atualizar os dados versionados e regenerar as rotas pré-renderizadas.
 7. **Pré-renderização:** a integração entre Vite, Astratra, Playwright, dist/ e Vercel é sensível à ordem do build.
 8. **Mídia pesada:** revisar tamanho e formato dos vídeos e imagens antes de aumentar o acervo.
@@ -535,19 +547,23 @@ A arquitetura e as decisões detalhadas estão em `docs/arquitetura-pwa-hauy-con
 
 ## 17. Documentação do projeto
 
-Documentos de referência existentes:
+Documentos de referência vigentes:
 
-- README.md — apresentação geral, execução e publicação.
-- docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md — visão funcional e jornada do produto.
-- docs/DOCUMENTACAO_PROJETO.md — arquitetura e manutenção técnica detalhadas; verificar a revisão de código citada no próprio documento.
-- docs/REGRAS-DOS-TUTORIAIS.md — regras para criação e manutenção dos tutoriais.
-- docs/GUIA-SVGICON-E-ICONS-DE-FERRAMENTAS.md — orientação de ícones/SVG.
-- docs/TUTORIAIS_E_CATEGORIAS.json — referência estruturada de tutoriais e categorias.
-- docs/MANIFESTO-MIDIAS-CURSOR.json — inventário/manifesto de mídia.
-- docs/arquitetura-pwa-hauy-conecta.md — planejamento do PWA híbrido.
-- docs/AI_CONTEXT.md — este contexto para IAs.
+- `README.md` — visão geral, execução local, variáveis, scripts, PWA e publicação.
+- `SECURITY.md` — reporte responsável e limites de teste.
+- `docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md` — visão funcional, experiência e recursos para a comunidade escolar.
+- `docs/DOCUMENTACAO_PROJETO.md` — arquitetura técnica, estrutura, APIs, scripts e operação.
+- `docs/REGRAS-DOS-TUTORIAIS.md` — critérios editoriais e de mídia para os tutoriais.
+- `docs/GUIA-SVGICON-E-ICONS-DE-FERRAMENTAS.md` — SVGs, registros de ícones e componente SvgIcon.
+- `docs/ICONS-PWA.md` — geração de ícones do manifesto.
+- `docs/REGISTRO_DE_OCORRENCIAS.md` — histórico de bugs e erros, preservado sem apagar registros antigos.
+- `docs/arquitetura-pwa-hauy-conecta.md` — arquitetura, decisões, testes e histórico da PWA.
+- `src/pwa/README.md` e `tests/pwa/README.md` — detalhes do módulo e cobertura automatizada.
+- `docs/TUTORIAIS_E_CATEGORIAS.json` — referência estruturada do catálogo; `src/data/categories.js` e `src/data/tutorials.js` continuam sendo as fontes operacionais.
+- `docs/MANIFESTO-MIDIAS-CURSOR.json` — manifesto auxiliar de mídia; conferir branch e caminhos antes de reutilizar.
+- Arquivos em `src/docs/` — notas técnicas e materiais de estudo/histórico. Não assumir que descrevem o fluxo operacional atual sem comparar com o código.
 
-Em caso de divergência, verificar a implementação na branch/commit em análise e registrar a correção na documentação pertinente.
+Em caso de divergência, a implementação na branch/commit efetivamente analisado é a fonte de verdade. Atualize a documentação afetada no mesmo trabalho.
 
 ## 18. Como o AI_CONTEXT é mantido
 

@@ -1,5 +1,7 @@
 # Hauy Conecta — Documentação do Produto
 
+> **Estado revisado:** 2026-11-01. Esta documentação descreve o produto após a integração da PWA pela PR #19. Para detalhes de implementação e limitações técnicas, consulte `docs/AI_CONTEXT.md` e `docs/arquitetura-pwa-hauy-conecta.md`.
+
 ## 1. O que é o Hauy Conecta?
 
 O **Hauy Conecta** é a Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mairync.
