@@ -600,10 +600,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 31be08c74569270d4ef94f129b64585c8a140d1e
-- **Data do commit:** 2026-11-01T00:38:51-03:00
-- **Mensagem do commit:** fix(pwa): sync dev prerender artifacts and document incident
-- **Branch desta execução:** fix/pwa-video-cache-blob
+- **Commit de referência:** 38137432122212035965dd26b2ca6e473fe8472a
+- **Data do commit:** 2026-11-01T00:53:08-03:00
+- **Mensagem do commit:** Merge pull request #17 from kleber-goncalves/fix/pwa-video-cache-blob
+- **Branch desta execução:** dev
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
 - **Dependências de runtime:** 16
@@ -734,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 3813743 | 2026-11-01 | Merge pull request #17 from kleber-goncalves/fix/pwa-video-cache-blob |
+| 7b5cabb | 2026-11-01 | build: update prerendered site |
+| f9cef0e | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 31be08c | 2026-11-01 | fix(pwa): sync dev prerender artifacts and document incident |
 | 21a4e7c | 2026-11-01 | build: update prerendered site |
 | 4e99938 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | ef1d190 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 89acf03 | 2026-11-01 | docs(pwa): record diagnostic preview build scope |
-| a5770fa | 2026-11-01 | ci(pwa): build diagnostic preview artifacts |
-| 7479a42 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| 1d7edfb | 2026-11-01 | style(pwa): finalize diagnostic worker formatting |
 
 <!-- END AUTO-GENERATED SECTION -->
