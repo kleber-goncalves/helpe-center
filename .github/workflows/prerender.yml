@@ -8,7 +8,9 @@ on:
   push:
     branches:
       - main
+      - dev
       - feat/pwa
+      # Temporária enquanto a PR #17 precisa gerar o dist do Preview.
       - fix/pwa-video-cache-blob
     paths-ignore:
       - "dist/**"

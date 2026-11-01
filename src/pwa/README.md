@@ -13,6 +13,15 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 - `ui/hooks/usePwaStatus.js` adapta estado de conexão e eventos PWA para React.
 - `ui/components/PwaStatusBanner.jsx` apresenta os avisos gerais do PWA.
 
+
+## Build e publicação
+
+A Vercel publica o diretório `dist/` versionado; seu `buildCommand` em `vercel.json` não executa novamente Vite ou Astratra. A geração dos artefatos é responsabilidade do GitHub Actions (`.github/workflows/prerender.yml`), que executa `npm run build`, pré-renderiza as rotas, audita imagens e commita `dist/` e `public/sitemap.xml` na própria branch.
+
+Os pushes em `main`, `dev` e `feat/pwa` geram o artefato automaticamente. A branch `fix/pwa-video-cache-blob` está incluída temporariamente enquanto a PR #17 mantém seu Preview de diagnóstico; remover essa entrada após integrar a PR.
+
+Não edite `dist/` manualmente e não valide um Preview logo após alterar apenas `src/`: primeiro confirme que `Build prerendered site` concluiu e que o commit `build: update prerendered site` foi publicado na mesma branch. Os filtros `paths-ignore` de `dist/`, `public/sitemap.xml` e `docs/` evitam que commits gerados iniciem outro ciclo de build. O histórico do incidente e as evidências estão em [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md#incidente-artefato-dist-desatualizado-e-download-de-mp4-01112026).
+
 ## Limites de responsabilidade
 
 1. Manter o PWA isolado em `src/pwa`; não espalhar regras de cache ou Service Worker pelos componentes genéricos do portal.

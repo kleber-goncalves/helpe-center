@@ -238,7 +238,6 @@ registerRoute(
 
 async function handleVideoRequest({ request }) {
     const isExplicitDownload = request.cache === "reload";
-    const startedAt = Date.now();
 
     if (!isExplicitDownload) {
         const packageResponse = await findTutorialPackageResource(request);
@@ -248,47 +247,13 @@ async function handleVideoRequest({ request }) {
         }
     }
 
-    if (isExplicitDownload) {
-        console.info("[HAUY SW MP4 DOWNLOAD] fetch:start", {
-            url: request.url,
-            method: request.method,
-            cache: request.cache,
-            range: request.headers.get("range"),
-            clientId: request.clientId,
-        });
-    }
-
     try {
-        const response = await fetch(request);
-
-        if (isExplicitDownload) {
-            console.info("[HAUY SW MP4 DOWNLOAD] fetch:response", {
-                url: request.url,
-                status: response.status,
-                statusText: response.statusText,
-                contentType: response.headers.get("content-type"),
-                contentLength: response.headers.get("content-length"),
-                contentEncoding: response.headers.get("content-encoding"),
-                elapsedMs: Date.now() - startedAt,
-                hasBody: Boolean(response.body),
-            });
-        }
-
-        return response;
-    } catch (error) {
-        if (isExplicitDownload) {
-            console.error("[HAUY SW MP4 DOWNLOAD] fetch:error", {
-                url: request.url,
-                elapsedMs: Date.now() - startedAt,
-                errorName: error?.name ?? typeof error,
-                errorMessage: error?.message ?? String(error),
-                errorStack: typeof error?.stack === "string" ? error.stack : null,
-            });
-        }
-
+        return await fetch(request);
+    } catch {
         return Response.error();
     }
 }
+
 registerRoute(
     ({ request, url }) =>
         (request.method === "GET" || request.method === "HEAD") &&
