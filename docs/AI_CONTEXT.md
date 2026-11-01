@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** f61217a19cf7577227a250fad883b27177c7b528
-- **Data do commit:** 2026-11-01T01:09:51-03:00
-- **Mensagem do commit:** docs(security): add occurrence register and disclosure policy
+- **Commit de referência:** 92307ea9f0a4b86e8856ae4f65a8584dd8ee9f96
+- **Data do commit:** 2026-11-01T04:10:08Z
+- **Mensagem do commit:** docs(ai-context): atualizar snapshot automaticamente
 - **Branch desta execução:** docs/registro-ocorrencias
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -736,6 +736,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 92307ea | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | f61217a | 2026-11-01 | docs(security): add occurrence register and disclosure policy |
 | 829d174 | 2026-11-01 | build: update prerendered site |
 | 757c790 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
@@ -743,6 +744,5 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | 7b5cabb | 2026-11-01 | build: update prerendered site |
 | f9cef0e | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 31be08c | 2026-11-01 | fix(pwa): sync dev prerender artifacts and document incident |
-| 21a4e7c | 2026-11-01 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
