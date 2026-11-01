@@ -1,14 +1,14 @@
 # Hauy Conecta --- Arquitetura e Planejamento do PWA
 
-> **Status atual (31/10/2026):** núcleo do PWA implementado na branch `feat/pwa`, PR #16 aberta contra `dev`; instalação, uso offline, atualização e vídeos foram validados manualmente em Chrome desktop e dispositivos Android de teste. A validação final de preservação de pacotes entre publicações permanece reservada à URL de produção.\
-> **Modelo:** híbrido — app shell e imagens acessadas em cache; tutoriais salvos sob demanda; vídeos MP4 opcionais e desmarcados por padrão.\
-> **Escopo de compatibilidade:** Chrome desktop e Android testados. iOS/Safari fora do escopo de aceite desta etapa.
+> **Status atual (01/11/2026):** PWA integrada à `main` pela PR #19 e publicada no domínio oficial. Validate #249, Build prerender #103 e AI Context #191 concluíram com sucesso; deployment de produção está READY. O aceite manual de instalação, navegação offline e reprodução foi realizado em Chrome desktop e dispositivos Android de teste antes da promoção. A preservação de pacotes entre futuras publicações na origem oficial e a quota real/evicção do navegador continuam como validações manuais residuais.\
+> **Modelo vigente:** híbrido — app shell e imagens acessadas em cache; tutoriais salvos sob demanda; vídeos MP4 opcionais e desmarcados por padrão.\
+> **Compatibilidade validada:** Chrome desktop e Android de teste.
 
 ## 1. Objetivo e limite desta etapa
 
 Este documento começou como arquitetura pré-implementação do Progressive Web App (PWA), registrando objetivos, opções técnicas, regras de cache e riscos. As seções iniciais preservam esse contexto e as decisões que orientaram o desenvolvimento.
 
-**Estado revisado em 31/10/2026:** a implementação está concluída na branch `feat/pwa`. O status atual, os checklists concluídos, o aceite manual informado e as validações residuais estão nas seções 15 a 28. Qualquer mudança futura deve preservar `main` e `dev` até autorização explícita, ter testes adequados e atualizar a documentação correspondente.
+**Estado revisado em 01/11/2026:** a implementação foi integrada à `main` pela PR #19 e publicada em produção. As seções iniciais preservam contexto e decisões históricas de planejamento; os estados vigentes, resultados de release e validações residuais estão nas seções finais e no adendo 29. Mudanças futuras devem seguir o fluxo de branch/PR do repositório, executar testes adequados e atualizar a documentação correspondente.
 
 Este documento continua sendo a referência técnica principal para o PWA.
 
@@ -901,14 +901,26 @@ Se o download for cancelado, um recurso ficar indisponível, o Cache Storage fal
 
 ### 27.4 Testes e validação atual
 
-- Unitários: fingerprints, mudanças em texto/imagens/vídeos, separação da versão dos vídeos opcionais e validação de recursos.
-- Service Worker: limpeza de caches antigos do app shell sem apagar runtime images ou pacotes.
-- E2E: reparo de cache ausente, atualização de conteúdo, preservação do pacote anterior, limpeza de dados locais, quota simulada, resposta inválida, cancelamento e arquivo indisponível.
-- O workflow **Validate Hauy Conecta**, run `41242399960`, concluiu com sucesso no último commit de código validado (`7b901b8`). O build/prerender também concluiu com sucesso no workflow `41242394976`.
-- O deployment correspondente ao HEAD consultado (`9161dd0`) está READY na Preview da Vercel.
-- O responsável confirmou atualização do Service Worker e uso offline nos dispositivos de teste.
+A cobertura automatizada da PWA inclui unitários para manifesto, políticas de cache, fingerprints, coleta de recursos, integridade e limpeza de caches; os testes E2E exercitam registro do Service Worker, navegação offline, downloads, atualização/reparo, cancelamento, quota simulada e reprodução/busca temporal de vídeos.
 
-Permanecem fora da validação de Preview: preservar pacotes entre publicações sucessivas na mesma origem definitiva de produção e observar quota real/evicção do navegador.
+**Resultado da promoção para produção em 01/11/2026:**
+
+- [Validate Hauy Conecta #249](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214) concluiu com sucesso, incluindo testes de busca/assistente, testes unitários PWA, ESLint, build/prerender/auditoria e testes E2E PWA.
+- [Build prerendered site #103](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) concluiu com sucesso e gerou o artefato atualizado de `dist/`.
+- [AI Context Synchronize #191](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723249) concluiu com sucesso.
+- A [PR #19](https://github.com/kleber-goncalves/helpe-center/pull/19) integrou a implementação à `main`.
+- O [deployment de produção da Vercel](https://vercel.com/kleber-goncalves-s-projects/helpe-center/3RnqTbNbWFHvRErRKEYnpKwwpzVS) está READY no commit `9857002832214432e5090515f241e6154ceca044`.
+- A raiz de `https://hauy-conecta.vercel.app/` respondeu HTTP 200 na consulta pós-publicação.
+
+O responsável já havia reportado instalação, navegação offline e reprodução de vídeos em Chrome desktop e aparelhos Android de teste, além do download de pacote de vídeos grande no Preview. Esses testes ocorreram antes da promoção e não comprovam, por si só, a preservação de pacotes na origem oficial após futuras atualizações.
+
+**Validações manuais que permanecem:**
+
+1. Confirmar a preservação de pacotes offline depois de uma próxima publicação na mesma origem oficial.
+2. Observar quota real, evicção e remoção dos dados pelo navegador; os testes automatizados simulam essas condições.
+3. Repetir smoke test de instalação, standalone, navegação e reprodução de um pacote no domínio oficial.
+
+A instalação, atualização e navegação offline já aceitas manualmente em ambientes de teste não devem voltar a ser descritas como funcionalidades não implementadas.
 
 ## 28. Melhorias futuras — ainda não implementadas
 
@@ -966,3 +978,12 @@ As duas melhorias abaixo foram identificadas como evoluções úteis, mas **não
 6. A estimativa global não substitui tamanho dos pacotes, nem garante que um download cabe.
 
 **Ordem recomendada:** arquitetar primeiro o contrato de leitura/listagem de pacotes para o gerenciador; em seguida decidir como integrar a estimativa global de armazenamento nessa mesma área. Implementar e testar as duas melhorias separadamente, sem alterar o fluxo de download já validado.
+
+
+## 29. Release de produção — atualização de 01/11/2026
+
+A PR #19 promoveu a implementação da PWA de `dev` para `main`. O commit de merge foi `8a3a3ac5bc02eb3efb562380908bbbab94a12e72`; em seguida, o workflow de prerender gerou o commit final `9857002832214432e5090515f241e6154ceca044` com a mensagem `build: update prerendered site`.
+
+A Vercel publicou esse commit no ambiente Production e marcou o deployment como READY, com alias `hauy-conecta.vercel.app`. A raiz respondeu HTTP 200. A validação automatizada de código, build/prerender e sincronização documental passou nos workflows #249, #103 e #191, respectivamente.
+
+A publicação não encerra as validações manuais de armazenamento. Para comprovar a preservação dos downloads entre versões na origem oficial, será necessário realizar uma publicação posterior e verificar os pacotes que já estavam salvos antes dela. Quota real e evicção também precisam ser observadas em dispositivos/navegadores reais; a simulação E2E não substitui essa evidência.

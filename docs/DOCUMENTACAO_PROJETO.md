@@ -1,11 +1,14 @@
 # Hauy Conecta — Documentação completa do projeto
 
-**Fonte desta documentação:** código atual da branch **feat/ferramentas**, complementado pelo README.md e pelos documentos técnicos existentes em src/docs/.
+> **Observação sobre o histórico:** as seções abaixo preservam explicações acumuladas em revisões anteriores. O estado de branch, Actions, build, formulário e PWA foi revisado para a release de 01/11/2026; quando um exemplo antigo divergir do código, prevalece a implementação da branch/commit atual.
 
-**Estado verificado:** commit 8905370698041b8d8a38e186aa39cb03ca6b985c
-
-- Validate #79: sucesso
-- Lighthouse #37: sucesso
+> **Revisão do estado atual:** 2026-11-01. O documento foi originalmente escrito a partir da branch `feat/ferramentas`; esse registro é histórico, não a branch atual de produção.
+>
+> **Estado de produção verificado nesta revisão:** PR #19 integrada; `main` publicou a PWA e as atualizações de suporte/documentação. O commit final de artefatos consultado foi `9857002832214432e5090515f241e6154ceca044`.
+>
+> **Validações da release:** Validate Hauy Conecta #249, Build prerendered site #103 e AI Context Synchronize #191 concluíram com sucesso. A Vercel publicou o commit de artefatos em estado READY no domínio oficial.
+>
+> **Fonte de verdade:** compare sempre esta documentação com a branch e o commit em análise. A implementação atual está em `src/`, `api/`, `scripts/`, `.github/workflows/`, `package.json` e configurações de build/publicação. As seções históricas não devem ser interpretadas como estado atual sem conferência.
 
 Site: https://hauy-conecta.vercel.app/
 
@@ -1441,17 +1444,41 @@ Cada etapa tem uma responsabilidade específica.
 
 # 45. Scripts npm
 
-| Comando              | Finalidade                  |
-| -------------------- | --------------------------- |
-| npm run dev          | ambiente de desenvolvimento |
-| npm run build        | build completo              |
-| npm run lint         | ESLint                      |
-| npm run preview      | testa a build localmente    |
-| npm run audit:images | auditoria de imagens        |
-| npm run predev       | metadata antes do dev       |
-| npm run prelint      | metadata antes do lint      |
+Os scripts abaixo correspondem ao `package.json` consultado em 2026-11-01:
 
----
+| Comando | Finalidade |
+|---|---|
+| `npm run dev` | Inicia o Vite. |
+| `npm run build` | Gera metadados e ícones, cria rotas, compila, pré-renderiza e audita imagens. |
+| `npm run preview` | Serve a build local de `dist/`. |
+| `npm run lint` | Executa ESLint. |
+| `npm run audit:images` | Executa isoladamente a auditoria de imagens. |
+| `npm run test:search` | Testa busca e lógica de resposta do assistente com Node test runner. |
+| `npm run test:pwa:unit` | Testes unitários da PWA. |
+| `npm run test:pwa:e2e` | Testes de navegador da PWA com Playwright/Chromium. |
+| `npm run test:pwa` | Executa testes unitários e E2E da PWA. |
+| `npm run check:occurrences` | Valida IDs e estrutura do registro público de ocorrências. |
+| `npm run pwa:icons` | Gera os ícones PWA a partir do SVG de origem. |
+
+Os scripts auxiliares `predev` e `prelint` são executados automaticamente pelo npm antes dos comandos correspondentes.
+
+### Sequência do build
+
+```text
+scripts/generate-image-metadata.mjs
+        ↓
+scripts/generate-pwa-icons.mjs
+        ↓
+scripts/generate-prerender-routes.mjs
+        ↓
+vite build
+        ↓
+astratra-prerender
+        ↓
+scripts/audit-images.mjs
+```
+
+Não edite manualmente os artefatos gerados. Corrija as fontes e execute novamente o script responsável.
 
 # 46. Como executar localmente
 
@@ -1515,133 +1542,85 @@ deve existir somente no ambiente do servidor.
 
 # 48. GitHub Actions
 
-Há três workflows.
+O repositório possui quatro workflows:
 
-## validate-feat-ferramentas.yml
+## Validate Hauy Conecta — `validate-feat-ferramentas.yml`
 
-Executa na branch:
+Executa em pushes e pull requests direcionados a `main` e `dev`. Utiliza Node.js 24 e `npm ci`, e executa:
 
-```text
-feat/ferramentas
-```
+1. validação do registro de ocorrências;
+2. testes de busca e resposta do assistente;
+3. testes unitários PWA;
+4. ESLint;
+5. instalação de Playwright/Chromium;
+6. build, prerender e auditoria de imagens;
+7. testes E2E da PWA.
 
-Faz:
+O job ignora eventos disparados por `github-actions[bot]`. O workflow ignora alterações que envolvam somente `dist/`, `public/sitemap.xml` ou `docs/AI_CONTEXT.md`.
 
-1. checkout;
-2. Node 24;
-3. npm ci;
-4. Playwright;
-5. lint;
-6. build/prerender.
+## Build prerendered site — `prerender.yml`
 
-## lighthouse-feat-ferramentas.yml
+Executa em pushes nas branches `main`, `dev` e `feat/pwa`. Gera metadados e ícones, executa build/prerender/auditoria e versiona `dist/` e `public/sitemap.xml`. Ignora alterações em `dist/**`, `public/sitemap.xml` e `docs/**`.
 
-Executa na mesma branch e roda Lighthouse nas páginas configuradas.
+## AI Context — Synchronize — `ai-context.yml`
 
-## prerender.yml
+Atualiza automaticamente o snapshot de `docs/AI_CONTEXT.md`. A automação não substitui a atualização humana da parte narrativa, das decisões de arquitetura e do histórico.
 
-Executa na main e gera a versão pré-renderizada de produção.
+## Lighthouse feat/ferramentas — `lighthouse-feat-ferramentas.yml`
 
----
+Workflow específico da branch `feat/ferramentas`, acionado por push nessa branch ou manualmente. Não é uma checagem geral automática de `main`/produção.
 
 # 49. Concorrência dos Actions
 
-Os workflows utilizam:
+As políticas de concorrência variam por workflow:
 
-```yaml
-cancel-in-progress: true
-```
+- **Validate:** `cancel-in-progress: false`; separa grupos de execução de código e de automação do bot.
+- **Prerender:** `cancel-in-progress: true` por referência/branch; uma nova build pode cancelar outra build anterior da mesma branch.
+- **AI Context:** `cancel-in-progress: false`; evita interrupções da sincronização documental.
+- **Lighthouse:** `cancel-in-progress: true`; pertence ao fluxo específico de `feat/ferramentas`.
 
-Portanto uma sequência como esta é normal:
-
-```text
-commit A → Action inicia
-commit B → Action novo inicia
-commit A → pode ser cancelado
-commit B → continua
-```
-
-Por isso, quando um run aparece como cancelled, sempre confira primeiro o commit mais recente.
-
----
+Não interprete um run antigo como o estado atual. Confira branch, SHA, evento, conclusão e jobs referentes ao commit mais recente.
 
 # 50. Lighthouse
 
-Arquivo:
+O repositório mantém `lighthouserc.json` e o workflow `lighthouse-feat-ferramentas.yml`, que executa na branch específica `feat/ferramentas` ou por acionamento manual.
 
-```text
-lighthouserc.json
-```
-
-Hoje ele analisa pelo menos:
-
-- performance;
-- LCP;
-- CLS;
-- TBT;
-- SEO;
-- document title;
-- html lang;
-- meta description;
-- canonical.
-
-As regras de performance utilizam warn.
-
-Algumas regras estruturais usam error.
-
-Portanto:
-
-```text
-warning ≠ necessariamente falha
-```
-
----
+Esse fluxo não é um gate geral de produção nem substitui o workflow Validate. Consulte o estado e a configuração atuais antes de interpretar resultados ou aplicar thresholds de Lighthouse.
 
 # 51. Vercel
 
-Arquivo:
+O arquivo `vercel.json` define:
 
-```text
-vercel.json
-```
+- `outputDirectory: dist`;
+- `cleanUrls: true`;
+- `buildCommand` informativo (`echo "Using pre-rendered dist generated by GitHub Actions"`).
 
-A configuração indica que a Vercel publica:
+A Vercel não executa novamente Vite ou Astratra nesse fluxo. O GitHub Actions gera e versiona os arquivos de `dist/`; a Vercel publica o artefato existente. Por isso, um commit que altere apenas `src/` não é suficiente para atualizar o site se o workflow de prerender não produzir e enviar o novo `dist/`.
 
-```text
-dist/
-```
-
-e usa um build command simplificado porque a geração pesada já foi feita pelo processo do projeto.
-
-A ideia é evitar repetir o pré-render com Playwright na etapa de publicação.
-
----
+O domínio oficial observado na produção é https://hauy-conecta.vercel.app/. Na revisão de 2026-11-01, o deployment final de produção estava READY e associado ao commit `9857002832214432e5090515f241e6154ceca044`.
 
 # 52. Fluxo de produção
 
-O ciclo pode ser visualizado assim:
+O fluxo atual possui três automações principais após alterações em `main`:
 
 ```text
-alteração no código
-       ↓
-git push
-       ↓
-GitHub Actions
-       ↓
-npm ci
-       ↓
-npm run build
-       ↓
-pré-render
-       ↓
-dist/
-       ↓
-produção
-       ↓
-Vercel
+PR aprovada e mergeada em main
+            ↓
+       GitHub Actions
+       ├── Validate
+       ├── Prerender
+       └── AI Context
+            ↓
+Build/prerender gera dist/ e sitemap
+            ↓
+Commit automático do artefato
+            ↓
+Vercel publica dist/
+            ↓
+Smoke test HTTP e aceite manual
 ```
 
----
+Os workflows podem executar em paralelo. O commit de merge e o commit final do artefato são diferentes; a Vercel pode publicar o segundo. Sempre confira o SHA do deployment antes de afirmar que uma versão está no ar.
 
 # 53. Como adicionar um novo tutorial
 
@@ -1957,23 +1936,27 @@ Isso explica por que uma alteração na forma de renderizar imagem pode afetar:
 
 # 68. Formulário: arquitetura completa
 
+O fluxo vigente passa pelo endpoint serverless da Vercel antes de chegar ao Apps Script:
+
 ```text
-QuestionForm
+QuestionForm (React)
       ↓
-api/support.js
+HTML + Zod (UX/validação cliente)
       ↓
-questionSchema
+POST /api/support
       ↓
-Apps Script
+Zod + limites + origem + honeypot (API Vercel)
+      ↓
+SUPPORT_APPS_SCRIPT_ENDPOINT
+      ↓
+Google Apps Script
       ↓
 Google Sheets
 ```
 
-O frontend melhora a experiência.
+A API `api/support.js` também processa o tipo `search-no-result`. O frontend não deve chamar o Apps Script diretamente nem colocar a URL do Apps Script no bundle. O backend valida novamente os dados com `questionSchema.safeParse`, aplica limites de requisição e encaminha a solicitação para o endpoint configurado no ambiente. O Apps Script permanece como integração externa e possui suas próprias validações/controles.
 
-O backend garante a validação do lado do servidor.
-
----
+O schema está em `src/schemas/questionSchema.js`; a interface está em `src/components/QuestionForm.jsx`; a página está em `src/pages/SendQuestion.jsx`.
 
 # 69. Assistente: arquitetura completa
 
@@ -2342,3 +2325,23 @@ Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mairync.
 ```text
 PESQUISAR → ENCONTRAR → APRENDER → RESOLVER
 ```
+
+
+---
+
+# 84. Estado da release após a promoção para main — 01/11/2026
+
+A PR #19 (`dev` → `main`) foi integrada em 2026-11-01. O conjunto promovido inclui o PWA, a correção do armazenamento de vídeos MP4 grandes, a atualização do fluxo de prerender e a documentação de segurança/rastreabilidade.
+
+| Item | Evidência |
+|---|---|
+| Merge commit | `8a3a3ac5bc02eb3efb562380908bbbab94a12e72` |
+| Commit de artefatos em main | `9857002832214432e5090515f241e6154ceca044` |
+| Validate Hauy Conecta | [#249 — sucesso](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214) |
+| Build prerendered site | [#103 — sucesso](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) |
+| AI Context Synchronize | [#191 — sucesso](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723249) |
+| Deployment Vercel | [READY](https://vercel.com/kleber-goncalves-s-projects/helpe-center/3RnqTbNbWFHvRErRKEYnpKwwpzVS) |
+
+A raiz do domínio oficial respondeu HTTP 200 na verificação pós-publicação. O aceite manual de preservação de pacotes entre publicações sucessivas e o comportamento de quota real/evicção ainda devem ser registrados em `tests/pwa/README.md` quando executados na origem oficial.
+
+**Importante:** esses dados são o registro da release de 01/11/2026. Após novos commits, atualize SHAs, execuções e estado da Vercel; não reutilize esses números como estado permanente.
