@@ -600,10 +600,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 8a3a3ac5bc02eb3efb562380908bbbab94a12e72
-- **Data do commit:** 2026-11-01T01:35:58-03:00
-- **Mensagem do commit:** Merge pull request #19 from kleber-goncalves/dev
-- **Branch desta execução:** main
+- **Commit de referência:** 929be1c557f7fa7a7c2d1ef545b4f2ada85a1e3f
+- **Data do commit:** 2026-11-01T02:15:00-03:00
+- **Mensagem do commit:** docs: atualizar documentação após release da PWA
+- **Branch desta execução:** docs/atualizacao-documentacao-geral
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -736,13 +736,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 929be1c | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 058126b | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 15437d7 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 9857002 | 2026-11-01 | build: update prerendered site |
+| dfa39d1 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 8a3a3ac | 2026-11-01 | Merge pull request #19 from kleber-goncalves/dev |
 | 27705a3 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 772d530 | 2026-11-01 | build: update prerendered site |
-| 5341545 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| ebb33cf | 2026-11-01 | Merge pull request #18 from kleber-goncalves/docs/registro-ocorrencias |
-| 48be0f8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| 92307ea | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| f61217a | 2026-11-01 | docs(security): add occurrence register and disclosure policy |
 
 <!-- END AUTO-GENERATED SECTION -->
