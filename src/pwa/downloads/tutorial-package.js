@@ -655,7 +655,6 @@ export async function saveTutorialOffline({
         signal?.addEventListener("abort", abortFromCaller, { once: true });
     }
 
-    let nextIndex = 0;
     let completed = 0;
     let bytesDownloaded = 0;
     let totalBytes = videoEstimate.knownBytes;
