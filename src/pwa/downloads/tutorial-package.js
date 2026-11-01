@@ -531,6 +531,7 @@ export async function readResponseAsBlob(response, { onChunk, signal } = {}) {
         const blob = new Blob(chunks, {
             type: response.headers.get("content-type") ?? "",
         });
+        chunks.length = 0;
 
         if (blob.size !== transferredBytes) {
             throw new Error("O tamanho do arquivo materializado não corresponde aos bytes recebidos.");
@@ -550,8 +551,8 @@ export async function readResponseAsBlob(response, { onChunk, signal } = {}) {
 }
 
 /**
- * Encaminha o corpo em streaming para o Cache Storage sem acumular o MP4
- * inteiro em um único ArrayBuffer na memória.
+ * Encaminha corpos de imagens em streaming para o Cache Storage e contabiliza
+ * os bytes lidos. Vídeos usam readResponseAsBlob antes de Cache.put().
  */
 function createTrackedResponse(response, onChunk) {
     if (!response.body || typeof ReadableStream === "undefined") {
