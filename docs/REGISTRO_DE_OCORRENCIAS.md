@@ -5,6 +5,8 @@
 > **Última atualização:** 2026-11-01  
 > **Responsável pelo registro:** mantenedor do repositório.
 
+**Revisão pós-release (01/11/2026):** a promoção de `dev` para `main` pela PR #19 e a publicação da PWA foram concluídas com workflows de release aprovados. O evento de publicação não foi classificado como BUG, ERR, VULN ou INC. Os registros históricos abaixo permanecem preservados; esta atualização não adiciona vulnerabilidade confirmada.
+
 ## 1. Como usar este registro
 
 Este documento complementa o [AI_CONTEXT.md](./AI_CONTEXT.md):
