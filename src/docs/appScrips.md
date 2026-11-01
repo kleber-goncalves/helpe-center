@@ -1,3 +1,5 @@
+> **Contexto vigente (2026-11-01):** este diagrama representa a parte externa de processamento no Google Apps Script. No fluxo atual do site, o formulário React não chama o Apps Script diretamente: envia para `POST /api/support` na Vercel, que valida novamente e encaminha para `SUPPORT_APPS_SCRIPT_ENDPOINT`. A API também recebe pesquisas sem resultado. O código do Apps Script é mantido fora deste repositório.
+
 recebe
  ↓
 valida

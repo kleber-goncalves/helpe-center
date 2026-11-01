@@ -1,12 +1,14 @@
 # Assistente de IA — Hauy Conecta
 
+> **Revisão de implementação:** 2026-11-01. Para o comportamento vigente, a fonte de verdade é `api/assistant.js`, `src/lib/assistant.js`, `src/lib/searchTutorials.js` e `docs/AI_CONTEXT.md`.
+
 ## Visão geral
 
 O Hauy Conecta possui um **assistente de inteligência artificial** criado para ajudar o usuário a encontrar orientação dentro do conteúdo disponível no portal.
 
 A ideia do assistente não é substituir os tutoriais existentes, mas utilizar o conteúdo do próprio Hauy Conecta como contexto para produzir respostas mais direcionadas às dúvidas do usuário.
 
-No MVP, o assistente utiliza o **Gemini 3.5 Flash-Lite** e o SDK oficial `@google/genai` para Node.js. A documentação atual considerada neste projeto indica entrada e saída sem custo financeiro no Free Tier.
+No backend atual, o assistente utiliza o SDK oficial `@google/genai` para Node.js. O modelo é definido por `GEMINI_MODEL`; quando a variável não é informada, `api/assistant.js` usa `gemini-3.5-flash-lite` como fallback. Este documento não afirma preço ou disponibilidade comercial do modelo: confirme essas condições na documentação oficial do provedor antes de estimar custos.
 
 ---
 

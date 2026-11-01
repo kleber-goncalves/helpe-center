@@ -1,5 +1,7 @@
 # Validação do Formulário — Frontend e Backend
 
+> **Revisão do fluxo atual:** 2026-11-01. O formulário envia para `POST /api/support` na Vercel; `api/support.js` valida novamente com o schema Zod, aplica controles server-side e encaminha ao Apps Script configurado por `SUPPORT_APPS_SCRIPT_ENDPOINT`. Veja `docs/AI_CONTEXT.md` para limites e ressalvas atuais.
+
 ## Visão geral
 
 O formulário de envio de dúvidas do Hauy Conecta utiliza **camadas diferentes de validação**, cada uma com uma responsabilidade específica.

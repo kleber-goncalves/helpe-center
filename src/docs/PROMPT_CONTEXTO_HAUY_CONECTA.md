@@ -1,5 +1,7 @@
 # PROMPT DE CONTEXTO COMPLETO — HAUY CONECTA
 
+> **Atenção — material histórico de transferência de contexto:** este prompt foi preparado em uma revisão anterior e contém referências a branches, PRs, métricas e prioridades daquele período. Não o utilize como fonte operacional sem verificar o código. Para qualquer novo trabalho, comece por `docs/AI_CONTEXT.md`, confirme a branch/commit real e consulte os documentos canônicos listados no README. Na release de 2026-11-01, a PR #19 foi integrada à `main` e a PWA foi publicada em produção.
+
 > **Instrução para o novo ChatGPT:** leia todo este contexto antes de responder ou alterar qualquer coisa. Ele foi escrito para transferir o histórico de trabalho de outro chat. Trate os detalhes como o contexto inicial do projeto, mas verifique o estado atual do repositório antes de editar arquivos, porque o código pode ter mudado depois da última consulta.
 
 ## 1. Seu papel e como deve trabalhar comigo
@@ -413,6 +415,6 @@ Se a tarefa for apenas criar conteúdo, roteiro ou explicação, não faça comm
 
 ## 16. Primeiro passo do novo chat
 
-Antes de começar qualquer tarefa técnica, confira a branch `feat/ferramentas`, o commit atual, `package.json`, o arquivo diretamente relacionado à tarefa e o estado mais recente de **Validate ferramentas branch** e **Lighthouse feat/ferramentas**. Para tutoriais, leia `docs/REGRAS-DOS-TUTORIAIS.md`; para os ícones, leia `docs/GUIA-SVGICON-E-ICONS-DE-FERRAMENTAS.md`; para uma visão geral, consulte `README.md`, `docs/DOCUMENTACAO_PROJETO.md` e `docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md`.
+Antes de qualquer tarefa técnica, leia `docs/AI_CONTEXT.md`, confirme a branch e o SHA atuais, consulte `package.json` e abra os arquivos diretamente relacionados. Não presuma que `feat/ferramentas` seja a branch atual: essa referência pertence ao histórico deste prompt. Para tutoriais, consulte `docs/REGRAS-DOS-TUTORIAIS.md`; para SVG/ícones, consulte `docs/GUIA-SVGICON-E-ICONS-DE-FERRAMENTAS.md`; para PWA, consulte `docs/arquitetura-pwa-hauy-conecta.md`, `src/pwa/README.md` e `tests/pwa/README.md`. O estado de Actions e Vercel deve corresponder aos SHAs mais recentes, não a números antigos citados neste arquivo.
 
 A partir daí, continue o projeto de onde ele realmente está, não de onde você imagina que ele esteja.

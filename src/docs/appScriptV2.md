@@ -1,5 +1,7 @@
 # Google Apps Script — Estrutura e Fluxo
 
+> **Contexto vigente (2026-11-01):** este documento descreve a organização lógica do projeto Google Apps Script externo. O código Apps Script não está versionado neste repositório. A entrada atual a partir do site é `POST /api/support` (Vercel), que valida os dados e encaminha a requisição para `SUPPORT_APPS_SCRIPT_ENDPOINT`; não documente o navegador como chamando `Code.gs` diretamente.
+
 ## Visão geral
 
 O Google Apps Script funciona como uma camada responsável por **receber as requisições, identificar o tipo de informação recebida, encaminhar os dados para o processamento correto e realizar as gravações necessárias**.

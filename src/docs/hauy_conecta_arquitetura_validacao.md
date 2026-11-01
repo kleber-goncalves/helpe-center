@@ -1,5 +1,7 @@
 # Hauy Conecta — Arquitetura, validação, segurança e fluxo de dados
 
+> **Atualização arquitetural (2026-11-01):** o fluxo atual de atendimento inclui uma API serverless da Vercel entre o frontend e o Apps Script. O navegador envia para `POST /api/support`; essa API valida novamente com Zod, aplica limites e encaminha a requisição ao endpoint configurado em `SUPPORT_APPS_SCRIPT_ENDPOINT`. O Apps Script continua responsável pelo processamento externo/integração com Sheets. Diagramas antigos que mostrem chamada direta devem ser entendidos como visão lógica, não como rota HTTP atual.
+
 Este documento explica, do zero, como funciona o sistema de envio de dúvidas do **Hauy Conecta — Central de Ajuda Digital**.
 
 A ideia é separar claramente o papel de cada tecnologia:
