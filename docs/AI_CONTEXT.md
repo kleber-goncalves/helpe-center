@@ -399,7 +399,7 @@ A lista exata de scripts npm é mantida no snapshot automatizado.
 
 ### 11.5. Publicação
 
-O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
+O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Para esta investigação, a branch temporária `fix/pwa-video-cache-blob` também foi incluída para gerar e versionar `dist/` com a instrumentação antes de testar o Preview; essa inclusão é temporária e deve ser removida ao encerrar o diagnóstico. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
 
 Depois de criar o commit do artefato, o workflow limpa somente alterações locais não commitadas, busca o HEAD remoto e faz rebase antes do push. Isso evita rejeições non-fast-forward quando a sincronização automática do AI_CONTEXT avança a branch durante a build. A atualização da referência não utiliza force push.
 
