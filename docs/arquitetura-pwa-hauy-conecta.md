@@ -1,14 +1,15 @@
 # Hauy Conecta --- Arquitetura e Planejamento do PWA
 
-> **Status atual (31/10/2026):** núcleo do PWA implementado na branch `feat/pwa`, PR #16 aberta contra `dev`; instalação, uso offline, atualização e vídeos foram validados manualmente em Chrome desktop e dispositivos Android de teste. A validação final de preservação de pacotes entre publicações permanece reservada à URL de produção.\
+> **Status atualizado (01/11/2026):** PWA integrada à `main` pela PR #19 e publicada em `https://hauy-conecta.vercel.app/`. Deployment Vercel Production `dpl_3RnqTbNbWFHvRErRKEYnpKwwpzVS` em estado READY; a raiz respondeu HTTP 200. Instalação, uso offline, atualização e vídeos foram aceitos manualmente em Chrome desktop e dispositivos Android de teste.\
 > **Modelo:** híbrido — app shell e imagens acessadas em cache; tutoriais salvos sob demanda; vídeos MP4 opcionais e desmarcados por padrão.\
-> **Escopo de compatibilidade:** Chrome desktop e Android testados. iOS/Safari fora do escopo de aceite desta etapa.
+> **Validações residuais:** preservação dos pacotes entre publicações sucessivas na origem de produção e quota/evicção real do navegador.\
+> **Escopo:** Chrome desktop e Android testados. iOS/Safari fora do escopo validado.
 
 ## 1. Objetivo e limite desta etapa
 
 Este documento começou como arquitetura pré-implementação do Progressive Web App (PWA), registrando objetivos, opções técnicas, regras de cache e riscos. As seções iniciais preservam esse contexto e as decisões que orientaram o desenvolvimento.
 
-**Estado revisado em 31/10/2026:** a implementação está concluída na branch `feat/pwa`. O status atual, os checklists concluídos, o aceite manual informado e as validações residuais estão nas seções 15 a 28. Qualquer mudança futura deve preservar `main` e `dev` até autorização explícita, ter testes adequados e atualizar a documentação correspondente.
+**Estado revisado em 01/11/2026:** a implementação foi integrada à `main` pela PR #19 e possui deployment Production READY. As seções 15 a 28 preservam planejamento, registro de implementação, aceite manual e validações residuais. Mudanças futuras devem seguir fluxo de branch/PR, possuir testes adequados e atualizar a documentação correspondente.
 
 Este documento continua sendo a referência técnica principal para o PWA.
 
@@ -414,7 +415,7 @@ Usar versionamento separado para shell, conteúdo e pacotes, evitando um
 
 ## 9. Integração com o build, Astratra e Vercel
 
-O pipeline de publicação foi validado na branch feat/pwa e mantém a estratégia de artefato pré-gerado:
+O pipeline atual mantém a estratégia de artefato pré-gerado: GitHub Actions gera e versiona `dist/`, e a Vercel publica esse artefato:
 
 1. scripts de metadados de imagens e ícones;
 2. geração das rotas e do sitemap;
@@ -423,7 +424,7 @@ O pipeline de publicação foi validado na branch feat/pwa e mantém a estratég
 5. auditoria das imagens;
 6. commit de dist/ e public/sitemap.xml na própria branch.
 
-O workflow `.github/workflows/prerender.yml` executa em `main`, `dev` e `feat/pwa`. A branch `fix/pwa-video-cache-blob` foi incluída temporariamente enquanto a PR #17 precisava gerar os artefatos do próprio Preview; essa entrada deve ser removida após a integração da PR. Cada branch tem seu próprio grupo de concorrência. Alterações somente em `dist/`, `public/sitemap.xml` e `docs/` não iniciam uma nova pré-renderização, evitando ciclos causados pelo commit automático dos artefatos e pela atualização da documentação.
+O workflow `.github/workflows/prerender.yml` executa em pushes para `main`, `dev` e `feat/pwa`. A branch temporária `fix/pwa-video-cache-blob`, usada no diagnóstico da PR #17, já foi removida após a integração da correção. Cada branch tem seu próprio grupo de concorrência. Alterações somente em `dist/`, `public/sitemap.xml` e `docs/` não iniciam nova pré-renderização.
 
 Depois de criar o commit do artefato, o workflow executa git reset --hard HEAD para descartar somente alterações locais não commitadas, que não fazem parte do commit de dist/. Em seguida, busca a referência remota, faz rebase do commit do artefato sobre o HEAD atualizado e envia a branch sem force push. Essa etapa evita conflitos quando a sincronização do AI_CONTEXT avança a branch enquanto a build está rodando.
 
@@ -443,7 +444,7 @@ A Vercel continua publicando dist/ como artefato pré-gerado. O buildCommand do 
 
 1. Materializar MP4 como `Blob` antes de gravar no Cache Storage, mantendo a leitura progressiva, a conferência de tamanho e a concorrência de um vídeo por vez.
 2. Incluir `dev` permanentemente nos branches de push de `.github/workflows/prerender.yml`, para que alterações de código nessa branch gerem e versionem `dist/` antes do deployment.
-3. Manter a entrada `fix/pwa-video-cache-blob` apenas enquanto a PR #17 precisar atualizar seu Preview; removê-la após a integração da PR.
+3. A branch `fix/pwa-video-cache-blob` foi temporária e já foi removida do gatilho de prerender após a integração da PR #17; não a reintroduzir como branch permanente.
 4. Não editar `dist/` manualmente. Alterar os arquivos-fonte, aguardar o workflow `Build prerendered site` concluir e confirmar que o commit `build: update prerendered site` entrou na mesma branch antes de validar o Preview.
 5. Ao investigar uma divergência entre código e Preview, verificar tanto os arquivos-fonte quanto o HTML, os chunks e o `sw.js` efetivamente publicados. Uma resposta HTTP 200 para o arquivo não comprova, por si só, que seu conteúdo corresponde ao commit esperado.
 
@@ -532,7 +533,7 @@ Também não existe painel de monitoramento de quota/armazenamento baseado na St
 10. **Serviços externos:** Gemini, Apps Script, ferramentas externas e plataformas de vídeo continuam dependendo de internet.
 11. **Downloads interrompidos:** cancelamento, perda de recursos e quota devem manter o pacote anterior íntegro ou deixar o novo pacote sem estado de concluído.
 
-## 15. Plano de implementação por fases — estado em 31/10/2026
+## 15. Plano de implementação por fases — estado em 01/11/2026
 
 ### Fase 0 — auditoria e decisões
 
@@ -585,9 +586,13 @@ Também não existe painel de monitoramento de quota/armazenamento baseado na St
 - [x] Aceite manual de instalação, standalone, atualização e navegação offline no Chrome desktop e Android, conforme informado pelo responsável.
 - [ ] Revalidar a preservação dos pacotes entre publicações na mesma origem definitiva de produção.
 - [ ] Fazer aceite manual específico de quota real/evicção de dados do navegador; a quota simulada já é coberta pelos E2E.
-- [ ] Revisão final da PR e autorização para merge/publicação.
+- [x] Revisão final da PR #19 e integração de `dev` em `main`.
+- [x] Primeira publicação na origem definitiva pela Vercel.
+- [x] Smoke test HTTP da raiz do domínio oficial (HTTP 200) e confirmação do deployment READY.
+- [ ] Revalidar preservação de pacotes entre publicações sucessivas na mesma origem de produção.
+- [ ] Fazer aceite manual específico de quota real/evicção; quota simulada já é coberta pelos E2E.
 
-**Saída atual:** implementação funcional e validações de desenvolvimento concluídas. A etapa restante é de aceite de produção e revisão/publicação; não há necessidade de acrescentar funcionalidades ao núcleo do PWA para concluir esta entrega.
+**Saída atual:** núcleo funcional integrado à `main` e publicado. A primeira publicação foi confirmada; persistência entre deployments e quota/evicção real continuam como validações residuais.
 
 ## 16. Matriz de testes e aceite
 
@@ -617,10 +622,12 @@ Também não existe painel de monitoramento de quota/armazenamento baseado na St
 - **Motorola E20 (Android 11):** Chrome não apresenta opção de instalação/criação de atalho nem em `example.com/`, mesmo após atualização. É uma limitação observada do ambiente navegador/launcher e não um teste de falha do código do Hauy Conecta.
 - **iOS/Safari:** não testado e fora do escopo desta entrega.
 
-### 16.2 Validações ainda reservadas à produção
+### 16.2 Validações residuais após a primeira publicação de produção
 
-- Preservação dos pacotes entre publicações sucessivas na mesma origem de produção.
-- Comportamento diante da quota real e remoção/evicção de armazenamento pelo navegador, além das simulações automatizadas.
+A primeira publicação na origem oficial ocorreu em 01/11/2026. O deployment Vercel ficou READY e a raiz respondeu HTTP 200; isso confirma a entrega do HTML, mas não a persistência offline entre versões.
+
+- **Preservação entre publicações:** realizar uma segunda publicação e confirmar que pacotes já salvos permanecem íntegros e reproduzíveis na mesma origem `https://hauy-conecta.vercel.app/`.
+- **Quota real/evicção:** observar manualmente o comportamento de quota e eventual remoção de armazenamento pelo navegador em dispositivo real. Os E2E simulam quota excedida e remoção de dados, mas não substituem esse comportamento real.
 
 ## 17. Decisões vigentes e pendências residuais
 
@@ -680,7 +687,7 @@ A arquitetura principal está fechada para esta entrega. Melhorias futuras devem
 
 ## 20. Registro de escopo e situação atual
 
-O núcleo do PWA está implementado na branch `feat/pwa`, PR #16 contra `dev`. A branch possui Preview Vercel em estado READY no HEAD consultado durante a revisão documental.
+O núcleo do PWA foi integrado à `main` pela PR #19 (`dev` → `main`) em 01/11/2026. A release foi publicada na Vercel Production, deployment `dpl_3RnqTbNbWFHvRErRKEYnpKwwpzVS`, em estado READY.
 
 A implementação inclui app shell offline, cache runtime de imagens, pacotes individuais de tutoriais, vídeos MP4 opcionais, reprodução por HTTP Range, controle de atualização do Service Worker, integridade, reparo e preservação de pacotes durante falhas de atualização.
 
@@ -688,7 +695,7 @@ O responsável pelo projeto confirmou a validação manual de instalação, aber
 
 **Não confundir aceite da Preview com o aceite final de produção.** Continua reservado à publicação definitiva o teste de preservação dos pacotes entre deploys na mesma origem. A quota real/evicção do navegador também permanece como validação manual complementar.
 
-**Estado:** núcleo técnico implementado; testes automatizados aprovados no último commit de código validado; Preview READY; aceite manual desktop/Android informado como aprovado; PR #16 continua aberta e em draft; nenhum merge autorizado.
+**Estado:** núcleo técnico integrado à `main` e publicado; Validate #249, Build prerendered site #103 e AI Context #191 concluíram com sucesso após a PR #19; Vercel Production READY e raiz HTTP 200; aceite manual desktop/Android informado como aprovado. Permanecem as validações residuais da seção 16.2.
 
 ## 21. Resultado da auditoria técnica da Fase 0
 
@@ -702,7 +709,7 @@ Consequência para o PWA: guardar somente o bundle inicial não garante acesso o
 
 ### Pipeline real de build/publicação
 
-Na auditoria inicial, o workflow .github/workflows/prerender.yml executava somente na branch main e versionava dist/ e public/sitemap.xml. A integração da Fase 1 ampliou o gatilho para main e feat/pwa, com concorrência isolada por branch e exclusão de alterações somente documentais e de artefatos gerados.
+Na auditoria inicial, o workflow `.github/workflows/prerender.yml` executava somente na branch `main`. A configuração atual executa em `main`, `dev` e `feat/pwa`, com concorrência isolada por branch e exclusão de alterações somente em `dist/`, `public/sitemap.xml` e `docs/`.
 
 O workflow agora executa npm run build na branch de origem, verifica o resultado com Vite/Astratra/auditoria, cria um commit para dist/ e public/sitemap.xml, limpa o working tree local e faz rebase sobre o HEAD remoto antes do push. A atualização não utiliza force push.
 

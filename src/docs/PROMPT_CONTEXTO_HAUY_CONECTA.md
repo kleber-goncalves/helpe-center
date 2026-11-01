@@ -29,7 +29,9 @@ Nunca confie cegamente num resumo antigo quando puder conferir o código atual. 
 - **Descrição:** Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mayrink (em alguns textos do repositório aparece a variante “Mairync”; preserve a nomenclatura já usada na página/documento que estiver editando e não altere nomes oficiais sem confirmar).
 - **Site publicado:** https://hauy-conecta.vercel.app/
 - **Repositório:** https://github.com/kleber-goncalves/helpe-center
-- **Branch de trabalho principal usada neste histórico:** `feat/ferramentas`.
+- **Branch de produção:** `main`.
+- **Branch de integração/desenvolvimento:** `dev`.
+- **Branch de trabalho:** escolha e confirme uma branch adequada para cada tarefa; não assuma que `feat/ferramentas` continua ativa.
 - **Objetivo:** transformar dúvidas tecnológicas do cotidiano escolar em instruções claras, acessíveis e práticas, principalmente para estudantes, professores e funcionários que não têm familiaridade avançada com informática.
 - **Fluxo central do produto:** **PESQUISAR → ENCONTRAR → APRENDER → RESOLVER**.
 
@@ -258,70 +260,54 @@ Já existiram dúvidas no Google Search Console sobre páginas `/faq` e `/sobre`
 
 Não afirme que o Google indexou uma página só porque o build passou. Build, deploy, rastreamento, indexação e atualização do snippet são etapas diferentes.
 
-## 9. GitHub Actions: Build, Validate e Lighthouse
+## 9. GitHub Actions: Validate, Build/prerender, AI Context e Lighthouse
 
-Este é um dos pontos mais importantes do fluxo de trabalho. O repositório possui workflows diferentes e eles **não são a mesma coisa**.
+Os workflows têm responsabilidades diferentes e não devem ser tratados como um único check.
 
-### A. Validate ferramentas branch
+### A. Validate Hauy Conecta
 
-Arquivo: `.github/workflows/validate-feat-ferramentas.yml`
+Arquivo: `.github/workflows/validate-feat-ferramentas.yml`.
 
-Dispara em pushes na branch `feat/ferramentas` (com exceções para caminhos gerados listados no workflow) e por `workflow_dispatch`. No estado consultado, executa:
+Dispara em pushes e Pull Requests para `main` e `dev`, além de execução manual. Usa Node.js 24 e executa `npm ci`, `npm run check:occurrences`, `npm run test:search`, `npm run test:pwa:unit`, `npm run lint`, instala Chromium/Playwright, executa `npm run build` e `npm run test:pwa:e2e`.
 
-1. checkout;
-2. configuração do Node.js 24 e cache npm;
-3. `npm ci`;
-4. `npm run test:search`;
-5. instalação do Chromium e dependências do Playwright;
-6. `npm run lint`;
-7. **Build and prerender**, por meio de `npm run build`.
+### B. Build prerendered site
 
-Portanto, uma falha desse workflow pode vir de teste, lint, build, pré-renderização ou auditoria de imagens, não apenas da compilação de React.
+Arquivo: `.github/workflows/prerender.yml`.
 
-### B. Lighthouse feat/ferramentas
+Dispara em pushes para `main`, `dev` e `feat/pwa`. Gera e versiona `dist/` e `public/sitemap.xml` na branch de origem. A Vercel publica esse artefato versionado; não executa novamente Vite/Astratra nesse fluxo. A branch temporária `fix/pwa-video-cache-blob`, usada durante o diagnóstico da PR #17, foi removida após a integração da correção.
 
-Arquivo: `.github/workflows/lighthouse-feat-ferramentas.yml`
+### C. AI Context — Synchronize
 
-Também é acionado por pushes na branch `feat/ferramentas` e manualmente. No estado consultado:
+Arquivo: `.github/workflows/ai-context.yml`.
 
-1. checkout;
-2. setup do Node.js 24;
-3. `npm ci`;
-4. instalação do Chromium/dependências do Playwright;
-5. `npm run build`;
-6. auditoria de Lighthouse com `treosh/lighthouse-ci-action@v12` usando `lighthouserc.json` e upload de artefatos.
+Atualiza automaticamente a seção delimitada por marcadores em `docs/AI_CONTEXT.md`, contendo scripts, dependências, arquivos, workflows e commits. A parte narrativa continua exigindo revisão humana. Não edite manualmente a seção gerada.
 
-Um build verde na validação **não substitui** conferir o Lighthouse. E o Lighthouse também roda o build por conta própria antes de medir.
+### D. Lighthouse feat/ferramentas
 
-### C. Build prerendered site
+Arquivo: `.github/workflows/lighthouse-feat-ferramentas.yml`.
 
-Arquivo: `.github/workflows/prerender.yml`
+Executa Lighthouse em pushes na branch `feat/ferramentas` e por execução manual. Não é um check automático geral de todas as Pull Requests ou releases.
 
-Este é voltado para a branch `main`, não deve ser confundido com os dois checks da branch de desenvolvimento. Ele instala Node 24, executa a sequência de build/prerender e depois pode versionar `dist/` e `public/sitemap.xml` gerados pelo workflow. Não altere o comportamento dele sem entender o efeito no deploy principal.
+### Estado da release verificada em 01/11/2026
 
-### Comportamento que você deve seguir após mudanças
+A PR #19 promoveu `dev` para `main` e foi integrada.
+- Validate Hauy Conecta #249: sucesso.
+- Build prerendered site #103: sucesso.
+- AI Context Synchronize #191: sucesso.
+- Vercel Production: READY, deployment `dpl_3RnqTbNbWFHvRErRKEYnpKwwpzVS`; a raiz respondeu HTTP 200.
 
-- Antes de editar, determine em qual branch estamos trabalhando; a branch deste trabalho é `feat/ferramentas`.
-- Depois de um push/commit, verifique **Validate** e **Lighthouse** do mesmo `head_sha`/commit. Não use o sucesso de um commit anterior para declarar que o commit atual passou.
-- Espere a conclusão dos workflows quando necessário; se estiverem `in_progress`, diga isso, e não declare sucesso.
-- Verifique os jobs e os logs quando um check falhar; não adivinhe a causa.
-- Se o commit alterar somente caminhos ignorados pelo gatilho, entenda se Actions vai ou não rodar antes de esperar uma execução.
-- Não acione rerun desnecessariamente e não crie commits vazios apenas para forçar Actions.
-- Depois de mexer em imagens, consulte com atenção a etapa de auditoria de imagens do build.
-- Informe o link do workflow e o resultado real. Se a integração do GitHub estiver disponível, use-a em vez de fingir ter executado comandos localmente.
+Merge commit: `8a3a3ac5bc02eb3efb562380908bbbab94a12e72`.
+Commit de artefato: `9857002832214432e5090515f241e6154ceca044`.
 
-### Estado verificado no momento em que este prompt foi preparado
+### Como validar futuras alterações
 
-No histórico mais recente consultado, o commit mais recente conhecido da branch era:
-
-`ee2cb61403a350b7295e80ba408b154e4058d956` — `docs(tools): document SvgIcon and tool icon registry`.
-
-Os dois workflows deste commit estavam concluídos com sucesso:
-
-- **Validate ferramentas branch:** https://github.com/kleber-goncalves/helpe-center/actions/runs/38097256276 — `success`;
-- **Lighthouse feat/ferramentas:** https://github.com/kleber-goncalves/helpe-center/actions/runs/38097256284 — `success`.
-
-Este é apenas o último estado verificado durante a preparação do prompt. Confirme HEAD e Actions de novo quando abrir este contexto, pois o repositório poderá receber novos commits.
+- Consulte o HEAD atual de `main`/`dev` antes de começar.
+- Confira que cada run está associado ao SHA que pretende aprovar.
+- Diferencie push, pull_request, execução manual, skipped, cancelled e failure.
+- Em falhas, abra jobs e etapas para identificar a causa.
+- Após prerender, confira o commit automático de `dist/` e o SHA do deployment Vercel.
+- Não conclua que o site está correto apenas porque o deployment está READY; faça smoke tests das rotas e fluxos relevantes.
+- Na consulta de 01/11/2026, `main` não possuía proteção exigindo checks obrigatórios; faça revisão manual dos status antes de futuros merges.
 
 ## 10. Apresentação escolar, slides e roteiro oral
 

@@ -1,5 +1,7 @@
 # Módulo PWA — Hauy Conecta
 
+> **Estado de publicação (01/11/2026):** PWA integrada à `main` pela PR #19. A Vercel publicou o deployment Production em estado READY e o domínio oficial respondeu HTTP 200. Permanecem pendentes apenas a validação de preservação de pacotes entre publicações sucessivas e a observação manual de quota real/evicção.
+
 Este diretório concentra a implementação do Progressive Web App. A arquitetura completa está em docs/arquitetura-pwa-hauy-conecta.md.
 
 ## Implementação atual
@@ -18,7 +20,7 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 
 A Vercel publica o diretório `dist/` versionado; seu `buildCommand` em `vercel.json` não executa novamente Vite ou Astratra. A geração dos artefatos é responsabilidade do GitHub Actions (`.github/workflows/prerender.yml`), que executa `npm run build`, pré-renderiza as rotas, audita imagens e commita `dist/` e `public/sitemap.xml` na própria branch.
 
-Os pushes em `main`, `dev` e `feat/pwa` geram o artefato automaticamente. A branch `fix/pwa-video-cache-blob` está incluída temporariamente enquanto a PR #17 mantém seu Preview de diagnóstico; remover essa entrada após integrar a PR.
+Os pushes em `main`, `dev` e `feat/pwa` geram o artefato automaticamente. A branch `fix/pwa-video-cache-blob` foi usada temporariamente durante o diagnóstico da PR #17 e já foi removida do workflow após a integração da correção.
 
 Não edite `dist/` manualmente e não valide um Preview logo após alterar apenas `src/`: primeiro confirme que `Build prerendered site` concluiu e que o commit `build: update prerendered site` foi publicado na mesma branch. Os filtros `paths-ignore` de `dist/`, `public/sitemap.xml` e `docs/` evitam que commits gerados iniciem outro ciclo de build. O histórico do incidente e as evidências estão em [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md#incidente-artefato-dist-desatualizado-e-download-de-mp4-01112026).
 
@@ -71,7 +73,7 @@ Quando a pessoa marca **Incluir vídeos para assistir sem internet**, os MP4 loc
 
 O Service Worker reconhece solicitações locais de MP4 e procura os arquivos nos caches dos pacotes. Quando o player envia uma requisição Range, o Service Worker responde com HTTP 206, Content-Range, Content-Length e Accept-Ranges, permitindo carregar metadados, reproduzir e avançar/retroceder sem rede. Vídeos que não foram selecionados continuam sendo solicitados pela rede. Videoaulas do YouTube, playlists e outros links externos permanecem dependentes de internet.
 
-A biblioteca atual tem 18 MP4 locais e aproximadamente 298,38 MiB no total. O tamanho varia por tutorial; o pacote Canva, por exemplo, é muito maior que Excel e Google Drive. Por isso, não existe download automático em massa.
+Na auditoria de mídia registrada em 30/10/2026, a biblioteca tinha 18 MP4 locais e aproximadamente 298,38 MiB no total. Esse valor é uma fotografia daquela auditoria e deve ser recalculado quando os arquivos forem alterados. O tamanho varia por tutorial; o pacote Canva, por exemplo, é muito maior que Excel e Google Drive. Por isso, não existe download automático em massa.
 
 ## Navegação offline
 

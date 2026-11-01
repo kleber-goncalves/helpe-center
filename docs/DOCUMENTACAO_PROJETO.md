@@ -1,11 +1,13 @@
 # Hauy Conecta — Documentação completa do projeto
 
-**Fonte desta documentação:** código atual da branch **feat/ferramentas**, complementado pelo README.md e pelos documentos técnicos existentes em src/docs/.
+**Fonte desta documentação:** código de produção da branch `main`, conferido após a release da PWA em 01/11/2026. Os documentos em `src/docs/` incluem materiais didáticos e referências externas; quando descrevem serviços não versionados neste repositório, confirme o serviço implantado antes de tratá-los como estado vigente.
 
-**Estado verificado:** commit 8905370698041b8d8a38e186aa39cb03ca6b985c
+**Estado verificado nesta revisão:** commit de artefato `9857002832214432e5090515f241e6154ceca044` (`build: update prerendered site`), após o merge da PR #19.
 
-- Validate #79: sucesso
-- Lighthouse #37: sucesso
+- Validate Hauy Conecta #249: sucesso.
+- Build prerendered site #103: sucesso.
+- AI Context Synchronize #191: sucesso.
+- Vercel Production: READY; raiz do domínio oficial respondeu HTTP 200.
 
 Site: https://hauy-conecta.vercel.app/
 
@@ -1515,133 +1517,52 @@ deve existir somente no ambiente do servidor.
 
 # 48. GitHub Actions
 
-Há três workflows.
+O repositório possui quatro workflows com responsabilidades distintas:
 
-## validate-feat-ferramentas.yml
+| Workflow | Gatilhos atuais | Responsabilidade |
+|---|---|---|
+| `validate-feat-ferramentas.yml` — Validate Hauy Conecta | Push e Pull Request para `main` e `dev`; execução manual | Registro de ocorrências, testes de busca, testes unitários PWA, ESLint, build/prerender/auditoria e E2E PWA |
+| `prerender.yml` — Build prerendered site | Push em `main`, `dev` e `feat/pwa` | Metadados, ícones PWA, rotas, build, pré-renderização, auditoria e commit de `dist/`/sitemap |
+| `ai-context.yml` — AI Context Synchronize | Push em branches e PR para `main`/`dev`, com filtros de caminhos | Atualiza automaticamente a seção gerada de `docs/AI_CONTEXT.md` |
+| `lighthouse-feat-ferramentas.yml` — Lighthouse feat/ferramentas | Push em `feat/ferramentas` e execução manual | Executa Lighthouse na configuração dedicada |
 
-Executa na branch:
+A validação principal usa Node.js 24, `npm ci`, `npm run check:occurrences`, `npm run test:search`, `npm run test:pwa:unit`, `npm run lint`, Chromium/Playwright, `npm run build` e `npm run test:pwa:e2e`.
 
-```text
-feat/ferramentas
-```
-
-Faz:
-
-1. checkout;
-2. Node 24;
-3. npm ci;
-4. Playwright;
-5. lint;
-6. build/prerender.
-
-## lighthouse-feat-ferramentas.yml
-
-Executa na mesma branch e roda Lighthouse nas páginas configuradas.
-
-## prerender.yml
-
-Executa na main e gera a versão pré-renderizada de produção.
-
----
+O workflow Lighthouse é independente e não é check automático de todas as PRs ou publicações da `main`. Nunca cite métricas Lighthouse sem um run correspondente.
 
 # 49. Concorrência dos Actions
 
-Os workflows utilizam:
-
-```yaml
-cancel-in-progress: true
-```
-
-Portanto uma sequência como esta é normal:
-
-```text
-commit A → Action inicia
-commit B → Action novo inicia
-commit A → pode ser cancelado
-commit B → continua
-```
-
-Por isso, quando um run aparece como cancelled, sempre confira primeiro o commit mais recente.
-
----
+Os workflows possuem grupos de concorrência próprios. O prerender pode cancelar uma execução anterior da mesma branch quando chega novo push. Ao ver um run cancelado ou ignorado, confira evento, SHA e execução mais recente antes de concluir que houve falha.
 
 # 50. Lighthouse
 
-Arquivo:
-
-```text
-lighthouserc.json
-```
-
-Hoje ele analisa pelo menos:
-
-- performance;
-- LCP;
-- CLS;
-- TBT;
-- SEO;
-- document title;
-- html lang;
-- meta description;
-- canonical.
-
-As regras de performance utilizam warn.
-
-Algumas regras estruturais usam error.
-
-Portanto:
-
-```text
-warning ≠ necessariamente falha
-```
-
----
+Arquivo: `lighthouserc.json`. O workflow dedicado está ligado à branch `feat/ferramentas` e ao acionamento manual. Verifique a configuração e os resultados reais antes de afirmar métricas. Os checks da release de 01/11/2026 não incluem execução Lighthouse específica.
 
 # 51. Vercel
 
-Arquivo:
-
-```text
-vercel.json
-```
-
-A configuração indica que a Vercel publica:
-
-```text
-dist/
-```
-
-e usa um build command simplificado porque a geração pesada já foi feita pelo processo do projeto.
-
-A ideia é evitar repetir o pré-render com Playwright na etapa de publicação.
-
----
+A Vercel publica o diretório versionado `dist/`. O `buildCommand` em `vercel.json` é informativo; Vite, Astratra e auditoria são executados pelo GitHub Actions. Não edite `dist/` manualmente. Depois de mudanças nos arquivos-fonte, aguarde o workflow `Build prerendered site`, confira o commit automático do artefato e confirme que o deployment Vercel corresponde ao SHA correto.
 
 # 52. Fluxo de produção
 
-O ciclo pode ser visualizado assim:
-
 ```text
-alteração no código
-       ↓
-git push
-       ↓
-GitHub Actions
-       ↓
-npm ci
-       ↓
-npm run build
-       ↓
-pré-render
-       ↓
-dist/
-       ↓
-produção
-       ↓
-Vercel
+alteração em dev
+      ↓
+Pull Request dev → main
+      ↓
+Validate Hauy Conecta
+      ↓
+revisão e merge
+      ↓
+Build prerendered site
+      ↓
+commit automático de dist/ e sitemap
+      ↓
+Vercel Production
+      ↓
+smoke tests no domínio oficial
 ```
 
----
+Na consulta de 01/11/2026, `main` não possuía proteção exigindo checks obrigatórios. A revisão manual dos resultados da PR, do commit de prerender e do deployment Vercel continua importante.
 
 # 53. Como adicionar um novo tutorial
 
@@ -2223,6 +2144,20 @@ React Router
 ```
 
 ---
+
+# 79. PWA e armazenamento offline
+
+A PWA está implementada em `src/pwa/` com `vite-plugin-pwa`, `injectManifest` e Workbox. O manifesto está em `src/pwa/config/manifest.js`, o Service Worker em `src/pwa/service-worker/sw.js`, a política de cache em `src/pwa/config/cache-policy.js` e a lógica de pacotes em `src/pwa/downloads/tutorial-package.js`.
+
+A arquitetura separa app shell/precache, imagens runtime e pacotes opt-in de tutoriais. Metadados ficam no IndexedDB e recursos em Cache Storage. Vídeos MP4 são opcionais e desmarcados por padrão; são lidos progressivamente, materializados em Blob antes da gravação e processados um de cada vez. O Service Worker implementa HTTP Range para reprodução offline.
+
+Comandos: `npm run test:pwa:unit`, `npm run test:pwa:e2e` e `npm run test:pwa`. Consulte `src/pwa/README.md`, `tests/pwa/README.md` e `docs/arquitetura-pwa-hauy-conecta.md` antes de alterar cache, Service Worker, downloads ou atualização.
+
+# 80. Estado da release de 01/11/2026
+
+A PR #19 promoveu `dev` para `main`. Merge commit: `8a3a3ac5bc02eb3efb562380908bbbab94a12e72`. O Build prerendered site #103 gerou o commit de artefato `9857002832214432e5090515f241e6154ceca044`. Validate #249 e AI Context #191 passaram. A Vercel publicou o deployment `dpl_3RnqTbNbWFHvRErRKEYnpKwwpzVS` em estado READY; a raiz do domínio oficial respondeu HTTP 200.
+
+Validações residuais: preservar pacotes já baixados entre duas publicações sucessivas na mesma origem oficial e verificar manualmente quota real/evicção do navegador.
 
 # 80. Checklist antes de fazer commit
 
