@@ -600,10 +600,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 92307ea9f0a4b86e8856ae4f65a8584dd8ee9f96
-- **Data do commit:** 2026-11-01T04:10:08Z
-- **Mensagem do commit:** docs(ai-context): atualizar snapshot automaticamente
-- **Branch desta execução:** docs/registro-ocorrencias
+- **Commit de referência:** ebb33cf023cdd2a43594c493925a8caa674e8f98
+- **Data do commit:** 2026-11-01T01:17:16-03:00
+- **Mensagem do commit:** Merge pull request #18 from kleber-goncalves/docs/registro-ocorrencias
+- **Branch desta execução:** dev
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -736,13 +736,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| ebb33cf | 2026-11-01 | Merge pull request #18 from kleber-goncalves/docs/registro-ocorrencias |
+| 48be0f8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 92307ea | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | f61217a | 2026-11-01 | docs(security): add occurrence register and disclosure policy |
 | 829d174 | 2026-11-01 | build: update prerendered site |
 | 757c790 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 3813743 | 2026-11-01 | Merge pull request #17 from kleber-goncalves/fix/pwa-video-cache-blob |
 | 7b5cabb | 2026-11-01 | build: update prerendered site |
-| f9cef0e | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 31be08c | 2026-11-01 | fix(pwa): sync dev prerender artifacts and document incident |
 
 <!-- END AUTO-GENERATED SECTION -->
