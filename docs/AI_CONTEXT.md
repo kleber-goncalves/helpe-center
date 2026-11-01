@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 30630b44d9fda9548314fa94b94c06018420e8ea
-- **Data do commit:** 2026-11-01T00:02:26-03:00
-- **Mensagem do commit:** docs(pwa): document temporary offline diagnostics
+- **Commit de referência:** 47a397644e7feb0c53573eab6973908e07eee499
+- **Data do commit:** 2026-11-01T00:03:13-03:00
+- **Mensagem do commit:** style(pwa): tidy diagnostic instrumentation
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -734,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 47a3976 | 2026-11-01 | style(pwa): tidy diagnostic instrumentation |
+| c0f31bf | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
+| 9b6d2bd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 30630b4 | 2026-11-01 | docs(pwa): document temporary offline diagnostics |
 | 7e126e0 | 2026-11-01 | chore(pwa): expose MP4 network failures in service worker |
 | 10c1ee5 | 2026-11-01 | chore(pwa): instrument offline package download diagnostics |
 | 1752f0d | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 7f077d8 | 2026-10-31 | fix(pwa): remover índice de worker não utilizado |
-| 1ddca02 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 6a3c3da | 2026-10-31 | refactor(pwa): clarificar processamento dos fluxos de mídia |
-| da80dfd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
