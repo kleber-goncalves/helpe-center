@@ -2,7 +2,7 @@
 
 > **Finalidade:** manter um histórico rastreável de bugs, erros técnicos, vulnerabilidades e incidentes do Hauy Conecta. Este documento é público e contém somente informações avaliadas como seguras para divulgação.
 >
-> **Última atualização:** 2026-11-01  
+> **Última atualização:** 2026-11-01 — revisão pós-release da PR #19  
 > **Responsável pelo registro:** mantenedor do repositório.
 
 ## 1. Como usar este registro
@@ -178,6 +178,7 @@ O pacote de vídeos poderia não ser salvo integralmente, comprometendo o acesso
 - [Validação do PR #17 — GitHub Actions](https://github.com/kleber-goncalves/helpe-center/actions/runs/41270021606)
 - [Validação após merge — GitHub Actions #243](https://github.com/kleber-goncalves/helpe-center/actions/runs/41270912557)
 - Arquivos: `src/pwa/downloads/tutorial-package.js` e `tests/pwa/unit/tutorial-package.test.js`.
+- A correção também foi promovida à produção pela [PR #19](https://github.com/kleber-goncalves/helpe-center/pull/19), validada no [workflow #249](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214) e publicada no deployment [Vercel READY](https://vercel.com/kleber-goncalves-s-projects/helpe-center/3RnqTbNbWFHvRErRKEYnpKwwpzVS). A publicação comprova que a correção chegou à produção; o teste específico de preservação de pacotes entre futuras publicações ainda deve ser executado.
 
 ### ERR-0001 — Artefato dist desatualizado na branch dev
 
@@ -235,6 +236,7 @@ Após a integração da PR #17 na `dev`:
 - [Validação Hauy Conecta #243](https://github.com/kleber-goncalves/helpe-center/actions/runs/41270912557)
 - [Commit do dist #829d174](https://github.com/kleber-goncalves/helpe-center/commit/829d174eee56080be10e772a1bcbe6059c68b258)
 - Arquivos: `.github/workflows/prerender.yml`, `vercel.json` e diretório `dist/`.
+- A correção foi incluída na promoção da [PR #19](https://github.com/kleber-goncalves/helpe-center/pull/19). O [Build prerendered site #103](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) concluiu com sucesso na release de `main`, gerando o artefato publicado pela Vercel. A raiz do domínio oficial respondeu HTTP 200 na verificação pós-deploy.
 
 ## 8. Situação inicial do histórico de segurança
 

@@ -797,3 +797,20 @@ RESOLVER
 ```
 
 Cada novo tutorial deve contribuir para essa jornada.
+
+
+---
+
+## 14. Compatibilidade com o PWA e mídia offline
+
+Os tutoriais podem ser salvos individualmente para uso offline. Ao criar ou alterar um tutorial, respeite as regras de coleta do módulo PWA:
+
+- Imagens das etapas e dos exemplos devem usar caminhos locais da origem (por exemplo, `/tutoriais/...`) quando precisarem fazer parte do pacote offline.
+- Pôsteres locais associados a vídeos podem ser incluídos no pacote de imagens.
+- Vídeos locais em MP4 são opcionais e desmarcados por padrão. Não inclua vídeos remotos, YouTube ou outras URLs externas como arquivos offline.
+- Mantenha o campo `poster` coerente com o vídeo quando houver mídia local.
+- Evite duplicar recursos e revise o tamanho dos vídeos antes de adicioná-los. O pacote informa tamanho estimado; vídeos podem consumir armazenamento significativo.
+- O fluxo coleta imagens e pôsteres dos passos e exemplos; os MP4 locais são processados sequencialmente, um por vez.
+- Depois de alterar a estrutura de mídia, valide salvar, cancelar, atualizar/reparar, remover e reproduzir um pacote offline em ambiente de teste.
+
+Consulte `src/pwa/README.md`, `tests/pwa/README.md` e `docs/arquitetura-pwa-hauy-conecta.md`. A existência de um caminho de mídia no objeto do tutorial, por si só, não garante disponibilidade offline: o recurso precisa ser local, coletado pelo pacote e validado pelo módulo PWA.

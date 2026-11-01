@@ -1,115 +1,70 @@
 # Módulo PWA — Hauy Conecta
 
-Este diretório concentra a implementação do Progressive Web App. A arquitetura completa está em docs/arquitetura-pwa-hauy-conecta.md.
+> **Estado:** módulo integrado à `main` e publicado na produção em 2026-11-01. Este README descreve a implementação existente; a arquitetura e o histórico das decisões estão em [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md).
 
-## Implementação atual
+## Responsabilidades dos arquivos
 
-- `config/manifest.js` define nome, escopo, modo de exibição, cores e ícones.
-- `config/cache-policy.js` centraliza versões, recursos do precache e limites dos caches.
-- `client/register-service-worker.js` registra o Service Worker uma vez e publica eventos de atualização/preparação offline.
-- `service-worker/sw.js` contém o código Workbox executado no contexto do Service Worker.
-- `downloads/tutorial-package.js` cataloga e armazena os recursos necessários aos pacotes de tutoriais.
-- `ui/components/TutorialOfflineButton.jsx` integra o fluxo de salvar, atualizar, cancelar e remover um tutorial.
-- `ui/hooks/usePwaStatus.js` adapta estado de conexão e eventos PWA para React.
-- `ui/components/PwaStatusBanner.jsx` apresenta os avisos gerais do PWA.
+- `config/manifest.js`: nome, idioma, escopo, modo standalone, cores e referências aos ícones.
+- `config/cache-policy.js`: versão do app shell, lista de recursos essenciais, padrões de precache e limites dos caches.
+- `client/register-service-worker.js`: registro do Service Worker e comunicação de estado/atualização com a aplicação.
+- `service-worker/sw.js`: lógica Workbox, precache, rotas offline, cache runtime de imagens e atendimento de requisições Range para MP4 salvos.
+- `service-worker/cache-cleanup.js`: limpeza de caches antigos do app shell sem remover pacotes de tutoriais ou imagens runtime.
+- `downloads/tutorial-package.js`: coleta, download, validação, atualização, reparo, cancelamento e remoção de pacotes.
+- `ui/components/TutorialOfflineButton.jsx`: interface do fluxo de salvar/atualizar/remover um tutorial.
+- `ui/hooks/usePwaStatus.js`: estado de conectividade e eventos do PWA.
+- `ui/components/PwaStatusBanner.jsx`: avisos gerais do PWA.
 
+## Estratégia de armazenamento
+
+A arquitetura utiliza três áreas independentes:
+
+1. **App shell / precache Workbox:** código e recursos essenciais para abrir a aplicação e navegar quando a rede não está disponível.
+2. **Cache runtime de imagens:** imagens da mesma origem são armazenadas conforme solicitadas, com limite de 1.000 entradas. Não existe download antecipado de toda a biblioteca.
+3. **Pacotes opt-in de tutoriais:** cada tutorial possui cache próprio no Cache Storage; IndexedDB (`hauy-conecta-offline`, object store `tutorial-packages`) mantém metadados e a lista de recursos esperados.
+
+A atualização do app shell limpa somente caches antigos do próprio shell. Não deve apagar caches dos pacotes nem o cache runtime de imagens.
+
+## O que entra em um pacote
+
+- Conteúdo textual e dados do tutorial, disponíveis pelo bundle da aplicação.
+- Imagens locais das etapas e exemplos.
+- Pôsteres locais associados a vídeos.
+- Variantes responsivas produzidas pela geração de metadados.
+- Vídeos MP4 locais somente quando a pessoa marca explicitamente a opção de incluí-los.
+
+Vídeos são opcionais e desmarcados por padrão. Imagens são baixadas com até dois workers simultâneos; vídeos são processados sequencialmente, um por vez. O corpo de cada vídeo é lido por `ReadableStreamDefaultReader`, materializado em Blob e gravado no Cache Storage por uma nova Response. Essa estratégia corrige a falha observada ao armazenar diretamente grandes respostas em fluxo no ambiente Chromium testado e reduz o pico de memória.
+
+O download possui progresso e cancelamento. Um pacote só é marcado como salvo depois que os recursos selecionados foram persistidos e validados. Atualizações usam cache temporário; o pacote anterior é preservado até que a nova versão esteja íntegra. Falhas e cancelamentos não devem deixar o tutorial marcado falsamente como disponível.
+
+## Reprodução e navegação offline
+
+O Service Worker reconhece solicitações locais de MP4 armazenados em pacotes. Para requisições Range, responde com HTTP 206 e cabeçalhos de faixa, permitindo carregar metadados e avançar/retroceder no vídeo sem rede.
+
+URLs externas, incluindo YouTube, serviços de IA, Apps Script e provedores das ferramentas, continuam dependentes de internet. O PWA não transforma integrações externas em serviços offline.
+
+Os pacotes ficam no navegador e na origem onde foram baixados; não são sincronizados automaticamente entre dispositivos.
 
 ## Build e publicação
 
-A Vercel publica o diretório `dist/` versionado; seu `buildCommand` em `vercel.json` não executa novamente Vite ou Astratra. A geração dos artefatos é responsabilidade do GitHub Actions (`.github/workflows/prerender.yml`), que executa `npm run build`, pré-renderiza as rotas, audita imagens e commita `dist/` e `public/sitemap.xml` na própria branch.
+O build é configurado em `vite.config.js` com `vite-plugin-pwa`, estratégia `injectManifest`, Workbox e registro manual. O manifesto vem de `src/pwa/config/manifest.js`.
 
-Os pushes em `main`, `dev` e `feat/pwa` geram o artefato automaticamente. A branch `fix/pwa-video-cache-blob` está incluída temporariamente enquanto a PR #17 mantém seu Preview de diagnóstico; remover essa entrada após integrar a PR.
+O workflow `.github/workflows/prerender.yml` observa pushes em `main`, `dev` e `feat/pwa`. Executa `npm run build` e versiona `dist/` e `public/sitemap.xml`. A branch de diagnóstico `fix/pwa-video-cache-blob` e a instrumentação temporária foram encerradas após a integração da PR #17; não fazem parte do fluxo atual.
 
-Não edite `dist/` manualmente e não valide um Preview logo após alterar apenas `src/`: primeiro confirme que `Build prerendered site` concluiu e que o commit `build: update prerendered site` foi publicado na mesma branch. Os filtros `paths-ignore` de `dist/`, `public/sitemap.xml` e `docs/` evitam que commits gerados iniciem outro ciclo de build. O histórico do incidente e as evidências estão em [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md#incidente-artefato-dist-desatualizado-e-download-de-mp4-01112026).
+A Vercel publica o diretório `dist/` versionado, sem executar novamente Vite ou Astratra. Não edite `dist/` manualmente: modifique os arquivos-fonte e deixe o workflow gerar o artefato.
 
-## Limites de responsabilidade
-
-1. Manter o PWA isolado em `src/pwa`; não espalhar regras de cache ou Service Worker pelos componentes genéricos do portal.
-2. A aplicação React utiliza os serviços e a interface do módulo PWA. O Service Worker mantém seu próprio contexto e não importa React.
-3. Centralizar políticas e limites em `config`.
-4. Cache Storage armazena respostas HTTP. IndexedDB mantém metadados dos pacotes, como tutorial, versão, cache associado e recursos esperados.
-5. Não misturar o cache runtime de imagens com os caches de pacotes opt-in. Uma atualização do shell não pode apagar downloads do usuário.
-6. Vídeos MP4 são opcionais e desmarcados por padrão; links externos continuam fora do pacote offline.
-7. Criar subpastas somente quando a responsabilidade correspondente for implementada; não adicionar diretórios vazios ou `.gitkeep`.
-8. Manter funções utilitárias próximas do domínio; `utils` é reservado a funções puras compartilhadas.
-
-## Política de armazenamento
-
-### App shell e recursos essenciais
-
-O precache Workbox inclui JavaScript, CSS, HTML, favicon, manifesto, ícones PWA e os logotipos estáticos `logo.svg`, `iloveIMG.svg` e `ilovePDF.svg`. O limite de precache é de 2 MiB por arquivo.
-
-Os caminhos de tutoriais e arquivos MP4 continuam fora do precache inicial. O conteúdo textual dos tutoriais está no código JavaScript da aplicação, que é incluído no precache.
-
-### Imagens gerais
-
-O Service Worker intercepta solicitações de imagens da mesma origem. Quando uma imagem é solicitada online, a resposta é guardada em `hauy-conecta-runtime-images-v1`. Isso cobre imagens de seções, equipe, logos e imagens otimizadas em `/_optimized/` à medida que são carregadas.
-
-- O limite atual é de 1.000 entradas.
-- O cache runtime é independente do precache e dos pacotes de tutoriais.
-- Imagens que nunca foram solicitadas não são baixadas antecipadamente.
-- Ícones e logos essenciais explicitamente listados permanecem no precache.
-
-### Pacotes de tutoriais
-
-O bloco de conclusão de cada tutorial exibe a ação **Salvar tutorial offline**.
-
-O pacote inclui:
-
-- Conteúdo textual e dados do tutorial, já disponíveis no bundle pré-cacheado.
-- Imagens das etapas e exemplos.
-- Pôsteres associados a vídeos.
-- Variantes responsivas geradas pelo script de metadados em `/_optimized/`.
-
-Cada pacote tem um cache próprio no Cache Storage. O IndexedDB guarda metadados e a lista de arquivos esperados. O pacote só é marcado como salvo depois de baixar e validar todos os recursos. Imagens são baixadas com até dois workers simultâneos; vídeos MP4 são processados um por vez. O corpo de cada vídeo é lido progressivamente em blocos, contabilizado para o progresso e materializado como Blob antes de ser gravado no Cache Storage. Essa estratégia contorna uma falha reproduzida no Chromium ao persistir diretamente grandes ReadableStreams e limita o pico de memória a um vídeo por vez. Downloads exibem progresso, permitem cancelamento e podem ser removidos do dispositivo.
-
-O pacote permanece no navegador/dispositivo em que foi salvo; não sincroniza automaticamente com outros dispositivos.
-
-**Vídeos MP4 são opcionais e desmarcados por padrão.** O catálogo de mídia gerado no build registra o tamanho real de cada arquivo local. A interface mostra a quantidade e o tamanho estimado dos vídeos antes do download e alerta sobre consumo de dados e armazenamento.
-
-Quando a pessoa marca **Incluir vídeos para assistir sem internet**, os MP4 locais dos passos e exemplos são baixados integralmente para o mesmo cache individual do tutorial, sequencialmente (um arquivo por vez). A leitura é feita em blocos com `ReadableStreamDefaultReader`; depois da leitura completa, os blocos são materializados em um `Blob` e gravados no Cache Storage por meio de uma nova `Response`. O cabeçalho `Content-Length` armazenado representa os bytes efetivamente recebidos, sem reaproveitar um eventual `Content-Encoding` da resposta de rede. O progresso informa arquivos concluídos e bytes transferidos dos vídeos. O pacote só é marcado como salvo depois que imagens, pôsteres e vídeos selecionados foram persistidos e validados. Cancelamento ou falha remove o cache temporário e preserva um pacote anterior que já estava salvo.
-
-O Service Worker reconhece solicitações locais de MP4 e procura os arquivos nos caches dos pacotes. Quando o player envia uma requisição Range, o Service Worker responde com HTTP 206, Content-Range, Content-Length e Accept-Ranges, permitindo carregar metadados, reproduzir e avançar/retroceder sem rede. Vídeos que não foram selecionados continuam sendo solicitados pela rede. Videoaulas do YouTube, playlists e outros links externos permanecem dependentes de internet.
-
-A biblioteca atual tem 18 MP4 locais e aproximadamente 298,38 MiB no total. O tamanho varia por tutorial; o pacote Canva, por exemplo, é muito maior que Excel e Google Drive. Por isso, não existe download automático em massa.
-
-## Navegação offline
-
-A navegação tenta buscar a rota na rede para preservar o HTML pré-renderizado. Quando a rede falha, o Service Worker usa o app shell e deixa o React Router resolver a rota. `public/offline.html` é o fallback final.
+A release de produção de 2026-11-01 foi integrada pela PR #19. Os workflows Validate #249, Build prerender #103 e AI Context #191 passaram; o deployment final da Vercel está READY. Consulte o histórico de release na arquitetura principal.
 
 ## Testes
 
-- `npm run test:pwa:unit`: políticas e coleta de recursos de tutoriais.
-- `npm run test:pwa:e2e`: registro do Service Worker, navegação offline, cache runtime, download de pacote com MP4 e reprodução/busca offline.
-- `npm run test:pwa`: executa os testes unitários e E2E.
+- `npm run test:pwa:unit`: testes unitários de manifesto, política de cache, coleta de mídia, fingerprints, integridade e limpeza.
+- `npm run test:pwa:e2e`: testes de navegador com Playwright/Chromium, Service Worker e Vite Preview.
+- `npm run test:pwa`: executa unitários e E2E.
+- O workflow Validate executa testes PWA, ESLint, build/prerender/auditoria e demais testes do projeto.
 
+Consulte [tests/pwa/README.md](../../tests/pwa/README.md) para cobertura e aceite manual.
 
-## Atualização e recuperação de pacotes
+## Limites e roadmap
 
-A atualização do Service Worker usa o modo prompt. A nova versão só é ativada após a confirmação da pessoa. Durante a ativação, a limpeza remove exclusivamente caches antigos do app shell (\`hauy-conecta-app-shell-*\`); caches de tutoriais (\`hauy-conecta-tutorial-package-*\`) e o cache runtime de imagens ficam fora dessa limpeza.
+O módulo atual não oferece um gerenciador central de todos os tutoriais salvos nem uma tela de monitoramento da quota total do navegador. Essas são propostas futuras, registradas na seção 28 da arquitetura. Não duplicar a lógica de Cache Storage/IndexedDB em componentes futuros; reutilizar as funções exportadas pelo módulo.
 
-Cada pacote registra fingerprints separados para o conteúdo textual/imagens e para os vídeos opcionais. A geração de metadados calcula SHA-256 para imagens e MP4, além de manter o tamanho dos arquivos. A alteração de texto, imagem, vídeo ou metadados relevantes permite identificar um pacote desatualizado sem exigir que um pacote sem vídeos seja atualizado só porque o catálogo de vídeos mudou.
-
-A consulta de disponibilidade verifica:
-- se o cache associado ao registro ainda existe;
-- se cada URL esperada está presente;
-- se a resposta armazenada tem status HTTP 200 e corpo;
-- se o MIME type corresponde ao tipo de recurso;
-- se o tamanho registrado é positivo e, quando existe `Content-Length` sem `Content-Encoding`, corresponde ao valor armazenado. Respostas comprimidas são comparadas pelo corpo descomprimido medido durante o download.
-
-Um pacote com recurso ausente ou inválido é identificado como \`incomplete\`. Um pacote íntegro cuja fingerprint não corresponde ao conteúdo atual é \`outdated\`. Somente um pacote íntegro e atualizado recebe o estado \`saved\`.
-
-A atualização usa cache temporário separado. O novo registro do IndexedDB só é gravado após todos os recursos serem baixados, persistidos e validados. O cache anterior só é removido depois que o novo registro foi salvo. Em caso de cancelamento, falha de rede ou quota, o cache temporário é descartado e o estado do pacote anterior é consultado novamente, evitando informar falsamente que o tutorial foi perdido.
-
-Quando o navegador remove Cache Storage ou os metadados deixam de existir, o botão não declara o tutorial disponível. Se o cache desaparecer e o registro continuar no IndexedDB, o pacote é \`incomplete\` e oferece reparo. Se os dados do site forem apagados, o registro não existe e o usuário recebe a ação de salvar novamente.
-
-O limite dessa verificação deve ser entendido corretamente: Cache Storage não oferece uma verificação criptográfica automática do corpo a cada consulta. A gravação é validada durante o download, os metadados registram o tamanho recebido e a consulta detecta ausência, resposta inválida, MIME incompatível e divergência de tamanho quando o cabeçalho está disponível. As fingerprints SHA-256 são usadas para detectar alteração dos arquivos publicados, não para re-hash dos arquivos a cada abertura do tutorial.
-
-## Roadmap futuro — não implementado
-
-As próximas melhorias ainda precisam de arquitetura e decisão de UX; não fazem parte do módulo atual:
-
-1. **Gerenciador central de tutoriais offline:** listagem e administração de todos os pacotes salvos, reutilizando IndexedDB, Cache Storage e os serviços deste módulo.
-2. **Monitoramento do armazenamento:** estimativas de uso/quota e eventual estado de persistência com Storage Manager API, respeitando suporte variável e sem substituir o tratamento de quota existente.
-
-Não criar componentes, rotas, hooks ou dependências para essas ideias antes de fechar a arquitetura. Consulte a seção 28 de [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md).
+O armazenamento do navegador pode ser limitado ou removido pelo próprio navegador/sistema. Tratar falhas de quota e indisponibilidade como condições possíveis, mesmo quando uma estimativa de espaço parecer suficiente.

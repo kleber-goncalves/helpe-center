@@ -1,5 +1,7 @@
 # Guia para iniciantes: SvgIcon, ícones de ferramentas e ToolCard
 
+> **Revisão técnica:** 2026-11-01. O componente atual está em `src/components/SvgIcon.jsx`; os dados dos cards ficam em `src/data/tools.js`, os provedores em `src/data/toolProviders.js` e os registros de SVG em `src/data/toolIcons/`. O código aceita SVG inline estático/confiável ou URL de imagem; não passe conteúdo SVG recebido de usuário/serviço externo para `dangerouslySetInnerHTML`.
+
 > **Objetivo:** explicar, do começo ao fim, como os SVGs e links dos ícones entram no Hauy Conecta, como chegam ao componente `SvgIcon` e como aparecem dentro dos cards da página Ferramentas. Este guia também mostra como reproduzir a ideia em um projeto próprio com JavaScript, React, Tailwind CSS e Node.js.
 
 ## Índice
