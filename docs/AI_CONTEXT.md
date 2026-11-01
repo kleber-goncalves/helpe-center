@@ -447,6 +447,7 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 - Registro e atualização pelo módulo `src/pwa/client/register-service-worker.js`; atualização exige confirmação explícita.
 - Pacotes opt-in por tutorial usando Cache Storage + IndexedDB, com progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
 - Vídeos MP4 locais opcionais, desmarcados por padrão, com estimativa de tamanho, download em streaming e suporte a HTTP Range (206/416).
+- **Diagnóstico temporário de download:** na branch `fix/pwa-video-cache-blob`, `tutorial-package.js` oferece logs opt-in para fetch, leitura de blocos, `Cache.put()`, verificação, workers e cancelamento. Ativar na aba do Preview com `sessionStorage.setItem("hauy:pwa:download-debug", "1")` antes de iniciar o pacote; desativar com `sessionStorage.removeItem("hauy:pwa:download-debug")`. O Service Worker também registra as requisições MP4 explícitas (`cache: "reload"`) no console próprio de inspeção. Essa instrumentação é temporária e não altera a lógica de download.
 - O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualização do shell não deve remover pacotes de tutoriais.
 - O CTA personalizado de instalação na Home foi removido por decisão do responsável. A instalação permanece nativa, sob controle do navegador.
 
