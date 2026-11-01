@@ -7,6 +7,7 @@ import {
     createTutorialContentVersions,
     estimateTutorialVideoSize,
     isValidCachedTutorialResource,
+    readResponseAsBlob,
     formatBytes,
 } from "../../../src/pwa/downloads/tutorial-package.js";
 
@@ -316,4 +317,74 @@ test("não considera respostas ausentes, inválidas ou com tamanho incompatível
     assert.equal(isValidCachedTutorialResource(htmlFallback, { type: "image", size: 10 }), false);
     assert.equal(isValidCachedTutorialResource(null, { type: "image", size: 10 }), false);
     assert.equal(isValidCachedTutorialResource(validImage, { type: "image", size: 0 }), false);
+});
+
+
+test("lê o corpo em blocos, acompanha os bytes e materializa um Blob íntegro", async () => {
+    const sourceChunks = [
+        Uint8Array.from([9, 1, 2, 9]).subarray(1, 3),
+        Uint8Array.from([3, 4, 5]),
+    ];
+    const progressChunks = [];
+    const response = new Response(
+        new ReadableStream({
+            start(controller) {
+                sourceChunks.forEach((chunk) => controller.enqueue(chunk));
+                controller.close();
+            },
+        }),
+        {
+            status: 200,
+            headers: { "content-type": "video/mp4" },
+        },
+    );
+
+    const { blob, transferredBytes } = await readResponseAsBlob(response, {
+        onChunk: (chunkBytes) => progressChunks.push(chunkBytes),
+    });
+
+    assert.equal(transferredBytes, 5);
+    assert.equal(blob.size, 5);
+    assert.equal(blob.type, "video/mp4");
+    assert.deepEqual(progressChunks, [2, 3]);
+    assert.deepEqual(
+        [...new Uint8Array(await blob.arrayBuffer())],
+        [1, 2, 3, 4, 5],
+    );
+});
+
+test("propaga falha de leitura sem declarar o Blob como concluído", async () => {
+    const readError = new Error("Falha de rede simulada");
+    const response = new Response(
+        new ReadableStream({
+            start(controller) {
+                controller.enqueue(Uint8Array.from([1, 2, 3]));
+                controller.error(readError);
+            },
+        }),
+        {
+            status: 200,
+            headers: { "content-type": "video/mp4" },
+        },
+    );
+
+    await assert.rejects(
+        readResponseAsBlob(response),
+        (error) => error === readError,
+    );
+});
+
+test("interrompe a materialização quando o download já foi cancelado", async () => {
+    const controller = new AbortController();
+    controller.abort();
+
+    const response = new Response("video-bytes", {
+        status: 200,
+        headers: { "content-type": "video/mp4" },
+    });
+
+    await assert.rejects(
+        readResponseAsBlob(response, { signal: controller.signal }),
+        { name: "AbortError" },
+    );
 });

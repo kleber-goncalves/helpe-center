@@ -549,7 +549,7 @@ Também não existe painel de monitoramento de quota/armazenamento baseado na St
 
 - [x] Catalogar vídeos locais e estimar tamanhos.
 - [x] Permitir inclusão opcional, desmarcada por padrão.
-- [x] Baixar em streaming e validar MIME/tamanho.
+- [x] Ler progressivamente e validar MIME/tamanho; materializar vídeos em Blob antes de gravar no Cache Storage.
 - [x] Implementar HTTP Range (206/416) para reprodução e busca offline.
 - [x] Validar vídeos grandes em dispositivos reais, conforme aceite manual informado pelo responsável.
 - [x] Cobrir falhas, cancelamento e quota simulada nos testes automatizados.
@@ -831,7 +831,8 @@ A opção de incluir vídeos é separada e vem desmarcada por padrão. O pacote 
 - A opção “Incluir vídeos para assistir sem internet” é opcional e desmarcada por padrão.
 - Os vídeos selecionados são baixados integralmente para o cache isolado do tutorial.
 - O download valida HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
-- O corpo é encaminhado em streaming ao Cache Storage.
+- O corpo de cada vídeo é lido progressivamente em blocos, materializado como `Blob` e então gravado no Cache Storage. A leitura em blocos mantém o acompanhamento de bytes; o processamento é sequencial (um MP4 por vez) para limitar o pico de memória.
+- Essa materialização evita a falha reproduzida no Chromium testado ao persistir diretamente grandes `ReadableStream` com `Cache.put()`; imagens continuam com até dois downloads simultâneos.
 - O progresso informa arquivos e bytes transferidos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois que o novo foi persistido e validado.
 - Os metadados registram URLs de imagens e vídeos separadamente.
 
@@ -870,7 +871,7 @@ O script de metadados gera tamanho e SHA-256 para imagens e vídeos. Os estados 
 
 ### 27.3 Integridade e atualização transacional
 
-Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho recebido é registrado em `resourceDetails`. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
+Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Imagens continuam sendo encaminhadas em fluxo acompanhado ao Cache Storage. Para vídeos, o corpo é lido progressivamente em blocos, os bytes são contabilizados e o conteúdo completo é materializado em `Blob` antes de `Cache.put()`. MP4 são processados um por vez; o `Content-Length` persistido é definido a partir do tamanho efetivamente recebido e não se reaproveita `Content-Encoding` da resposta de rede. O tamanho recebido é registrado em `resourceDetails`. Recursos vazios, incompletos ou inválidos provocam falha e descarte do cache temporário.
 
 A consulta verifica existência, status, corpo, MIME type e tamanho registrado. A validação não recalcula SHA-256 do corpo armazenado em cada abertura: os hashes do build identificam mudanças no conteúdo publicado, enquanto a consulta local verifica a resposta persistida.
 
