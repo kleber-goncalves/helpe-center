@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 7f077d80f0813445ca9b0533d7a46dbe8a76d4fe
-- **Data do commit:** 2026-10-31T22:05:54-03:00
-- **Mensagem do commit:** fix(pwa): remover índice de worker não utilizado
+- **Commit de referência:** 10c1ee530ab03ea4a612f05a6ddc235c3eb05b09
+- **Data do commit:** 2026-11-01T00:02:21-03:00
+- **Mensagem do commit:** chore(pwa): instrument offline package download diagnostics
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -734,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 10c1ee5 | 2026-11-01 | chore(pwa): instrument offline package download diagnostics |
+| 1752f0d | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 7f077d8 | 2026-10-31 | fix(pwa): remover índice de worker não utilizado |
 | 1ddca02 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 6a3c3da | 2026-10-31 | refactor(pwa): clarificar processamento dos fluxos de mídia |
 | da80dfd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | e3fa359 | 2026-10-31 | fix(pwa): materializar vídeos antes do Cache Storage |
 | d089714 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 8ecd41c | 2026-10-31 | Merge pull request #16 from kleber-goncalves/feat/pwa |
-| 2138fa6 | 2026-10-31 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
