@@ -728,7 +728,8 @@ export async function saveTutorialOffline({
     const cacheName = createPackageCacheName(tutorialId);
     debug("package:cache:create:start", { cacheName });
     const packageCache = await caches.open(cacheName);
-    debug("package:cache:create:complete", { cacheName });    const controller = new AbortController();
+    debug("package:cache:create:complete", { cacheName });
+    const controller = new AbortController();
     let cancelledByCaller = Boolean(signal?.aborted);
     const abortFromCaller = () => {
         cancelledByCaller = true;
@@ -840,7 +841,8 @@ export async function saveTutorialOffline({
                 contentType,
                 isValidType,
             });
-            throw new Error(                resource.type === "video"
+            throw new Error(
+                resource.type === "video"
                     ? "Não foi possível baixar um vídeo completo do tutorial."
                     : "Não foi possível baixar uma imagem necessária do tutorial.",
             );
@@ -860,7 +862,8 @@ export async function saveTutorialOffline({
             isContentEncoded,
         });
 
-        if (resource.type === "video" && !resource.size && expectedSize) {            totalBytes += expectedSize;
+        if (resource.type === "video" && !resource.size && expectedSize) {
+            totalBytes += expectedSize;
             reportProgress(true);
         }
 
@@ -920,7 +923,8 @@ export async function saveTutorialOffline({
                 blobSize: blob.size,
                 expectedSize: expectedSize ?? null,
                 elapsedMs: Date.now() - videoReadStartedAt,
-            });            transferredBytes = result.transferredBytes;
+            });
+            transferredBytes = result.transferredBytes;
 
             if (transferredBytes <= 0) {
                 throw new Error("Um vídeo do tutorial foi recebido vazio. Tente baixar novamente.");
@@ -1010,7 +1014,8 @@ export async function saveTutorialOffline({
             status: cachedResponse?.status ?? null,
             contentType: cachedResponse?.headers.get("content-type") ?? null,
             contentLength: cachedResponse?.headers.get("content-length") ?? null,
-        });        const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
+        });
+        const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
         const hasValidCachedType = resource.type === "video"
             ? cachedContentType.startsWith("video/") || cachedContentType === "application/octet-stream"
             : cachedContentType.startsWith("image/");
@@ -1065,7 +1070,8 @@ export async function saveTutorialOffline({
             bytesDownloaded += transferredBytes;
         }
 
-        resourceDetails[index] = {            url: resource.url,
+        resourceDetails[index] = {
+            url: resource.url,
             type: resource.type,
             size: transferredBytes,
             contentType: cachedContentType.split(";")[0],
@@ -1089,7 +1095,8 @@ export async function saveTutorialOffline({
             concurrency,
             completed,
             activeWorkers,
-        });        let nextIndex = 0;
+        });
+        let nextIndex = 0;
 
         async function worker() {
             while (!firstError && !controller.signal.aborted) {
@@ -1169,7 +1176,8 @@ export async function saveTutorialOffline({
         debug("package:download-phases:start", {
             imageCount: imageResources.length,
             videoCount: videoResources.length,
-        });        const indexedImages = imageResources.map((resource, index) => ({
+        });
+        const indexedImages = imageResources.map((resource, index) => ({
             resource,
             index,
         }));
