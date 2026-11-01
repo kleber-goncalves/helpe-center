@@ -11,6 +11,69 @@ const IMAGE_DOWNLOAD_CONCURRENCY = 2;
 // Vídeos são materializados em Blob um por vez para limitar o pico de memória.
 const VIDEO_DOWNLOAD_CONCURRENCY = 1;
 
+const OFFLINE_DOWNLOAD_DEBUG_KEY = "hauy:pwa:download-debug";
+const DOWNLOAD_DEBUG_PROGRESS_INTERVAL = 5 * 1024 * 1024;
+
+function isOfflineDownloadDebugEnabled() {
+    try {
+        return typeof window !== "undefined" &&
+            window.sessionStorage?.getItem(OFFLINE_DOWNLOAD_DEBUG_KEY) === "1";
+    } catch {
+        return false;
+    }
+}
+
+function getDiagnosticError(error) {
+    if (!error) {
+        return { name: "UnknownError", message: String(error) };
+    }
+
+    return {
+        name: error.name ?? typeof error,
+        message: error.message ?? String(error),
+        stack: typeof error.stack === "string" ? error.stack : null,
+        cause: error.cause
+            ? {
+                name: error.cause.name ?? typeof error.cause,
+                message: error.cause.message ?? String(error.cause),
+            }
+            : null,
+    };
+}
+
+function getAbortSignalDiagnostic(signal) {
+    return {
+        aborted: Boolean(signal?.aborted),
+        reasonName: signal?.reason?.name ?? null,
+        reasonMessage: signal?.reason?.message ?? null,
+    };
+}
+
+function createOfflineDownloadLogger(tutorialId) {
+    const enabled = isOfflineDownloadDebugEnabled();
+    const sessionId = enabled
+        ? (
+            typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+                ? crypto.randomUUID()
+                : String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8)
+        )
+        : null;
+
+    return (event, details = {}) => {
+        if (!enabled) {
+            return;
+        }
+
+        console.info("[HAUY OFFLINE DOWNLOAD]", {
+            sessionId,
+            tutorialId,
+            event,
+            timestamp: new Date().toISOString(),
+            ...details,
+        });
+    };
+}
+
 function getLocalImagePath(value) {
     if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
         return null;
@@ -636,30 +699,60 @@ export async function saveTutorialOffline({
         size: videoMetadata?.[path]?.size,
     }));
     const resourceEntries = [...imageResources, ...videoResources];
+    const debug = createOfflineDownloadLogger(tutorialId);
+
+    debug("package:requested", {
+        title,
+        includeVideos,
+        imageCount: imageResources.length,
+        videoCount: videoResources.length,
+        totalResources: resourceEntries.length,
+        estimatedVideoBytes: videoEstimate.knownBytes,
+        unknownVideoSizes: videoEstimate.unknownCount,
+        resources: resourceEntries.map((resource) => ({
+            type: resource.type,
+            path: resource.path,
+            expectedSize: resource.size ?? null,
+        })),
+        callerSignal: getAbortSignalDiagnostic(signal),
+    });
     const totalResources = resourceEntries.length;
     const resourceDetails = new Array(totalResources);
 
+    debug("package:previous-record:read:start");
     const previousRecord = await getStoredPackage(tutorialId);
+    debug("package:previous-record:read:complete", {
+        exists: Boolean(previousRecord),
+        previousCacheName: previousRecord?.cacheName ?? null,
+    });
     const cacheName = createPackageCacheName(tutorialId);
+    debug("package:cache:create:start", { cacheName });
     const packageCache = await caches.open(cacheName);
-    const controller = new AbortController();
+    debug("package:cache:create:complete", { cacheName });    const controller = new AbortController();
     let cancelledByCaller = Boolean(signal?.aborted);
     const abortFromCaller = () => {
         cancelledByCaller = true;
+        debug("abort:caller", {
+            callerSignal: getAbortSignalDiagnostic(signal),
+            internalSignalBeforeAbort: getAbortSignalDiagnostic(controller.signal),
+        });
         controller.abort();
+        debug("abort:internal-controller", { source: "caller", signal: getAbortSignalDiagnostic(controller.signal) });
     };
 
     if (signal?.aborted) {
+        debug("abort:caller-already-aborted", { callerSignal: getAbortSignalDiagnostic(signal) });
         controller.abort();
+        debug("abort:internal-controller", { source: "caller-already-aborted", signal: getAbortSignalDiagnostic(controller.signal) });
     } else {
         signal?.addEventListener("abort", abortFromCaller, { once: true });
     }
-
     let completed = 0;
     let bytesDownloaded = 0;
     let totalBytes = videoEstimate.knownBytes;
     let lastProgressUpdate = 0;
     let firstError = null;
+    let activeWorkers = 0;
 
     function reportProgress(force = false) {
         const now = Date.now();
@@ -678,15 +771,57 @@ export async function saveTutorialOffline({
     reportProgress(true);
 
     async function downloadResource(resource, index) {
+        debug("resource:start", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            url: resource.url,
+            metadataSize: resource.size ?? null,
+            internalSignal: getAbortSignalDiagnostic(controller.signal),
+        });
+
         if (controller.signal.aborted) {
+            debug("resource:skipped-aborted", { index, path: resource.path, signal: getAbortSignalDiagnostic(controller.signal) });
             throw createAbortError();
         }
 
-        const response = await fetch(resource.url, {
-            cache: "reload",
-            signal: controller.signal,
-        });
+        const fetchStartedAt = Date.now();
+        let response;
 
+        try {
+            debug("fetch:start", { index, type: resource.type, path: resource.path, cache: "reload" });
+            response = await fetch(resource.url, {
+                cache: "reload",
+                signal: controller.signal,
+            });
+        } catch (error) {
+            debug("fetch:error", {
+                index,
+                type: resource.type,
+                path: resource.path,
+                elapsedMs: Date.now() - fetchStartedAt,
+                internalSignal: getAbortSignalDiagnostic(controller.signal),
+                callerSignal: getAbortSignalDiagnostic(signal),
+                error: getDiagnosticError(error),
+            });
+            throw error;
+        }
+
+        debug("fetch:response", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            elapsedMs: Date.now() - fetchStartedAt,
+            status: response.status,
+            statusText: response.statusText,
+            contentType: response.headers.get("content-type"),
+            contentLength: response.headers.get("content-length"),
+            contentEncoding: response.headers.get("content-encoding"),
+            etag: response.headers.get("etag"),
+            hasBody: Boolean(response.body),
+            bodyUsed: response.bodyUsed,
+            internalSignal: getAbortSignalDiagnostic(controller.signal),
+        });
         const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
         const contentLength = Number(response.headers.get("content-length"));
         const isContentEncoded = Boolean(
@@ -697,8 +832,15 @@ export async function saveTutorialOffline({
             : contentType.startsWith("image/");
 
         if (response.status !== 200 || !isValidType) {
-            throw new Error(
-                resource.type === "video"
+            debug("fetch:invalid-response", {
+                index,
+                type: resource.type,
+                path: resource.path,
+                status: response.status,
+                contentType,
+                isValidType,
+            });
+            throw new Error(                resource.type === "video"
                     ? "Não foi possível baixar um vídeo completo do tutorial."
                     : "Não foi possível baixar uma imagem necessária do tutorial.",
             );
@@ -710,8 +852,15 @@ export async function saveTutorialOffline({
                 : null
         );
 
-        if (resource.type === "video" && !resource.size && expectedSize) {
-            totalBytes += expectedSize;
+        debug("resource:validated-headers", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            expectedSize: expectedSize ?? null,
+            isContentEncoded,
+        });
+
+        if (resource.type === "video" && !resource.size && expectedSize) {            totalBytes += expectedSize;
             reportProgress(true);
         }
 
@@ -719,17 +868,59 @@ export async function saveTutorialOffline({
         let responseToCache;
 
         if (resource.type === "video") {
-            const result = await readResponseAsBlob(response, {
-                signal: controller.signal,
-                onChunk(chunkBytes) {
-                    transferredBytes += chunkBytes;
-                    bytesDownloaded += chunkBytes;
-                    reportProgress();
-                },
-            });
+            const videoReadStartedAt = Date.now();
+            let videoChunkCount = 0;
+            let nextProgressLogAt = DOWNLOAD_DEBUG_PROGRESS_INTERVAL;
+            let result;
+
+            try {
+                result = await readResponseAsBlob(response, {
+                    signal: controller.signal,
+                    onChunk(chunkBytes) {
+                        transferredBytes += chunkBytes;
+                        bytesDownloaded += chunkBytes;
+                        videoChunkCount += 1;
+                        reportProgress();
+
+                        if (transferredBytes >= nextProgressLogAt) {
+                            debug("video:read:progress", {
+                                index,
+                                path: resource.path,
+                                chunks: videoChunkCount,
+                                bytesReceived: transferredBytes,
+                                expectedSize: expectedSize ?? null,
+                                elapsedMs: Date.now() - videoReadStartedAt,
+                                internalSignal: getAbortSignalDiagnostic(controller.signal),
+                            });
+                            nextProgressLogAt = (Math.floor(transferredBytes / DOWNLOAD_DEBUG_PROGRESS_INTERVAL) + 1) * DOWNLOAD_DEBUG_PROGRESS_INTERVAL;
+                        }
+                    },
+                });
+            } catch (error) {
+                debug("video:read:error", {
+                    index,
+                    path: resource.path,
+                    chunks: videoChunkCount,
+                    bytesReceivedBeforeError: transferredBytes,
+                    expectedSize: expectedSize ?? null,
+                    elapsedMs: Date.now() - videoReadStartedAt,
+                    internalSignal: getAbortSignalDiagnostic(controller.signal),
+                    callerSignal: getAbortSignalDiagnostic(signal),
+                    error: getDiagnosticError(error),
+                });
+                throw error;
+            }
 
             const { blob } = result;
-            transferredBytes = result.transferredBytes;
+            debug("video:read:complete", {
+                index,
+                path: resource.path,
+                chunks: videoChunkCount,
+                bytesReceived: result.transferredBytes,
+                blobSize: blob.size,
+                expectedSize: expectedSize ?? null,
+                elapsedMs: Date.now() - videoReadStartedAt,
+            });            transferredBytes = result.transferredBytes;
 
             if (transferredBytes <= 0) {
                 throw new Error("Um vídeo do tutorial foi recebido vazio. Tente baixar novamente.");
@@ -772,10 +963,54 @@ export async function saveTutorialOffline({
             throw createAbortError();
         }
 
-        await packageCache.put(resource.url, responseToCache);
+        const cachePutStartedAt = Date.now();
+        debug("cache:put:start", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            cacheName,
+            trackedBytesBeforePut: transferredBytes,
+            responseBodyType: resource.type === "video" ? "Blob" : "ReadableStream/Response",
+            internalSignal: getAbortSignalDiagnostic(controller.signal),
+        });
 
+        try {
+            await packageCache.put(resource.url, responseToCache);
+        } catch (error) {
+            debug("cache:put:error", {
+                index,
+                type: resource.type,
+                path: resource.path,
+                cacheName,
+                elapsedMs: Date.now() - cachePutStartedAt,
+                trackedBytesBeforePut: transferredBytes,
+                internalSignal: getAbortSignalDiagnostic(controller.signal),
+                callerSignal: getAbortSignalDiagnostic(signal),
+                error: getDiagnosticError(error),
+            });
+            throw error;
+        }
+
+        debug("cache:put:complete", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            cacheName,
+            elapsedMs: Date.now() - cachePutStartedAt,
+            trackedBytes: transferredBytes,
+        });
+
+        const cacheMatchStartedAt = Date.now();
         const cachedResponse = await packageCache.match(resource.url);
-        const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
+        debug("cache:match:complete", {
+            index,
+            path: resource.path,
+            elapsedMs: Date.now() - cacheMatchStartedAt,
+            found: Boolean(cachedResponse),
+            status: cachedResponse?.status ?? null,
+            contentType: cachedResponse?.headers.get("content-type") ?? null,
+            contentLength: cachedResponse?.headers.get("content-length") ?? null,
+        });        const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
         const hasValidCachedType = resource.type === "video"
             ? cachedContentType.startsWith("video/") || cachedContentType === "application/octet-stream"
             : cachedContentType.startsWith("image/");
@@ -817,12 +1052,20 @@ export async function saveTutorialOffline({
             }
         }
 
+        debug("resource:verified", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            transferredBytes,
+            expectedSize: expectedSize ?? null,
+            cachedContentLength: cachedResponse.headers.get("content-length"),
+        });
+
         if (resource.type === "video" && !wasStreamTracked) {
             bytesDownloaded += transferredBytes;
         }
 
-        resourceDetails[index] = {
-            url: resource.url,
+        resourceDetails[index] = {            url: resource.url,
             type: resource.type,
             size: transferredBytes,
             contentType: cachedContentType.split(";")[0],
@@ -830,10 +1073,23 @@ export async function saveTutorialOffline({
 
         completed += 1;
         reportProgress(true);
+        debug("resource:complete", {
+            index,
+            type: resource.type,
+            path: resource.path,
+            completed,
+            total: totalResources,
+            bytesDownloaded,
+        });
     }
 
     async function runWorkers(resources, concurrency) {
-        let nextIndex = 0;
+        debug("workers:start", {
+            resourceCount: resources.length,
+            concurrency,
+            completed,
+            activeWorkers,
+        });        let nextIndex = 0;
 
         async function worker() {
             while (!firstError && !controller.signal.aborted) {
@@ -844,17 +1100,54 @@ export async function saveTutorialOffline({
                     return;
                 }
 
+                activeWorkers += 1;
+                debug("worker:resource:start", {
+                    index: item.index,
+                    type: item.resource.type,
+                    path: item.resource.path,
+                    activeWorkers,
+                    controllerSignal: getAbortSignalDiagnostic(controller.signal),
+                });
+
                 try {
                     await downloadResource(item.resource, item.index);
                 } catch (error) {
-                    if (!firstError) {
+                    const wasFirstError = !firstError;
+
+                    if (wasFirstError) {
                         firstError = error;
+                    }
+
+                    debug(wasFirstError ? "worker:first-error" : "worker:secondary-error", {
+                        index: item.index,
+                        type: item.resource.type,
+                        path: item.resource.path,
+                        activeWorkers,
+                        controllerSignalBeforeAbort: getAbortSignalDiagnostic(controller.signal),
+                        callerSignal: getAbortSignalDiagnostic(signal),
+                        firstError: getDiagnosticError(firstError),
+                        caughtError: getDiagnosticError(error),
+                    });
+
+                    if (!controller.signal.aborted) {
+                        debug("abort:internal-controller", {
+                            source: "resource-error",
+                            failedPath: item.resource.path,
+                            error: getDiagnosticError(error),
+                        });
                     }
 
                     controller.abort();
                     return;
-                }
-            }
+                } finally {
+                    activeWorkers -= 1;
+                    debug("worker:resource:settled", {
+                        index: item.index,
+                        path: item.resource.path,
+                        activeWorkers,
+                        controllerSignal: getAbortSignalDiagnostic(controller.signal),
+                    });
+                }            }
         }
 
         const workers = Array.from(
@@ -863,10 +1156,20 @@ export async function saveTutorialOffline({
         );
 
         await Promise.allSettled(workers);
+        debug("workers:settled", {
+            resourceCount: resources.length,
+            completed,
+            activeWorkers,
+            hasFirstError: Boolean(firstError),
+            controllerSignal: getAbortSignalDiagnostic(controller.signal),
+        });
     }
 
     try {
-        const indexedImages = imageResources.map((resource, index) => ({
+        debug("package:download-phases:start", {
+            imageCount: imageResources.length,
+            videoCount: videoResources.length,
+        });        const indexedImages = imageResources.map((resource, index) => ({
             resource,
             index,
         }));
@@ -910,16 +1213,45 @@ export async function saveTutorialOffline({
             throw createAbortError();
         }
 
+        debug("package:indexeddb:write:start", {
+            cacheName,
+            resourceCount: record.resources.length,
+            totalVideoBytes: record.totalVideoBytes,
+        });
         await putStoredPackage(record);
+        debug("package:indexeddb:write:complete", { cacheName });
 
         if (previousRecord?.cacheName && previousRecord.cacheName !== cacheName) {
+            debug("package:previous-cache:delete:start", { previousCacheName: previousRecord.cacheName });
             await caches.delete(previousRecord.cacheName).catch(() => false);
+            debug("package:previous-cache:delete:complete", { previousCacheName: previousRecord.cacheName });
         }
 
+        debug("package:complete", {
+            cacheName,
+            completed,
+            total: totalResources,
+            bytesDownloaded,
+            totalBytes,
+        });
         return record;
     } catch (error) {
+        debug("package:failed", {
+            cacheName,
+            completed,
+            total: totalResources,
+            bytesDownloaded,
+            totalBytes,
+            activeWorkers,
+            cancelledByCaller,
+            callerSignal: getAbortSignalDiagnostic(signal),
+            internalSignal: getAbortSignalDiagnostic(controller.signal),
+            firstError: firstError ? getDiagnosticError(firstError) : null,
+            thrownError: getDiagnosticError(error),
+        });
+        debug("package:temporary-cache:delete:start", { cacheName });
         await caches.delete(cacheName);
-
+        debug("package:temporary-cache:delete:complete", { cacheName });
         if (cancelledByCaller && error?.name !== "AbortError") {
             throw createAbortError();
         }
@@ -927,6 +1259,11 @@ export async function saveTutorialOffline({
         throw error;
     } finally {
         signal?.removeEventListener("abort", abortFromCaller);
+        debug("package:finally", {
+            cancelledByCaller,
+            callerSignal: getAbortSignalDiagnostic(signal),
+            internalSignal: getAbortSignalDiagnostic(controller.signal),
+        });
     }
 }
 
