@@ -600,8 +600,8 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 929be1c557f7fa7a7c2d1ef545b4f2ada85a1e3f
-- **Data do commit:** 2026-11-01T02:15:00-03:00
+- **Commit de referência:** 90cf7636ec2b3c163243df032634275b279734fa
+- **Data do commit:** 2026-11-01T02:16:39-03:00
 - **Mensagem do commit:** docs: atualizar documentação após release da PWA
 - **Branch desta execução:** docs/atualizacao-documentacao-geral
 - **Projeto declarado:** helpe-center@0.0.0
@@ -736,13 +736,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 929be1c | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 058126b | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 15437d7 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 9857002 | 2026-11-01 | build: update prerendered site |
-| dfa39d1 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 8a3a3ac | 2026-11-01 | Merge pull request #19 from kleber-goncalves/dev |
-| 27705a3 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| 772d530 | 2026-11-01 | build: update prerendered site |
+| 90cf763 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| fdcefff | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 2394103 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| cb3197b | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 150b131 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 93c03fb | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| b95a2d1 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 8a89d55 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 
 <!-- END AUTO-GENERATED SECTION -->
