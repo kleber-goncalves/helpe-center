@@ -423,11 +423,31 @@ O pipeline de publicação foi validado na branch feat/pwa e mantém a estratég
 5. auditoria das imagens;
 6. commit de dist/ e public/sitemap.xml na própria branch.
 
-O workflow .github/workflows/prerender.yml executa em main e feat/pwa. Cada branch tem seu próprio grupo de concorrência. Alterações somente em dist/, public/sitemap.xml e docs/ não iniciam uma nova pré-renderização.
+O workflow `.github/workflows/prerender.yml` executa em `main`, `dev` e `feat/pwa`. A branch `fix/pwa-video-cache-blob` foi incluída temporariamente enquanto a PR #17 precisava gerar os artefatos do próprio Preview; essa entrada deve ser removida após a integração da PR. Cada branch tem seu próprio grupo de concorrência. Alterações somente em `dist/`, `public/sitemap.xml` e `docs/` não iniciam uma nova pré-renderização, evitando ciclos causados pelo commit automático dos artefatos e pela atualização da documentação.
 
 Depois de criar o commit do artefato, o workflow executa git reset --hard HEAD para descartar somente alterações locais não commitadas, que não fazem parte do commit de dist/. Em seguida, busca a referência remota, faz rebase do commit do artefato sobre o HEAD atualizado e envia a branch sem force push. Essa etapa evita conflitos quando a sincronização do AI_CONTEXT avança a branch enquanto a build está rodando.
 
 A Vercel continua publicando dist/ como artefato pré-gerado. O buildCommand do vercel.json é informativo; não executa novamente Vite ou Astratra.
+
+### Incidente: artefato `dist/` desatualizado e download de MP4 (01/11/2026)
+
+**Sintomas observados:** o salvamento offline de tutoriais com vídeos falhava no Chrome desktop do ambiente investigado, embora testes equivalentes em outros contextos e dispositivos funcionassem. A falha aparecia durante a persistência de MP4 grandes no Cache Storage, com mensagens como `Cache.put() encountered a network error` e erros de leitura/cancelamento subsequentes.
+
+**Causa técnica no fluxo de vídeo:** foi reproduzida uma diferença entre enviar diretamente uma resposta com `ReadableStream` para `Cache.put()` e materializar primeiro o corpo do MP4. No Chromium testado, o caminho direto falhava para determinados fluxos grandes; a leitura progressiva com `ReadableStreamDefaultReader`, seguida da criação de um `Blob` e de `cache.put(url, new Response(blob, ...))`, concluiu nos testes isolados. A implementação corrigida mantém imagens com até dois downloads concorrentes e processa vídeos sequencialmente, um por vez, limitando o pico de memória. O tamanho do Blob é conferido contra os bytes efetivamente recebidos antes da persistência.
+
+**Causa de publicação que ocultava a correção:** o projeto versiona `dist/` e a Vercel publica exclusivamente esse diretório. O `buildCommand` configurado em `vercel.json` não executa a build; ele apenas informa que o artefato pré-gerado será usado. Antes da correção, `.github/workflows/prerender.yml` executava para `main` e `feat/pwa`, mas não para `dev`. Assim, alterações em `src/` feitas em `dev` não tinham um gatilho de pré-renderização correspondente e a Vercel podia publicar bundles/Service Worker antigos, diferentes do código-fonte atual.
+
+**Evidência durante a investigação:** na primeira versão do Preview da PR #17, os arquivos em `src/` já continham a implementação corrigida e os logs de diagnóstico, mas os arquivos publicados em `dist/` não continham esses marcadores. Depois que a branch de diagnóstico foi incluída temporariamente no workflow, o GitHub Actions executou `npm run build`, pré-renderizou o site e commitou os novos artefatos. A Vercel passou a servir o bundle atualizado; então o pacote Canva terminou com os 14 MP4 persistidos, os metadados gravados no IndexedDB e o evento `package:complete`. A validação manual posterior confirmou abertura offline, reprodução e navegação/seek dos vídeos.
+
+**Correções e prevenção:**
+
+1. Materializar MP4 como `Blob` antes de gravar no Cache Storage, mantendo a leitura progressiva, a conferência de tamanho e a concorrência de um vídeo por vez.
+2. Incluir `dev` permanentemente nos branches de push de `.github/workflows/prerender.yml`, para que alterações de código nessa branch gerem e versionem `dist/` antes do deployment.
+3. Manter a entrada `fix/pwa-video-cache-blob` apenas enquanto a PR #17 precisar atualizar seu Preview; removê-la após a integração da PR.
+4. Não editar `dist/` manualmente. Alterar os arquivos-fonte, aguardar o workflow `Build prerendered site` concluir e confirmar que o commit `build: update prerendered site` entrou na mesma branch antes de validar o Preview.
+5. Ao investigar uma divergência entre código e Preview, verificar tanto os arquivos-fonte quanto o HTML, os chunks e o `sw.js` efetivamente publicados. Uma resposta HTTP 200 para o arquivo não comprova, por si só, que seu conteúdo corresponde ao commit esperado.
+
+Esse incidente envolveu duas camadas distintas: a estratégia de persistência de grandes fluxos MP4 e a ausência de geração automática do artefato pré-gerado em `dev`. Ambas precisam permanecer documentadas para evitar regressão.
 
 ### Validação confirmada na preview feat/pwa
 
@@ -549,7 +569,7 @@ Também não existe painel de monitoramento de quota/armazenamento baseado na St
 
 - [x] Catalogar vídeos locais e estimar tamanhos.
 - [x] Permitir inclusão opcional, desmarcada por padrão.
-- [x] Baixar em streaming e validar MIME/tamanho.
+- [x] Ler progressivamente e validar MIME/tamanho; materializar vídeos em Blob antes de gravar no Cache Storage.
 - [x] Implementar HTTP Range (206/416) para reprodução e busca offline.
 - [x] Validar vídeos grandes em dispositivos reais, conforme aceite manual informado pelo responsável.
 - [x] Cobrir falhas, cancelamento e quota simulada nos testes automatizados.
@@ -831,7 +851,8 @@ A opção de incluir vídeos é separada e vem desmarcada por padrão. O pacote 
 - A opção “Incluir vídeos para assistir sem internet” é opcional e desmarcada por padrão.
 - Os vídeos selecionados são baixados integralmente para o cache isolado do tutorial.
 - O download valida HTTP 200, MIME type compatível e, quando disponível, tamanho esperado.
-- O corpo é encaminhado em streaming ao Cache Storage.
+- O corpo de cada vídeo é lido progressivamente em blocos, materializado como `Blob` e então gravado no Cache Storage. A leitura em blocos mantém o acompanhamento de bytes; o processamento é sequencial (um MP4 por vez) para limitar o pico de memória.
+- Essa materialização evita a falha reproduzida no Chromium testado ao persistir diretamente grandes `ReadableStream` com `Cache.put()`; imagens continuam com até dois downloads simultâneos.
 - O progresso informa arquivos e bytes transferidos. Cancelamento/falha remove o cache temporário; o pacote anterior só é removido depois que o novo foi persistido e validado.
 - Os metadados registram URLs de imagens e vídeos separadamente.
 
@@ -870,7 +891,7 @@ O script de metadados gera tamanho e SHA-256 para imagens e vídeos. Os estados 
 
 ### 27.3 Integridade e atualização transacional
 
-Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Os corpos são encaminhados em streaming ao Cache Storage; o tamanho recebido é registrado em `resourceDetails`. Recursos vazios ou inválidos provocam falha e descarte do cache temporário.
+Durante o download, respostas precisam ser HTTP 200 e possuir MIME type compatível. Imagens continuam sendo encaminhadas em fluxo acompanhado ao Cache Storage. Para vídeos, o corpo é lido progressivamente em blocos, os bytes são contabilizados e o conteúdo completo é materializado em `Blob` antes de `Cache.put()`. MP4 são processados um por vez; o `Content-Length` persistido é definido a partir do tamanho efetivamente recebido e não se reaproveita `Content-Encoding` da resposta de rede. O tamanho recebido é registrado em `resourceDetails`. Recursos vazios, incompletos ou inválidos provocam falha e descarte do cache temporário.
 
 A consulta verifica existência, status, corpo, MIME type e tamanho registrado. A validação não recalcula SHA-256 do corpo armazenado em cada abertura: os hashes do build identificam mudanças no conteúdo publicado, enquanto a consulta local verifica a resposta persistida.
 

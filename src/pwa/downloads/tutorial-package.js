@@ -6,7 +6,10 @@ import {
 const DATABASE_NAME = "hauy-conecta-offline";
 const DATABASE_VERSION = 1;
 const PACKAGE_STORE = "tutorial-packages";
-const DOWNLOAD_CONCURRENCY = 2;
+// Imagens são pequenas e continuam com download paralelo.
+const IMAGE_DOWNLOAD_CONCURRENCY = 2;
+// Vídeos são materializados em Blob um por vez para limitar o pico de memória.
+const VIDEO_DOWNLOAD_CONCURRENCY = 1;
 
 function getLocalImagePath(value) {
     if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
@@ -476,8 +479,80 @@ function createAbortError() {
 }
 
 /**
- * Encaminha o corpo em streaming para o Cache Storage sem acumular o MP4
- * inteiro em um único ArrayBuffer na memória.
+ * Lê o corpo de uma resposta progressivamente e o materializa como Blob.
+ *
+ * O Chromium testado falhou ao persistir grandes ReadableStreams diretamente
+ * com Cache.put(), enquanto respostas equivalentes baseadas em Blob funcionaram.
+ * Os vídeos usam este caminho e são processados sequencialmente para limitar
+ * a quantidade de mídia mantida temporariamente em memória.
+ */
+export async function readResponseAsBlob(response, { onChunk, signal } = {}) {
+    if (!response?.body || typeof response.body.getReader !== "function") {
+        throw new Error("A resposta do arquivo não possui um fluxo de dados.");
+    }
+
+    if (typeof Blob === "undefined") {
+        throw new Error("O armazenamento de vídeos offline não é compatível com este navegador.");
+    }
+
+    if (signal?.aborted) {
+        throw createAbortError();
+    }
+
+    const reader = response.body.getReader();
+    const chunks = [];
+    let transferredBytes = 0;
+
+    try {
+        while (true) {
+            if (signal?.aborted) {
+                throw createAbortError();
+            }
+
+            const { done, value } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            if (!value?.byteLength) {
+                continue;
+            }
+
+            chunks.push(value);
+            transferredBytes += value.byteLength;
+            onChunk?.(value.byteLength);
+        }
+
+        if (signal?.aborted) {
+            throw createAbortError();
+        }
+
+        const blob = new Blob(chunks, {
+            type: response.headers.get("content-type") ?? "",
+        });
+        chunks.length = 0;
+
+        if (blob.size !== transferredBytes) {
+            throw new Error("O tamanho do arquivo materializado não corresponde aos bytes recebidos.");
+        }
+
+        return { blob, transferredBytes };
+    } catch (error) {
+        await reader.cancel(error).catch(() => undefined);
+        throw error;
+    } finally {
+        try {
+            reader.releaseLock();
+        } catch {
+            // Um fluxo cancelado pode ainda estar concluindo uma leitura pendente.
+        }
+    }
+}
+
+/**
+ * Encaminha corpos de imagens em streaming para o Cache Storage e contabiliza
+ * os bytes lidos. Vídeos usam readResponseAsBlob antes de Cache.put().
  */
 function createTrackedResponse(response, onChunk) {
     if (!response.body || typeof ReadableStream === "undefined") {
@@ -580,7 +655,6 @@ export async function saveTutorialOffline({
         signal?.addEventListener("abort", abortFromCaller, { once: true });
     }
 
-    let nextIndex = 0;
     let completed = 0;
     let bytesDownloaded = 0;
     let totalBytes = videoEstimate.knownBytes;
@@ -603,127 +677,211 @@ export async function saveTutorialOffline({
 
     reportProgress(true);
 
-    async function worker() {
-        while (!firstError && !controller.signal.aborted) {
-            const index = nextIndex;
-            nextIndex += 1;
+    async function downloadResource(resource, index) {
+        if (controller.signal.aborted) {
+            throw createAbortError();
+        }
 
-            if (index >= resourceEntries.length) {
-                return;
+        const response = await fetch(resource.url, {
+            cache: "reload",
+            signal: controller.signal,
+        });
+
+        const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+        const contentLength = Number(response.headers.get("content-length"));
+        const isContentEncoded = Boolean(
+            response.headers.get("content-encoding")?.trim(),
+        );
+        const isValidType = resource.type === "video"
+            ? contentType.startsWith("video/") || contentType === "application/octet-stream"
+            : contentType.startsWith("image/");
+
+        if (response.status !== 200 || !isValidType) {
+            throw new Error(
+                resource.type === "video"
+                    ? "Não foi possível baixar um vídeo completo do tutorial."
+                    : "Não foi possível baixar uma imagem necessária do tutorial.",
+            );
+        }
+
+        const expectedSize = resource.size ?? (
+            !isContentEncoded && Number.isFinite(contentLength) && contentLength > 0
+                ? contentLength
+                : null
+        );
+
+        if (resource.type === "video" && !resource.size && expectedSize) {
+            totalBytes += expectedSize;
+            reportProgress(true);
+        }
+
+        let transferredBytes = 0;
+        let responseToCache;
+
+        if (resource.type === "video") {
+            const result = await readResponseAsBlob(response, {
+                signal: controller.signal,
+                onChunk(chunkBytes) {
+                    transferredBytes += chunkBytes;
+                    bytesDownloaded += chunkBytes;
+                    reportProgress();
+                },
+            });
+
+            const { blob } = result;
+            transferredBytes = result.transferredBytes;
+
+            if (transferredBytes <= 0) {
+                throw new Error("Um vídeo do tutorial foi recebido vazio. Tente baixar novamente.");
             }
 
-            const resource = resourceEntries[index];
-
-            try {
-                const response = await fetch(resource.url, {
-                    cache: "reload",
-                    signal: controller.signal,
-                });
-
-                const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
-                const contentLength = Number(response.headers.get("content-length"));
-                const isContentEncoded = Boolean(
-                    response.headers.get("content-encoding")?.trim(),
+            if (expectedSize && transferredBytes !== expectedSize) {
+                throw new Error(
+                    "O tamanho recebido de um vídeo não corresponde ao original. Tente baixar novamente.",
                 );
-                const isValidType = resource.type === "video"
-                    ? contentType.startsWith("video/") || contentType === "application/octet-stream"
-                    : contentType.startsWith("image/");
+            }
 
-                if (response.status !== 200 || !isValidType) {
-                    throw new Error(
-                        resource.type === "video"
-                            ? "Não foi possível baixar um vídeo completo do tutorial."
-                            : "Não foi possível baixar uma imagem necessária do tutorial.",
-                    );
-                }
+            // O corpo é um Blob completo; não carregar Content-Encoding da resposta
+            // de rede, pois os bytes lidos pelo Fetch já são os bytes descomprimidos.
+            const cachedContentType = blob.type ||
+                contentType.split(";")[0] ||
+                "application/octet-stream";
+            const cacheHeaders = new Headers({
+                "Content-Type": cachedContentType,
+                "Content-Length": String(transferredBytes),
+            });
+            const etag = response.headers.get("etag");
 
-                const expectedSize = resource.size ?? (
-                    !isContentEncoded && Number.isFinite(contentLength) && contentLength > 0
-                        ? contentLength
-                        : null
+            if (etag) {
+                cacheHeaders.set("ETag", etag);
+            }
+
+            responseToCache = new Response(blob, {
+                status: response.status,
+                statusText: response.statusText,
+                headers: cacheHeaders,
+            });
+        } else {
+            // Imagens continuam usando o fluxo acompanhado e concorrência limitada.
+            responseToCache = createTrackedResponse(response, (chunkBytes) => {
+                transferredBytes += chunkBytes;
+            });
+        }
+
+        if (controller.signal.aborted) {
+            throw createAbortError();
+        }
+
+        await packageCache.put(resource.url, responseToCache);
+
+        const cachedResponse = await packageCache.match(resource.url);
+        const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
+        const hasValidCachedType = resource.type === "video"
+            ? cachedContentType.startsWith("video/") || cachedContentType === "application/octet-stream"
+            : cachedContentType.startsWith("image/");
+
+        if (
+            !cachedResponse ||
+            cachedResponse.status !== 200 ||
+            !cachedResponse.body ||
+            !hasValidCachedType
+        ) {
+            throw new Error(
+                "Um arquivo do tutorial não foi armazenado corretamente. Tente baixar novamente.",
+            );
+        }
+
+        const wasStreamTracked = transferredBytes > 0;
+
+        if (!wasStreamTracked) {
+            transferredBytes = (await cachedResponse.blob()).size;
+        }
+
+        if (transferredBytes <= 0) {
+            throw new Error("Um arquivo do tutorial foi recebido vazio. Tente baixar novamente.");
+        }
+
+        if (expectedSize && transferredBytes !== expectedSize) {
+            throw new Error(
+                "O tamanho recebido de um arquivo não corresponde ao original. Tente baixar novamente.",
+            );
+        }
+
+        if (resource.type === "video") {
+            const cachedLength = Number(cachedResponse.headers.get("content-length"));
+
+            if (!Number.isSafeInteger(cachedLength) || cachedLength !== transferredBytes) {
+                throw new Error(
+                    "O vídeo armazenado não corresponde ao tamanho recebido. Tente baixar novamente.",
                 );
-
-                if (resource.type === "video" && !resource.size && expectedSize) {
-                    totalBytes += expectedSize;
-                    reportProgress(true);
-                }
-
-                let transferredBytes = 0;
-                const responseToCache = createTrackedResponse(response, (chunkBytes) => {
-                    transferredBytes += chunkBytes;
-
-                    if (resource.type === "video") {
-                        bytesDownloaded += chunkBytes;
-                        reportProgress();
-                    }
-                });
-
-                await packageCache.put(resource.url, responseToCache);
-
-                const cachedResponse = await packageCache.match(resource.url);
-                const cachedContentType = (cachedResponse?.headers.get("content-type") ?? "").toLowerCase();
-                const hasValidCachedType = resource.type === "video"
-                    ? cachedContentType.startsWith("video/") || cachedContentType === "application/octet-stream"
-                    : cachedContentType.startsWith("image/");
-
-                if (
-                    !cachedResponse ||
-                    cachedResponse.status !== 200 ||
-                    !cachedResponse.body ||
-                    !hasValidCachedType
-                ) {
-                    throw new Error(
-                        "Um arquivo do tutorial não foi armazenado corretamente. Tente baixar novamente.",
-                    );
-                }
-
-                const wasStreamTracked = transferredBytes > 0;
-
-                if (!wasStreamTracked) {
-                    transferredBytes = (await cachedResponse.blob()).size;
-                }
-
-                if (transferredBytes <= 0) {
-                    throw new Error("Um arquivo do tutorial foi recebido vazio. Tente baixar novamente.");
-                }
-
-                if (expectedSize && transferredBytes !== expectedSize) {
-                    throw new Error(
-                        "O tamanho recebido de um arquivo não corresponde ao original. Tente baixar novamente.",
-                    );
-                }
-
-                if (resource.type === "video" && !wasStreamTracked) {
-                    bytesDownloaded += transferredBytes;
-                }
-
-                resourceDetails[index] = {
-                    url: resource.url,
-                    type: resource.type,
-                    size: transferredBytes,
-                    contentType: cachedContentType.split(";")[0],
-                };
-
-                completed += 1;
-                reportProgress(true);
-            } catch (error) {
-                if (!firstError) {
-                    firstError = error;
-                }
-
-                controller.abort();
-                return;
             }
         }
+
+        if (resource.type === "video" && !wasStreamTracked) {
+            bytesDownloaded += transferredBytes;
+        }
+
+        resourceDetails[index] = {
+            url: resource.url,
+            type: resource.type,
+            size: transferredBytes,
+            contentType: cachedContentType.split(";")[0],
+        };
+
+        completed += 1;
+        reportProgress(true);
     }
 
-    try {
+    async function runWorkers(resources, concurrency) {
+        let nextIndex = 0;
+
+        async function worker() {
+            while (!firstError && !controller.signal.aborted) {
+                const item = resources[nextIndex];
+                nextIndex += 1;
+
+                if (!item) {
+                    return;
+                }
+
+                try {
+                    await downloadResource(item.resource, item.index);
+                } catch (error) {
+                    if (!firstError) {
+                        firstError = error;
+                    }
+
+                    controller.abort();
+                    return;
+                }
+            }
+        }
+
         const workers = Array.from(
-            { length: Math.min(DOWNLOAD_CONCURRENCY, Math.max(resourceEntries.length, 1)) },
+            { length: Math.min(concurrency, resources.length) },
             () => worker(),
         );
 
         await Promise.allSettled(workers);
+    }
+
+    try {
+        const indexedImages = imageResources.map((resource, index) => ({
+            resource,
+            index,
+        }));
+        const indexedVideos = videoResources.map((resource, index) => ({
+            resource,
+            index: imageResources.length + index,
+        }));
+
+        // Mantém até dois downloads de imagem simultâneos, mas evita que dois
+        // vídeos grandes precisem ser materializados em memória ao mesmo tempo.
+        await runWorkers(indexedImages, IMAGE_DOWNLOAD_CONCURRENCY);
+
+        if (!firstError && !controller.signal.aborted) {
+            await runWorkers(indexedVideos, VIDEO_DOWNLOAD_CONCURRENCY);
+        }
 
         if (firstError) {
             throw firstError;
@@ -747,6 +905,10 @@ export async function saveTutorialOffline({
             version: TUTORIAL_PACKAGE_VERSION,
             savedAt: Date.now(),
         };
+
+        if (controller.signal.aborted) {
+            throw createAbortError();
+        }
 
         await putStoredPackage(record);
 

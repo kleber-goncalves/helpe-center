@@ -399,7 +399,7 @@ A lista exata de scripts npm é mantida no snapshot automatizado.
 
 ### 11.5. Publicação
 
-O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
+O workflow .github/workflows/prerender.yml executa a build e a pré-renderização nas branches main e feat/pwa. Para esta investigação, a branch temporária `fix/pwa-video-cache-blob` também foi incluída para gerar e versionar `dist/` com a instrumentação antes de testar o Preview; essa inclusão é temporária e deve ser removida ao encerrar o diagnóstico. Cada branch possui seu próprio grupo de concorrência. O workflow ignora alterações somente em dist/, public/sitemap.xml e docs/, instala dependências, instala Chromium/Playwright, executa npm run build, remove o arquivo temporário de rotas e versiona dist/ e public/sitemap.xml na própria branch.
 
 Depois de criar o commit do artefato, o workflow limpa somente alterações locais não commitadas, busca o HEAD remoto e faz rebase antes do push. Isso evita rejeições non-fast-forward quando a sincronização automática do AI_CONTEXT avança a branch durante a build. A atualização da referência não utiliza force push.
 
@@ -447,6 +447,7 @@ O workflow `.github/workflows/validate-feat-ferramentas.yml` executa validaçõe
 - Registro e atualização pelo módulo `src/pwa/client/register-service-worker.js`; atualização exige confirmação explícita.
 - Pacotes opt-in por tutorial usando Cache Storage + IndexedDB, com progresso, cancelamento, remoção, reparo, fingerprints e estados `saved`, `outdated` e `incomplete`.
 - Vídeos MP4 locais opcionais, desmarcados por padrão, com estimativa de tamanho, download em streaming e suporte a HTTP Range (206/416).
+- **Diagnóstico temporário de download:** na branch `fix/pwa-video-cache-blob`, `tutorial-package.js` oferece logs opt-in para fetch, leitura de blocos, `Cache.put()`, verificação, workers e cancelamento. Ativar na aba do Preview com `sessionStorage.setItem("hauy:pwa:download-debug", "1")` antes de iniciar o pacote; desativar com `sessionStorage.removeItem("hauy:pwa:download-debug")`. O Service Worker também registra as requisições MP4 explícitas (`cache: "reload"`) no console próprio de inspeção. Essa instrumentação é temporária e não altera a lógica de download.
 - O app shell, o cache runtime de imagens e os caches de pacotes possuem ciclos de vida separados. Atualização do shell não deve remover pacotes de tutoriais.
 - O CTA personalizado de instalação na Home foi removido por decisão do responsável. A instalação permanece nativa, sob controle do navegador.
 
@@ -599,10 +600,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 8ecd41c4a9a7c91987500b3d2de4e214bc46f121
-- **Data do commit:** 2026-10-31T20:16:17-03:00
-- **Mensagem do commit:** Merge pull request #16 from kleber-goncalves/feat/pwa
-- **Branch desta execução:** dev
+- **Commit de referência:** 31be08c74569270d4ef94f129b64585c8a140d1e
+- **Data do commit:** 2026-11-01T00:38:51-03:00
+- **Mensagem do commit:** fix(pwa): sync dev prerender artifacts and document incident
+- **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
 - **Dependências de runtime:** 16
@@ -733,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 8ecd41c | 2026-10-31 | Merge pull request #16 from kleber-goncalves/feat/pwa |
-| 2138fa6 | 2026-10-31 | build: update prerendered site |
-| 36505cc | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 883bd0d | 2026-10-31 | docs(pwa): alinhar documentação ao estado atual |
-| 9161dd0 | 2026-10-31 | build: update prerendered site |
-| 23ee57d | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 7b901b8 | 2026-10-31 | revert(pwa): remover convite de instalação da Home |
-| f305961 | 2026-10-31 | build: update prerendered site |
+| 31be08c | 2026-11-01 | fix(pwa): sync dev prerender artifacts and document incident |
+| 21a4e7c | 2026-11-01 | build: update prerendered site |
+| 4e99938 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
+| ef1d190 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
+| 89acf03 | 2026-11-01 | docs(pwa): record diagnostic preview build scope |
+| a5770fa | 2026-11-01 | ci(pwa): build diagnostic preview artifacts |
+| 7479a42 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
+| 1d7edfb | 2026-11-01 | style(pwa): finalize diagnostic worker formatting |
 
 <!-- END AUTO-GENERATED SECTION -->

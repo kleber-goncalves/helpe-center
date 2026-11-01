@@ -13,6 +13,15 @@ Este diretório concentra a implementação do Progressive Web App. A arquitetur
 - `ui/hooks/usePwaStatus.js` adapta estado de conexão e eventos PWA para React.
 - `ui/components/PwaStatusBanner.jsx` apresenta os avisos gerais do PWA.
 
+
+## Build e publicação
+
+A Vercel publica o diretório `dist/` versionado; seu `buildCommand` em `vercel.json` não executa novamente Vite ou Astratra. A geração dos artefatos é responsabilidade do GitHub Actions (`.github/workflows/prerender.yml`), que executa `npm run build`, pré-renderiza as rotas, audita imagens e commita `dist/` e `public/sitemap.xml` na própria branch.
+
+Os pushes em `main`, `dev` e `feat/pwa` geram o artefato automaticamente. A branch `fix/pwa-video-cache-blob` está incluída temporariamente enquanto a PR #17 mantém seu Preview de diagnóstico; remover essa entrada após integrar a PR.
+
+Não edite `dist/` manualmente e não valide um Preview logo após alterar apenas `src/`: primeiro confirme que `Build prerendered site` concluiu e que o commit `build: update prerendered site` foi publicado na mesma branch. Os filtros `paths-ignore` de `dist/`, `public/sitemap.xml` e `docs/` evitam que commits gerados iniciem outro ciclo de build. O histórico do incidente e as evidências estão em [docs/arquitetura-pwa-hauy-conecta.md](../../docs/arquitetura-pwa-hauy-conecta.md#incidente-artefato-dist-desatualizado-e-download-de-mp4-01112026).
+
 ## Limites de responsabilidade
 
 1. Manter o PWA isolado em `src/pwa`; não espalhar regras de cache ou Service Worker pelos componentes genéricos do portal.
@@ -52,13 +61,13 @@ O pacote inclui:
 - Pôsteres associados a vídeos.
 - Variantes responsivas geradas pelo script de metadados em `/_optimized/`.
 
-Cada pacote tem um cache próprio no Cache Storage. O IndexedDB guarda metadados e a lista de arquivos esperados. O pacote só é marcado como salvo depois de baixar e validar todos os recursos. Downloads usam concorrência limitada, exibem progresso, permitem cancelamento e podem ser removidos do dispositivo.
+Cada pacote tem um cache próprio no Cache Storage. O IndexedDB guarda metadados e a lista de arquivos esperados. O pacote só é marcado como salvo depois de baixar e validar todos os recursos. Imagens são baixadas com até dois workers simultâneos; vídeos MP4 são processados um por vez. O corpo de cada vídeo é lido progressivamente em blocos, contabilizado para o progresso e materializado como Blob antes de ser gravado no Cache Storage. Essa estratégia contorna uma falha reproduzida no Chromium ao persistir diretamente grandes ReadableStreams e limita o pico de memória a um vídeo por vez. Downloads exibem progresso, permitem cancelamento e podem ser removidos do dispositivo.
 
 O pacote permanece no navegador/dispositivo em que foi salvo; não sincroniza automaticamente com outros dispositivos.
 
 **Vídeos MP4 são opcionais e desmarcados por padrão.** O catálogo de mídia gerado no build registra o tamanho real de cada arquivo local. A interface mostra a quantidade e o tamanho estimado dos vídeos antes do download e alerta sobre consumo de dados e armazenamento.
 
-Quando a pessoa marca **Incluir vídeos para assistir sem internet**, os MP4 locais dos passos e exemplos são baixados integralmente para o mesmo cache individual do tutorial. O progresso informa arquivos concluídos e bytes transferidos dos vídeos. O pacote só é marcado como salvo depois que imagens, pôsteres e vídeos selecionados foram persistidos e validados. Cancelamento ou falha remove o cache temporário e preserva um pacote anterior que já estava salvo.
+Quando a pessoa marca **Incluir vídeos para assistir sem internet**, os MP4 locais dos passos e exemplos são baixados integralmente para o mesmo cache individual do tutorial, sequencialmente (um arquivo por vez). A leitura é feita em blocos com `ReadableStreamDefaultReader`; depois da leitura completa, os blocos são materializados em um `Blob` e gravados no Cache Storage por meio de uma nova `Response`. O cabeçalho `Content-Length` armazenado representa os bytes efetivamente recebidos, sem reaproveitar um eventual `Content-Encoding` da resposta de rede. O progresso informa arquivos concluídos e bytes transferidos dos vídeos. O pacote só é marcado como salvo depois que imagens, pôsteres e vídeos selecionados foram persistidos e validados. Cancelamento ou falha remove o cache temporário e preserva um pacote anterior que já estava salvo.
 
 O Service Worker reconhece solicitações locais de MP4 e procura os arquivos nos caches dos pacotes. Quando o player envia uma requisição Range, o Service Worker responde com HTTP 206, Content-Range, Content-Length e Accept-Ranges, permitindo carregar metadados, reproduzir e avançar/retroceder sem rede. Vídeos que não foram selecionados continuam sendo solicitados pela rede. Videoaulas do YouTube, playlists e outros links externos permanecem dependentes de internet.
 
