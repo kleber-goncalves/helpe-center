@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 10c1ee530ab03ea4a612f05a6ddc235c3eb05b09
-- **Data do commit:** 2026-11-01T00:02:21-03:00
-- **Mensagem do commit:** chore(pwa): instrument offline package download diagnostics
+- **Commit de referência:** 30630b44d9fda9548314fa94b94c06018420e8ea
+- **Data do commit:** 2026-11-01T00:02:26-03:00
+- **Mensagem do commit:** docs(pwa): document temporary offline diagnostics
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -734,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 30630b4 | 2026-11-01 | docs(pwa): document temporary offline diagnostics |
+| 7e126e0 | 2026-11-01 | chore(pwa): expose MP4 network failures in service worker |
 | 10c1ee5 | 2026-11-01 | chore(pwa): instrument offline package download diagnostics |
 | 1752f0d | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 7f077d8 | 2026-10-31 | fix(pwa): remover índice de worker não utilizado |
 | 1ddca02 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 6a3c3da | 2026-10-31 | refactor(pwa): clarificar processamento dos fluxos de mídia |
 | da80dfd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| e3fa359 | 2026-10-31 | fix(pwa): materializar vídeos antes do Cache Storage |
-| d089714 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
