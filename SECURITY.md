@@ -1,5 +1,7 @@
 # Política de Segurança — Hauy Conecta
 
+> **Revisão documental:** 2026-11-01. Esta política orienta a comunicação responsável no repositório público; não representa certificação de segurança nem afirma que o projeto passou por auditoria completa.
+
 O Hauy Conecta é um projeto escolar e educacional com repositório público. O propósito de estudo não elimina a responsabilidade de proteger usuários, dados e infraestrutura.
 
 Esta política explica como reportar suspeitas de vulnerabilidade e quais limites devem ser respeitados durante estudos e testes.

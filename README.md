@@ -64,6 +64,7 @@
 - [Arquitetura técnica](#arquitetura-técnica)
 - [SEO e pré-renderização](#seo-e-pré-renderização)
 - [Acessibilidade](#acessibilidade)
+- [PWA e uso offline](#pwa-e-uso-offline)
 - [Assistente Hauy](#assistente-hauy)
 - [Conteúdo e dados](#conteúdo-e-dados)
 - [Privacidade e segurança](#privacidade-e-segurança)
@@ -323,7 +324,7 @@ Isso mantém a arquitetura de navegação alinhada ao objetivo educacional: **me
 | Tecnologia                             | Função                                                        |
 | -------------------------------------- | ------------------------------------------------------------- |
 | [Google GenAI](https://ai.google.dev/) | Integração do Assistente Hauy com o modelo Gemini             |
-| [Zod](https://zod.dev/)                | Biblioteca disponível para validação e modelagem              |
+| [Zod](https://zod.dev/)                | Schemas e validação do formulário no frontend e no backend   |
 | Busca local de tutoriais               | Seleção de conteúdo relevante antes da resposta do assistente |
 
 ### Build e entrega
@@ -510,6 +511,25 @@ Botões, links, inputs e elementos interativos recebem estados de foco visíveis
 ### Semântica
 
 A interface utiliza elementos semânticos, <code>aria-label</code>, <code>aria-live</code>, <code>aria-controls</code>, <code>aria-current</code> e outros atributos quando necessários.
+
+---
+
+## PWA e uso offline
+
+O Hauy Conecta também é um Progressive Web App (PWA). A instalação é oferecida pelo recurso nativo do navegador; o projeto não mantém um botão próprio de instalação na página inicial.
+
+A experiência offline utiliza camadas independentes:
+
+- **App shell:** arquivos essenciais são pré-armazenados pelo Workbox para permitir abertura e navegação básica após uma primeira visita online.
+- **Imagens gerais:** imagens da mesma origem entram no cache runtime quando são solicitadas; a biblioteca inteira não é baixada antecipadamente.
+- **Pacotes de tutoriais:** a pessoa escolhe salvar um tutorial. O pacote inclui imagens das etapas, exemplos e pôsteres locais.
+- **Vídeos MP4:** são opcionais e desmarcados por padrão. Quando selecionados, são baixados sequencialmente para controlar o pico de memória e podem ser reproduzidos e percorridos offline.
+
+O Cache Storage guarda as respostas e o IndexedDB mantém os metadados dos pacotes. A atualização do app shell não deve apagar os pacotes opt-in dos tutoriais. Os pacotes ficam associados ao armazenamento do navegador e da origem em que foram salvos; não há sincronização automática entre dispositivos.
+
+O Assistente Hauy, o envio de dúvidas, o registro remoto de pesquisas, o YouTube e os provedores externos de ferramentas continuam dependendo de rede. A disponibilidade offline não significa que todos os serviços da plataforma funcionem sem conexão.
+
+Documentação técnica: [arquitetura da PWA](docs/arquitetura-pwa-hauy-conecta.md), [módulo PWA](src/pwa/README.md) e [testes PWA](tests/pwa/README.md).
 
 ---
 
@@ -800,118 +820,109 @@ http://localhost:5173
 
 ## Variáveis de ambiente
 
-O Assistente Hauy utiliza variáveis de ambiente no lado do servidor.
+As integrações server-side utilizam variáveis configuradas localmente em `.env.local` e no ambiente de produção da Vercel. O arquivo `.env.example` apresenta os nomes esperados, sem valores.
 
-### Obrigatória
+| Variável | Uso |
+|---|---|
+| `GEMINI_API_KEY` | Chave privada utilizada por `api/assistant.js`. Necessária para o Assistente Hauy. |
+| `GEMINI_MODEL` | Modelo Gemini opcional. O código usa `gemini-3.5-flash-lite` como fallback. |
+| `SUPPORT_APPS_SCRIPT_ENDPOINT` | Endpoint do Google Apps Script chamado pelo proxy server-side `api/support.js`. Necessário para envio de dúvidas e registro remoto de pesquisas sem resultado. |
+
+A interface não deve receber nem armazenar as chaves privadas. Não copie valores reais de ambiente para o repositório, documentação, logs ou commits.
 
 ```env
 GEMINI_API_KEY=sua_chave_aqui
-```
-
-### Opcional
-
-```env
 GEMINI_MODEL=gemini-3.5-flash-lite
+SUPPORT_APPS_SCRIPT_ENDPOINT=https://seu-endpoint-do-apps-script
 ```
 
-Quando <code>GEMINI_MODEL</code> não é definida, a API utiliza o modelo indicado no código como padrão.
-
-> Nunca publique chaves reais no GitHub.
-
----
+`GEMINI_MODEL` é opcional. As outras duas variáveis são necessárias para os respectivos serviços funcionarem.
 
 ## Scripts disponíveis
 
-| Comando                      | Finalidade                                                                    |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| <code>npm run dev</code>     | Inicia o servidor de desenvolvimento do Vite                                  |
-| <code>npm run build</code>   | Gera as rotas de pré-renderização, compila a aplicação e executa o pré-render |
-| <code>npm run preview</code> | Serve localmente a build produzida                                            |
-| <code>npm run lint</code>    | Executa o ESLint                                                              |
+| Comando | Finalidade |
+|---|---|
+| `npm run dev` | Inicia o servidor de desenvolvimento Vite. |
+| `npm run build` | Gera metadados e ícones, cria rotas, compila, pré-renderiza e audita imagens. |
+| `npm run preview` | Serve localmente o diretório `dist/`. |
+| `npm run lint` | Executa ESLint. |
+| `npm run audit:images` | Executa isoladamente a auditoria das imagens geradas. |
+| `npm run test:search` | Testa a busca e a lógica de respostas do assistente com Node test runner. |
+| `npm run test:pwa:unit` | Executa os testes unitários do PWA. |
+| `npm run test:pwa:e2e` | Executa os testes de navegador do PWA com Playwright/Chromium. |
+| `npm run test:pwa` | Executa os testes unitários e E2E do PWA. |
+| `npm run check:occurrences` | Valida a estrutura do registro público de ocorrências. |
+| `npm run pwa:icons` | Gera os ícones da PWA a partir de `public/logo.svg`. |
+
+Os scripts `predev` e `prelint` executam geração de metadados de imagens automaticamente antes dos comandos correspondentes.
 
 ### Build completo
 
-O comando:
-
-```bash
-npm run build
-```
-
-executa, em sequência:
+`npm run build` executa:
 
 ```text
+generate-image-metadata.mjs
+        ↓
+generate-pwa-icons.mjs
+        ↓
 generate-prerender-routes.mjs
         ↓
-vite build
+vite build (vite-plugin-pwa / injectManifest)
         ↓
 astratra-prerender
+        ↓
+audit-images.mjs
 ```
 
----
+O resultado final é gravado em `dist/`, incluindo HTML pré-renderizado, arquivos compilados, manifesto, Service Worker, ícones e recursos públicos necessários ao site.
 
 ## Build e deploy
 
-A publicação é dividida em duas responsabilidades.
+A publicação possui duas responsabilidades separadas: GitHub Actions prepara e versiona os artefatos; a Vercel publica o conteúdo já gerado.
 
-### 1. GitHub Actions
+### GitHub Actions
 
-O workflow:
+- `.github/workflows/validate-feat-ferramentas.yml`: valida pushes e pull requests direcionados a `main` e `dev`. Executa a checagem de ocorrências, testes da busca/assistente, testes unitários PWA, ESLint, build/prerender/auditoria e testes E2E PWA.
+- `.github/workflows/prerender.yml`: nos pushes em `main`, `dev` e `feat/pwa`, executa `npm ci`, instala Playwright/Chromium e roda `npm run build`. Depois versiona `dist/` e `public/sitemap.xml` na própria branch.
+- `.github/workflows/ai-context.yml`: atualiza automaticamente o snapshot técnico de `docs/AI_CONTEXT.md`. A parte narrativa continua sendo mantida manualmente.
+- `.github/workflows/lighthouse-feat-ferramentas.yml`: workflow específico da branch `feat/ferramentas`; não é uma validação geral de todos os pushes em `main` ou `dev`.
 
-<code>.github/workflows/prerender.yml</code>
+O workflow de prerender ignora alterações em artefatos gerados e documentação, evitando ciclos de build causados por commits automáticos. Não edite `dist/` manualmente.
 
-executa em uma máquina Ubuntu e:
+### Vercel
 
-1. baixa o repositório;
-2. instala as dependências;
-3. instala o Chromium e as dependências do Playwright;
-4. executa a build;
-5. gera as páginas pré-renderizadas;
-6. remove o arquivo temporário <code>prerender-routes.json</code>;
-7. publica o conteúdo gerado de <code>dist/</code> de volta no repositório.
+O arquivo `vercel.json` define `dist/` como diretório publicado e utiliza um `buildCommand` informativo. A Vercel não executa novamente Vite ou Astratra nesse fluxo; o conteúdo precisa estar gerado e versionado pelo GitHub Actions.
 
-### 2. Vercel
+A branch de produção é `main`. O domínio oficial é [hauy-conecta.vercel.app](https://hauy-conecta.vercel.app/).
 
-A Vercel recebe o estado versionado do repositório e publica a pasta:
-
-<code>dist/</code>
-
-A configuração atual de <code>vercel.json</code> utiliza:
-
-```json
-{
-    "cleanUrls": true,
-    "buildCommand": "echo \"Using pre-rendered dist generated by GitHub Actions\"",
-    "outputDirectory": "dist"
-}
-```
-
-A escolha existe para evitar que a Vercel tenha de executar localmente o processo de pré-renderização com Playwright.
-
-### Pipeline completo
+### Sequência de publicação
 
 ```text
-git push
-   ↓
-GitHub Actions
-   ↓
-npm ci
-   ↓
-Playwright
-   ↓
-npm run build
-   ↓
-Astratra prerender
-   ↓
-dist/
-   ↓
-commit automático
-   ↓
-Vercel
-   ↓
-deploy
+alteração e PR
+      ↓
+merge em main
+      ↓
+GitHub Actions: Validate + Prerender + AI Context
+      ↓
+commit automático de dist/ e sitemap
+      ↓
+Vercel publica dist/
+      ↓
+verificação pós-deploy
 ```
 
----
+A validação, a geração do artefato e a sincronização de contexto podem executar em paralelo. Acompanhe o SHA de cada execução: o deployment final pode apontar para o commit automático de `build: update prerendered site`, e não para o commit de merge da PR.
+
+### Validação da release de 01/11/2026
+
+A release que integrou a PWA à produção foi publicada pela [PR #19](https://github.com/kleber-goncalves/helpe-center/pull/19):
+
+- [Validate Hauy Conecta #249](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723214) — sucesso.
+- [Build prerendered site #103](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723224) — sucesso.
+- [AI Context Synchronize #191](https://github.com/kleber-goncalves/helpe-center/actions/runs/41273723249) — sucesso.
+- [Deployment de produção](https://vercel.com/kleber-goncalves-s-projects/helpe-center/3RnqTbNbWFHvRErRKEYnpKwwpzVS) — READY no commit `98570028`.
+
+Esses resultados comprovam a validação automatizada e a publicação. Eles não substituem o aceite manual pós-publicação da instalação e da preservação de pacotes offline.
 
 ## Rotas
 
@@ -922,6 +933,7 @@ deploy
 | <code>/categorias/:categoryId</code> | Categoria específica                   |
 | <code>/tutoriais</code>              | Biblioteca de tutoriais                |
 | <code>/tutoriais/:tutorialId</code>  | Tutorial específico                    |
+| <code>/ferramentas</code>            | Catálogo de ferramentas externas       |
 | <code>/faq</code>                    | Perguntas frequentes                   |
 | <code>/sobre</code>                  | Informações sobre o projeto            |
 | <code>/enviar-duvida</code>          | Canal para enviar uma nova dúvida      |
@@ -937,6 +949,24 @@ deploy
 - [Sobre o projeto](https://hauy-conecta.vercel.app/sobre)
 - [Assistente Hauy](https://hauy-conecta.vercel.app/assistente-hauy)
 - [Enviar uma dúvida](https://hauy-conecta.vercel.app/enviar-duvida)
+
+---
+
+## Documentação para manutenção
+
+| Documento | Quando consultar |
+|---|---|
+| [AI_CONTEXT](docs/AI_CONTEXT.md) | Continuidade técnica, arquitetura vigente, decisões e instruções. |
+| [Documentação do produto](docs/DOCUMENTACAO_PRODUTO_HAUY_CONECTA.md) | Funcionalidades e experiência da pessoa usuária. |
+| [Documentação técnica](docs/DOCUMENTACAO_PROJETO.md) | Estrutura do código, APIs, dados, scripts e publicação. |
+| [Arquitetura PWA](docs/arquitetura-pwa-hauy-conecta.md) | Cache, armazenamento, pacotes offline, vídeos e decisões da PWA. |
+| [Regras dos tutoriais](docs/REGRAS-DOS-TUTORIAIS.md) | Criação e manutenção de conteúdo educacional. |
+| [Guia de SVG e ícones](docs/GUIA-SVGICON-E-ICONS-DE-FERRAMENTAS.md) | Ícones de ferramentas e uso do componente SvgIcon. |
+| [Registro de ocorrências](docs/REGISTRO_DE_OCORRENCIAS.md) | Histórico rastreável de bugs e erros. |
+| [Política de segurança](SECURITY.md) | Comunicação responsável e limites de teste. |
+| [Testes PWA](tests/pwa/README.md) | Cobertura automatizada e aceite manual da PWA. |
+
+O código da branch/commit em análise é a fonte de verdade para o comportamento implementado. Documentos históricos em `src/docs/` preservam explicações e decisões anteriores; confira o aviso no início desses arquivos antes de utilizá-los como instruções operacionais.
 
 ---
 
