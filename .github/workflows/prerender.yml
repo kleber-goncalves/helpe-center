@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - feat/pwa
+      - fix/pwa-video-cache-blob
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
