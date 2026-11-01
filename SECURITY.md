@@ -1,5 +1,7 @@
 # Política de Segurança — Hauy Conecta
 
+> **Revisão documental:** 01/11/2026, após a publicação da release PWA. Esta revisão não é uma auditoria de segurança nem representa declaração de ausência de vulnerabilidades.
+
 O Hauy Conecta é um projeto escolar e educacional com repositório público. O propósito de estudo não elimina a responsabilidade de proteger usuários, dados e infraestrutura.
 
 Esta política explica como reportar suspeitas de vulnerabilidade e quais limites devem ser respeitados durante estudos e testes.
