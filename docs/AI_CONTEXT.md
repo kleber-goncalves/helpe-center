@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** a5770fa5d78e421770f0f26cf58b80180de82ba6
-- **Data do commit:** 2026-11-01T00:14:51-03:00
-- **Mensagem do commit:** ci(pwa): build diagnostic preview artifacts
+- **Commit de referência:** 89acf03dcab769c869fbd49b6a2955017cc12eeb
+- **Data do commit:** 2026-11-01T00:14:54-03:00
+- **Mensagem do commit:** docs(pwa): record diagnostic preview build scope
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -734,6 +734,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 89acf03 | 2026-11-01 | docs(pwa): record diagnostic preview build scope |
 | a5770fa | 2026-11-01 | ci(pwa): build diagnostic preview artifacts |
 | 7479a42 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 1d7edfb | 2026-11-01 | style(pwa): finalize diagnostic worker formatting |
@@ -741,6 +742,5 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | 47a3976 | 2026-11-01 | style(pwa): tidy diagnostic instrumentation |
 | c0f31bf | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 9b6d2bd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 30630b4 | 2026-11-01 | docs(pwa): document temporary offline diagnostics |
 
 <!-- END AUTO-GENERATED SECTION -->
