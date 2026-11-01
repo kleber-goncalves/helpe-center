@@ -600,9 +600,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 1d7edfb0151a0946cc7620bcc2e2ccf3734c1998
-- **Data do commit:** 2026-11-01T00:03:39-03:00
-- **Mensagem do commit:** style(pwa): finalize diagnostic worker formatting
+- **Commit de referência:** a5770fa5d78e421770f0f26cf58b80180de82ba6
+- **Data do commit:** 2026-11-01T00:14:51-03:00
+- **Mensagem do commit:** ci(pwa): build diagnostic preview artifacts
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -734,13 +734,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| a5770fa | 2026-11-01 | ci(pwa): build diagnostic preview artifacts |
+| 7479a42 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 1d7edfb | 2026-11-01 | style(pwa): finalize diagnostic worker formatting |
 | af8ab6f | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 47a3976 | 2026-11-01 | style(pwa): tidy diagnostic instrumentation |
 | c0f31bf | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 9b6d2bd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 30630b4 | 2026-11-01 | docs(pwa): document temporary offline diagnostics |
-| 7e126e0 | 2026-11-01 | chore(pwa): expose MP4 network failures in service worker |
-| 10c1ee5 | 2026-11-01 | chore(pwa): instrument offline package download diagnostics |
 
 <!-- END AUTO-GENERATED SECTION -->
