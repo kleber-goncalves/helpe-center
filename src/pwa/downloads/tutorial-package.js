@@ -1154,7 +1154,8 @@ export async function saveTutorialOffline({
                         activeWorkers,
                         controllerSignal: getAbortSignalDiagnostic(controller.signal),
                     });
-                }            }
+                }
+            }
         }
 
         const workers = Array.from(
