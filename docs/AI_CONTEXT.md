@@ -599,10 +599,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 8ecd41c4a9a7c91987500b3d2de4e214bc46f121
-- **Data do commit:** 2026-10-31T20:16:17-03:00
-- **Mensagem do commit:** Merge pull request #16 from kleber-goncalves/feat/pwa
-- **Branch desta execução:** dev
+- **Commit de referência:** e3fa359bd2bad99df3526f46f1bca7ab827c4581
+- **Data do commit:** 2026-10-31T21:55:58-03:00
+- **Mensagem do commit:** fix(pwa): materializar vídeos antes do Cache Storage
+- **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
 - **Dependências de runtime:** 16
@@ -733,13 +733,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| e3fa359 | 2026-10-31 | fix(pwa): materializar vídeos antes do Cache Storage |
+| d089714 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 8ecd41c | 2026-10-31 | Merge pull request #16 from kleber-goncalves/feat/pwa |
 | 2138fa6 | 2026-10-31 | build: update prerendered site |
 | 36505cc | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 883bd0d | 2026-10-31 | docs(pwa): alinhar documentação ao estado atual |
 | 9161dd0 | 2026-10-31 | build: update prerendered site |
 | 23ee57d | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
-| 7b901b8 | 2026-10-31 | revert(pwa): remover convite de instalação da Home |
-| f305961 | 2026-10-31 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
