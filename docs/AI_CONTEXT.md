@@ -606,9 +606,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** c5ab8110224dc2120d8f3a287d3985bf2c4d06cb
-- **Data do commit:** 2026-11-01T02:17:13-03:00
-- **Mensagem do commit:** docs: atualizar documentação após release da PWA
+- **Commit de referência:** 6ae68caaf7fd6df9a0ef9436a3f1a9fc22ae8a49
+- **Data do commit:** 2026-11-01T02:18:46-03:00
+- **Mensagem do commit:** docs(ai-context): atualizar narrativa após release da PWA
 - **Branch desta execução:** docs/atualizacao-documentacao-geral
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -742,13 +742,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 6ae68ca | 2026-11-01 | docs(ai-context): atualizar narrativa após release da PWA |
+| 8b650f3 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | c5ab811 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 583fa20 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 39edd53 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 42ff032 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 1e692e1 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 90cf763 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| fdcefff | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 2394103 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 
 <!-- END AUTO-GENERATED SECTION -->
