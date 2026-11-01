@@ -138,6 +138,7 @@ export function Home() {
                         </Reveal>
 
                         <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
+
                     </div>
                     <Reveal duration={0.7} y={16} delay={0.14}>
                         <div

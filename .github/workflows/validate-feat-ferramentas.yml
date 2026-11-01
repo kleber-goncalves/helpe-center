@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
+      - "docs/AI_CONTEXT.md"
   pull_request:
     branches:
       - main
@@ -15,18 +16,21 @@ on:
     paths-ignore:
       - "dist/**"
       - "public/sitemap.xml"
+      - "docs/AI_CONTEXT.md"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: validate-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: validate-${{ github.event.pull_request.number || github.ref }}-${{ github.actor == 'github-actions[bot]' && 'automation' || 'code' }}
+  # Execuções do bot usam grupo próprio e não disputam a validação de código.
+  cancel-in-progress: false
 
 jobs:
   validate:
     name: Tests, lint and production build
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -43,8 +47,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate occurrence register
+        run: npm run check:occurrences
+
       - name: Run unit tests
         run: npm run test:search
+
+      - name: Run PWA unit tests
+        run: npm run test:pwa:unit
 
       - name: Run ESLint
         run: npm run lint
@@ -54,3 +64,6 @@ jobs:
 
       - name: Build, prerender and audit images
         run: npm run build
+
+      - name: Run PWA browser tests
+        run: npm run test:pwa:e2e
