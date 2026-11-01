@@ -67,6 +67,7 @@
 - [Assistente Hauy](#assistente-hauy)
 - [Conteúdo e dados](#conteúdo-e-dados)
 - [Privacidade e segurança](#privacidade-e-segurança)
+- [Governança e segurança](#governança-e-segurança)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Como executar localmente](#como-executar-localmente)
 - [Variáveis de ambiente](#variáveis-de-ambiente)
@@ -660,6 +661,21 @@ X-Content-Type-Options: nosniff
 nas respostas JSON.
 
 > **Importante:** as proteções atuais reduzem abuso e erros comuns, mas não substituem uma arquitetura de segurança completa para cenários de maior escala.
+
+
+## Governança e segurança
+
+O histórico técnico de problemas é mantido em [docs/REGISTRO_DE_OCORRENCIAS.md](docs/REGISTRO_DE_OCORRENCIAS.md), com IDs únicos, investigação, causa raiz, correção e validação.
+
+A política [SECURITY.md](SECURITY.md) define como comunicar vulnerabilidades de forma responsável. Como o repositório é público e o projeto atende uma comunidade escolar, não publique credenciais, dados pessoais ou detalhes exploráveis de falhas ainda não corrigidas.
+
+O registro possui validação estrutural automatizada:
+
+```bash
+npm run check:occurrences
+```
+
+Essa checagem encontra IDs duplicados e campos ausentes, mas não substitui revisão humana de segurança ou validação técnica.
 
 ---
 

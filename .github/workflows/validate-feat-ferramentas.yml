@@ -47,6 +47,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate occurrence register
+        run: npm run check:occurrences
+
       - name: Run unit tests
         run: npm run test:search
 

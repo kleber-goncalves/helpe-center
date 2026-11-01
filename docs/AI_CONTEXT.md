@@ -600,16 +600,16 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 38137432122212035965dd26b2ca6e473fe8472a
-- **Data do commit:** 2026-11-01T00:53:08-03:00
-- **Mensagem do commit:** Merge pull request #17 from kleber-goncalves/fix/pwa-video-cache-blob
-- **Branch desta execução:** dev
+- **Commit de referência:** 92307ea9f0a4b86e8856ae4f65a8584dd8ee9f96
+- **Data do commit:** 2026-11-01T04:10:08Z
+- **Mensagem do commit:** docs(ai-context): atualizar snapshot automaticamente
+- **Branch desta execução:** docs/registro-ocorrencias
 - **Projeto declarado:** helpe-center@0.0.0
-- **Scripts npm:** 12
+- **Scripts npm:** 13
 - **Dependências de runtime:** 16
 - **Dependências de desenvolvimento:** 18
 - **Workflows:** 4
-- **Scripts de automação:** 7
+- **Scripts de automação:** 8
 
 ### Scripts npm
 
@@ -627,6 +627,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | npm run test:pwa:unit | node --test tests/pwa/unit/*.test.js |
 | npm run test:pwa:e2e | node --test tests/pwa/e2e/*.test.js |
 | npm run test:pwa | npm run test:pwa:unit && npm run test:pwa:e2e |
+| npm run check:occurrences | node scripts/validate-occurrence-register.mjs |
 
 ### Variáveis declaradas no .env.example
 
@@ -697,6 +698,7 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 - scripts/generate-prerender-routes.mjs
 - scripts/generate-pwa-icons.mjs
 - scripts/update-ai-context.mjs
+- scripts/validate-occurrence-register.mjs
 
 ### Arquivos de página
 
@@ -734,13 +736,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 92307ea | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
+| f61217a | 2026-11-01 | docs(security): add occurrence register and disclosure policy |
+| 829d174 | 2026-11-01 | build: update prerendered site |
+| 757c790 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 3813743 | 2026-11-01 | Merge pull request #17 from kleber-goncalves/fix/pwa-video-cache-blob |
 | 7b5cabb | 2026-11-01 | build: update prerendered site |
 | f9cef0e | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 31be08c | 2026-11-01 | fix(pwa): sync dev prerender artifacts and document incident |
-| 21a4e7c | 2026-11-01 | build: update prerendered site |
-| 4e99938 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| ef1d190 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 89acf03 | 2026-11-01 | docs(pwa): record diagnostic preview build scope |
 
 <!-- END AUTO-GENERATED SECTION -->

@@ -15,7 +15,8 @@
     "pwa:icons": "node scripts/generate-pwa-icons.mjs",
     "test:pwa:unit": "node --test tests/pwa/unit/*.test.js",
     "test:pwa:e2e": "node --test tests/pwa/e2e/*.test.js",
-    "test:pwa": "npm run test:pwa:unit && npm run test:pwa:e2e"
+    "test:pwa": "npm run test:pwa:unit && npm run test:pwa:e2e",
+    "check:occurrences": "node scripts/validate-occurrence-register.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
