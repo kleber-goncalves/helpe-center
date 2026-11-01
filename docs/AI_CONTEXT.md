@@ -599,9 +599,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** e3fa359bd2bad99df3526f46f1bca7ab827c4581
-- **Data do commit:** 2026-10-31T21:55:58-03:00
-- **Mensagem do commit:** fix(pwa): materializar vídeos antes do Cache Storage
+- **Commit de referência:** 6a3c3da33d4f41d509c18161b99eb1fdcbf8618b
+- **Data do commit:** 2026-10-31T21:56:51-03:00
+- **Mensagem do commit:** refactor(pwa): clarificar processamento dos fluxos de mídia
 - **Branch desta execução:** fix/pwa-video-cache-blob
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 12
@@ -733,13 +733,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 6a3c3da | 2026-10-31 | refactor(pwa): clarificar processamento dos fluxos de mídia |
+| da80dfd | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | e3fa359 | 2026-10-31 | fix(pwa): materializar vídeos antes do Cache Storage |
 | d089714 | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 8ecd41c | 2026-10-31 | Merge pull request #16 from kleber-goncalves/feat/pwa |
 | 2138fa6 | 2026-10-31 | build: update prerendered site |
 | 36505cc | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 | 883bd0d | 2026-10-31 | docs(pwa): alinhar documentação ao estado atual |
-| 9161dd0 | 2026-10-31 | build: update prerendered site |
-| 23ee57d | 2026-10-31 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
