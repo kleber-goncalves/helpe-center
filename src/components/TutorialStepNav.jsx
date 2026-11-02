@@ -50,7 +50,7 @@ export function TutorialStepNav({ steps, activeStep, onNavigate }) {
             </div>
 
             {/* Mobile */}
-            <div className="lg:hidden">
+            <div className="lg:hidden ">
                 <div className="mb-4 flex items-center justify-between">
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
                         Passo {String(activeStep + 1).padStart(2, "0")} de {String(totalSteps).padStart(2, "0")}
@@ -59,8 +59,8 @@ export function TutorialStepNav({ steps, activeStep, onNavigate }) {
                     <span className="text-xs font-semibold text-muted-foreground">{Math.round(progress)}%</span>
                 </div>
 
-                <div className="-mx-1 overflow-x-auto px-1 pb-2">
-                    <ol className="flex min-w-max gap-2">
+                <div className="-mx-1 overflow-x-auto  px-1 pb-2">
+                    <ol className="flex  max-w-[calc(100vw-2rem)] flex-wrap gap-2">
                         {steps.map((step, index) => {
                             const isActive = index === activeStep;
 

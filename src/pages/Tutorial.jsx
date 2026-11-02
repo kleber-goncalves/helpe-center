@@ -278,7 +278,7 @@ export function Tutorial() {
 
     return (
         <main className="bg-background">
-            <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+            <div className="mx-auto max-w-6xl px-5 py-10 lg:px-8">
                 {/*
                  * ==================================================
                  * BREADCRUMB

@@ -234,7 +234,7 @@ export function MobileHeader() {
 
                     <div />
 
-                    <div className="flex flex-row items-center justify-center gap-2 px-3 py-2">
+                    <div className="flex flex-row items-center justify-center gap-2 px-0 py-2">
                         <ThemeToggle iconClassName="h-6 w-6" />
 
                         {/* =================================

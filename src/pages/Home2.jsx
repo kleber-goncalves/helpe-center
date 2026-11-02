@@ -138,7 +138,6 @@ export function Home() {
                         </Reveal>
 
                         <p className="mt-3 text-base text-muted-foreground ">ou escolha uma categoria para encontrar rapidamente a ajuda que você precisa</p>
-
                     </div>
                     <Reveal duration={0.7} y={16} delay={0.14}>
                         <div
@@ -208,14 +207,14 @@ export function Home() {
                 </section>
                 <section className=" bg-mist3 pt-4  ">
                     <Reveal delay={0.8} y={12} ease="sine.out">
-                        <div className="mx-auto max-w-6xl px-5  flex items-center flex-col text-center mb-22">
+                        <div className="mx-auto max-w-6xl   flex items-center flex-col text-center mb-22">
                             <SectionTitle title="O que mais precisa de ajuda?" description="Os assuntos mais citados na pesquisa com a comunidade escolar." />
 
-                            <div ref={priorityTopicsRef} className="mt-8 grid gap-x-2 gap-y-2 overflow-hidden sm:grid-cols-2 lg:grid-cols-2">
+                            <div ref={priorityTopicsRef} className="mt-8 grid gap-x-2 px-5 gap-y-2 overflow-hidden sm:grid-cols-2 lg:grid-cols-2">
                                 {priorityTopics.map((topic) => {
                                     const Icon = topic.icon;
                                     return (
-                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
+                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center  gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
                                             <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-searchPesq ">
                                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                             </span>
@@ -260,7 +259,7 @@ export function Home() {
 
 function SectionTitle({ title, description }) {
     return (
-        <div>
+        <div className="px-5">
             <h2 className="text-2xl font-extrabold text-foreground sm:text-3xl">{title}</h2>
             <p className="mt-3 text-base text-muted-foreground sm:text-lg">{description}</p>
         </div>
