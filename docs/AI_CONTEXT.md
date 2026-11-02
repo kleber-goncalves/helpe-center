@@ -611,9 +611,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 8ed82d5663305c0fe612a6bd858e54cefb74f7de
-- **Data do commit:** 2026-11-02T15:46:48-03:00
-- **Mensagem do commit:** docs: add mobile accessibility regression matrix
+- **Commit de referência:** f91caaa404abe441a239115599a056b3f951fe74
+- **Data do commit:** 2026-11-02T15:50:32-03:00
+- **Mensagem do commit:** fix: preserve mobile header touch target size
 - **Branch desta execução:** fix/mobile-accessibility-layout
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -747,9 +747,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| f91caaa | 2026-11-02 | fix: preserve mobile header touch target size |
+| b515744 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
+| 9f95d42 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 8ed82d5 | 2026-11-02 | docs: add mobile accessibility regression matrix |
 | a73ae4d | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 07e06b2 | 2026-11-02 | fix: improve mobile layout at larger font scales |
 | 663589c | 2026-11-02 | build: update prerendered site |
+| d086fef | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
