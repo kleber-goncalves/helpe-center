@@ -613,9 +613,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 9b97b1c2baeafbbafb0b1a7e1149ceab7c1afc29
-- **Data do commit:** 2026-11-02T16:46:39-03:00
-- **Mensagem do commit:** docs: atualizar regressão responsiva da navegação dos tutoriais
+- **Commit de referência:** ac2f8c1070adab266142f83d5a9a6acefbf5654d
+- **Data do commit:** 2026-11-02T16:49:19-03:00
+- **Mensagem do commit:** docs: ajustar comportamento documentado da navegação
 - **Branch desta execução:** fix/tutorial-navigation-flex-wrap
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -749,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| ac2f8c1 | 2026-11-02 | docs: ajustar comportamento documentado da navegação |
+| a6a2f87 | 2026-11-02 | docs: refinar descrição da navegação responsiva |
+| f34c541 | 2026-11-02 | fix: preserve intrinsic width in tutorial navigation |
+| ea1d97c | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
 | 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
 | fcaa6d8 | 2026-11-02 | fix: adapt tutorial navigation to available container width |
 | 7a720c9 | 2026-11-02 | build: update prerendered site |
-| 056f600 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 15734c7 | 2026-11-02 | Merge pull request #22 from kleber-goncalves/fix/mobile-accessibility-layout |
-| 3a848fa | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 6a79945 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
