@@ -42,7 +42,7 @@ O projeto não pretende ser uma enciclopédia genérica de tecnologia. A evoluç
 
 Arquivo principal: src/pages/Home2.jsx.
 
-Apresenta a proposta do portal, campo de busca, categorias, temas prioritários e acesso aos tutoriais em destaque. É o principal ponto de entrada para quem ainda não sabe onde encontrar uma orientação.
+Apresenta a proposta do portal, campo de busca, categorias, temas prioritários e acesso aos tutoriais em destaque. É o principal ponto de entrada para quem ainda não sabe onde encontrar uma orientação. A grade de temas prioritários ocupa a largura disponível, usa uma coluna em telas menores e duas a partir de 768px, com cartões preparados para quebra de texto e escala global de fonte. O ResizeObserver acompanha mudanças nas dimensões da grade e solicita a atualização das posições do ScrollTrigger.
 
 ### 3.2. Categorias — /categorias
 
@@ -354,6 +354,7 @@ Implementações identificadas:
 - leitor de conteúdo que utiliza a API de síntese de voz do navegador quando disponível;
 - estados de foco e controles semânticos;
 - suporte a telas pequenas e navegação por computador;
+- cartões e áreas de conteúdo adaptáveis à escala global de fonte, evitando larguras mínimas rígidas e texto cortado;
 - opção de reset das preferências de acessibilidade.
 
 Arquivos centrais: src/components/AccessibilityMenu.jsx, src/components/AccessibilityFontSize.jsx, src/lib/accessibility.js e src/lib/accessibilityMotion.js.
