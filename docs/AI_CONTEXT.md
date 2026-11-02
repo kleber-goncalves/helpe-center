@@ -613,10 +613,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 49d9122e4755842a41642e5cd4b2f866c1ca5ee6
-- **Data do commit:** 2026-11-02T16:57:25-03:00
-- **Mensagem do commit:** Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap
-- **Branch desta execução:** main
+- **Commit de referência:** a410dbba29687ffc01567e044afd1f97f4513ead
+- **Data do commit:** 2026-11-02T17:10:26-03:00
+- **Mensagem do commit:** docs: atualizar teste da navegação em coluna
+- **Branch desta execução:** fix/tutorial-navigation-full-width-stack
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -749,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| a410dbb | 2026-11-02 | docs: atualizar teste da navegação em coluna |
+| d011595 | 2026-11-02 | docs: documentar container query da navegação dos tutoriais |
+| 70139e7 | 2026-11-02 | style: fill tutorial navigation buttons in stacked layout |
+| 09e04fc | 2026-11-02 | fix: expand tutorial navigation buttons when stacked |
+| 14ae6d0 | 2026-11-02 | build: update prerendered site |
+| 64522b7 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 49d9122 | 2026-11-02 | Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap |
 | 14639e6 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| ac2f8c1 | 2026-11-02 | docs: ajustar comportamento documentado da navegação |
-| a6a2f87 | 2026-11-02 | docs: refinar descrição da navegação responsiva |
-| f34c541 | 2026-11-02 | fix: preserve intrinsic width in tutorial navigation |
-| ea1d97c | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
-| 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
 
 <!-- END AUTO-GENERATED SECTION -->
