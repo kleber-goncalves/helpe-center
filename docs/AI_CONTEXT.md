@@ -751,9 +751,5 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | a73ae4d | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 07e06b2 | 2026-11-02 | fix: improve mobile layout at larger font scales |
 | 663589c | 2026-11-02 | build: update prerendered site |
-| d086fef | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 29979e6 | 2026-11-02 | Merge pull request #21 from kleber-goncalves/fix/home-priority-topics-accessibility |
-| 0395b4e | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 6c53f50 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
