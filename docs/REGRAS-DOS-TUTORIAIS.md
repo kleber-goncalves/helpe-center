@@ -1,5 +1,7 @@
 # Regras dos Tutoriais — Hauy Conecta
 
+> **Revisado em:** 01/11/2026. As regras editoriais se aplicam aos dados em `src/data/tutorials.js`. Para disponibilidade offline, consulte também as regras de mídia e cache em `src/pwa/README.md`.
+
 Este documento descreve como os tutoriais do Hauy Conecta são estruturados e quais regras devem ser seguidas ao criar ou adaptar novos conteúdos.
 
 O objetivo é preservar a lógica editorial do projeto: o tutorial deve ensinar uma tarefa prática de forma simples, progressiva e fácil de acompanhar.
@@ -773,6 +775,18 @@ Antes de publicar um tutorial, confira:
 - [ ] Não existem informações inventadas ou etapas desnecessárias?
 
 ---
+
+# 31. Compatibilidade com uso offline
+
+Salvar um tutorial offline não altera sua estrutura editorial, mas exige atenção à origem e ao tamanho das mídias:
+
+- Prefira arquivos locais do projeto para imagens e vídeos que devam integrar o pacote offline.
+- URLs externas, YouTube e serviços remotos não devem ser descritos como disponíveis sem internet.
+- Use texto alternativo claro nas imagens e pôsteres; o pacote offline não substitui requisitos de acessibilidade.
+- Vídeos MP4 são opcionais e desmarcados por padrão. Não presuma que todas as pessoas farão download deles.
+- Considere consumo de dados móveis e espaço no dispositivo ao adicionar mídia; a interface informa uma estimativa antes do download.
+
+A implementação técnica de download, cache, integridade e atualização pertence a `src/pwa/`; as regras de conteúdo continuam pertencendo a este documento.
 
 # 30. Regra principal
 

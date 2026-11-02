@@ -1,5 +1,7 @@
 # Hauy Conecta — Documentação do Produto
 
+> **Revisado em:** 01/11/2026. Este documento descreve a experiência do produto. Detalhes técnicos, pipeline e validações ficam em `README.md`, `docs/DOCUMENTACAO_PROJETO.md` e `docs/AI_CONTEXT.md`.
+
 ## 1. O que é o Hauy Conecta?
 
 O **Hauy Conecta** é a Central de Ajuda Digital da Escola Estadual Hauy Petrucely Mairync.
@@ -10,7 +12,7 @@ A proposta do produto é transformar uma dúvida que parece difícil em um camin
 
 **PESQUISAR → ENCONTRAR → APRENDER → RESOLVER**
 
-O Hauy Conecta reúne, em um único lugar, orientações sobre ferramentas digitais, tutoriais passo a passo, respostas para dúvidas frequentes, recursos de acessibilidade, ferramentas online e um assistente digital.
+O Hauy Conecta reúne, em um único lugar, orientações sobre ferramentas digitais, tutoriais passo a passo, respostas para dúvidas frequentes, recursos de acessibilidade, ferramentas online, um assistente digital e uma PWA que permite acessar partes da Central sem conexão após os recursos serem armazenados no dispositivo.
 
 ---
 
@@ -953,6 +955,25 @@ Pode adaptar a experiência de leitura, contraste, movimento e voz.
 
 ---
 
+# 47. Instalação e uso como aplicativo
+
+O Hauy Conecta possui recursos de Progressive Web App (PWA). Em navegadores compatíveis, a pessoa pode utilizar a opção de instalação nativa do navegador. A disponibilidade depende do navegador, sistema operacional e launcher do dispositivo. O portal não força a instalação nem apresenta botão React personalizado.
+
+# 48. Acesso offline
+
+Depois de uma visita online, o Service Worker pode manter o app shell e recursos essenciais disponíveis. Isso não significa que todo o conteúdo remoto foi copiado para o aparelho:
+
+- app shell e recursos essenciais seguem a política de precache;
+- imagens da mesma origem entram no cache runtime à medida que são acessadas;
+- Assistente Hauy, envio de dúvidas e ferramentas online dependem de conexão;
+- YouTube e outros serviços externos de vídeo continuam dependendo de internet.
+
+# 49. Salvar um tutorial no dispositivo
+
+Na conclusão de um tutorial, a pessoa pode escolher **Salvar tutorial offline**. O download é individual e inclui conteúdo, imagens e pôsteres locais necessários àquele tutorial. Os vídeos MP4 são opcionais e desmarcados por padrão; quando selecionados, a interface apresenta a estimativa de tamanho antes do download.
+
+O fluxo oferece progresso, cancelamento, atualização, reparo e remoção. Os pacotes ficam no navegador/dispositivo em que foram salvos, não são sincronizados entre aparelhos e não constituem backup permanente. O navegador pode limitar ou remover dados armazenados por quota ou pressão de armazenamento.
+
 # 50. Resumo do produto
 
 O Hauy Conecta existe para tornar o uso da tecnologia mais simples dentro da comunidade escolar.
@@ -1017,6 +1038,10 @@ Essa é a razão de existir do Hauy Conecta.
 **PESQUISAR → ENCONTRAR → APRENDER → RESOLVER**
 
 ---
+
+## Revisão da release — 01/11/2026
+
+A PWA foi promovida para produção pela PR #19. Este documento descreve a experiência do produto; confira `docs/AI_CONTEXT.md` e os links dos workflows para resultados técnicos de Actions e Vercel.
 
 ## Hauy Conecta
 

@@ -1,5 +1,7 @@
 # Google Apps Script — Estrutura e Fluxo
 
+> **Escopo e confiabilidade (01/11/2026):** este arquivo descreve uma integração Google Apps Script externa ao repositório web. Os arquivos `Code.gs`, `Atendimento.gs`, `PesquisasSemResultado.gs` e `Utils.gs` não estão versionados neste GitHub. Use o material como referência do fluxo externo previamente descrito, não como prova de que a versão implantada contém todas as regras. Antes de alterar ou depurar o Apps Script, compare cada item com o projeto Google em produção. Não publique IDs de planilhas, URLs privadas ou dados de atendimento.
+
 ## Visão geral
 
 O Google Apps Script funciona como uma camada responsável por **receber as requisições, identificar o tipo de informação recebida, encaminhar os dados para o processamento correto e realizar as gravações necessárias**.

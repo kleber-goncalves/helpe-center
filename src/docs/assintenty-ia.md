@@ -6,7 +6,7 @@ O Hauy Conecta possui um **assistente de inteligência artificial** criado para 
 
 A ideia do assistente não é substituir os tutoriais existentes, mas utilizar o conteúdo do próprio Hauy Conecta como contexto para produzir respostas mais direcionadas às dúvidas do usuário.
 
-No MVP, o assistente utiliza o **Gemini 3.5 Flash-Lite** e o SDK oficial `@google/genai` para Node.js. A documentação atual considerada neste projeto indica entrada e saída sem custo financeiro no Free Tier.
+O código atual em `api/assistant.js` utiliza o SDK `@google/genai`. O modelo é configurável por `GEMINI_MODEL`; quando a variável não é definida, o padrão declarado no código é `gemini-3.5-flash-lite`. Este documento não afirma preço, gratuidade ou disponibilidade de plano, pois essas condições dependem dos termos atuais do provedor.
 
 ---
 

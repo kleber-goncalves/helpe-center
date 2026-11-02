@@ -1,5 +1,7 @@
 # Validação do Formulário — Frontend e Backend
 
+> **Revisado em:** 01/11/2026. Fluxo confirmado no código versionado: navegador → `POST /api/support` (Vercel) → Google Apps Script externo via `SUPPORT_APPS_SCRIPT_ENDPOINT`. O código do Apps Script não faz parte deste repositório.
+
 ## Visão geral
 
 O formulário de envio de dúvidas do Hauy Conecta utiliza **camadas diferentes de validação**, cada uma com uma responsabilidade específica.
@@ -159,9 +161,7 @@ O cliente pode enviar uma requisição diretamente para a API, sem passar pelo f
 
 ### Rate limit
 
-O rate limit controla a quantidade de requisições permitidas em determinado período.
-
-Seu objetivo é reduzir abusos e requisições excessivas.
+O endpoint mantém um contador em memória por IP, com janela de 10 minutos e limite de 20 requisições. É uma proteção de melhor esforço: em funções serverless, instâncias podem reiniciar ou não compartilhar a mesma memória. Portanto, isso não equivale a um rate limiter distribuído nem garante um limite global consistente.
 
 ### Origin
 
@@ -186,11 +186,11 @@ Dessa forma, a requisição passa por uma nova camada de controle antes de conti
 
 # 5. Validação no Apps Script
 
-Depois da API da Vercel, os dados chegam ao **Google Apps Script**.
+Depois da API da Vercel, os dados são encaminhados ao **Google Apps Script** configurado por `SUPPORT_APPS_SCRIPT_ENDPOINT`.
 
-Nesse ponto existe uma nova camada de validação e proteção.
+O código desse Apps Script está fora deste repositório. O documento `src/docs/appScriptV2.md` registra uma estrutura externa anteriormente descrita, mas os itens abaixo só devem ser considerados ativos depois de confirmados no projeto Google atualmente implantado.
 
-O Apps Script verifica:
+A documentação externa descreve verificações como:
 
 ### Categoria
 

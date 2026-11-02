@@ -1,5 +1,7 @@
 # Ícones do PWA — Hauy Conecta
 
+> **Revisado em:** 01/11/2026. O logo-fonte permanece em `public/logo.svg`; os ícones derivados são gerados por `scripts/generate-pwa-icons.mjs` antes do build. Confira `src/pwa/config/manifest.js` e o script gerador antes de alterar tamanhos, caminhos ou opções. Não edite PNGs gerados manualmente.
+
 Os ícones usados pelo manifesto são artefatos gerados a partir de public/logo.svg.
 
 O script scripts/generate-pwa-icons.mjs usa Sharp, já presente no projeto, e cria:

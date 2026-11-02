@@ -1,5 +1,9 @@
 # Hauy Conecta — Arquitetura, validação, segurança e fluxo de dados
 
+> **Revisão técnica:** 01/11/2026. O fluxo do formulário no código web atual é `QuestionForm` → `POST /api/support` (Vercel) → Apps Script externo via `SUPPORT_APPS_SCRIPT_ENDPOINT` → Google Sheets externo. O Zod é utilizado no navegador e no endpoint `/api/support`. O código-fonte do Apps Script e da planilha não está versionado neste repositório; detalhes internos dessa integração precisam ser verificados no projeto Google implantado.
+>
+> Este documento mantém explicações didáticas e trechos históricos. Quando diagramas antigos indicarem envio direto do navegador ao Apps Script ou uso de `no-cors`, considere-os conceituais/legados: o frontend atual utiliza a API de mesma origem `/api/support`.
+
 Este documento explica, do zero, como funciona o sistema de envio de dúvidas do **Hauy Conecta — Central de Ajuda Digital**.
 
 A ideia é separar claramente o papel de cada tecnologia:
@@ -46,19 +50,19 @@ O formulário atual é feito no próprio React.
 ```text
 Aluno
   ↓
-Formulário React
+Formulário React (QuestionForm)
   ↓
-HTML + validação de UI
+HTML + Zod no navegador
   ↓
-Zod
+POST /api/support (Vercel)
   ↓
-fetch / POST
+Origin + limite de body + honeypot + rate limit melhor esforço + Zod server-side
   ↓
-Google Apps Script
+SUPPORT_APPS_SCRIPT_ENDPOINT
   ↓
-validação no servidor
+Google Apps Script externo
   ↓
-Google Sheets
+Google Sheets externo
   ↓
 Atendimento
 ```
@@ -566,73 +570,15 @@ Como estamos criando um novo registro de atendimento, usamos POST.
 
 ---
 
-# 14. Por que usamos `no-cors`?
+# 14. Por que o fluxo atual não usa `no-cors`?
 
-O React está em um domínio/origem e o Apps Script em outro.
+O frontend atual envia dados para `/api/support`, uma rota da mesma origem hospedada na Vercel. A chamada usa `fetch` normalmente e pode ler a resposta JSON e os códigos HTTP retornados pela API. O modo `no-cors` não é utilizado nesse fluxo.
 
-Exemplo no desenvolvimento:
+# 15. Limite entre o que está versionado e o serviço externo
 
-```text
-React:
-http://192.168.1.142:5173
+O repositório contém o frontend, o schema Zod e a função serverless `api/support.js`. O endpoint encaminha os dados ao Google Apps Script indicado por `SUPPORT_APPS_SCRIPT_ENDPOINT`.
 
-Apps Script:
-https://script.google.com/...
-```
-
-O navegador aplica as regras de CORS para comunicação entre origens diferentes.
-
-No projeto usamos:
-
-```js
-mode: "no-cors"
-```
-
-para permitir o envio simples.
-
-Mas existe uma consequência:
-
-> O React não consegue ler normalmente o corpo da resposta.
-
-Por isso não fazemos:
-
-```js
-response.text()
-```
-
-nem usamos a resposta para confirmar o conteúdo retornado.
-
-O backend já valida e grava os dados.
-
----
-
-# 15. Limitação do `no-cors`
-
-Com:
-
-```js
-mode: "no-cors"
-```
-
-o resultado da resposta é opaco.
-
-Então:
-
-```js
-await fetch(...)
-```
-
-não significa:
-
-> "Eu li uma resposta do servidor dizendo que tudo deu certo."
-
-Significa mais aproximadamente:
-
-> "A requisição terminou sem uma falha de rede que o navegador tenha exposto ao JavaScript."
-
-No nosso caso, isso é aceitável porque o backend foi testado separadamente e a gravação no Sheets foi confirmada.
-
----
+O projeto Google Apps Script e a planilha não estão versionados neste GitHub. Portanto, nomes de arquivos externos, IDs de planilha, abas, regras de LockService, anti-duplicação e mecanismos internos devem ser confirmados no serviço implantado. `src/docs/appScriptV2.md` é material de referência e não substitui a inspeção do código externo.
 
 # 16. O que é o Google Apps Script?
 

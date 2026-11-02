@@ -1,5 +1,7 @@
 # Guia para iniciantes: SvgIcon, ícones de ferramentas e ToolCard
 
+> **Revisado em:** 01/11/2026. Este guia trata dos ícones de ferramentas e do componente `SvgIcon`; não substitui o documento específico dos ícones PWA (`docs/ICONS-PWA.md`). Antes de alterar implementação, confira os componentes e registros atuais em `src/`.
+
 > **Objetivo:** explicar, do começo ao fim, como os SVGs e links dos ícones entram no Hauy Conecta, como chegam ao componente `SvgIcon` e como aparecem dentro dos cards da página Ferramentas. Este guia também mostra como reproduzir a ideia em um projeto próprio com JavaScript, React, Tailwind CSS e Node.js.
 
 ## Índice
