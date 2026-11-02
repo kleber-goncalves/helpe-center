@@ -613,10 +613,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 15734c78a96a8ee4cb6f62111e53c599dba7bcd2
-- **Data do commit:** 2026-11-02T16:27:51-03:00
-- **Mensagem do commit:** Merge pull request #22 from kleber-goncalves/fix/mobile-accessibility-layout
-- **Branch desta execução:** main
+- **Commit de referência:** 9b97b1c2baeafbbafb0b1a7e1149ceab7c1afc29
+- **Data do commit:** 2026-11-02T16:46:39-03:00
+- **Mensagem do commit:** docs: atualizar regressão responsiva da navegação dos tutoriais
+- **Branch desta execução:** fix/tutorial-navigation-flex-wrap
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -749,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
+| 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
+| fcaa6d8 | 2026-11-02 | fix: adapt tutorial navigation to available container width |
+| 7a720c9 | 2026-11-02 | build: update prerendered site |
+| 056f600 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 15734c7 | 2026-11-02 | Merge pull request #22 from kleber-goncalves/fix/mobile-accessibility-layout |
 | 3a848fa | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
 | 6a79945 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| f91caaa | 2026-11-02 | fix: preserve mobile header touch target size |
-| b515744 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 9f95d42 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 8ed82d5 | 2026-11-02 | docs: add mobile accessibility regression matrix |
-| a73ae4d | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
