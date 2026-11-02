@@ -471,3 +471,25 @@ input[type="search"]::-webkit-search-decoration {
     );
 }
 
+
+
+/* ============================================================
+   NAVEGAÇÃO RESPONSIVA DOS TUTORIAIS
+   A consulta usa a largura do conteúdo e acompanha a escala em rem.
+============================================================ */
+
+.tutorial-content-container {
+    container-type: inline-size;
+    container-name: tutorial-content;
+}
+
+@container tutorial-content (max-width: 19rem) {
+    .tutorial-step-navigation {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tutorial-step-navigation-button {
+        width: 100%;
+    }
+}

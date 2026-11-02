@@ -346,7 +346,7 @@ export function Tutorial() {
                      * ==================================================
                      */}
 
-                    <article data-reader-content className="min-w-0">
+                    <article data-reader-content className="min-w-0 tutorial-content-container">
                         {activeStep === 0 && (
                             <>
                                 {/*
@@ -478,13 +478,14 @@ export function Tutorial() {
                                 flex-wrap
                                 items-center
                                 justify-between
+                                tutorial-step-navigation
                                 gap-3
                                 border-t
                                 border-line
                                 pt-6
                             "
                         >
-                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group min-w-max">
+                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group min-w-max tutorial-step-navigation-button">
                                 <ChevronLeft
                                     className="
                                         size-4
@@ -499,7 +500,7 @@ export function Tutorial() {
                             </Button>
 
                             {activeStep < steps.length - 1 ? (
-                                <Button type="button" variant="coral" onClick={goToNextStep} className="group min-w-max">
+                                <Button type="button" variant="coral" onClick={goToNextStep} className="group min-w-max tutorial-step-navigation-button">
                                     Próximo passo
                                     <ChevronRight
                                         className="

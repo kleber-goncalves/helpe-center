@@ -96,7 +96,7 @@ Carrega o tutorial identificado pelo parâmetro da rota e permite navegar pelas 
 
 Os dados ficam em src/data/tutorials.js. O modelo de conteúdo utiliza informações como ID, título, categoria, dificuldade, duração, descrição, palavras-chave, objetivos de aprendizagem, etapas e materiais externos. Cada etapa pode possuir título, descrição, exemplos, dica, imagem, vídeo e pôster, conforme o conteúdo cadastrado.
 
-A navegação entre etapas usa Flexbox com quebra de linha baseada na largura efetivamente disponível no contêiner. Os botões permanecem lado a lado, distribuídos entre as extremidades, quando suas larguras intrínsecas e o espaçamento cabem; quando não cabem, o Flexbox os distribui em linhas separadas, preservando suas larguras naturais e evitando rolagem horizontal. A decisão não depende de um breakpoint de viewport nem de medição via JavaScript. No último passo, o indicador “Último passo” permanece alinhado à direita.
+A navegação entre etapas usa Flexbox e uma Container Query vinculada à largura do conteúdo do tutorial. Acima do limite de `19rem`, os botões permanecem compactos e distribuídos entre as extremidades; quando o contêiner chega a `19rem` ou menos, a navegação passa para coluna e os dois botões recebem largura de 100%. O limite usa `rem` para acompanhar a escala global de fonte. A decisão não depende de breakpoint da viewport nem de medição via JavaScript. No último passo, o indicador “Último passo” permanece alinhado à direita.
 
 Os IDs dos oito tutoriais registrados no arquivo analisado são:
 
@@ -613,10 +613,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 49d9122e4755842a41642e5cd4b2f866c1ca5ee6
-- **Data do commit:** 2026-11-02T16:57:25-03:00
-- **Mensagem do commit:** Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap
-- **Branch desta execução:** main
+- **Commit de referência:** a410dbba29687ffc01567e044afd1f97f4513ead
+- **Data do commit:** 2026-11-02T17:10:26-03:00
+- **Mensagem do commit:** docs: atualizar teste da navegação em coluna
+- **Branch desta execução:** fix/tutorial-navigation-full-width-stack
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -749,13 +749,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 49d9122 | 2026-11-02 | Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap |
-| 14639e6 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| ac2f8c1 | 2026-11-02 | docs: ajustar comportamento documentado da navegação |
-| a6a2f87 | 2026-11-02 | docs: refinar descrição da navegação responsiva |
-| f34c541 | 2026-11-02 | fix: preserve intrinsic width in tutorial navigation |
-| ea1d97c | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
-| 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
+| a410dbb | 2026-11-02 | docs: atualizar teste da navegação em coluna |
+| d011595 | 2026-11-02 | docs: documentar container query da navegação dos tutoriais |
+| 70139e7 | 2026-11-02 | style: fill tutorial navigation buttons in stacked layout |
+| 09e04fc | 2026-11-02 | fix: expand tutorial navigation buttons when stacked |
+| 14ae6d0 | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
