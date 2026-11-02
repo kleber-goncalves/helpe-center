@@ -613,10 +613,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** ac2f8c1070adab266142f83d5a9a6acefbf5654d
-- **Data do commit:** 2026-11-02T16:49:19-03:00
-- **Mensagem do commit:** docs: ajustar comportamento documentado da navegação
-- **Branch desta execução:** fix/tutorial-navigation-flex-wrap
+- **Commit de referência:** 49d9122e4755842a41642e5cd4b2f866c1ca5ee6
+- **Data do commit:** 2026-11-02T16:57:25-03:00
+- **Mensagem do commit:** Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap
+- **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -749,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 49d9122 | 2026-11-02 | Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap |
+| 14639e6 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
 | ac2f8c1 | 2026-11-02 | docs: ajustar comportamento documentado da navegação |
 | a6a2f87 | 2026-11-02 | docs: refinar descrição da navegação responsiva |
 | f34c541 | 2026-11-02 | fix: preserve intrinsic width in tutorial navigation |
 | ea1d97c | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
 | 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
-| fcaa6d8 | 2026-11-02 | fix: adapt tutorial navigation to available container width |
-| 7a720c9 | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
