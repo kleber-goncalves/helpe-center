@@ -606,10 +606,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 6ae68caaf7fd6df9a0ef9436a3f1a9fc22ae8a49
-- **Data do commit:** 2026-11-01T02:18:46-03:00
-- **Mensagem do commit:** docs(ai-context): atualizar narrativa após release da PWA
-- **Branch desta execução:** docs/atualizacao-documentacao-geral
+- **Commit de referência:** 18b4531f7a1d4ff012f5ce06b7c812e92384f84f
+- **Data do commit:** 2026-11-02T13:36:25-03:00
+- **Mensagem do commit:** Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral
+- **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -742,13 +742,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 18b4531 | 2026-11-02 | Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral |
+| 1030af8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 6ae68ca | 2026-11-01 | docs(ai-context): atualizar narrativa após release da PWA |
 | 8b650f3 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | c5ab811 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 583fa20 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 | 39edd53 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | 42ff032 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 1e692e1 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 90cf763 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 
 <!-- END AUTO-GENERATED SECTION -->
