@@ -1239,7 +1239,7 @@ e armazenada no localStorage.
 
 A escala altera o tamanho-base do documento e, consequentemente, as dimensões que utilizam unidades relativas como `rem`. Os componentes devem permitir que textos, espaçamentos e cartões se reorganizem sem corte ou rolagem horizontal. Na Home (`src/pages/Home2.jsx`), os temas prioritários ficam em uma coluna em telas menores e passam a duas colunas a partir de 768px. A grade observa mudanças de dimensão com `ResizeObserver` e atualiza o `ScrollTrigger` para manter o ponto de disparo alinhado ao layout.
 
-Na página individual do tutorial (`src/pages/Tutorial.jsx`), os controles de etapa são empilhados em telas menores e ficam lado a lado a partir de `sm`; ambos ocupam a largura disponível no mobile, evitando que a largura mínima do botão Próximo passo empurre o botão anterior para fora da viewport. No `MobileHeader`, o nome da escola pode quebrar em até duas linhas, o título principal permanece em uma linha com truncamento controlado e a marca recebe `min-w-0`/largura flexível. O painel lateral, o cabeçalho fixo e seu espaço reservado usam a referência de `5rem` para permanecerem alinhados sob a escala global de fonte.
+Na página individual do tutorial (`src/pages/Tutorial.jsx`), a navegação entre etapas usa `flex-wrap`: os botões ficam em linha enquanto suas larguras intrínsecas e o espaçamento couberem no contêiner. Quando o espaço disponível não for suficiente, o Flexbox os distribui em linhas separadas e cada botão cresce para ocupar a largura da própria linha. A decisão considera a largura real do contêiner e a escala global de fonte, não um breakpoint fixo de viewport. No último passo, o indicador “Último passo” permanece alinhado à direita. No `MobileHeader`, o nome da escola pode quebrar em até duas linhas, o título principal permanece em uma linha com truncamento controlado e a marca recebe `min-w-0`/largura flexível. O painel lateral, o cabeçalho fixo e seu espaço reservado usam a referência de `5rem` para permanecerem alinhados sob a escala global de fonte.
 
 ### Matriz recomendada de regressão manual
 
@@ -1251,9 +1251,10 @@ Esta matriz é uma orientação de teste, não um registro de validação já ex
 | 360px | 100%, 115% e 130% |
 | 375px | 100%, 115% e 130% |
 | 390px | 100%, 115% e 130% |
+| 430px | 100%, 115% e 130% |
 | 768px ou maior | 100%, 115% e 130% |
 
-Verificar na página de tutorial o primeiro, um passo intermediário e o último passo; confirmar que os botões anterior/próximo permanecem dentro da viewport, sem rolagem horizontal e com foco de teclado visível. No MobileHeader, conferir o limite de duas linhas do nome institucional, o título da marca, a abertura/fechamento do menu lateral e o alinhamento entre cabeçalho e conteúdo. Em aparelhos físicos, registrar a largura CSS real reportada pelo navegador, pois ela pode diferir da resolução nominal do painel.
+Verificar na página de tutorial o primeiro, um passo intermediário e o último passo. Confirmar que os botões permanecem lado a lado quando cabem e passam para linhas separadas quando o contêiner fica estreito, preenchendo a largura disponível sem provocar rolagem horizontal. Conferir também o alinhamento à direita de “Último passo” e o foco de teclado visível. Em um viewport de 640px ou mais, reduzir temporariamente a largura do contêiner pelo DevTools para confirmar que a quebra depende do espaço real do pai, e não do breakpoint da tela. No MobileHeader, conferir o limite de duas linhas do nome institucional, o título da marca, a abertura/fechamento do menu lateral e o alinhamento entre cabeçalho e conteúdo. Em aparelhos físicos, registrar a largura CSS real reportada pelo navegador, pois ela pode diferir da resolução nominal do painel.
 
 ---
 
