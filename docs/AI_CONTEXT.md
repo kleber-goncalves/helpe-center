@@ -611,10 +611,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 29979e623771b2c6f3057f5ed5c026ac0da6a561
-- **Data do commit:** 2026-11-02T15:26:33-03:00
-- **Mensagem do commit:** Merge pull request #21 from kleber-goncalves/fix/home-priority-topics-accessibility
-- **Branch desta execução:** main
+- **Commit de referência:** 07e06b21b7e9c41a84ffecc6241092f9f2c0bc0c
+- **Data do commit:** 2026-11-02T15:44:48-03:00
+- **Mensagem do commit:** fix: improve mobile layout at larger font scales
+- **Branch desta execução:** fix/mobile-accessibility-layout
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -747,13 +747,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 07e06b2 | 2026-11-02 | fix: improve mobile layout at larger font scales |
+| 663589c | 2026-11-02 | build: update prerendered site |
+| d086fef | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 29979e6 | 2026-11-02 | Merge pull request #21 from kleber-goncalves/fix/home-priority-topics-accessibility |
 | 0395b4e | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
 | 6c53f50 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | ebe681e | 2026-11-02 | docs: documentar adaptação do layout à escala de fonte |
 | 4b337b7 | 2026-11-02 | docs: registrar comportamento responsivo dos tópicos prioritários |
-| fe58292 | 2026-11-02 | fix: tornar tópicos prioritários responsivos à escala de fonte |
-| 1693c78 | 2026-11-02 | build: update prerendered site |
-| 5137753 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
