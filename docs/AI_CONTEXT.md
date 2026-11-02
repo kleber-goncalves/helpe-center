@@ -607,9 +607,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** ebe681ee93c2637b1ab00514bb0ac6deff307f8e
-- **Data do commit:** 2026-11-02T15:17:58-03:00
-- **Mensagem do commit:** docs: documentar adaptação do layout à escala de fonte
+- **Commit de referência:** 6c53f5053535cc7d40f9d83ed3f871d148d8721b
+- **Data do commit:** 2026-11-02T18:18:15Z
+- **Mensagem do commit:** docs(ai-context): atualizar snapshot automaticamente
 - **Branch desta execução:** fix/home-priority-topics-accessibility
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -743,13 +743,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 6c53f50 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | ebe681e | 2026-11-02 | docs: documentar adaptação do layout à escala de fonte |
 | 4b337b7 | 2026-11-02 | docs: registrar comportamento responsivo dos tópicos prioritários |
 | fe58292 | 2026-11-02 | fix: tornar tópicos prioritários responsivos à escala de fonte |
 | 1693c78 | 2026-11-02 | build: update prerendered site |
-| 5137753 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 181fa3e | 2026-11-02 | style: ajustar espaçamento e classes CSS em componentes |
-| 61cbe13 | 2026-11-02 | build: update prerendered site |
-| fee5880 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 
 <!-- END AUTO-GENERATED SECTION -->
