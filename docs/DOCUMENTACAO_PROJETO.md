@@ -929,6 +929,8 @@ Possui:
 
 O ícone do menu também usa GSAP.
 
+A barra mobile mantém a marca em uma área flexível, limita o nome institucional a duas linhas e preserva o título principal em uma linha. O botão de tema utiliza a variante visual `ghost` e o tamanho `icon` do componente compartilhado `Button`. O painel lateral começa abaixo do cabeçalho, e o espaço reservado no fluxo usa a mesma altura do cabeçalho para evitar sobreposição do conteúdo.
+
 ---
 
 # 24. Busca
@@ -1236,6 +1238,8 @@ A preferência é aplicada na variável:
 e armazenada no localStorage.
 
 A escala altera o tamanho-base do documento e, consequentemente, as dimensões que utilizam unidades relativas como `rem`. Os componentes devem permitir que textos, espaçamentos e cartões se reorganizem sem corte ou rolagem horizontal. Na Home (`src/pages/Home2.jsx`), os temas prioritários ficam em uma coluna em telas menores e passam a duas colunas a partir de 768px. A grade observa mudanças de dimensão com `ResizeObserver` e atualiza o `ScrollTrigger` para manter o ponto de disparo alinhado ao layout.
+
+Na página individual do tutorial (`src/pages/Tutorial.jsx`), os controles de etapa são empilhados em telas menores e ficam lado a lado a partir de `sm`; ambos ocupam a largura disponível no mobile, evitando que a largura mínima do botão Próximo passo empurre o botão anterior para fora da viewport. No `MobileHeader`, o nome da escola pode quebrar em até duas linhas, o título principal permanece em uma linha com truncamento controlado e a marca recebe `min-w-0`/largura flexível. O painel lateral, o cabeçalho fixo e seu espaço reservado usam a referência de `5rem` para permanecerem alinhados sob a escala global de fonte.
 
 ---
 

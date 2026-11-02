@@ -354,6 +354,10 @@ Implementações identificadas:
 - leitor de conteúdo que utiliza a API de síntese de voz do navegador quando disponível;
 - estados de foco e controles semânticos;
 - suporte a telas pequenas e navegação por computador;
+- navegação das etapas dos tutoriais empilhada em telas estreitas, com os botões ocupando a largura disponível e retorno ao alinhamento horizontal a partir do breakpoint `sm`;
+- MobileHeader com área flexível para a marca, nome institucional limitado a duas linhas e textos secundários truncados de forma controlada;
+- controles de tema e menu com dimensões compactas, sem reduzir a área de toque do botão de tema;
+- altura do cabeçalho, espaço reservado no fluxo e painel lateral alinhados pela mesma referência de `5rem`, inclusive quando a escala global altera unidades `rem`;
 - cartões e áreas de conteúdo adaptáveis à escala global de fonte, evitando larguras mínimas rígidas e texto cortado;
 - opção de reset das preferências de acessibilidade.
 
