@@ -215,7 +215,7 @@ export function MobileHeader() {
             <header className={["fixed inset-x-0 top-0 z-[60]", "border-b", "transition-[background-color,border-color,box-shadow]", "duration-300 ease-out", open ? "border-line bg-paper backdrop-blur-none shadow-none" : "border-line/70 bg-paper/65 backdrop-blur-sm backdrop-saturate-150 shadow-[0_8px_32px_rgb(0_0_0_/_0.08)]"].join(" ")}>
                 <div className={["pointer-events-none absolute inset-x-0 bottom-0 h-px", "transition-opacity duration-300", open ? "opacity-0" : "opacity-60", "bg-foreground/10"].join(" ")} />
 
-                <div className="mx-auto flex h-20 items-center gap-3 px-3 min-[380px]:px-4 sm:px-5">
+                <div className="mx-auto flex h-20 items-center gap-2 px-2 min-[380px]:px-3 sm:px-5">
                     {/* =================================
                         LOGO
                     ================================= */}
@@ -231,7 +231,7 @@ export function MobileHeader() {
                         </div>
                     </Link>
 
-                    <div className="flex shrink-0 flex-row items-center justify-center gap-2">
+                    <div className="flex shrink-0 flex-row items-center justify-center gap-1">
                         <ThemeToggle iconClassName="size-5" />
 
                         {/* =================================
@@ -239,7 +239,7 @@ export function MobileHeader() {
                         ================================= */}
                         <Sheet open={open} onOpenChange={handleSheetOpenChange}>
                             <SheetTrigger asChild>
-                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-11 w-11", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                                     <span className="relative flex h-[18px] w-[18px]" aria-hidden="true">
                                         {/* Top */}
                                         <span ref={topBarRef} className={["absolute left-0 top-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />

@@ -25,7 +25,7 @@ export const Button = forwardRef(function Button({ className, variant = "default
 
     const sizes = {
         default: "min-h-11 px-4",
-        icon: "size-10 p-0",
+        icon: "size-11 p-0",
     };
 
     return <button ref={ref} className={cn(["inline-flex", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:cursor-not-allowed", "disabled:opacity-60"].join(" "), sizes[size] ?? sizes.default, variants[variant], className)} {...props} />;
