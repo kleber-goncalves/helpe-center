@@ -354,6 +354,10 @@ Implementações identificadas:
 - leitor de conteúdo que utiliza a API de síntese de voz do navegador quando disponível;
 - estados de foco e controles semânticos;
 - suporte a telas pequenas e navegação por computador;
+- navegação das etapas dos tutoriais empilhada em telas estreitas, com os botões ocupando a largura disponível e retorno ao alinhamento horizontal a partir do breakpoint `sm`;
+- MobileHeader com área flexível para a marca, nome institucional limitado a duas linhas e textos secundários truncados de forma controlada;
+- controles de tema e menu com dimensões compactas, sem reduzir a área de toque do botão de tema;
+- altura do cabeçalho, espaço reservado no fluxo e painel lateral alinhados pela mesma referência de `5rem`, inclusive quando a escala global altera unidades `rem`;
 - cartões e áreas de conteúdo adaptáveis à escala global de fonte, evitando larguras mínimas rígidas e texto cortado;
 - opção de reset das preferências de acessibilidade.
 
@@ -607,10 +611,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 29979e623771b2c6f3057f5ed5c026ac0da6a561
-- **Data do commit:** 2026-11-02T15:26:33-03:00
-- **Mensagem do commit:** Merge pull request #21 from kleber-goncalves/fix/home-priority-topics-accessibility
-- **Branch desta execução:** main
+- **Commit de referência:** f91caaa404abe441a239115599a056b3f951fe74
+- **Data do commit:** 2026-11-02T15:50:32-03:00
+- **Mensagem do commit:** fix: preserve mobile header touch target size
+- **Branch desta execução:** fix/mobile-accessibility-layout
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -743,13 +747,12 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 29979e6 | 2026-11-02 | Merge pull request #21 from kleber-goncalves/fix/home-priority-topics-accessibility |
-| 0395b4e | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 6c53f50 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| ebe681e | 2026-11-02 | docs: documentar adaptação do layout à escala de fonte |
-| 4b337b7 | 2026-11-02 | docs: registrar comportamento responsivo dos tópicos prioritários |
-| fe58292 | 2026-11-02 | fix: tornar tópicos prioritários responsivos à escala de fonte |
-| 1693c78 | 2026-11-02 | build: update prerendered site |
-| 5137753 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| f91caaa | 2026-11-02 | fix: preserve mobile header touch target size |
+| b515744 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
+| 9f95d42 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| 8ed82d5 | 2026-11-02 | docs: add mobile accessibility regression matrix |
+| a73ae4d | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| 07e06b2 | 2026-11-02 | fix: improve mobile layout at larger font scales |
+| 663589c | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->

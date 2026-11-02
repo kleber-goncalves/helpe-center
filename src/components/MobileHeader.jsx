@@ -215,34 +215,31 @@ export function MobileHeader() {
             <header className={["fixed inset-x-0 top-0 z-[60]", "border-b", "transition-[background-color,border-color,box-shadow]", "duration-300 ease-out", open ? "border-line bg-paper backdrop-blur-none shadow-none" : "border-line/70 bg-paper/65 backdrop-blur-sm backdrop-saturate-150 shadow-[0_8px_32px_rgb(0_0_0_/_0.08)]"].join(" ")}>
                 <div className={["pointer-events-none absolute inset-x-0 bottom-0 h-px", "transition-opacity duration-300", open ? "opacity-0" : "opacity-60", "bg-foreground/10"].join(" ")} />
 
-                <div className="mx-auto flex h-20 items-center justify-between px-5">
+                <div className="mx-auto flex h-20 items-center gap-2 px-2 min-[380px]:px-3 sm:px-5">
                     {/* =================================
                         LOGO
                     ================================= */}
-                    <Link to="/" className={["flex items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
-                        <div className="grid h-13 w-13 shrink-0 place-items-center rounded-lg bg-white/30">
+                    <Link to="/" className={["flex min-w-0 flex-1 items-center gap-2", "rounded-lg", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                        <div className="grid size-11 shrink-0 place-items-center rounded-lg bg-white/30 min-[380px]:size-12 sm:size-13">
                             <OptimizedImage src="/logo.svg" alt="Hauy Conecta" loading="eager" fetchPriority="high" decoding="async" wrapperClassName="h-full w-full" sizes="52px" className="object-contain" />
                         </div>
 
-                        <div className="flex flex-col leading-tight">
-                            <span className="text-[11px] text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
-                            <span className="text-base font-bold text-ink">Hauy Conecta</span>
-
-                            <span className="text-[11px] text-muted-ink">Central de Ajuda Digital</span>
+                        <div className="flex min-w-0 flex-1 flex-col leading-tight">
+                            <span className="line-clamp-2 break-words text-[11px] leading-tight text-muted-ink">E.E.Hauy Petruceli Mayrink</span>
+                            <span className="block truncate text-sm font-bold leading-tight text-ink min-[380px]:text-base">Hauy Conecta</span>
+                            <span className="block truncate text-[10px] leading-tight text-muted-ink">Central de Ajuda Digital</span>
                         </div>
                     </Link>
 
-                    <div />
-
-                    <div className="flex flex-row items-center justify-center gap-2 px-0 py-2">
-                        <ThemeToggle iconClassName="h-6 w-6" />
+                    <div className="flex shrink-0 flex-row items-center justify-center gap-1">
+                        <ThemeToggle iconClassName="size-5" />
 
                         {/* =================================
                             MENU
                         ================================= */}
                         <Sheet open={open} onOpenChange={handleSheetOpenChange}>
                             <SheetTrigger asChild>
-                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-10 w-10", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
+                                <button type="button" aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"} aria-expanded={open} className={["relative z-[70]", "cursor-pointer inline-flex h-11 w-11", "items-center justify-center", "rounded-lg border border-line", "bg-paper text-ink", "shadow-sm", "transition-[background-color,border-color,transform]", "duration-200", "hover:border-coral/50", "hover:bg-mist", "active:scale-95", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-coral/40", "focus-visible:ring-offset-2"].join(" ")}>
                                     <span className="relative flex h-[18px] w-[18px]" aria-hidden="true">
                                         {/* Top */}
                                         <span ref={topBarRef} className={["absolute left-0 top-0", "h-[1.75px] w-full", "rounded-full bg-current", "will-change-transform"].join(" ")} />
@@ -259,7 +256,7 @@ export function MobileHeader() {
                             {/* =================================
                                 SIDEBAR
                             ================================= */}
-                            <SheetContent side="right" className={["top-16", "h-[calc(100dvh-4rem)]", "w-[min(88vw,380px)]", "border-l border-line", "bg-paper", "p-0", "overflow-hidden", "[&>button]:hidden"].join(" ")}>
+                            <SheetContent side="right" className={["top-20", "h-[calc(100dvh-5rem)]", "w-[min(88vw,380px)]", "border-l border-line", "bg-paper", "p-0", "overflow-hidden", "[&>button]:hidden"].join(" ")}>
                                 <div className="flex h-full min-h-0 flex-col">
                                     {/* =================================
                                         CABEÇALHO
@@ -353,7 +350,7 @@ export function MobileHeader() {
             </header>
 
             {/* Espaço reservado para header fixo */}
-            <div className="h-16" aria-hidden="true" />
+            <div className="h-20" aria-hidden="true" />
         </>
     );
 }

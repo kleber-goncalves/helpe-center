@@ -12,16 +12,23 @@ import { cn } from "../lib/utils";
    BUTTON
 ========================================================= */
 
-export const Button = forwardRef(function Button({ className, variant = "default", ...props }, ref) {
+export const Button = forwardRef(function Button({ className, variant = "default", size = "default", ...props }, ref) {
     const variants = {
         default: "bg-ink text-white hover:bg-ink-hover",
 
         outline: "border border-line bg-background text-ink hover:bg-mist",
 
         coral: "bg-coral-button text-white hover:bg-coral-button-hover",
+
+        ghost: "bg-transparent text-ink hover:bg-mist",
     };
 
-    return <button ref={ref} className={cn(["inline-flex min-h-11", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "px-4", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:cursor-not-allowed", "disabled:opacity-60"].join(" "), variants[variant], className)} {...props} />;
+    const sizes = {
+        default: "min-h-11 px-4",
+        icon: "size-11 p-0",
+    };
+
+    return <button ref={ref} className={cn(["inline-flex", "cursor-pointer", "items-center justify-center", "gap-2", "rounded-lg", "text-sm font-semibold", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ink", "focus-visible:ring-offset-2", "disabled:cursor-not-allowed", "disabled:opacity-60"].join(" "), sizes[size] ?? sizes.default, variants[variant], className)} {...props} />;
 });
 
 /* =========================================================
