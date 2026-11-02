@@ -607,10 +607,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 181fa3e30703e9654fb05d6dd216a25233341460
-- **Data do commit:** 2026-11-02T14:49:03-03:00
-- **Mensagem do commit:** style: ajustar espaçamento e classes CSS em componentes
-- **Branch desta execução:** main
+- **Commit de referência:** ebe681ee93c2637b1ab00514bb0ac6deff307f8e
+- **Data do commit:** 2026-11-02T15:17:58-03:00
+- **Mensagem do commit:** docs: documentar adaptação do layout à escala de fonte
+- **Branch desta execução:** fix/home-priority-topics-accessibility
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -743,13 +743,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| ebe681e | 2026-11-02 | docs: documentar adaptação do layout à escala de fonte |
+| 4b337b7 | 2026-11-02 | docs: registrar comportamento responsivo dos tópicos prioritários |
+| fe58292 | 2026-11-02 | fix: tornar tópicos prioritários responsivos à escala de fonte |
+| 1693c78 | 2026-11-02 | build: update prerendered site |
+| 5137753 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 181fa3e | 2026-11-02 | style: ajustar espaçamento e classes CSS em componentes |
 | 61cbe13 | 2026-11-02 | build: update prerendered site |
 | fee5880 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 18b4531 | 2026-11-02 | Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral |
-| 1030af8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| 6ae68ca | 2026-11-01 | docs(ai-context): atualizar narrativa após release da PWA |
-| 8b650f3 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| c5ab811 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 
 <!-- END AUTO-GENERATED SECTION -->
