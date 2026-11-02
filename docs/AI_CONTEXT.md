@@ -96,6 +96,8 @@ Carrega o tutorial identificado pelo parâmetro da rota e permite navegar pelas 
 
 Os dados ficam em src/data/tutorials.js. O modelo de conteúdo utiliza informações como ID, título, categoria, dificuldade, duração, descrição, palavras-chave, objetivos de aprendizagem, etapas e materiais externos. Cada etapa pode possuir título, descrição, exemplos, dica, imagem, vídeo e pôster, conforme o conteúdo cadastrado.
 
+A navegação entre etapas usa Flexbox com quebra de linha baseada na largura efetivamente disponível no contêiner. Os botões permanecem lado a lado quando suas larguras intrínsecas e o espaçamento cabem; quando não cabem, o Flexbox os distribui em linhas separadas e cada botão expande para preencher a linha. A decisão não depende de um breakpoint de viewport nem de medição via JavaScript. No último passo, o indicador “Último passo” permanece alinhado à direita.
+
 Os IDs dos oito tutoriais registrados no arquivo analisado são:
 
 - comecar-usar-excel
