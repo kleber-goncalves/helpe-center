@@ -475,19 +475,16 @@ export function Tutorial() {
                                 w-full
                                 min-w-0
                                 max-w-4xl
-                                flex-col
-                                items-stretch
+                                flex-wrap
+                                items-center
+                                justify-between
                                 gap-3
                                 border-t
                                 border-line
                                 pt-6
-                                sm:flex-row
-                                sm:items-center
-                                sm:justify-between
-                                sm:gap-4
                             "
                         >
-                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group w-full sm:w-auto">
+                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group min-w-max">
                                 <ChevronLeft
                                     className="
                                         size-4
@@ -502,7 +499,7 @@ export function Tutorial() {
                             </Button>
 
                             {activeStep < steps.length - 1 ? (
-                                <Button type="button" variant="coral" onClick={goToNextStep} className="group w-full sm:min-w-36 sm:w-auto">
+                                <Button type="button" variant="coral" onClick={goToNextStep} className="group min-w-max">
                                     Próximo passo
                                     <ChevronRight
                                         className="
@@ -518,11 +515,10 @@ export function Tutorial() {
                             ) : (
                                 <span
                                     className="
-                                        self-end
+                                        ml-auto
                                         text-sm
                                         font-semibold
                                         text-muted-foreground
-                                        sm:self-auto
                                     "
                                     aria-current="step"
                                 >

@@ -96,6 +96,8 @@ Carrega o tutorial identificado pelo parâmetro da rota e permite navegar pelas 
 
 Os dados ficam em src/data/tutorials.js. O modelo de conteúdo utiliza informações como ID, título, categoria, dificuldade, duração, descrição, palavras-chave, objetivos de aprendizagem, etapas e materiais externos. Cada etapa pode possuir título, descrição, exemplos, dica, imagem, vídeo e pôster, conforme o conteúdo cadastrado.
 
+A navegação entre etapas usa Flexbox com quebra de linha baseada na largura efetivamente disponível no contêiner. Os botões permanecem lado a lado, distribuídos entre as extremidades, quando suas larguras intrínsecas e o espaçamento cabem; quando não cabem, o Flexbox os distribui em linhas separadas, preservando suas larguras naturais e evitando rolagem horizontal. A decisão não depende de um breakpoint de viewport nem de medição via JavaScript. No último passo, o indicador “Último passo” permanece alinhado à direita.
+
 Os IDs dos oito tutoriais registrados no arquivo analisado são:
 
 - comecar-usar-excel
@@ -611,10 +613,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 15734c78a96a8ee4cb6f62111e53c599dba7bcd2
-- **Data do commit:** 2026-11-02T16:27:51-03:00
-- **Mensagem do commit:** Merge pull request #22 from kleber-goncalves/fix/mobile-accessibility-layout
-- **Branch desta execução:** main
+- **Commit de referência:** ac2f8c1070adab266142f83d5a9a6acefbf5654d
+- **Data do commit:** 2026-11-02T16:49:19-03:00
+- **Mensagem do commit:** docs: ajustar comportamento documentado da navegação
+- **Branch desta execução:** fix/tutorial-navigation-flex-wrap
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -747,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 15734c7 | 2026-11-02 | Merge pull request #22 from kleber-goncalves/fix/mobile-accessibility-layout |
-| 3a848fa | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 6a79945 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| f91caaa | 2026-11-02 | fix: preserve mobile header touch target size |
-| b515744 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
-| 9f95d42 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 8ed82d5 | 2026-11-02 | docs: add mobile accessibility regression matrix |
-| a73ae4d | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| ac2f8c1 | 2026-11-02 | docs: ajustar comportamento documentado da navegação |
+| a6a2f87 | 2026-11-02 | docs: refinar descrição da navegação responsiva |
+| f34c541 | 2026-11-02 | fix: preserve intrinsic width in tutorial navigation |
+| ea1d97c | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| 9b97b1c | 2026-11-02 | docs: atualizar regressão responsiva da navegação dos tutoriais |
+| 78e9810 | 2026-11-02 | docs: documentar navegação responsiva dos tutoriais |
+| fcaa6d8 | 2026-11-02 | fix: adapt tutorial navigation to available container width |
+| 7a720c9 | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
