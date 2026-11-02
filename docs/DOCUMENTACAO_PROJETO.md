@@ -1235,6 +1235,8 @@ A preferência é aplicada na variável:
 
 e armazenada no localStorage.
 
+A escala altera o tamanho-base do documento e, consequentemente, as dimensões que utilizam unidades relativas como `rem`. Os componentes devem permitir que textos, espaçamentos e cartões se reorganizem sem corte ou rolagem horizontal. Na Home (`src/pages/Home2.jsx`), os temas prioritários ficam em uma coluna em telas menores e passam a duas colunas a partir de 768px. A grade observa mudanças de dimensão com `ResizeObserver` e atualiza o `ScrollTrigger` para manter o ponto de disparo alinhado ao layout.
+
 ---
 
 # 37. Redução de movimento
