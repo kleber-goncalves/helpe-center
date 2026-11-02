@@ -1241,6 +1241,20 @@ A escala altera o tamanho-base do documento e, consequentemente, as dimensões q
 
 Na página individual do tutorial (`src/pages/Tutorial.jsx`), os controles de etapa são empilhados em telas menores e ficam lado a lado a partir de `sm`; ambos ocupam a largura disponível no mobile, evitando que a largura mínima do botão Próximo passo empurre o botão anterior para fora da viewport. No `MobileHeader`, o nome da escola pode quebrar em até duas linhas, o título principal permanece em uma linha com truncamento controlado e a marca recebe `min-w-0`/largura flexível. O painel lateral, o cabeçalho fixo e seu espaço reservado usam a referência de `5rem` para permanecerem alinhados sob a escala global de fonte.
 
+### Matriz recomendada de regressão manual
+
+Esta matriz é uma orientação de teste, não um registro de validação já executada:
+
+| Viewport CSS | Escalas de fonte |
+|---|---|
+| 320px | 100%, 115% e 130% |
+| 360px | 100%, 115% e 130% |
+| 375px | 100%, 115% e 130% |
+| 390px | 100%, 115% e 130% |
+| 768px ou maior | 100%, 115% e 130% |
+
+Verificar na página de tutorial o primeiro, um passo intermediário e o último passo; confirmar que os botões anterior/próximo permanecem dentro da viewport, sem rolagem horizontal e com foco de teclado visível. No MobileHeader, conferir o limite de duas linhas do nome institucional, o título da marca, a abertura/fechamento do menu lateral e o alinhamento entre cabeçalho e conteúdo. Em aparelhos físicos, registrar a largura CSS real reportada pelo navegador, pois ela pode diferir da resolução nominal do painel.
+
 ---
 
 # 37. Redução de movimento
