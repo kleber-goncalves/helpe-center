@@ -606,9 +606,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 18b4531f7a1d4ff012f5ce06b7c812e92384f84f
-- **Data do commit:** 2026-11-02T13:36:25-03:00
-- **Mensagem do commit:** Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral
+- **Commit de referência:** 181fa3e30703e9654fb05d6dd216a25233341460
+- **Data do commit:** 2026-11-02T14:49:03-03:00
+- **Mensagem do commit:** style: ajustar espaçamento e classes CSS em componentes
 - **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -742,13 +742,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 181fa3e | 2026-11-02 | style: ajustar espaçamento e classes CSS em componentes |
+| 61cbe13 | 2026-11-02 | build: update prerendered site |
+| fee5880 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | 18b4531 | 2026-11-02 | Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral |
 | 1030af8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
 | 6ae68ca | 2026-11-01 | docs(ai-context): atualizar narrativa após release da PWA |
 | 8b650f3 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
 | c5ab811 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 583fa20 | 2026-11-01 | docs: atualizar documentação após release da PWA |
-| 39edd53 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| 42ff032 | 2026-11-01 | docs: atualizar documentação após release da PWA |
 
 <!-- END AUTO-GENERATED SECTION -->
