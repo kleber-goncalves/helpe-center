@@ -754,8 +754,5 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 | 70139e7 | 2026-11-02 | style: fill tutorial navigation buttons in stacked layout |
 | 09e04fc | 2026-11-02 | fix: expand tutorial navigation buttons when stacked |
 | 14ae6d0 | 2026-11-02 | build: update prerendered site |
-| 64522b7 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 49d9122 | 2026-11-02 | Merge pull request #23 from kleber-goncalves/fix/tutorial-navigation-flex-wrap |
-| 14639e6 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
 
 <!-- END AUTO-GENERATED SECTION -->
