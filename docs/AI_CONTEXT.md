@@ -613,9 +613,9 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** d72335e26d9a4e7e4edcccdf426b1db101e1d98d
-- **Data do commit:** 2026-11-02T17:16:51-03:00
-- **Mensagem do commit:** Merge pull request #24 from kleber-goncalves/fix/tutorial-navigation-full-width-stack
+- **Commit de referência:** 78f23c9690f17892e788d9cb89cc8755cbf57165
+- **Data do commit:** 2026-11-02T18:33:30-03:00
+- **Mensagem do commit:** style: ajustar largura máxima do container tutorial-content
 - **Branch desta execução:** main
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
@@ -749,13 +749,13 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
+| 78f23c9 | 2026-11-02 | style: ajustar largura máxima do container tutorial-content |
+| d721c96 | 2026-11-02 | build: update prerendered site |
+| cae02a4 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | d72335e | 2026-11-02 | Merge pull request #24 from kleber-goncalves/fix/tutorial-navigation-full-width-stack |
 | 5bffc59 | 2026-11-02 | docs(ai-context): atualizar snapshot do pull request |
 | b34b030 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
 | a410dbb | 2026-11-02 | docs: atualizar teste da navegação em coluna |
 | d011595 | 2026-11-02 | docs: documentar container query da navegação dos tutoriais |
-| 70139e7 | 2026-11-02 | style: fill tutorial navigation buttons in stacked layout |
-| 09e04fc | 2026-11-02 | fix: expand tutorial navigation buttons when stacked |
-| 14ae6d0 | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
