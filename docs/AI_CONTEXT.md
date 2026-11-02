@@ -42,7 +42,7 @@ O projeto não pretende ser uma enciclopédia genérica de tecnologia. A evoluç
 
 Arquivo principal: src/pages/Home2.jsx.
 
-Apresenta a proposta do portal, campo de busca, categorias, temas prioritários e acesso aos tutoriais em destaque. É o principal ponto de entrada para quem ainda não sabe onde encontrar uma orientação.
+Apresenta a proposta do portal, campo de busca, categorias, temas prioritários e acesso aos tutoriais em destaque. É o principal ponto de entrada para quem ainda não sabe onde encontrar uma orientação. A grade de temas prioritários ocupa a largura disponível, usa uma coluna em telas menores e duas a partir de 768px, com cartões preparados para quebra de texto e escala global de fonte. O ResizeObserver acompanha mudanças nas dimensões da grade e solicita a atualização das posições do ScrollTrigger.
 
 ### 3.2. Categorias — /categorias
 
@@ -354,6 +354,7 @@ Implementações identificadas:
 - leitor de conteúdo que utiliza a API de síntese de voz do navegador quando disponível;
 - estados de foco e controles semânticos;
 - suporte a telas pequenas e navegação por computador;
+- cartões e áreas de conteúdo adaptáveis à escala global de fonte, evitando larguras mínimas rígidas e texto cortado;
 - opção de reset das preferências de acessibilidade.
 
 Arquivos centrais: src/components/AccessibilityMenu.jsx, src/components/AccessibilityFontSize.jsx, src/lib/accessibility.js e src/lib/accessibilityMotion.js.
@@ -606,10 +607,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 > Gerado por scripts/update-ai-context.mjs. Não edite manualmente o conteúdo entre os marcadores.
 
-- **Commit de referência:** 181fa3e30703e9654fb05d6dd216a25233341460
-- **Data do commit:** 2026-11-02T14:49:03-03:00
-- **Mensagem do commit:** style: ajustar espaçamento e classes CSS em componentes
-- **Branch desta execução:** main
+- **Commit de referência:** 6c53f5053535cc7d40f9d83ed3f871d148d8721b
+- **Data do commit:** 2026-11-02T18:18:15Z
+- **Mensagem do commit:** docs(ai-context): atualizar snapshot automaticamente
+- **Branch desta execução:** fix/home-priority-topics-accessibility
 - **Projeto declarado:** helpe-center@0.0.0
 - **Scripts npm:** 13
 - **Dependências de runtime:** 16
@@ -742,13 +743,10 @@ Ideias futuras não devem ser registradas como compromissos nem funcionalidades 
 
 | Commit | Data | Mensagem |
 |---|---|---|
-| 181fa3e | 2026-11-02 | style: ajustar espaçamento e classes CSS em componentes |
-| 61cbe13 | 2026-11-02 | build: update prerendered site |
-| fee5880 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
-| 18b4531 | 2026-11-02 | Merge pull request #20 from kleber-goncalves/docs/atualizacao-documentacao-geral |
-| 1030af8 | 2026-11-01 | docs(ai-context): atualizar snapshot do pull request |
-| 6ae68ca | 2026-11-01 | docs(ai-context): atualizar narrativa após release da PWA |
-| 8b650f3 | 2026-11-01 | docs(ai-context): atualizar snapshot automaticamente |
-| c5ab811 | 2026-11-01 | docs: atualizar documentação após release da PWA |
+| 6c53f50 | 2026-11-02 | docs(ai-context): atualizar snapshot automaticamente |
+| ebe681e | 2026-11-02 | docs: documentar adaptação do layout à escala de fonte |
+| 4b337b7 | 2026-11-02 | docs: registrar comportamento responsivo dos tópicos prioritários |
+| fe58292 | 2026-11-02 | fix: tornar tópicos prioritários responsivos à escala de fonte |
+| 1693c78 | 2026-11-02 | build: update prerendered site |
 
 <!-- END AUTO-GENERATED SECTION -->
