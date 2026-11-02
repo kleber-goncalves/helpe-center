@@ -477,13 +477,14 @@ export function Tutorial() {
                                 max-w-4xl
                                 flex-wrap
                                 items-center
+                                justify-between
                                 gap-3
                                 border-t
                                 border-line
                                 pt-6
                             "
                         >
-                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group min-w-max grow">
+                            <Button type="button" variant="coral" onClick={goToPreviousStep} disabled={activeStep === 0} className="group min-w-max">
                                 <ChevronLeft
                                     className="
                                         size-4
@@ -498,7 +499,7 @@ export function Tutorial() {
                             </Button>
 
                             {activeStep < steps.length - 1 ? (
-                                <Button type="button" variant="coral" onClick={goToNextStep} className="group min-w-max grow">
+                                <Button type="button" variant="coral" onClick={goToNextStep} className="group min-w-max">
                                     Próximo passo
                                     <ChevronRight
                                         className="
