@@ -117,6 +117,46 @@ export function Home() {
             dependencies: [reduceMotion],
         },
     );
+
+    /*
+     * Recalcula as posições do ScrollTrigger quando o tamanho
+     * da grade muda, por exemplo, após aumentar a fonte.
+     *
+     * A alteração da escala global em <html> pode mudar a altura
+     * dos cartões sem disparar um evento de redimensionamento
+     * da janela. O ResizeObserver detecta essa mudança de layout.
+     */
+    useEffect(() => {
+        const topicsGrid = priorityTopicsRef.current;
+
+        if (!topicsGrid || typeof ResizeObserver === "undefined") {
+            return;
+        }
+
+        let refreshFrame = null;
+
+        const observer = new ResizeObserver(() => {
+            if (refreshFrame !== null) {
+                cancelAnimationFrame(refreshFrame);
+            }
+
+            refreshFrame = requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+                refreshFrame = null;
+            });
+        });
+
+        observer.observe(topicsGrid);
+
+        return () => {
+            observer.disconnect();
+
+            if (refreshFrame !== null) {
+                cancelAnimationFrame(refreshFrame);
+            }
+        };
+    }, []);
+
     return (
         <main>
             <section className=" bg-mist3 px-0 lg:px-0 ">
@@ -210,19 +250,23 @@ export function Home() {
                         <div className="mx-auto max-w-6xl   flex items-center flex-col text-center mb-22">
                             <SectionTitle title="O que mais precisa de ajuda?" description="Os assuntos mais citados na pesquisa com a comunidade escolar." />
 
-                            <div ref={priorityTopicsRef} className="mt-8 grid gap-x-2 px-5 gap-y-2 overflow-hidden sm:grid-cols-2 lg:grid-cols-2">
+                            <div ref={priorityTopicsRef} className="mt-8 grid w-full min-w-0 gap-x-2 gap-y-2 px-5 md:grid-cols-2">
                                 {priorityTopics.map((topic) => {
                                     const Icon = topic.icon;
                                     return (
-                                        <Link key={topic.title} to={`/categorias/${topic.category}`} className="group flex items-center  gap-4 rounded-lg bg-card px-4 py-4 transition-colors border border-line dark:bg-paper hover:text-coral">
-                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-coral-soft text-searchPesq ">
+                                        <Link
+                                            key={topic.title}
+                                            to={`/categorias/${topic.category}`}
+                                            className="group flex w-full min-w-0 items-center gap-3 rounded-lg border border-line bg-card px-3 py-4 transition-colors hover:text-coral focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral/50 focus-visible:ring-offset-2 sm:gap-4 sm:px-4 dark:bg-paper"
+                                        >
+                                            <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-coral-soft text-searchPesq sm:size-11">
                                                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
                                             </span>
-                                            <div className="min-w-0 flex-1 text-left pr-18">
-                                                <span className="block font-display text-base font-bold text-foreground">{topic.title}</span>
-                                                <span className="block text-sm text-muted-foreground">{topic.description}</span>
+                                            <div className="min-w-0 flex-1 text-left">
+                                                <span className="block break-words font-display text-base font-bold text-foreground">{topic.title}</span>
+                                                <span className="block break-words text-sm text-muted-foreground">{topic.description}</span>
                                             </div>
-                                            <ChevronRight className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-coral" aria-hidden="true" />
+                                            <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-coral sm:size-5" aria-hidden="true" />
                                         </Link>
                                     );
                                 })}
